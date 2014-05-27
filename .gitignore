@@ -3,3 +3,9 @@
 *.a
 *.log
 *.out
+*.class
+*.java
+*.ast
+*.syntax
+*.tokens
+*.pyc

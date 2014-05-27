@@ -1,0 +1,1 @@
+(init (module_item_declaration (integer_declaration (keyword_integer integer ) (list_of_register_identifiers (register_name (identifier (single_identifier (simple_identifier i))))) ;)))

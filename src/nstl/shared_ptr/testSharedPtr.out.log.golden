@@ -1,0 +1,8 @@
+End of test : test_constructor
+End of test : test_copy_constructor
+End of test : test_assignment_operator
+End of test : test_throw_invalid_rhs
+End of test : test_composite
+End of test : test_derived
+End of test : test_vector
+End of test : test_variant3

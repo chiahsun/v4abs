@@ -1,0 +1,5 @@
+generate_sequence_with_name.py
+blocking_assignment
+pBlockingAssignment
+AstBlockingAssignment
+reg_lvalue = expression

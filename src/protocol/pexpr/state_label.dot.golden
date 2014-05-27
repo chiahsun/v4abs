@@ -1,0 +1,6 @@
+digraph Protocol {
+   rankdir = TD;
+   node [ shape = circle, color = lightblue, fontname = "Helvetica"];
+   State0 [label="s0"]
+
+}

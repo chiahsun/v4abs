@@ -1,0 +1,1 @@
+(init (expression (expression (primary (identifier (single_identifier (simple_identifier a2))) [ (expression (primary (number (unsigned_number 1)))) : (expression (primary (number (unsigned_number 0)))) ])) > (expression (primary (number (binary_number 2'b11))))) ;)

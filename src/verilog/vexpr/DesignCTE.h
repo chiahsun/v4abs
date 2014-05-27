@@ -1,0 +1,22 @@
+#ifndef DESIGN_CTE_H
+#define DESIGN_CTE_H
+
+#include "VExprStatement.h"
+#include "VExprContinuousAssignment.h"
+
+VExprStatementHandle statement_handle_state_next();
+VExprContinuousAssignmentHandle continuous_assignment_handle_out_valid();
+
+VExprContinuousAssignmentHandle continuous_assignment_handle_reg_U_next();
+VExprContinuousAssignmentHandle continuous_assignment_handle_reg_Y1_next();
+VExprContinuousAssignmentHandle continuous_assignment_handle_reg_V_next();
+VExprContinuousAssignmentHandle continuous_assignment_handle_reg_Y2_next();
+
+VExprContinuousAssignmentHandle continuous_assignment_handle_U_ext();
+VExprContinuousAssignmentHandle continuous_assignment_handle_Y_ext();
+VExprContinuousAssignmentHandle continuous_assignment_handle_V_ext();
+// VExprContinuousAssignmentHandle continuous_assignment_handle_Y_ext();
+// VExprContinuousAssignmentHandle continuous_assignment_handle_V_ext();
+
+
+#endif // DESIGN_CTE_H

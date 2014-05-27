@@ -1,0 +1,37 @@
+#!/bin/bash
+
+#CMD1="g++ -I ../../test -MM -MG $1"
+#RET1=eval $CMD1
+#echo $RET1
+#RET2=(`g++ -I ../../test -MM -MG $1 | sed -e 's@^\(.*\)\.o:@@' | sed -e 's/\\//g'`)
+RET2=($(g++ -I ../../test -MM -MG $1 | sed -e 's@^\(.*\)\.o:@\1.d \1.o:@' | sed -e 's/\\//g'))
+
+SLASH="/"
+#if [ $(g++ -I ../../test -MM -MG $1 | sed -e 's@^\(.*\)\.o:@@' | grep "/") ]
+#if [ $(g++ -I ../../test -MM -MG $1 | sed -e 's@^\(.*\)\.o:@@' | grep -q "/") ]
+#if [ $(g++ -I ../../test -MM -MG $1 | sed -e 's@^\(.*\)\.o:@@' | sed -e 's/\\/,/g' | sed -n 's/.*\(\/\).*/\1/p') ]
+#then 
+    #echo "true"
+#else
+    #echo "false"
+#fi
+
+#echo $RET2
+
+for x in "${RET2[@]}"
+do
+    if [ $( echo $x | sed -n 's/.*\(\.o\).*/\1/p') ] || [ $( echo $x | sed -n 's/.*\(\.d\).*/\1/p') ]
+    then
+        echo -e "$x \c"
+    elif [ $( echo $x | sed -n 's/.*\(\/\).*/\1/p') ]
+    then
+        echo -e "$TOP/src/$x \c"
+    else 
+        echo -e "$PWD/$x \c"
+    fi
+    done
+#CMD2="sed -e 's@^\(.*\)\.o:@@'"
+#RET2=eval $CMD2
+#CMD3=`sed -e 's/ /\n/g'`
+#RET3=eval $CMD3
+#echo $RET3

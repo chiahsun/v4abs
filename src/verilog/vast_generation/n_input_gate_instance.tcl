@@ -1,0 +1,5 @@
+generate_sequence_with_name.py
+n_input_gate_instance
+pNInputGateInstance
+AstNInputGateInstance
+zero_or_one_name_of_gate_instance ( output_terminal , input_terminal zero_or_more_comma_input_terminal ) 

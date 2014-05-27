@@ -1,0 +1,1 @@
+(init (expression (expression (expression (primary (identifier (single_identifier (simple_identifier a))))) * (expression (primary (identifier (single_identifier (simple_identifier b)))))) - (expression (primary (number (unsigned_number 1))))) ;)

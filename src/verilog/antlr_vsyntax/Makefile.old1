@@ -1,0 +1,13 @@
+CODE_DIRS = Constant Input Module ModuleBegin Output Reg Wire Timescale
+
+all:
+	@for DIR in $(CODE_DIRS); \
+		do \
+		(cd $$DIR; make all) \
+		done
+
+clean:
+	@for DIR in $(CODE_DIRS); \
+		do \
+		(cd $$DIR; make clean) \
+		done

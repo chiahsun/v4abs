@@ -1,0 +1,1 @@
+(init (expression (primary (identifier (single_identifier (defined_identifier `ASDADA))))) ; (expression (primary (identifier (single_identifier (defined_identifier `A_A23))))) ; (expression (primary (identifier (single_identifier (defined_identifier `ADDR24))))) ;)

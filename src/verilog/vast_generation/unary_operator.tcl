@@ -1,0 +1,15 @@
+generate_composite_with_name.py
+unary_operator
+pUnaryOperator
+AstUnaryOperator
+unary_operator_plus
+unary_operator_minus
+unary_operator_not
+unary_operator_neg
+unary_operator_and
+unary_operator_neg_and
+unary_operator_or
+unary_operator_neg_or
+unary_operator_xor
+unary_operator_neg_xor
+unary_operator_xor_neg

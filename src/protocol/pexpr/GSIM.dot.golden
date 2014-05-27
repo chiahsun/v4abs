@@ -1,0 +1,321 @@
+digraph Protocol {
+   rankdir = TD;
+   node [ shape = circle, color = lightblue, fontname = "Helvetica"];
+   State0 [label="S0"]
+   State1 [label="S1"]
+   State2 [label="S2"]
+   State3 [label="S3"]
+   State4 [label="S4"]
+   State5 [label="assert(0)"]
+   State6 [label="S5"]
+   State7 [label="S6"]
+   State8 [label="S7"]
+   State9 [label="S8"]
+   State10 [label="S9"]
+   State11 [label="S10"]
+   State12 [label="S11"]
+   State13 [label="S12"]
+   State14 [label="S13"]
+   State15 [label="S14"]
+   State16 [label="S15"]
+   State17 [label="S16"]
+   State18 [label="S17"]
+   State19 [label="S18"]
+   State20 [label="S19"]
+   State21 [label="S20"]
+   State22 [label="S21"]
+   State23 [label="S22"]
+   State24 [label="S23"]
+   State25 [label="S24"]
+   State26 [label="S25"]
+   State27 [label="S26"]
+   State28 [label="S27"]
+   State29 [label="S28"]
+   State30 [label="S29"]
+   State31 [label="S30"]
+   State32 [label="S31"]
+   State33 [label="S32"]
+   State34 [label="S33"]
+   State35 [label="S34"]
+   State0 -> Edge1;
+   Edge1 -> State0;
+   Edge1 [shape=record, color=red, height=.08, fontsize=11, label="(! (reset))|"]
+
+   State0 -> Edge0;
+   Edge0 -> State1;
+   Edge0 [shape=record, color=red, height=.08, fontsize=11, label="(reset)|"]
+
+   State1 -> Edge3;
+   Edge3 -> State1;
+   Edge3 [shape=record, color=red, height=.08, fontsize=11, label="(! (! (reset)))|"]
+
+   State1 -> Edge2;
+   Edge2 -> State2;
+   Edge2 [shape=record, color=red, height=.08, fontsize=11, label="(! (reset))|"]
+
+   State2 -> Edge5;
+   Edge5 -> State2;
+   Edge5 [shape=record, color=red, height=.08, fontsize=11, label="(! (! ((reset) && (in_en))))|"]
+
+   State2 -> Edge4;
+   Edge4 -> State3;
+   Edge4 [shape=record, color=red, height=.08, fontsize=11, label="(! ((reset) && (in_en)))|(read (b_in) )"]
+
+   State3 -> Edge6;
+   Edge6 -> State4;
+   Edge6 [shape=record, color=red, height=.08, fontsize=11, label="(! ((reset) && (in_en)))|(read (b_in) )"]
+
+   State3 -> Edge7;
+   Edge7 -> State5;
+   Edge7 [shape=record, color=red, height=.08, fontsize=11, label="(! (! ((reset) && (in_en))))|"]
+
+   State4 -> Edge9;
+   Edge9 -> State5;
+   Edge9 [shape=record, color=red, height=.08, fontsize=11, label="(! (! ((reset) && (in_en))))|"]
+
+   State4 -> Edge8;
+   Edge8 -> State6;
+   Edge8 [shape=record, color=red, height=.08, fontsize=11, label="(! ((reset) && (in_en)))|(read (b_in) )"]
+
+   State6 -> Edge11;
+   Edge11 -> State5;
+   Edge11 [shape=record, color=red, height=.08, fontsize=11, label="(! (! ((reset) && (in_en))))|"]
+
+   State6 -> Edge10;
+   Edge10 -> State7;
+   Edge10 [shape=record, color=red, height=.08, fontsize=11, label="(! ((reset) && (in_en)))|(read (b_in) )"]
+
+   State7 -> Edge13;
+   Edge13 -> State5;
+   Edge13 [shape=record, color=red, height=.08, fontsize=11, label="(! (! ((reset) && (in_en))))|"]
+
+   State7 -> Edge12;
+   Edge12 -> State8;
+   Edge12 [shape=record, color=red, height=.08, fontsize=11, label="(! ((reset) && (in_en)))|(read (b_in) )"]
+
+   State8 -> Edge15;
+   Edge15 -> State5;
+   Edge15 [shape=record, color=red, height=.08, fontsize=11, label="(! (! ((reset) && (in_en))))|"]
+
+   State8 -> Edge14;
+   Edge14 -> State9;
+   Edge14 [shape=record, color=red, height=.08, fontsize=11, label="(! ((reset) && (in_en)))|(read (b_in) )"]
+
+   State9 -> Edge17;
+   Edge17 -> State5;
+   Edge17 [shape=record, color=red, height=.08, fontsize=11, label="(! (! ((reset) && (in_en))))|"]
+
+   State9 -> Edge16;
+   Edge16 -> State10;
+   Edge16 [shape=record, color=red, height=.08, fontsize=11, label="(! ((reset) && (in_en)))|(read (b_in) )"]
+
+   State10 -> Edge19;
+   Edge19 -> State5;
+   Edge19 [shape=record, color=red, height=.08, fontsize=11, label="(! (! ((reset) && (in_en))))|"]
+
+   State10 -> Edge18;
+   Edge18 -> State11;
+   Edge18 [shape=record, color=red, height=.08, fontsize=11, label="(! ((reset) && (in_en)))|(read (b_in) )"]
+
+   State11 -> Edge21;
+   Edge21 -> State5;
+   Edge21 [shape=record, color=red, height=.08, fontsize=11, label="(! (! ((reset) && (in_en))))|"]
+
+   State11 -> Edge20;
+   Edge20 -> State12;
+   Edge20 [shape=record, color=red, height=.08, fontsize=11, label="(! ((reset) && (in_en)))|(read (b_in) )"]
+
+   State12 -> Edge23;
+   Edge23 -> State5;
+   Edge23 [shape=record, color=red, height=.08, fontsize=11, label="(! (! ((reset) && (in_en))))|"]
+
+   State12 -> Edge22;
+   Edge22 -> State13;
+   Edge22 [shape=record, color=red, height=.08, fontsize=11, label="(! ((reset) && (in_en)))|(read (b_in) )"]
+
+   State13 -> Edge25;
+   Edge25 -> State5;
+   Edge25 [shape=record, color=red, height=.08, fontsize=11, label="(! (! ((reset) && (in_en))))|"]
+
+   State13 -> Edge24;
+   Edge24 -> State14;
+   Edge24 [shape=record, color=red, height=.08, fontsize=11, label="(! ((reset) && (in_en)))|(read (b_in) )"]
+
+   State14 -> Edge27;
+   Edge27 -> State5;
+   Edge27 [shape=record, color=red, height=.08, fontsize=11, label="(! (! ((reset) && (in_en))))|"]
+
+   State14 -> Edge26;
+   Edge26 -> State15;
+   Edge26 [shape=record, color=red, height=.08, fontsize=11, label="(! ((reset) && (in_en)))|(read (b_in) )"]
+
+   State15 -> Edge29;
+   Edge29 -> State5;
+   Edge29 [shape=record, color=red, height=.08, fontsize=11, label="(! (! ((reset) && (in_en))))|"]
+
+   State15 -> Edge28;
+   Edge28 -> State16;
+   Edge28 [shape=record, color=red, height=.08, fontsize=11, label="(! ((reset) && (in_en)))|(read (b_in) )"]
+
+   State16 -> Edge31;
+   Edge31 -> State5;
+   Edge31 [shape=record, color=red, height=.08, fontsize=11, label="(! (! ((reset) && (in_en))))|"]
+
+   State16 -> Edge30;
+   Edge30 -> State17;
+   Edge30 [shape=record, color=red, height=.08, fontsize=11, label="(! ((reset) && (in_en)))|(read (b_in) )"]
+
+   State17 -> Edge33;
+   Edge33 -> State5;
+   Edge33 [shape=record, color=red, height=.08, fontsize=11, label="(! (! ((reset) && (in_en))))|"]
+
+   State17 -> Edge32;
+   Edge32 -> State18;
+   Edge32 [shape=record, color=red, height=.08, fontsize=11, label="(! ((reset) && (in_en)))|(read (b_in) )"]
+
+   State18 -> Edge35;
+   Edge35 -> State5;
+   Edge35 [shape=record, color=red, height=.08, fontsize=11, label="(! (! ((reset) && (in_en))))|"]
+
+   State18 -> Edge34;
+   Edge34 -> State19;
+   Edge34 [shape=record, color=red, height=.08, fontsize=11, label="(! ((reset) && (in_en)))|(read (b_in) )"]
+
+   State19 -> Edge37;
+   Edge37 -> State19;
+   Edge37 [shape=record, color=red, height=.08, fontsize=11, label="(! (! ((reset) && (out_valid))))|"]
+
+   State19 -> Edge36;
+   Edge36 -> State20;
+   Edge36 [shape=record, color=red, height=.08, fontsize=11, label="(! ((reset) && (out_valid)))|(write (x_out) )"]
+
+   State20 -> Edge39;
+   Edge39 -> State5;
+   Edge39 [shape=record, color=red, height=.08, fontsize=11, label="(! (! ((reset) && (out_valid))))|"]
+
+   State20 -> Edge38;
+   Edge38 -> State21;
+   Edge38 [shape=record, color=red, height=.08, fontsize=11, label="(! ((reset) && (out_valid)))|(write (x_out) )"]
+
+   State21 -> Edge41;
+   Edge41 -> State5;
+   Edge41 [shape=record, color=red, height=.08, fontsize=11, label="(! (! ((reset) && (out_valid))))|"]
+
+   State21 -> Edge40;
+   Edge40 -> State22;
+   Edge40 [shape=record, color=red, height=.08, fontsize=11, label="(! ((reset) && (out_valid)))|(write (x_out) )"]
+
+   State22 -> Edge43;
+   Edge43 -> State5;
+   Edge43 [shape=record, color=red, height=.08, fontsize=11, label="(! (! ((reset) && (out_valid))))|"]
+
+   State22 -> Edge42;
+   Edge42 -> State23;
+   Edge42 [shape=record, color=red, height=.08, fontsize=11, label="(! ((reset) && (out_valid)))|(write (x_out) )"]
+
+   State23 -> Edge45;
+   Edge45 -> State5;
+   Edge45 [shape=record, color=red, height=.08, fontsize=11, label="(! (! ((reset) && (out_valid))))|"]
+
+   State23 -> Edge44;
+   Edge44 -> State24;
+   Edge44 [shape=record, color=red, height=.08, fontsize=11, label="(! ((reset) && (out_valid)))|(write (x_out) )"]
+
+   State24 -> Edge47;
+   Edge47 -> State5;
+   Edge47 [shape=record, color=red, height=.08, fontsize=11, label="(! (! ((reset) && (out_valid))))|"]
+
+   State24 -> Edge46;
+   Edge46 -> State25;
+   Edge46 [shape=record, color=red, height=.08, fontsize=11, label="(! ((reset) && (out_valid)))|(write (x_out) )"]
+
+   State25 -> Edge49;
+   Edge49 -> State5;
+   Edge49 [shape=record, color=red, height=.08, fontsize=11, label="(! (! ((reset) && (out_valid))))|"]
+
+   State25 -> Edge48;
+   Edge48 -> State26;
+   Edge48 [shape=record, color=red, height=.08, fontsize=11, label="(! ((reset) && (out_valid)))|(write (x_out) )"]
+
+   State26 -> Edge51;
+   Edge51 -> State5;
+   Edge51 [shape=record, color=red, height=.08, fontsize=11, label="(! (! ((reset) && (out_valid))))|"]
+
+   State26 -> Edge50;
+   Edge50 -> State27;
+   Edge50 [shape=record, color=red, height=.08, fontsize=11, label="(! ((reset) && (out_valid)))|(write (x_out) )"]
+
+   State27 -> Edge53;
+   Edge53 -> State5;
+   Edge53 [shape=record, color=red, height=.08, fontsize=11, label="(! (! ((reset) && (out_valid))))|"]
+
+   State27 -> Edge52;
+   Edge52 -> State28;
+   Edge52 [shape=record, color=red, height=.08, fontsize=11, label="(! ((reset) && (out_valid)))|(write (x_out) )"]
+
+   State28 -> Edge55;
+   Edge55 -> State5;
+   Edge55 [shape=record, color=red, height=.08, fontsize=11, label="(! (! ((reset) && (out_valid))))|"]
+
+   State28 -> Edge54;
+   Edge54 -> State29;
+   Edge54 [shape=record, color=red, height=.08, fontsize=11, label="(! ((reset) && (out_valid)))|(write (x_out) )"]
+
+   State29 -> Edge57;
+   Edge57 -> State5;
+   Edge57 [shape=record, color=red, height=.08, fontsize=11, label="(! (! ((reset) && (out_valid))))|"]
+
+   State29 -> Edge56;
+   Edge56 -> State30;
+   Edge56 [shape=record, color=red, height=.08, fontsize=11, label="(! ((reset) && (out_valid)))|(write (x_out) )"]
+
+   State30 -> Edge59;
+   Edge59 -> State5;
+   Edge59 [shape=record, color=red, height=.08, fontsize=11, label="(! (! ((reset) && (out_valid))))|"]
+
+   State30 -> Edge58;
+   Edge58 -> State31;
+   Edge58 [shape=record, color=red, height=.08, fontsize=11, label="(! ((reset) && (out_valid)))|(write (x_out) )"]
+
+   State31 -> Edge61;
+   Edge61 -> State5;
+   Edge61 [shape=record, color=red, height=.08, fontsize=11, label="(! (! ((reset) && (out_valid))))|"]
+
+   State31 -> Edge60;
+   Edge60 -> State32;
+   Edge60 [shape=record, color=red, height=.08, fontsize=11, label="(! ((reset) && (out_valid)))|(write (x_out) )"]
+
+   State32 -> Edge63;
+   Edge63 -> State5;
+   Edge63 [shape=record, color=red, height=.08, fontsize=11, label="(! (! ((reset) && (out_valid))))|"]
+
+   State32 -> Edge62;
+   Edge62 -> State33;
+   Edge62 [shape=record, color=red, height=.08, fontsize=11, label="(! ((reset) && (out_valid)))|(write (x_out) )"]
+
+   State33 -> Edge65;
+   Edge65 -> State5;
+   Edge65 [shape=record, color=red, height=.08, fontsize=11, label="(! (! ((reset) && (out_valid))))|"]
+
+   State33 -> Edge64;
+   Edge64 -> State34;
+   Edge64 [shape=record, color=red, height=.08, fontsize=11, label="(! ((reset) && (out_valid)))|(write (x_out) )"]
+
+   State34 -> Edge67;
+   Edge67 -> State5;
+   Edge67 [shape=record, color=red, height=.08, fontsize=11, label="(! (! ((reset) && (out_valid))))|"]
+
+   State34 -> Edge66;
+   Edge66 -> State35;
+   Edge66 [shape=record, color=red, height=.08, fontsize=11, label="(! ((reset) && (out_valid)))|(write (x_out) )"]
+
+   State35 -> Edge68;
+   Edge68 -> State1;
+   Edge68 [shape=record, color=red, height=.08, fontsize=11, label="(! ((reset) && (out_valid)))|(write (x_out) )"]
+
+   State35 -> Edge69;
+   Edge69 -> State5;
+   Edge69 [shape=record, color=red, height=.08, fontsize=11, label="(! (! ((reset) && (out_valid))))|"]
+
+
+}

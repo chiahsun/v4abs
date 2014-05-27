@@ -1,0 +1,5 @@
+End of test : test_primary_number
+End of test : test_primary_single_identifier
+End of test : test_primary_select_identifier
+End of test : test_primary_concatenation
+End of test : test_primary_multiple_concatenation

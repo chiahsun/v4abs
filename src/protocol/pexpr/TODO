@@ -1,0 +1,33 @@
+Spec
+----
+1. Enable function type
+   - bool_expression
+   Update function type
+   - update_statement
+
+
+
+TODO
+----
+1. Explicit unroll EFSM from user input EFSM
+   
+     true
+   S0---- S1
+      if
+      if
+    
+   becomes
+   
+      if
+   S0 -- S1'
+      ..
+   
+      if 
+   S0 -- S2'
+      ..
+
+2. Protocol graph may be independent
+
+
+
+

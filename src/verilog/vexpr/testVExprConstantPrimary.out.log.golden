@@ -1,0 +1,4 @@
+End of test : test_constant_primary_number
+End of test : test_constant_primary_single_identifier
+End of test : test_constant_primary_concatenation
+End of test : test_constant_primary_multiple_concatenation

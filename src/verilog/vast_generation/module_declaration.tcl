@@ -1,0 +1,5 @@
+generate_sequence_with_name.py
+module_declaration
+pModuleDeclaration
+AstModuleDeclaration
+module_keyword identifier zero_or_one_list_of_ports ; zero_or_more_module_item keyword_endmodule

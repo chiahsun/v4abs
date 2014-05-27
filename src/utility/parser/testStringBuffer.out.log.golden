@@ -1,0 +1,5 @@
+End of test : test_string_buffer
+End of test : test_string_buffer_precede_empty
+End of test : test_string_buffer_tail_empty
+End of test : test_string_buffer_single_word
+End of test : test_string_buffer_empty

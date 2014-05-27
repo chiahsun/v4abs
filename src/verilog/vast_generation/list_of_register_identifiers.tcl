@@ -1,0 +1,5 @@
+generate_sequence_with_name.py
+list_of_register_identifiers
+pListOfRegisterIdentifiers
+AstListOfRegisterIdentifiers
+register_name zero_or_more_comma_register_name

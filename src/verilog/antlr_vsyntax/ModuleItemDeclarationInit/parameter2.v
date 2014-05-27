@@ -1,0 +1,4 @@
+parameter STATE_INIT = STATE_BEGIN
+        , OUTPUT_CNT_INIT = 0
+        , C_DEFAULT = 16'b1111_1111_1111_1110
+        , REG_I_DEFAULT = 6'b0;

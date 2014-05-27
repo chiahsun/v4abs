@@ -1,0 +1,5 @@
+generate_sequence_with_name.py
+input_declaration
+pInputDeclaration
+AstInputDeclaration
+keyword_input zero_or_one_range list_of_port_identifiers ;

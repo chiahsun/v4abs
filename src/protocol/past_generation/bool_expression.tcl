@@ -1,0 +1,11 @@
+generate_composite_with_name.py
+bool_expression
+pBoolExpression
+CAstBoolExpression
+bool_with_parenthesis
+bool_and
+bool_or
+bool_xor
+bool_not
+bool_constant
+identifier

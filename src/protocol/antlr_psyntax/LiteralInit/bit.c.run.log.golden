@@ -1,0 +1,1 @@
+(init (literal (bit_literal 2'b11)))

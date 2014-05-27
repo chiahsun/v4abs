@@ -1,0 +1,2 @@
+line 1:11 extraneous input 'gauss_iter' expecting {'+', '-', '!', '~', '|', '&', '^', ';', '.', '?', '*', '/', '%', '=', '<', '>'}
+(init (expression (primary (identifier (single_identifier (simple_identifier GAUSS_ITER)) gauss_iter))) ;)

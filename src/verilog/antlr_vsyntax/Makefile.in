@@ -1,0 +1,62 @@
+TOP=../../../..
+ANTLR_JAR_PATH = $(TOP)/ext_libs
+ANTLR_JAR_FLAGS = $(ANTLR_JAR_PATH)/antlr-4.0-complete.jar
+
+export CLASSPATH := .:$(ANTLR_JAR_FLAGS):$(CLASSPATH)
+
+.PHONY: all clean check check_and_compile compile
+
+GRAMMAR_NAME = $(shell basename $(PWD))
+GRAMMAR_ENTRY = init
+
+SOURCE_COMMON_LEXER_RULE = CommonLexerRules.g4
+
+SOURCE_G4 = $(wildcard *.g4)
+SOURCE_RTL = $(wildcard *.v)
+
+TARGET_LOG = $(addsuffix .run.log, $(SOURCE_RTL))
+
+CMD_RUN = java org.antlr.v4.runtime.misc.TestRig $(GRAMMAR_NAME) $(GRAMMAR_ENTRY) -tree
+
+CHECK_SCRIPT = run_check.py
+
+
+all : compile 
+# all : check_and_compile
+
+# $(GRAMMAR_NAME)Parer.java : $(GRAMMAR_NAME).g4 $(SOURCE_COMMON_LEXER_RULE) 
+#	java -jar /home/chiahsun/antlr/antlr-4.0-complete.jar -no-listener -visitor $(GRAMMAR_NAME).g4
+
+$(GRAMMAR_NAME)Lexer.java : $(GRAMMAR_NAME).g4 $(SOURCE_COMMON_LEXER_RULE) $(OTHER_PARSER_RULE)
+	java -jar $(ANTLR_JAR_FLAGS) -no-listener -visitor $(GRAMMAR_NAME).g4
+
+$(GRAMMAR_NAME)Lexer.class : $(GRAMMAR_NAME)Lexer.java
+	javac *.java
+
+#$(GRAMMAR_NAME)Parer.class : $(GRAMMAR_NAME)Parer.java
+#	javac *.java
+
+# compile : $(GRAMMAR_NAME)Lexer.class $(GRAMMAR_NAME)Parer.class
+compile : $(GRAMMAR_NAME)Lexer.class
+# compile : $(GRAMMAR_NAME)Parser.class
+
+%.v.run.log : %.v $(GRAMMAR_NAME)Lexer.class 
+	$(CMD_RUN) < $< &> $@
+
+check : $(CHECK_SCRIPT) $(TARGET_LOG) 
+	./$(CHECK_SCRIPT)
+
+
+check_and_compile : compile check 
+
+clean :
+	rm -f *.java *.class *.tokens *.log $(SOURCE_COMMON_LEXER_RULE)
+
+$(SOURCE_COMMON_LEXER_RULE) : ../$(SOURCE_COMMON_LEXER_RULE)
+	cp $< .
+
+$(CHECK_SCRIPT) : ../$(CHECK_SCRIPT)
+	cp $< .
+
+log :
+	../run_log.sh

@@ -1,0 +1,11 @@
+EXT_INCS=/home/chiahsun/research/nstl/for_each /home/chiahsun/research/mm/shared_ptr
+#EXT_INCS=/home/chiahsun/research/mm/shared_ptr /home/chiahsun/research/nstl/for_each
+#EXT_INCS=/home/chiahsun/research/nstl/stl_utility /home/chiahsun/research/nstl/for_each
+export EXT_INCS
+
+all :
+	make binary
+	make lib
+
+
+-include ~/makefile/Makefile

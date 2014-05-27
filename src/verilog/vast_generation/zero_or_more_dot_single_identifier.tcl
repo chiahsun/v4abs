@@ -1,0 +1,5 @@
+generate_star_without_name.py
+zero_or_more_dot_single_identifier
+pZeroOrMoreDotSingleIdentifier
+AstZeroOrMoreDotSingleIdentifier
+. single_identifier

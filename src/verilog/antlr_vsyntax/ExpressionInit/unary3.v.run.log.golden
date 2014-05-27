@@ -1,0 +1,1 @@
+(init (expression (unary_operator ^) (primary (identifier (single_identifier (simple_identifier abc))))) ;)

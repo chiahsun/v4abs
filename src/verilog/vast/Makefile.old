@@ -1,0 +1,26 @@
+CODE_DIRS = parseExpression parseSourceText
+EXT_INCS=/home/chiahsun/research/nstl/stl_utility
+export EXT_INCS
+
+all : 
+	make update 
+	make binary
+	make lib
+
+update : Ast.h Ast.cpp AstParser.h AstParser.cpp
+
+Ast.h : ../ast_parser_gen/Ast.h
+	cp $< .
+
+Ast.cpp : ../ast_parser_gen/Ast.cpp
+	cp $< .
+
+AstParser.h : ../ast_parser_gen/AstParser.h
+	cp $< .
+
+AstParser.cpp : ../ast_parser_gen/AstParser.cpp
+	cp $< .
+
+
+
+-include ~/makefile/Makefile

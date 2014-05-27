@@ -1,0 +1,2 @@
+./javaParseSourceText.sh LMFE.c &> ./LMFE.c.ast
+./mainParseSourceText.out LMFE.c.ast &> ./LMFE.c.syntax

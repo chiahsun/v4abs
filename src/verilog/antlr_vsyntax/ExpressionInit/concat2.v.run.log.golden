@@ -1,0 +1,1 @@
+(init (expression (primary (concatenation { (expression (primary (number (binary_number 2'b11)))) , (expression (primary (number (binary_number 2'b00)))) , (expression (primary (number (binary_number 1'b1)))) }))) ;)

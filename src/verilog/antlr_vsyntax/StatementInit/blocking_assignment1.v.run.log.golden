@@ -1,0 +1,1 @@
+(init (statement (blocking_assignment (reg_lvalue (identifier (single_identifier (simple_identifier A)))) = (expression (primary (identifier (single_identifier (simple_identifier B)))))) ;))

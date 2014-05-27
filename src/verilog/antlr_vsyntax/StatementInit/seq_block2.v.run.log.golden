@@ -1,0 +1,2 @@
+line 2:4 no viable alternative at input 'cbeginnext_reg_i'
+(init (statement cbegin next_reg_i = reg_i + 1 ; next_State = ( reg_i = = 120 ) ? STATE_OUT : STATE_INNER_ITER ; next_C = C_DEFAULT ; next_reg_k = REG_K_DEFAULT ; \nend\n))

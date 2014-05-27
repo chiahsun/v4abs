@@ -1,0 +1,1 @@
+(init (module_item_declaration (input_declaration (keyword_input input ) (list_of_port_identifiers (identifier (single_identifier (simple_identifier clk)))) ;)))

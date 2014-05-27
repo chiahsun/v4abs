@@ -1,0 +1,2 @@
+./javaParseSourceText.sh GSIM.c &> ./GSIM.c.ast
+./mainParseSourceText.out GSIM.c.ast &> ./GSIM.c.syntax

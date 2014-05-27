@@ -1,0 +1,1 @@
+(init (expression (primary (multiple_concatenation { (expression (primary (number (unsigned_number 4)))) { (expression (primary (number (binary_number 1'b1)))) } }))) ; (expression (primary (multiple_concatenation { (expression (primary (number (unsigned_number 3)))) { (expression (primary (identifier (single_identifier (simple_identifier a))))) } }))) ;)

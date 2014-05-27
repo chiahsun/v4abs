@@ -1,0 +1,5 @@
+generate_sequence_with_name.py
+named_port_expression
+pNamedPortExpression
+AstNamedPortExpression
+. identifier ( zero_or_one_port_expression )

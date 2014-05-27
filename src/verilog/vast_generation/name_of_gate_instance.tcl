@@ -1,0 +1,5 @@
+generate_sequence_with_name.py
+name_of_gate_instance
+pNameOfGateInstance
+AstNameOfGateInstance
+identifier zero_or_one_range

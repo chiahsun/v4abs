@@ -1,0 +1,1 @@
+(init (gate_instantiation (n_output_gatetype not ) (n_output_gate_instance (name_of_gate_instance (identifier (single_identifier (simple_identifier NOT1_1)))) ( (output_terminal (identifier (single_identifier (simple_identifier N118)))) , (input_terminal (expression (primary (identifier (single_identifier (simple_identifier N1)))))) )) ;))

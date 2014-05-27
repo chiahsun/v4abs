@@ -1,0 +1,1 @@
+(init (continuous_assign (keyword_assign assign ) (list_of_net_assignments (net_assignment (net_lvalue (identifier (single_identifier (simple_identifier reg_a)))) = (expression (primary (number (binary_number 1'b1))))) , (net_assignment (net_lvalue (identifier (single_identifier (simple_identifier reg_b)))) = (expression (primary (number (binary_number 2'b11)))))) ;))

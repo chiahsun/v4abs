@@ -1,0 +1,11 @@
+digraph Protocol {
+   rankdir = TD;
+   node [ shape = circle, color = lightblue, fontname = "Helvetica"];
+   State0 [label="hello"]
+   State1 [label="world"]
+   State0 -> Edge0;
+   Edge0 -> State1;
+   Edge0 [shape=record, color=red, height=.08, fontsize=11, label="20"]
+
+
+}

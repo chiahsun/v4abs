@@ -1,0 +1,5 @@
+generate_sequence_with_name.py
+reg_declaration
+pRegDeclaration
+AstRegDeclaration
+keyword_reg zero_or_one_range list_of_register_identifiers ;

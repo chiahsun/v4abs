@@ -1,0 +1,2 @@
+./javaParseSourceText.sh MB.c &> ./MB.c.ast
+./mainParseSourceText.out MB.c.ast &> ./MB.c.syntax

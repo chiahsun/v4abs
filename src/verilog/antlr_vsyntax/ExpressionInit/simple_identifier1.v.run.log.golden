@@ -1,0 +1,1 @@
+(init (expression (primary (identifier (single_identifier (simple_identifier reg_A))))) ;)

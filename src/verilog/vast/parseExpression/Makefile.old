@@ -1,0 +1,18 @@
+VFILES=$(wildcard *.v)
+LOGS=$(patsubst %.v, %.v.log, $(VFILES))
+
+RUN=runParseExpression.sh
+CPP_EXE=mainParseExpression.out
+
+.PHONY : all clean
+
+all : $(LOGS)
+
+%.v.log : %.v $(CPP_EXE) $(RUN)
+	./$(RUN) $< &> $@
+
+$(CPP_EXE) : ../$(CPP_EXE)
+	cp $< .
+
+clean :
+	rm -f *.log *.ast *.syntax $(CPP_EXE)

@@ -1,0 +1,1 @@
+(init (expression (primary (number (heximal_number 4'hf)))) ; (expression (primary (number (heximal_number 16'hFFFF)))) ; (expression (primary (number (heximal_number 16'hF_2_A_F)))) ; (expression (primary (number (heximal_number 16'haf1e)))) ;)

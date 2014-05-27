@@ -1,0 +1,8 @@
+1. defined identifier should be preprocessing first
+   e.g.
+   `define WIDTH 20
+
+3. all preprocessing should be remove
+   e.g. `timescale ...
+
+2. parameter should be in the scope of module

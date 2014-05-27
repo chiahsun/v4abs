@@ -1,0 +1,1 @@
+(init (module_item_declaration (parameter_declaration (keyword_parameter parameter ) (list_of_param_assignments (param_assignment (identifier (single_identifier (simple_identifier LATCH_CNT_INIT))) = (expression (primary (number (heximal_number 4'h0)))))) ;)))

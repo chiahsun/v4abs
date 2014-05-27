@@ -1,0 +1,1 @@
+(init (literal (string_literal "abc")))

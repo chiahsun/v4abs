@@ -1,0 +1,52 @@
+
+.PHONY: all compile compile-g4 compile-java clean check check_and_compile
+
+GRAMMAR_NAME = $(shell basename $(PWD))
+GRAMMAR_ENTRY = init
+
+SOURCE_COMMON_LEXER_RULE = CommonLexerRules.g4
+
+SOURCE_G4 = $(wildcard *.g4)
+SOURCE_RTL = $(wildcard *.v)
+
+TARGET_LOG = $(addsuffix .run.log, $(SOURCE_RTL))
+
+CMD_RUN = java org.antlr.v4.runtime.misc.TestRig $(GRAMMAR_NAME) $(GRAMMAR_ENTRY) -tree
+
+CHECK_SCRIPT = run_check.py
+
+all : check_and_compile
+
+compile : compile-java
+
+compile-g4 : $(SOURCE_COMMON_LEXER_RULE) 
+	java -jar /home/chiahsun/antlr/antlr-4.0-complete.jar -no-listener -visitor $(GRAMMAR_NAME).g4
+
+compile-java : compile-g4
+	javac *.java
+
+run : run-output-log
+	
+%.v.run.log : %.v
+	$(CMD_RUN) < $< &> $@
+
+
+run-output-log : $(TARGET_LOG) 
+	
+$(TARGET_LOG): compile
+
+$(CHECK_SCRIPT) : ../$(CHECK_SCRIPT)
+	cp $< .
+
+check : $(CHECK_SCRIPT)
+	./$(CHECK_SCRIPT)
+
+
+check_and_compile : run $(CHECK_SCRIPT)
+	./$(CHECK_SCRIPT)
+
+clean :
+	rm -f *.java *.class *.tokens *.log $(SOURCE_COMMON_LEXER_RULE)
+
+$(SOURCE_COMMON_LEXER_RULE) : ../$(SOURCE_COMMON_LEXER_RULE)
+	cp $< .

@@ -1,0 +1,1 @@
+(expression (binary_expression (binary_expression_multiply (expression (primary (number (unsigned_number 3)))) (expression (primary (identifier (single_identifier (simple_identifier reg_A))))))))

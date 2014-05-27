@@ -1,0 +1,1 @@
+(init (expression (primary (identifier (single_identifier (simple_identifier A))) [ (expression (primary (identifier (single_identifier (simple_identifier k))))) ] [ (expression (primary (identifier (single_identifier (simple_identifier i))))) ])) ;)

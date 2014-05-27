@@ -1,0 +1,1 @@
+(init (module_item_declaration (output_declaration (keyword_output output ) (list_of_port_identifiers (identifier (single_identifier (simple_identifier valid)))) ;)))

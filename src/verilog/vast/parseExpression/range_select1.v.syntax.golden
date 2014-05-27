@@ -1,0 +1,1 @@
+(expression (primary (select_identifier (identifier (single_identifier (simple_identifier A))) (one_or_more_select (select (range_select (expression (primary (number (unsigned_number 2)))) (expression (primary (number (unsigned_number 0))))))))))

@@ -1,0 +1,5 @@
+generate_star_without_name.py
+zero_or_more_comma_output_terminal
+pZeroOrMoreCommaOutputTerminal
+AstZeroOrMoreCommaOutputTerminal
+, output_terminal

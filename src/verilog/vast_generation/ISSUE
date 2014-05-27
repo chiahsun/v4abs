@@ -1,0 +1,11 @@
+1. is_punc_rule
+   - add > <
+
+2. Ast/AST name
+   should be interchangeable for all files
+
+3. avoid using  
+   str = ''
+   str += ...
+
+   using ''.join(str)

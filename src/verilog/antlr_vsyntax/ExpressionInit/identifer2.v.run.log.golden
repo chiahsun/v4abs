@@ -1,0 +1,1 @@
+(init (expression (primary (identifier (single_identifier (simple_identifier moda)) . (single_identifier (simple_identifier modb)) . (single_identifier (simple_identifier reg_B))))) ;)

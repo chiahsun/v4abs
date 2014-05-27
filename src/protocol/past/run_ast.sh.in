@@ -1,0 +1,52 @@
+#!/bin/bash
+workDir="."
+verbose=1
+
+
+#if [[ ! -z "$JAVA_PARSE_RULE" ]]; then
+#    echo "JAVA_PARSE_RULE not defined"
+#    exit 1
+#fi
+
+#if [[ ! -z "$CPP_PARSE_EXE" ]]; then
+#    echo "CPP_PARSE_EXE not defined"
+#    exit 1
+#fi
+
+if [[ $# < 1 ]]; then
+    echo "Usage: exe <verilog_file_name> [work_dir_prefix]"
+    echo print "       work_dir_prefix [default : $workDir]"
+    exit 1
+fi  
+if [[ $# -eq 2 ]]; then
+    workDir=$2
+fi
+
+if [ ! -d "$workDir" ]; then
+    echo "Error: working directory not exists!($workDir)";
+    exit 1
+fi
+
+cmd1="./$JAVA_PARSE_RULE $1 &> $workDir/$1.ast"
+cmd2="./$CPP_PARSE_EXE $1.ast &> $workDir/$1.syntax"
+
+# cmd="./$JAVA_PARSE_RULE $1 > ./$CPP_PARSE_EXE"
+
+# if [[ verbose ]]; then
+#     echo "$cmd"
+# fi
+# eval $cmd
+
+if [[ verbose ]]; then
+    echo "$cmd1"
+fi
+eval $cmd1
+if [[ verbose ]]; then
+    echo "$cmd2"
+fi
+eval $cmd2
+
+
+#rmm tmp.ast
+#./run_ast_expression.sh $1 | ./mainString2Ast.out
+#./run_ast_expression.sh $1 | gdb ./mainString2Ast.out

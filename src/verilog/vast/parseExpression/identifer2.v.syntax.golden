@@ -1,0 +1,1 @@
+(expression (primary (identifier (multi_identifier (single_identifier (simple_identifier moda)) (zero_or_more_dot_single_identifier (single_identifier (simple_identifier modb)) (single_identifier (simple_identifier reg_B)))))))

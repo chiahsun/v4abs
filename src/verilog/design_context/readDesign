@@ -1,0 +1,36 @@
+#!/bin/bash
+
+TOP=../../..
+
+ANTLR_JAR_PATH=$TOP/ext_libs
+ANTLR_JAR_FLAGS=$ANTLR_JAR_PATH/antlr-4.0-complete.jar
+
+CLASSPATH=.:$TOP/src/verilog/antlr_vsyntax/SourceTextInit:$ANTLR_JAR_FLAGS:$CLASSPATH
+
+export CLASSPATH
+
+
+JAVA_PARSE_RULE_HOME=$TOP/src/verilog/vast/parseSourceText
+JAVA_PARSE_RULE=javaParseSourceText.sh
+JAVA_EXE=$JAVA_PARSE_RULE_HOME/$JAVA_PARSE_RULE
+
+DESIGN_NAME=$1
+#CPP_EXE=$2
+CPP_EXE=./readDesign2VExpr.out
+#CPP_EXE=./readDesign.out
+
+if [ "$2" = "-v" ];
+then
+    echo "Read design $DESIGN_NAME..."
+fi
+
+cmd1="$JAVA_EXE $DESIGN_NAME &> $DESIGN_NAME.ast"
+eval $cmd1
+
+if [ "$2" = "-v" ];
+then
+    echo "Run exe $CPP_EXE..."
+fi
+cmd2="$CPP_EXE $DESIGN_NAME.ast"
+eval $cmd2
+

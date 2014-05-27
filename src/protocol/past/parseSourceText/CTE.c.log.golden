@@ -1,0 +1,2 @@
+./javaParseSourceText.sh CTE.c &> ./CTE.c.ast
+./mainParseSourceText.out CTE.c.ast &> ./CTE.c.syntax

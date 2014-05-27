@@ -1,0 +1,1 @@
+(init (expression (primary (number (unsigned_number 0)))) ; (expression (primary (number (unsigned_number 100)))) ; (expression (primary (number (unsigned_number 17)))) ; (expression (primary (number (unsigned_number 999)))) ; (expression (primary (number (unsigned_number 101011235912)))) ;)

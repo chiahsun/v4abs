@@ -1,0 +1,1 @@
+(init (expression (primary (identifier (single_identifier (simple_identifier A))) [ (expression (primary (number (unsigned_number 0)))) ])) ; (expression (primary (identifier (single_identifier (simple_identifier B))) [ (expression (primary (number (unsigned_number 10)))) ])) ;)

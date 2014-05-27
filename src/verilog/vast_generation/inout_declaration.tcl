@@ -1,0 +1,5 @@
+generate_sequence_with_name.py
+inout_declaration
+pInoutDeclaration
+AstInoutDeclaration
+keyword_inout zero_or_one_range list_of_port_identifiers ;

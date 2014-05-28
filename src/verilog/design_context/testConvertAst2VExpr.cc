@@ -1,5 +1,5 @@
-#include "UnitTest.h" 
-#include "AstParser.h"
+#include "test/UnitTest.h" 
+#include "verilog/vast/AstParser.h"
 #include "ConvertAst2VExpr.h"
 
 
@@ -120,7 +120,7 @@ void test_convert_expression_unary() {
 
 void test_convert_binary_expression() {
     AstBinaryExpressionParser parser;
-    AstBinaryExpressionHandle pAstBinaryExpression = parser.parseString("(expression (expression (primary (identifier (single_identifier (simple_identifier wire_a))))) (binary_operator +) (expression (primary (number (binary_number 2'b11)))))");
+    AstBinaryExpressionHandle pAstBinaryExpression = parser.parseString("(expression (expression (primary (identifier (single_identifier (simple_identifier wire_a))))) + (expression (primary (number (binary_number 2'b11)))))");
 
     VExprBinaryHandle pBinary = ConvertAst2VExpr::convert(pAstBinaryExpression);
 
@@ -272,6 +272,14 @@ void test_convert_continuous_assignment() {
     UNIT_TEST_FUNCTION_END_FUNCTION_TEST();
 }
 
+void test_convert_register_name() {
+    AstRegisterNameParser parser;
+    AstRegisterNameHandle pAstRegisterName = parser.parseString("(register_name (identifier (single_identifier (simple_identifier mem_array))) [ (constant_expression (constant_primary (number (unsigned_number 2)))) : (constant_expression (constant_primary (number (unsigned_number 0)))) ])");
+    assertEqual("", pAstRegisterName->toString(), "Test ast register name to string");
+
+    UNIT_TEST_FUNCTION_END_FUNCTION_TEST();
+}
+
 void test_convert_reg_lvalue() {
     AstRegLvalueParser parser;
     AstRegLvalueHandle pAstRegLvalue = parser.parseString("(reg_lvalue (identifier (single_identifier (simple_identifier reg_a))))");
@@ -321,7 +329,7 @@ void test_convert_statement_blocking_assignment() {
     
 void test_convert_statement_procedural_continuous_assignment() {
     AstStatementParser parser;
-    AstStatementHandle pAstStatement = parser.parseString("(statement (procedural_continuous_assignment (keyword_assign assign ) (reg_assignment (reg_lvalue (identifier (single_identifier (simple_identifier reg_A)))) = (expression (expression (primary (number (binary_number 8'b1001_1101)))) (binary_operator &) (expression (primary (identifier (single_identifier (simple_identifier A))) [ (expression (expression (primary (number (unsigned_number 5)))) (binary_operator +) (expression (primary (number (unsigned_number 3))))) : (expression (primary (number (unsigned_number 1)))) ])))) ;) ;)");
+    AstStatementHandle pAstStatement = parser.parseString("(statement (procedural_continuous_assignment (keyword_assign assign ) (reg_assignment (reg_lvalue (identifier (single_identifier (simple_identifier reg_A)))) = (expression (expression (primary (number (binary_number 8'b1001_1101)))) & (expression (primary (identifier (single_identifier (simple_identifier A))) [ (expression (expression (primary (number (unsigned_number 5)))) + (expression (primary (number (unsigned_number 3))))) : (expression (primary (number (unsigned_number 1)))) ])))) ;) ;)");
 
     VExprStatementHandle pStatement =
         ConvertAst2VExpr::convert(pAstStatement);
@@ -381,7 +389,7 @@ void test_convert_case_statement() {
 
 void test_convert_loop_statement() {
     AstLoopStatementParser parser;
-    AstLoopStatementHandle pAstLoopStatement = parser.parseString("(loop_statement (keyword_for for ) ( (reg_assignment (reg_lvalue (identifier (single_identifier (simple_identifier i)))) = (expression (primary (number (unsigned_number 0))))) ; (expression (expression (primary (identifier (single_identifier (simple_identifier i))))) (binary_operator <) (expression (primary (number (unsigned_number 16))))) ; (reg_assignment (reg_lvalue (identifier (single_identifier (simple_identifier i)))) = (expression (expression (primary (identifier (single_identifier (simple_identifier i))))) (binary_operator +) (expression (primary (number (unsigned_number 1)))))) ) (statement (seq_block (keyword_begin  begin\n) (statement (non_blocking_assignment (reg_lvalue (identifier (single_identifier (simple_identifier X))) [ (expression (primary (identifier (single_identifier (simple_identifier i))))) ]) < = (expression (primary (identifier (single_identifier (simple_identifier next_X))) [ (expression (primary (identifier (single_identifier (simple_identifier i))))) ]))) ;) (keyword_end \nend\n))))");
+    AstLoopStatementHandle pAstLoopStatement = parser.parseString("(loop_statement (keyword_for for ) ( (reg_assignment (reg_lvalue (identifier (single_identifier (simple_identifier i)))) = (expression (primary (number (unsigned_number 0))))) ; (expression (expression (primary (identifier (single_identifier (simple_identifier i))))) < (expression (primary (number (unsigned_number 16))))) ; (reg_assignment (reg_lvalue (identifier (single_identifier (simple_identifier i)))) = (expression (expression (primary (identifier (single_identifier (simple_identifier i))))) + (expression (primary (number (unsigned_number 1)))))) ) (statement (seq_block (keyword_begin  begin\n) (statement (non_blocking_assignment (reg_lvalue (identifier (single_identifier (simple_identifier X))) [ (expression (primary (identifier (single_identifier (simple_identifier i))))) ]) < = (expression (primary (identifier (single_identifier (simple_identifier next_X))) [ (expression (primary (identifier (single_identifier (simple_identifier i))))) ]))) ;) (keyword_end \nend\n))))");
 
     VExprLoopStatementHandle pLoopStatement =
         ConvertAst2VExpr::convert(pAstLoopStatement);
@@ -479,6 +487,8 @@ int main() {
     test_convert_net_assignment();
     test_convert_list_of_net_assignment();
     test_convert_continuous_assignment();
+
+    test_convert_register_name();
 
     test_convert_reg_lvalue();
     test_convert_blocking_assignment();

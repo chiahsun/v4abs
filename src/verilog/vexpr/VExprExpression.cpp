@@ -259,8 +259,8 @@ VExprExpressionHandle VExprTernary::getElse() const
 std::string VExprTernary::getString() const {
     std::string s;
     s = "(" + getIf()->getString() 
-            + "?" + getThen()->getString() 
-            + ":" + getElse()->getString()
+            + " ? " + getThen()->getString() 
+            + " : " + getElse()->getString()
             + ")";
     return s;
 }

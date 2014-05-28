@@ -908,7 +908,6 @@ VExprRegisterNameHandle ConvertAst2VExpr::convert(const AstRegisterNameHandle & 
         ConvertAst2VExpr::convert(pAstRegisterName->element(0)._pIdentifier0);
 
     AstZeroOrMoreRegisterNameRangeHandle pZeroOrMoreRegisterNameRange = pAstRegisterName->element(0)._pZeroOrMoreRegisterNameRange1;
-
     std::vector<VExprRangeHandle> vecRange;
 
     CONST_FOR_EACH(elem, pZeroOrMoreRegisterNameRange->container()) {

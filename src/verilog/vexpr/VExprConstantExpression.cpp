@@ -190,7 +190,7 @@ VExprConstantExpressionHandle VExprConstantTernary::getElse() const
 
 std::string VExprConstantTernary::getString() const {
     return "(" + getIf()->getString()
-         + "?" + getThen()->getString()
-         + ":" + getElse()->getString()
+         + " ? " + getThen()->getString()
+         + " : " + getElse()->getString()
          + ")";
 }

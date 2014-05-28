@@ -71,7 +71,7 @@ list_of_register_identifiers :
     register_name (PUNC_COMMA register_name)* ;
 
 register_name :
-    identifier (PUNC_BRACKET_LEFT constant_expression PUNC_COLON constant_expression PUNC_BRACKET_RIGHT)* ;
+    identifier range* ;
 
 integer_declaration :
     keyword_integer list_of_register_identifiers PUNC_SEMICOLON ;

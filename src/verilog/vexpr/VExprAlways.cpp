@@ -12,6 +12,6 @@ std::string VExprAlways::getString() const
   { return getString(0); }
     
 std::string VExprAlways::getString(unsigned int indentLevel) const {
-    return indent(indentLevel) + "always " + getStatementHandle()->getString(indentLevel);
+    return indent(indentLevel) + getStatementHandle()->getString(indentLevel);
 }
 

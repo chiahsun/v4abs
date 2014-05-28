@@ -1,5 +1,6 @@
 #include "VExprLoopStatement.h"
 #include "VExprStatement.h"
+#include "Indent.h"
 
 VExprLoopStatement::VExprLoopStatement
   ( VExprRegAssignmentHandle pForInit
@@ -41,7 +42,7 @@ std::string VExprLoopStatement::getString() const
   { return getString(0); }
 
 std::string VExprLoopStatement::getString(unsigned int indentLevel) const {
-    std::string s = "for (";
+    std::string s = indent(indentLevel) + "for (";
     s += getForInitHandle()->getString();
     s = s + "; " + getForCondHandle()->getString();
     s = s + "; " + getForAssignHandle()->getString() + ")\n";

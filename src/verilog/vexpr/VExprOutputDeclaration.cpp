@@ -35,5 +35,5 @@ const VExprPortDeclarationHandle& VExprOutputDecl::getPortDeclarationHandle() co
   { return _pPortDeclaration; }
 
 std::string VExprOutputDecl::getString() const {
-    return "input " + getPortDeclarationHandle()->getString();
+    return "output " + getPortDeclarationHandle()->getString();
 }

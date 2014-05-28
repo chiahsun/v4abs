@@ -45,5 +45,5 @@ const VExprIdentifierHandle& VExprNetDecl::getIdentifierHandle() const
   { return _pIdentifier; }
 
 std::string VExprNetDecl::getString() const {
-    return "wire " + (getRangeHandle().valid() ? getRangeHandle()->getString() : "") + getIdentifierHandle()->getString();
+    return "wire " + (getRangeHandle().valid() ? getRangeHandle()->getString() : "") + " "+ getIdentifierHandle()->getString();
 }

@@ -212,18 +212,24 @@ std::string VExprModule::getString() const {
     if (getContinuousAssignmentContainer().size() != 0)
         s += "\n";
 
-    CONST_FOR_EACH(x, getInitialContainer())
+    CONST_FOR_EACH(x, getInitialContainer()) {
         s += x->getString();
+        s += "\n";
+    }
     if (getInitialContainer().size() != 0)
         s += "\n";
 
-    CONST_FOR_EACH(x, getAlwaysContainer())
+    CONST_FOR_EACH(x, getAlwaysContainer()) {
         s += x->getString();
+        s += "\n";
+    }
     if (getAlwaysContainer().size() != 0)
         s += "\n";
 
-    CONST_FOR_EACH(x, getModuleInstantiationContainer())
+    CONST_FOR_EACH(x, getModuleInstantiationContainer()) {
         s += x->getString();
+        s += "\n";
+    }
     if (getModuleInstantiationContainer().size() != 0)
         s += "\n";
 

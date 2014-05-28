@@ -1,0 +1,3 @@
+LOG(INFO) : sdad10asda)
+      (testLogAbortInfo.cc : 6)
+testLogAbortInfo.out: Log.h:41: void log_msg_t::try_abort(): Assertion `0' failed.

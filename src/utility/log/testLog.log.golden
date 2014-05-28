@@ -1,0 +1,7 @@
+LOG(ERROR) : Hello 5      (testLog.cc : 8)
+LOG(FATAL) : sdad10asda)
+      (testLog.cc : 10)
+      LOG(ERROR) : Hello 5      (testLog.cc : 11)
+      LOG(WARNING) : OOASkdpadk       (testLog.cc : 12)
+      LOG(FATAL) : Go home
+            (testLog.cc : 13)

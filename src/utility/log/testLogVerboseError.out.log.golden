@@ -1,0 +1,4 @@
+LOG(ERROR) : Hello 5      (testLogVerboseError.cc : 9)
+LOG(FATAL) : Go home
+      (testLogVerboseError.cc : 10)
+testLogVerboseError.out: Log.h:41: void log_msg_t::try_abort(): Assertion `0' failed.

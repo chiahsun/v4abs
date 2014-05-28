@@ -1,0 +1,17 @@
+LOG(ERROR) : Hello 5      (testLog.cc : 8)
+LOG(FATAL) : sdad10asda)
+      (testLog.cc : 10)
+LOG(ERROR) : Hello 5      (testLog.cc : 11)
+LOG(WARNING) : OOASkdpadk       (testLog.cc : 12)
+LOG(FATAL) : Go home
+      (testLog.cc : 13)
+LOG(INFO) : This is info test      (testLog.cc : 22)
+LOG(WARNING) : This is warning test      (testLog.cc : 23)
+LOG(ERROR) : This is error test      (testLog.cc : 24)
+LOG(FATAL) : This is fatal test      (testLog.cc : 25)
+LOG(INFO) : This is info test      (testLog.cc : 27)
+LOG(WARNING) : This is warning test      (testLog.cc : 28)
+LOG(ERROR) : This is error test      (testLog.cc : 29)
+LOG(FATAL) : This is fatal test      (testLog.cc : 30)
+LOG(INFO) : Hello
+      (testLog.cc : 68)

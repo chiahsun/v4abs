@@ -1,0 +1,5 @@
+LOG(WARNING) : OOASkdpadk       (testLogVerboseWarning.cc : 8)
+LOG(ERROR) : Hello 5      (testLogVerboseWarning.cc : 9)
+LOG(FATAL) : Go home
+      (testLogVerboseWarning.cc : 10)
+testLogVerboseWarning.out: Log.h:41: void log_msg_t::try_abort(): Assertion `0' failed.

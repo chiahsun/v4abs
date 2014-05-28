@@ -1,0 +1,4 @@
+LOG(INFO) : sdad10asda)
+      (testLogAbortWarning.cc : 6)
+LOG(WARNING) : OOASkdpadk       (testLogAbortWarning.cc : 7)
+testLogAbortWarning.out: Log.h:41: void log_msg_t::try_abort(): Assertion `0' failed.

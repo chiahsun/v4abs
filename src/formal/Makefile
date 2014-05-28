@@ -1,4 +1,4 @@
-CODE_DIRS = nstl test utility exception formal protocol verilog 
+CODE_DIRS = bdd wdd 
 
 all:
 	@for DIR in $(CODE_DIRS); \

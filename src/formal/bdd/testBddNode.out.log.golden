@@ -1,0 +1,4 @@
+End of test : test_bdd_true_false
+End of test : test_bdd_add
+End of test : test_bdd_equal
+End of test : test_bdd_disjunct

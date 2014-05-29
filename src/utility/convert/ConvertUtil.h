@@ -1,7 +1,10 @@
 #ifndef CONVERT_UTIL_H 
 #define CONVERT_UTIL_H 
 
+#include <string>
 #include <sstream>
+
+#include "utility/log/Log.h"
 
 class  ConvertUtil {
 public:
@@ -12,14 +15,14 @@ public:
 
 
 template <>
-std::string ConvertUtil::convert<bool, std::string>(const bool & x)
-  { return (x ? "true" : false); }
+std::string ConvertUtil::convert<bool, std::string>(const bool & x);
 
 template <>
-std::string ConvertUtil::convert<int, std::string>(const int & x) {
-    std::stringstream ss;
-    ss << x;
-    return ss.str();
-}
+std::string ConvertUtil::convert<int, std::string>(const int & x);
 
-#endif // UTIL_CONVERT_H
+template <>
+unsigned int ConvertUtil::convert<std::string, unsigned int>(const std::string & x);
+
+template <>
+unsigned int ConvertUtil::convert<char, unsigned int>(const char & x);
+#endif // CONVERT_UTIL_H 

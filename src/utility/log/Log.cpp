@@ -9,7 +9,7 @@ log_msg_t LOG_FATAL(std::cout, "LOG(FATAL)", true);
 
 log_msg_t LOG_INFO_STREAM(std::cerr, "LOG(INFO)", false);
 log_msg_t LOG_WARNING_STREAM(std::cerr, "LOG(WARNING)", false);
-log_msg_t LOG_ERROR_STREAM(std::cerr, "LOG(ERROR)", false);
+log_msg_t LOG_ERROR_STREAM(std::cerr, "LOG(ERROR)", true);
 log_msg_t LOG_FATAL_STREAM(std::cerr, "LOG(FATAL)", true);
 
 #if 0

@@ -6,7 +6,7 @@
 #include <cassert>
 #include <cstdlib>
 
-#define DEBUG_EXPR(expr) do { std::cerr << "*Debug: " << #expr << " : " << (expr) << std::endl; } while (0)
+#define DEBUG_EXPR(expr) do { std::cerr << "*Debug: " << #expr << " : " << (expr) << "          @ ( " << __FILE__ << ":" << __LINE__ << " )" << std::endl; } while (0)
 
 #define LOG_STREAM_INSTANCE(log_level) LOG_##log_level##_STREAM
 // This preprocessing has __LINE__ and __FILE__ into number and literals

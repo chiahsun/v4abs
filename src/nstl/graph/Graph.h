@@ -124,6 +124,13 @@ public:
 
     state_container_type& getStateContainer() { return _containerState; }
     edge_container_type& getEdgeContainer() { return _containerEdge; }
+    std::map<state_id_type, edge_id_type>& getConnectionMap(state_id_type FromId) {
+        if(_mapConnect.find(FromId) != _mapConnect.end())
+            return _mapConnect[FromId];
+        else
+            std::cerr << "*Warning: " << "no such connection in this graph." << std::endl;
+    }
+    
     
     const state_container_type& getStateContainer() const { return _containerState; }
     const edge_container_type& getEdgeContainer() const { return _containerEdge; }

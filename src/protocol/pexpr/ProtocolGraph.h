@@ -24,6 +24,9 @@ private:
 public:
     ProtocolGraph() { }
 
+    graph_type::state_container_type& getStateContainer();
+    graph_type::edge_container_type& getEdgeContainer();
+    std::map<graph_type::state_id_type, graph_type::edge_id_type>& getConnectionMap(graph_type::state_id_type FromId);
     state_type addState(state_value_type stateValue);
     edge_type addEdge(state_type stateFrom, state_type stateTo, edge_value_type edgeValue);
     

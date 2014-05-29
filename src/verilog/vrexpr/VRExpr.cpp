@@ -11,7 +11,7 @@ unsigned int literals2UnsignedNumber(std::string s, unsigned int base) {
     for (size_t i = 0; i < s.size(); ++i) {
         char c = s[i];
         int cur = ConvertUtil::convert<char, unsigned int>(c);
-        if (cur > c)
+        if (cur >= base)
             LOG(ERROR) << "literal larger than base(" << base << ") (" << s << ")";
 
         prev_sum = sum;

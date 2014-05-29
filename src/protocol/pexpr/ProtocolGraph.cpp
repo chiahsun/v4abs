@@ -1,5 +1,17 @@
 #include "ProtocolGraph.h"
 
+ProtocolGraph::graph_type::state_container_type& ProtocolGraph::getStateContainer() {
+    return _graph.getStateContainer();
+}
+
+ProtocolGraph::graph_type::edge_container_type& ProtocolGraph::getEdgeContainer() {
+    return _graph.getEdgeContainer();
+}
+
+std::map<ProtocolGraph::graph_type::state_id_type, ProtocolGraph::graph_type::edge_id_type>& ProtocolGraph::getConnectionMap(ProtocolGraph::graph_type::state_id_type FromId) {
+    return _graph.getConnectionMap(FromId);
+}
+
 ProtocolGraph::state_type ProtocolGraph::addState(state_value_type stateValue) {
     return _graph.addState(stateValue);
 }

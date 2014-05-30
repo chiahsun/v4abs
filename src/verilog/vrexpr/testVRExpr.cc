@@ -18,8 +18,7 @@ void test_vrexpr_identifier() {
 }
 
 void test_vrexpr_binary_number() {
-//    VRExprBinaryNumber binary1("3'b100");
-    VRExprBinaryNumber binary1("3'b120");
+    VRExprBinaryNumber binary1("3'b100");
     assertEqual(3, binary1.getSize(), "Test get size");
     assertEqual(4, binary1.getUnsignedNumber(), "Test get unsigned number");
 

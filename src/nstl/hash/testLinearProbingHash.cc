@@ -110,7 +110,20 @@ void test_linear_probing_hash_iteration() {
     for (HashTable<int>::iterator it = hash.begin(); it != hash.end(); ++it) {
         ss << *it << ' ';
     }
+    std::stringstream ss2;
+    for (HashTable<int>::const_iterator it = hash.cbegin(); it != hash.cend(); ++it) {
+        ss2 << *it << ' ';
+    }
     assertEqual("0 1 2 3 4 5 6 7 8 9 ", ss.str(), "Test iteration");
+    assertEqual("0 1 2 3 4 5 6 7 8 9 ", ss2.str(), "Test iteration");
+    hash.erase(0);
+    hash.erase(1);
+    hash.erase(2);
+    std::stringstream ss3;
+    for (HashTable<int>::const_iterator it = hash.cbegin(); it != hash.cend(); ++it) {
+        ss3 << *it << ' ';
+    }
+    assertEqual("3 4 5 6 7 8 9 ", ss3.str(), "Test iteration");
     UNIT_TEST_FUNCTION_END_FUNCTION_TEST();
 }
 
@@ -130,6 +143,16 @@ void test_linear_probing_hash_clear() {
     UNIT_TEST_FUNCTION_END_FUNCTION_TEST();
 }
 
+void test_vector_of_hash() {
+    std::vector<HashTable<int> > vecHash;
+    const unsigned int size = 10;
+    for (unsigned int i = 0; i < size; ++i) {
+        vecHash.push_back(HashTable<int>());
+        vecHash[i].insert(i);
+    }
+    UNIT_TEST_FUNCTION_END_FUNCTION_TEST();
+}
+
 int main() {
     test_linear_probing_hash_insert();
     test_linear_probing_hash_resize();
@@ -137,5 +160,6 @@ int main() {
     test_linear_probing_hash_erase2();
     test_linear_probing_hash_iteration();
     test_linear_probing_hash_clear();
+    test_vector_of_hash();
     return 0;
 }

@@ -39,10 +39,10 @@ public:
       { return _hash.cend(); }
 
     const_iterator begin() const
-      { return _hash.begin(); }
+      { return _hash.cbegin(); }
 
     const_iterator end() const
-      { return _hash.end(); }
+      { return _hash.cend(); }
 
     iterator begin() 
       { return _hash.begin(); }

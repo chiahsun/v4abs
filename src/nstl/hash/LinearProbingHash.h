@@ -159,33 +159,40 @@ public:
     typedef ConstIterator const_iterator;
 
     LinearProbingHash() : _pBegin(end()) { init(DEFAULT_CAPCITY); }
+    LinearProbingHash(const LinearProbingHash & rhs) : _pBegin(end()) {
+        init(rhs.capacity());
+        for (const_iterator it = rhs.cbegin(); it != rhs.cend(); ++it)
+            insert(*it);
+    }
     void init(size_t cap) {
         assert(cap > 0);
         _size = 0;
         _vecPointer.clear();
         for (size_t i = 0; i < cap; ++i)
             _vecPointer.push_back(0);
+        _pBegin = end();
     }
     ~LinearProbingHash() {
-        destroy(_vecPointer);
+        destroy();
     }
     void clear() {
-        destroy(_vecPointer);
-        _pBegin = end();
+        destroy();
         init(DEFAULT_CAPCITY);
     }
 
     size_t capacity() const { return _vecPointer.size(); }
 
 
-    static void destroy(std::vector<pointer_type> vec) {
-        for (size_t i = 0; i < vec.size(); ++i) {
-            delete vec[i]; vec[i] = 0;
+    void destroy() {
+        for (size_t i = 0; i < _vecPointer.size(); ++i) {
+            delete _vecPointer[i]; _vecPointer[i] = 0;
         }
+        _vecPointer.clear();
     }
 
     void resize(size_t cap) {
-        assert(cap > capacity());
+#if 1 // not update _pBegin
+        int insertPos = cap;
 
         std::vector<pointer_type> vecNew;
 
@@ -193,14 +200,18 @@ public:
             vecNew.push_back(0);
 
         for (size_t i = 0; i < capacity(); ++i) {
-            if (_vecPointer[i])
-                insert_helper(vecNew, *_vecPointer[i]);
+            if (_vecPointer[i]) {
+                int newInsertPos = insert_helper(vecNew, *_vecPointer[i]);
+                if (newInsertPos < insertPos)
+                    insertPos = newInsertPos;
+            }
         }
 
-        destroy(_vecPointer);
+        destroy();
 
         _vecPointer = vecNew;
-
+        _pBegin = Iterator(&_vecPointer, insertPos);
+#endif 
     }
 
     inline size_t size() const { return _size; }
@@ -243,6 +254,7 @@ public:
         assert(0);
     }
 
+    // TODO: erase update _pBegin issues // not tested
     void erase(const value_type & val) {
         iterator it = find(val);
         if (it == end())
@@ -251,6 +263,16 @@ public:
         unsigned int erase_idx = it._index;
         erase_iterator(it);
         --_size;
+
+        if (_size == 0)
+            _pBegin = end();
+        for (unsigned int i = erase_idx; i < capacity(); ++i)
+            if (_vecPointer[i]) {
+                _pBegin = Iterator(&_vecPointer, i);
+                break;
+            }
+
+
         unsigned begin_index = index_next(erase_idx);
         unsigned end_index = begin_index;
         for (size_t i = begin_index; i != erase_idx; i = index_next(i)) {
@@ -270,6 +292,10 @@ public:
 
     unsigned int index_next(unsigned int i) const {
         return (i == (capacity()-1) ? 0 : i + 1);
+    }
+    
+    unsigned int index_prev(unsigned int i) const {
+        return ((i == 0) ? (capacity() - 1) : (i-1));
     }
 
     const_iterator cfind(const value_type & val) const {

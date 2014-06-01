@@ -4,3 +4,4 @@ End of test : test_linear_probing_hash_erase
 End of test : test_linear_probing_hash_erase2
 End of test : test_linear_probing_hash_iteration
 End of test : test_linear_probing_hash_clear
+End of test : test_vector_of_hash

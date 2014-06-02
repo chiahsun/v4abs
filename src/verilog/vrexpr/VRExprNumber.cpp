@@ -130,7 +130,84 @@ unsigned int VRExprOctalNumber::getSize() const
 
 unsigned int VRExprOctalNumber::getUnsignedNumber() const
   { return _pImpl->getUnsignedNumber(); }
+
+VRExprDecimalNumber::Impl::Impl(std::string numberLiterals) 
+  : _numberLiterals(numberLiterals) 
+{
+    literals2SizeAndNumber(numberLiterals, 10, _size, _unsignedNumber);
+}
+
+VRExprDecimalNumber::VRExprDecimalNumber(std::string numberLiterals) {
+    _pImpl = impl_shared_ptr_type(impl_type(numberLiterals));
+}
+
+VRExprDecimalNumber::VRExprDecimalNumber(const VRExprDecimalNumber& rhs)
+  : VRExprNumberInterface()
+  , _pImpl(rhs._pImpl)
+  { }
+
+std::string VRExprDecimalNumber::toString() const
+  { return _pImpl->toString(); }
+       
+unsigned int VRExprDecimalNumber::getSize() const
+  { return _pImpl->getSize(); }
+
+unsigned int VRExprDecimalNumber::getUnsignedNumber() const
+  { return _pImpl->getUnsignedNumber(); }
+
+VRExprHexNumber::Impl::Impl(std::string numberLiterals) 
+  : _numberLiterals(numberLiterals) 
+{
+    literals2SizeAndNumber(numberLiterals, 16, _size, _unsignedNumber);
+}
+
+VRExprHexNumber::VRExprHexNumber(std::string numberLiterals) {
+    _pImpl = impl_shared_ptr_type(impl_type(numberLiterals));
+}
+
+VRExprHexNumber::VRExprHexNumber(const VRExprHexNumber& rhs)
+  : VRExprNumberInterface()
+  , _pImpl(rhs._pImpl)
+  { }
+
+std::string VRExprHexNumber::toString() const
+  { return _pImpl->toString(); }
+       
+unsigned int VRExprHexNumber::getSize() const
+  { return _pImpl->getSize(); }
+
+unsigned int VRExprHexNumber::getUnsignedNumber() const
+  { return _pImpl->getUnsignedNumber(); }
+  
+VRExprUnsignedNumber::Impl::Impl(unsigned int number)
+  : _size(32)
+  , _unsignedNumber(number)
+  { }
+        
+std::string VRExprUnsignedNumber::Impl::toString() const {
+    std::stringstream ss;
+    ss << _unsignedNumber;
+    return ss.str();
+}
+
+unsigned int VRExprUnsignedNumber::Impl::getSize() const
+  { return _size; }
+
     
+VRExprUnsignedNumber::VRExprUnsignedNumber(unsigned int number)
+  { _pImpl = impl_shared_ptr_type(impl_type(number)); }
+
+std::string VRExprUnsignedNumber::toString() const
+  { return _pImpl->toString(); }
+       
+unsigned int VRExprUnsignedNumber::getSize() const
+  { return _pImpl->getSize(); }
+
+unsigned int VRExprUnsignedNumber::getUnsignedNumber() const
+  { return _pImpl->getUnsignedNumber(); }
+
+
+
 VRExprNumber::VRExprNumber(const VRExprBinaryNumber & x)
   : _variant(x)
   { } 
@@ -138,3 +215,35 @@ VRExprNumber::VRExprNumber(const VRExprBinaryNumber & x)
 VRExprNumber::VRExprNumber(const VRExprOctalNumber & x)
   : _variant(x)
   { }
+
+VRExprNumber::VRExprNumber(const VRExprDecimalNumber & x)
+  : _variant(x)
+  { }
+    
+VRExprNumber::VRExprNumber(const VRExprHexNumber & x)
+  : _variant(x)
+  { }
+    
+VRExprNumber::VRExprNumber(const VRExprUnsignedNumber & x)
+  : _variant(x)
+  { }
+    
+VRExprNumber VRExprNumber::makeBinaryNumber(std::string numberLiterals) {
+    return VRExprNumber(VRExprBinaryNumber(numberLiterals));
+}
+
+VRExprNumber VRExprNumber::makeOctalNumber(std::string numberLiterals) {
+    return VRExprNumber(VRExprOctalNumber(numberLiterals));
+}
+
+VRExprNumber VRExprNumber::makeDecimalNumber(std::string numberLiterals) {
+    return VRExprNumber(VRExprDecimalNumber(numberLiterals));
+}
+
+VRExprNumber VRExprNumber::makeHexNumber(std::string numberLiterals) {
+    return VRExprNumber(VRExprHexNumber(numberLiterals));
+}
+
+VRExprNumber VRExprNumber::makeUnsignedNumber(unsigned int x) {
+    return VRExprNumber(VRExprUnsignedNumber(x));
+}

@@ -14,3 +14,7 @@ std::string VRExprIdentifier::getName() const
 
 std::string VRExprIdentifier::toString() const
   { return _pImpl->toString(); }
+    
+VRExprIdentifier VRExprIdentifier::makeIdentifier(std::string name) {
+    return VRExprIdentifier(name);
+}

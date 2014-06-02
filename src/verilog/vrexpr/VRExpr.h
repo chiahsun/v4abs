@@ -3,6 +3,11 @@
 
 #include <string>
 
+#include "nstl/shared_ptr/SharedPtr.h"
+#include "nstl/variant/Variant.h"
+
+#include "VRExprExpression.h"
+#include "VRExprIte.h"
 
 /**
  * Guideline to used shared_ptr
@@ -10,7 +15,13 @@
  * if you intend to modify some attribute of that value
  */
 
-#include "VRExprIdentifier.h"
-#include "VRExprNumber.h"
+class VRExpr {
+    Variant2<VRExprExpression, VRExprIte, VRExprInterface> _variant; 
+public:
+    VRExpr(VRExprExpression expr);
+    VRExpr(VRExprIte ite);
+    std::string toString() const;
+};
+
 
 #endif 

@@ -22,6 +22,8 @@ public:
     VRExprIdentifier(const VRExprIdentifier & rhs);
     std::string getName() const;
     std::string toString() const;
+
+    static VRExprIdentifier makeIdentifier(std::string name);
 };
 
 

@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 #!/home/chiahsun/tools-common/build/leda/python_versions/path/bin/python
 
 import acceptor_types

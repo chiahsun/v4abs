@@ -1,31 +1,16 @@
-#ifndef VEXPR_MODULE_H
-#define VEXPR_MODULE_H
+#ifndef VEXPR_FLAT_MODULE_H
+#define VEXPR_FLAT_MODULE_H
 
-#include "VExprParameterDeclaration.h"
-#include "VExprInputDeclaration.h"
-#include "VExprOutputDeclaration.h"
-#include "VExprInoutDeclaration.h"
-#include "VExprNetDeclaration.h"
-#include "VExprRegDeclaration.h"
-#include "VExprIntegerDeclaration.h"
+#include "VExprModule.h"
 
-#include <vector>
-
-class VExprModule {
-
+class VExprFlatModule {
     VExprIdentifierHandle _pModuleName;
 
     std::vector<VExprIdentifierHandle> _vecPortIdentifier;
-
     std::vector<VExprAlwaysHandle> _vecAlways;
-
     std::vector<VExprContinuousAssignmentHandle> _vecContinuousAssignment;
-
-    std::vector<VExprModuleInstantiationHandle> _vecModuleInstantiation;
-
     std::vector<VExprInitialHandle> _vecInitial;
-
-
+    
     std::vector<VExprParameterDeclarationHandle> _vecParameterDeclaration;
     std::vector<VExprInputDeclarationHandle> _vecInputDeclaration;
     std::vector<VExprOutputDeclarationHandle> _vecOutputDeclaration;
@@ -34,14 +19,14 @@ class VExprModule {
     std::vector<VExprRegDeclarationHandle> _vecRegDeclaration;
     std::vector<VExprIntegerDeclarationHandle> _vecIntegerDeclaration;
 public:
+    VExprFlatModule(VExprIdentifierHandle pModuleName);
 
-    VExprModule(VExprIdentifierHandle pModuleName);
-    VExprModule( VExprIdentifierHandle pModuleIdentifier
-               , const std::vector<VExprIdentifierHandle> & vecPortIdentifier
-               , const std::vector<VExprModuleItemHandle> & vecModuleItem);
-
-    void addModuleItemDeclaration(VExprModuleItemDeclarationHandle pModuleItemDeclaration);
-    void addParameterDeclaration(VExprParameterDeclarationHandle pParameterDeclaration);
+    VExprIdentifierHandle getModuleName() const;
+    void addPortIdentifier(VExprIdentifierHandle pIdentifier);
+    void addAlways(VExprAlwaysHandle pAlways);
+    void addContinuousAssignment(VExprContinuousAssignmentHandle pContinuousAssign);
+    void addInitial(VExprInitialHandle pInitial);
+    void addParameterDeclaration(VExprParameterDeclarationHandle pParameter);
     void addInputDeclaration(VExprInputDeclarationHandle pInputDeclaration);
     void addOutputDeclaration(VExprOutputDeclarationHandle pOutputDeclaration);
     void addInoutDeclaration(VExprInoutDeclarationHandle pInoutDeclaration);
@@ -49,8 +34,8 @@ public:
     void addRegDeclaration(VExprRegDeclarationHandle pRegDeclaration);
     void addIntegerDeclaration(VExprIntegerDeclarationHandle pIntegerDeclaration);
 
-    VExprIdentifierHandle getModuleName();
-
+    std::string getString() const;
+   
     std::vector<VExprIdentifierHandle>& getPortIdentifierContainer();
     std::vector<VExprParameterDeclarationHandle>& getParameterDeclarationContainer();
     std::vector<VExprInputDeclarationHandle>& getInputDeclarationContainer();
@@ -61,12 +46,7 @@ public:
     std::vector<VExprIntegerDeclarationHandle>& getIntegerDeclarationContainer();
     std::vector<VExprAlwaysHandle>& getAlwaysContainer(); 
     std::vector<VExprContinuousAssignmentHandle>& getContinuousAssignmentContainer();
-    std::vector<VExprModuleInstantiationHandle>& getModuleInstantiationContainer();
     std::vector<VExprInitialHandle>& getInitialContainer();
-
-
-
-    const VExprIdentifierHandle& getModuleName() const;
 
     const std::vector<VExprIdentifierHandle>& getPortIdentifierContainer() const;
     const std::vector<VExprParameterDeclarationHandle>& getParameterDeclarationContainer() const;
@@ -78,11 +58,9 @@ public:
     const std::vector<VExprIntegerDeclarationHandle>& getIntegerDeclarationContainer() const;
     const std::vector<VExprAlwaysHandle>& getAlwaysContainer() const; 
     const std::vector<VExprContinuousAssignmentHandle>& getContinuousAssignmentContainer() const;
-    const std::vector<VExprModuleInstantiationHandle>& getModuleInstantiationContainer() const;
     const std::vector<VExprInitialHandle>& getInitialContainer() const;
-
-    std::string getString() const;
 
 };
 
-#endif // VEXPR_MODULE_H
+
+#endif // VEXPR_FLAT_MODULE_H

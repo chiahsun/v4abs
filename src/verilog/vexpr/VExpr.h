@@ -47,5 +47,6 @@
 #include "VExprAlways.h"
 #include "VExprInitial.h"
 #include "VExprModuleItem.h"
+#include "VExprFlatModule.h"
 
 #endif // PEXPR_H

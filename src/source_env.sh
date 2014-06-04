@@ -1,6 +1,7 @@
 TOP=$PWD/..
 
 PYTHONPATH=/home/chiahsun/py-env2
+export PYTHONPATH
 PATH=$PYTHONPATH/bin:$PYTHONPATH/lib:$PYTHONPATH/lib64:$PATH
 LD_LIBRARY_PATH=/home/chiahsun/py-env1/python-2.7.6_odin_build/lib/:$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH

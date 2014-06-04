@@ -48,7 +48,10 @@ const VExprRegisterNameHandle& VExprRegDecl::getRegisterNameHandle() const
   { return _pRegisterName; }
 
 std::string VExprRegDecl::getString() const {
-    return "reg " + getRangeHandle()->getString() + " "
-        + getRegisterNameHandle()->getString();
+    std::string s = "reg ";
+    if (getRangeHandle().valid())
+        s = s + getRangeHandle()->getString() + " ";
+    s += getRegisterNameHandle()->getString();
+    return s;
 }
 

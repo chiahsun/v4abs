@@ -34,17 +34,18 @@ std::string VExprConditionalStatement::getString() const {
 }
 
 std::string VExprConditionalStatement::getString(unsigned int indentLevel) const {
-    std::string s = indent(indentLevel) + "if (" + getIf()->getString() + ") {\n"
+    std::string s = indent(indentLevel) + "if (" + getIf()->getString() + ") begin\n"
                  + getThen()->getString(indentLevel+1);
     if (getElse().valid() && getElse()->getStatementHandle().valid()) {
-        s = s + indent(indentLevel) + "} else {\n"
+        s = s + indent(indentLevel) + "end\n"
+              + indent(indentLevel) + "else begin\n"
           + getElse()->getString(indentLevel+1);
     } 
 //    if (indentLevel != 0)
 //        s += indent(1);
 //    s += "}\n";
     
-    s = s + indent(indentLevel) + "}\n";
+    s = s + indent(indentLevel) + "end\n";
          
     return s;
 }

@@ -1,8 +1,10 @@
 #include "VExprIdentifier.h"
+
 #include "exception/Exception.h" 
 #include "VExprExpression.h"
 #include "VExprRegLvalue.h"
 #include "VExprNetLvalue.h"
+#include "utility/log/Log.h"
 
 VExprIdentifierHandle vexpr_identifier_mk_single_identifier(std::string identifier, size_t size) {
     return VExprIdentifierHandle(VExprIdentifier(VExprSingleIdentifierHandle(VExprSingleIdentifier(identifier, size))));
@@ -27,6 +29,9 @@ size_t VExprIdentifierInterface::getSize() const
   { throw NotImplementedException(); }
 
 std::string VExprIdentifierInterface::getString() const
+  { throw NotImplementedException(); }
+    
+std::vector<std::string> VExprIdentifierInterface::getStringContainer() const
   { throw NotImplementedException(); }
 
 VExprIdentifier::VExprIdentifier(VExprSingleIdentifierHandle pSingleIdentifier)
@@ -53,6 +58,9 @@ size_t VExprIdentifier::getSize() const {
 std::string VExprIdentifier::getString() const
   { return _pInterface->getString(); }
     
+std::vector<std::string> VExprIdentifier::getStringContainer() const 
+  { return _pInterface->getStringContainer(); }
+    
 VExprExpressionHandle VExprIdentifier::toExpressionHandle() const {
     return VExprExpressionHandle(VExprExpression(VExprPrimaryHandle(VExprPrimary(VExprIdentifierHandle(*this)))));
 }
@@ -65,6 +73,19 @@ VExprNetLvalueHandle VExprIdentifier::toNetLvalueHandle() const {
     return VExprNetLvalueHandle(VExprNetLvalue(VExprIdentifierHandle(*this)));
 }
 
+VExprIdentifierHandle makeHierIdentifier(VExprIdentifierHandle pPrefixIdentifier, VExprIdentifierHandle pIdentifier) {
+    std::vector<std::string> vecString;
+
+    std::vector<std::string> vecStringIdentifier = pIdentifier->getStringContainer();
+    assert(vecStringIdentifier.size() > 0);
+    for (unsigned int i = 1; i < vecStringIdentifier.size(); ++i)
+        vecString.push_back(vecStringIdentifier[i]);
+    std::vector<std::string> vecStringPrefixIdentifier = pPrefixIdentifier->getStringContainer();
+    vecString.insert(vecString.end(), vecStringPrefixIdentifier.begin(), vecStringPrefixIdentifier.end());
+    return VExprIdentifierHandle(VExprIdentifier(VExprHierIdentifierHandle(VExprHierIdentifier(vecString, vecStringIdentifier[0]))));
+}
+
+
 VExprSingleIdentifier::VExprSingleIdentifier(std::string identifier, size_t size)
   : _identifier(identifier)
   , _size(size)
@@ -76,6 +97,12 @@ size_t VExprSingleIdentifier::getSize() const
   { return _size; }
 std::string VExprSingleIdentifier::getString() const
   { return getName(); }
+
+std::vector<std::string> VExprSingleIdentifier::getStringContainer() const {
+    std::vector<std::string> vecString;
+    vecString.push_back(_identifier);
+    return vecString;
+}
 
 VExprHierIdentifier::VExprHierIdentifier(std::string prefix, std::string identifier, size_t size) {
     _vecPrefix.push_back(prefix);
@@ -116,3 +143,9 @@ std::string VExprHierIdentifier::getString() const {
     return getName();
 }
 
+std::vector<std::string> VExprHierIdentifier::getStringContainer() const {
+    std::vector<std::string> vecString;
+    vecString.push_back(_identifier);
+    vecString.insert(vecString.end(), _vecPrefix.begin(), _vecPrefix.end());
+    return vecString;
+}

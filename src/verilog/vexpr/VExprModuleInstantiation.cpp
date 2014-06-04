@@ -7,7 +7,7 @@ VExprModuleInstantiation::VExprModuleInstantiation(VExprIdentifierHandle pIdenti
   , _vecModuleInstance(vecModuleInstance)
   { }
 
-VExprIdentifierHandle VExprModuleInstantiation::getIdentifierHandle() const
+VExprIdentifierHandle VExprModuleInstantiation::getModuleName() const
   { return _pIdentifier; }
 
 const std::vector<VExprModuleInstanceHandle>& VExprModuleInstantiation::getModuleInstanceContainer() const
@@ -21,7 +21,7 @@ std::string VExprModuleInstantiation::getString() const
     
 std::string VExprModuleInstantiation::getString(unsigned int indentLevel) const {
     std::string s;
-    s = indent(indentLevel) + getIdentifierHandle()->getString() + " ";
+    s = indent(indentLevel) + getModuleName()->getString() + " ";
 
     int pos = 0;
     CONST_FOR_EACH(x, getModuleInstanceContainer()) {

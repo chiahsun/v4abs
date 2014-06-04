@@ -1,0 +1,17 @@
+1. Bug
+   right-recursive are parse as left recursive
+
+   Example
+
+   [Source]
+    assign a = reg_b ? 2'b00
+             : reg_c ? 2'b01
+             : reg_d ? 2'b10
+             : 2'b11;
+
+   [Result]
+   assign a=(((reg_b ? 2'b00 : reg_c) ? 2'b01 : reg_d) ? 2'b10 : 2'b11);
+
+   [Should be]
+   assign a= (reg_b ? 2'b00 : (reg_c ? 2'b01 : (reg_d ? 2'b10 : 2'b11)));
+

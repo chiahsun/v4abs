@@ -267,4 +267,7 @@ typedef SharedPtr<VExprModuleItem> VExprModuleItemHandle;
 class VExprModuleItemList;
 typedef SharedPtr<VExprModuleItemList> VExprModuleItemListHandle;
 
+class VExprFlatModule;
+typedef SharedPtr<VExprFlatModule> VExprFlatModuleHandle;
+
 #endif 

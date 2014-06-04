@@ -879,7 +879,7 @@ VExprNetDeclarationHandle ConvertAst2VExpr::convert(const AstNetDeclarationHandl
 
     CONST_FOR_EACH(elem, pAstZeroOreMoreCommaIdentifier->container()) {
         VExprIdentifierHandle pIdentifier =
-            ConvertAst2VExpr::convert(pAstZeroOreMoreCommaIdentifier->element(0)._pIdentifier);
+            ConvertAst2VExpr::convert(elem._pIdentifier);
         vecIdentifier.push_back(pIdentifier);
     }
 
@@ -1086,6 +1086,7 @@ VExprListOfModuleConnectionsHandle ConvertAst2VExpr::convert(const AstListOfModu
         std::vector<VExprNamedPortConnectionHandle> vecNamedPortConnection;
         VExprNamedPortConnectionHandle pNamedPortConnectionFst =
             ConvertAst2VExpr::convert(pAstNamedPortConnectionFst);
+        vecNamedPortConnection.push_back(pNamedPortConnectionFst);
 
         CONST_FOR_EACH(x, pAstZeroOrMoreCommaNamedPortConnection->container()) {
             AstNamedPortConnectionHandle pAstNamedPortConnection = x._pNamedPortConnection;

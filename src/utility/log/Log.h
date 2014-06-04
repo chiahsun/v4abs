@@ -8,7 +8,7 @@
 
 #define DEBUG_EXPR(expr) do { std::cerr << "*Debug: " << #expr << " : " << (expr) << "          @ ( " << __FILE__ << ":" << __LINE__ << " )" << std::endl; } while (0)
 
-#define LOG_STREAM_INSTANCE(log_level) LOG_##log_level##_STREAM
+#define LOG_STREAM_INSTANCE(log_level) log_get_LOG_##log_level##_STREAM()
 // This preprocessing has __LINE__ and __FILE__ into number and literals
 #define FILE_LINE_CONCAT(x, y) FILE_LINE_CONCAT_PRE(x, y)
 // We deal number and literals here
@@ -108,11 +108,17 @@ struct log_msg_set_handler {
 
 log_msg_t& log_call(log_msg_t & os);
 
+
+log_msg_t& log_get_LOG_INFO_STREAM();
+log_msg_t& log_get_LOG_WARNING_STREAM();
+log_msg_t& log_get_LOG_ERROR_STREAM();
+log_msg_t& log_get_LOG_FATAL_STREAM();
+/*
 extern log_msg_t LOG_INFO_STREAM;
 extern log_msg_t LOG_WARNING_STREAM;
 extern log_msg_t LOG_ERROR_STREAM;
 extern log_msg_t LOG_FATAL_STREAM;
-
+*/
 
 
 void log_handler_set_verbose_level_info();

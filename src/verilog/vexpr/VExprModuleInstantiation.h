@@ -13,7 +13,7 @@ class VExprModuleInstantiation {
 public:
     VExprModuleInstantiation(VExprIdentifierHandle pIdentifier, const std::vector<VExprModuleInstanceHandle> & vecModuleInstance);
 
-    VExprIdentifierHandle getIdentifierHandle() const;
+    VExprIdentifierHandle getModuleName() const;
     const std::vector<VExprModuleInstanceHandle>& getModuleInstanceContainer() const;
     std::vector<VExprModuleInstanceHandle>& getModuleInstanceContainer();
 

@@ -17,5 +17,5 @@ VExprExpressionHandle VExprNetAssignment::getExpressionHandle() const
 
 std::string VExprNetAssignment::getString() const {
     return "assign " + getNetLvalueHandle()->getString()
-         + "=" + getExpressionHandle()->getString();
+         + "=" + getExpressionHandle()->getString() + ";\n";
 }

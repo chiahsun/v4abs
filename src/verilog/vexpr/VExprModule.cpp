@@ -5,6 +5,7 @@
 #include "VExprModuleInstantiation.h"
 #include "VExprInitial.h"
 #include "nstl/for_each/ForEach.h"
+#include "utility/log/Log.h"
 #include "Indent.h"
 
 VExprModule::VExprModule(VExprIdentifierHandle pModuleName)
@@ -79,7 +80,7 @@ void VExprModule::addRegDeclaration(VExprRegDeclarationHandle pRegDeclaration)
 void VExprModule::addIntegerDeclaration(VExprIntegerDeclarationHandle pIntegerDeclaration)
   { _vecIntegerDeclaration.push_back(pIntegerDeclaration); }
 
-VExprIdentifierHandle& VExprModule::getModuleName()
+VExprIdentifierHandle VExprModule::getModuleName()
   { return _pModuleName; }
 
 std::vector<VExprIdentifierHandle>& VExprModule::getPortIdentifierContainer()
@@ -197,8 +198,9 @@ std::string VExprModule::getString() const {
     if (getNetDeclarationContainer().size() != 0)
         s += "\n";
 
-    CONST_FOR_EACH(x, getRegDeclarationContainer())
+    CONST_FOR_EACH(x, getRegDeclarationContainer()) {
         s += x->getString();
+    }
     if (getRegDeclarationContainer().size() != 0)
         s += "\n";
 

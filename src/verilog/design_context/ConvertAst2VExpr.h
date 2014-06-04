@@ -135,7 +135,7 @@ SharedPtr<_IODeclaration> convertIOAst2VExpr(const _AstDeclaration & pAstIoDecla
 
     CONST_FOR_EACH(elem, pAstZeroOreMoreCommaIdentifier->container()) {
         VExprIdentifierHandle pIdentifier =
-            ConvertAst2VExpr::convert(pAstZeroOreMoreCommaIdentifier->element(0)._pIdentifier);
+            ConvertAst2VExpr::convert(elem._pIdentifier);
         vecIdentifier.push_back(pIdentifier);
     }
 

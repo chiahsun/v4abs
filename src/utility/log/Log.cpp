@@ -7,11 +7,27 @@ log_msg_t LOG_ERROR(std::cout, "LOG(ERROR)", true);
 log_msg_t LOG_FATAL(std::cout, "LOG(FATAL)", true);
 #endif
 
-log_msg_t LOG_INFO_STREAM(std::cerr, "LOG(INFO)", false);
-log_msg_t LOG_WARNING_STREAM(std::cerr, "LOG(WARNING)", false);
-log_msg_t LOG_ERROR_STREAM(std::cerr, "LOG(ERROR)", true);
-log_msg_t LOG_FATAL_STREAM(std::cerr, "LOG(FATAL)", true);
 
+log_msg_t& log_get_LOG_INFO_STREAM() {
+    static log_msg_t LOG_INFO_STREAM(std::cerr, "LOG(INFO)", false);
+    return LOG_INFO_STREAM;
+}
+
+log_msg_t& log_get_LOG_WARNING_STREAM() {
+    static log_msg_t LOG_WARNING_STREAM(std::cerr, "LOG(WARNING)", false);
+    return LOG_WARNING_STREAM;
+}
+
+log_msg_t& log_get_LOG_ERROR_STREAM() {
+    static log_msg_t LOG_ERROR_STREAM(std::cerr, "LOG(ERROR)", true);
+    return LOG_ERROR_STREAM;
+}
+
+
+log_msg_t& log_get_LOG_FATAL_STREAM() {
+    static log_msg_t LOG_FATAL_STREAM(std::cerr, "LOG(FATAL)", true);
+    return LOG_FATAL_STREAM;
+}
 #if 0
 log_msg_t& log_call(log_msg_t & os) {
     return os << " : ";

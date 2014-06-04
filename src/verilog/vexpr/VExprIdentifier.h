@@ -22,6 +22,7 @@ public:
     virtual std::string getName() const;
     virtual size_t getSize() const;
     virtual std::string getString() const;
+    std::vector<std::string> getStringContainer() const;
 };
 
 class VExprIdentifier : public VExprPrimaryInterface, public VExprConstantPrimaryInterface, public VExprNetLvalueInterface, public VExprRegLvalueInterface, public VExprEventInterface {
@@ -42,7 +43,13 @@ public:
     VExprExpressionHandle toExpressionHandle() const;
     VExprRegLvalueHandle toRegLvalueHandle() const;
     VExprNetLvalueHandle toNetLvalueHandle() const;
+    std::vector<std::string> getStringContainer() const;
+    friend VExprIdentifierHandle makeHierIdentifier(VExprIdentifierHandle pPrefixIdentifier, VExprIdentifierHandle pIdentifier);
 };
+    
+VExprIdentifierHandle makeHierIdentifier(VExprIdentifierHandle pPrefixIdentifier, VExprIdentifierHandle pIdentifier);
+    
+VExprIdentifierHandle makeHierIdentifier(VExprIdentifierHandle pPrefixIdentifier, VExprHierIdentifierHandle pHierIdentifier);
 
 class VExprSingleIdentifier : public VExprIdentifierInterface {
     std::string _identifier;
@@ -52,6 +59,7 @@ public:
     std::string getName() const;
     size_t getSize() const;
     std::string getString() const;
+    std::vector<std::string> getStringContainer() const;
 };
 
 class VExprHierIdentifier : public VExprIdentifierInterface {
@@ -62,9 +70,15 @@ public:
     VExprHierIdentifier(std::string prefix, std::string identifier, size_t size = 1);
     VExprHierIdentifier(std::vector<std::string> vecPrefix, std::string identifier, size_t size = 1);
     VExprHierIdentifier(std::vector<std::string> vecAll, size_t size = 1);
+
+    std::vector<std::string> getPrefixContainer() const
+      { return _vecPrefix; }
+    std::string getIdentifier() const
+      { return _identifier; }
     std::string getName() const;
     size_t getSize() const;
     std::string getString() const;
+    std::vector<std::string> getStringContainer() const;
 };
 
 

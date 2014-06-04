@@ -16,7 +16,8 @@ JAVA_EXE=$JAVA_PARSE_RULE_HOME/$JAVA_PARSE_RULE
 
 DESIGN_NAME=$1
 #CPP_EXE=$2
-CPP_EXE=./readDesign2VExpr.out
+CPP_EXE=./readDesignAndFlatten.out
+#CPP_EXE=./readDesign2VExpr.out
 #CPP_EXE=./readDesign.out
 
 if [ "$2" = "-v" ];

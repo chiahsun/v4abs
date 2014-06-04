@@ -25,6 +25,7 @@ public:
 
     std::string getString() const;
     size_t getSize() const;
+    VExprConcatenationHandle flatten(VExprIdentifierHandle pInstName) const;
 };
 
 #endif // VEXPR_CONCATENATION_H

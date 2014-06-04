@@ -16,7 +16,12 @@ public:
     VExprFlatModuleHandle flatten(VExprModuleHandle pModule);
 
     bool isFlatBefore(VExprModuleHandle pModule, unsigned int & flatModuleId); 
-    bool isFlatBefore(VExprIdentifierHandle pModuleName, unsigned int & flatModuleId); 
+    bool isFlatBefore(VExprIdentifierHandle pModuleName, unsigned int & flatModuleId);
+private:
+    void addSubParameterDeclaration(VExprFlatModuleHandle pFlatModule, VExprModuleInstanceHandle pModuleInstance, VExprFlatModuleHandle pFlatSubModule);
+    // Add input as wire and add assignments that makes original connections
+    void addSubInputDeclaration(VExprFlatModuleHandle pFlatModule, VExprModuleInstanceHandle pModuleInstance, VExprFlatModuleHandle pFlatSubModule);
 };
+    
 
 #endif // VEXPR_FLATTEN_H

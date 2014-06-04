@@ -19,6 +19,8 @@ public:
     void push_back(VExprParamAssignmentHandle pParaAssignment);
 
     std::string getString() const;
+
+    VExprParameterDeclarationHandle flatten(VExprIdentifierHandle pInstName) const;
 };
 
 class VExprParamAssignment {
@@ -33,6 +35,8 @@ public:
     const VExprExpressionHandle& getExpressionHandle() const;
 
     std::string getString() const;
+
+    VExprParamAssignmentHandle flatten(VExprIdentifierHandle pInstName) const;
 };
 
 #endif // VEXPR_PARAMETER_DECLARATION_H

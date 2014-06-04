@@ -66,6 +66,7 @@ public:
     std::string getString() const;
     size_t getSize() const;
 
+    VExprExpressionHandle flatten(VExprIdentifierHandle pInstName) const;
 };
 
 class VExprUnary : public VExprExpressionInterface {
@@ -80,6 +81,7 @@ public:
     std::string getString() const;
     size_t getSize() const;
 
+    VExprUnaryHandle flatten(VExprIdentifierHandle pInstName) const;
 private:
     std::string getOpTypeSymbol() const;
 };
@@ -97,6 +99,7 @@ public:
 
     std::string getString() const;
     size_t getSize() const;
+    VExprBinaryHandle flatten(VExprIdentifierHandle pInstName) const;
 private:
     std::string getOpTypeSymbol() const;
 };
@@ -114,6 +117,7 @@ public:
 
     std::string getString() const;
     size_t getSize() const;
+    VExprTernaryHandle flatten(VExprIdentifierHandle pInstName) const;
 };
 
 

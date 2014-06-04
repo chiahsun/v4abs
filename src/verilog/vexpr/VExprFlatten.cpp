@@ -87,6 +87,17 @@ VExprFlatModuleHandle VExprFlatten::flatten(VExprModuleHandle pModule) {
                 LOG(ERROR) << "Missing sub module : " << pSubModule->getModuleName()->getString() << " while flatten : " << pModule->getModuleName()->getString() << std::endl;
         }
 
+        FOR_EACH(pModuleInstance, pSubModule->getModuleInstanceContainer()) {
+            VExprIdentifierHandle pModuleInstanceName = pModuleInstance->getNameOfInstanceHandle()->getIdentifierHandle();
+
+            if (pModuleInstance->getNameOfInstanceHandle()->getRangeHandle().valid()) {
+                LOG(ERROR) << "Range is not dealt with now";
+            }
+
+            addSubParameterDeclaration(pFlatModule, pModuleInstance, pFlatSubModule);
+            addSubInputDeclaration(pFlatModule, pModuleInstance, pFlatSubModule);
+        }
+
         LOG(WARNING) << "Not implemented yet";
     }
 
@@ -107,4 +118,47 @@ bool VExprFlatten::isFlatBefore(VExprIdentifierHandle pModuleName, unsigned int 
         ++pos;
     }
     return false;
+}
+
+void VExprFlatten::addSubParameterDeclaration(VExprFlatModuleHandle pFlatModule, VExprModuleInstanceHandle pModuleInstance, VExprFlatModuleHandle pFlatSubModule) {
+    VExprIdentifierHandle pModuleInstanceName = pModuleInstance->getNameOfInstanceHandle()->getIdentifierHandle();
+    FOR_EACH(pParameterDeclaration, pFlatSubModule->getParameterDeclarationContainer()) {
+        pFlatModule->addParameterDeclaration(pParameterDeclaration->flatten(pModuleInstanceName));
+    }
+}
+    
+void VExprFlatten::addSubInputDeclaration(VExprFlatModuleHandle pFlatModule, VExprModuleInstanceHandle pModuleInstance, VExprFlatModuleHandle pFlatSubModule) {
+    VExprIdentifierHandle pModuleInstanceName = pModuleInstance->getNameOfInstanceHandle()->getIdentifierHandle();
+
+    std::vector<VExprIdentifierHandle> vecInputIdentifier;
+    std::vector<VExprNetDeclHandle> vecNetDecl;
+    std::vector<VExprNetAssignmentHandle> vecNetAssignment;
+    // Add inputs as wire
+    FOR_EACH(pInputDeclaration, pFlatModule->getInputDeclarationContainer()) {
+        FOR_EACH(pInputDecl, pInputDeclaration->getContainer()) {
+            VExprIdentifierHandle pInputIdentifier = pInputDecl->getPortDeclarationHandle()->getIdentifierHandle()->flatten(pModuleInstanceName);
+            VExprRangeHandle pInputRange = pInputDecl->getPortDeclarationHandle()->getRangeHandle();
+            vecInputIdentifier.push_back(pInputIdentifier);
+
+            if (pInputRange.valid()) {
+                vecNetDecl.push_back(VExprNetDeclHandle(VExprNetDecl(pInputRange, pInputIdentifier)));
+            } else {
+                vecNetDecl.push_back(VExprNetDeclHandle(VExprNetDecl(pInputIdentifier)));
+            }
+        }
+        // TODO add assignment
+        // 1. Named connections
+        if (!pModuleInstance->getListOfModuleConnectionsHandle()->isOrderedPortConnection()) {
+            FOR_EACH(pNamedPort, pModuleInstance->getListOfModuleConnectionsHandle()->getNamedPortConnectionContainer()) {
+                VExprIdentifierHandle pPortIdentifier = pNamedPort->getIdentifierHandle()->flatten(pModuleInstanceName);
+                VExprExpressionHandle pPortExpression = pNamedPort->getExpressionHandle();
+                vecNetAssignment.push_back(VExprNetAssignmentHandle(VExprNetAssignment(VExprNetLvalueHandle(VExprNetLvalue(pPortIdentifier)),  pPortExpression)));
+            }
+        } else { // Orderred connections
+            LOG(ERROR) << "Not implemented yet";
+        }
+
+    }
+    pFlatModule->addNetDeclaration(VExprNetDeclarationHandle(VExprNetDeclaration(vecNetDecl)));
+    pFlatModule->addContinuousAssignment(VExprContinuousAssignmentHandle(VExprContinuousAssignment(vecNetAssignment)));
 }

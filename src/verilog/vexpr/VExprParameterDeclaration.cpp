@@ -25,6 +25,16 @@ std::string VExprParameterDeclaration::getString() const {
     return s;
 }
     
+VExprParameterDeclarationHandle VExprParameterDeclaration::flatten(VExprIdentifierHandle pInstName) const {
+    std::vector<VExprParamAssignmentHandle> vecFlatParamAssignment;
+
+    CONST_FOR_EACH(pParaAssignment, getParaAssignmentHandleContainer()) {
+        vecFlatParamAssignment.push_back(pParaAssignment->flatten(pInstName));
+    }
+
+    return VExprParameterDeclarationHandle(VExprParameterDeclaration(vecFlatParamAssignment));
+}
+    
 VExprParamAssignment::VExprParamAssignment(VExprIdentifierHandle pIdentifier, VExprExpressionHandle pExpression)
   : _pIdentifier(pIdentifier)
   , _pExpression(pExpression)
@@ -44,3 +54,9 @@ const VExprExpressionHandle& VExprParamAssignment::getExpressionHandle() const
 
 std::string VExprParamAssignment::getString() const
   { return getIdentifierHandle()->getString() + " = " + getExpressionHandle()->getString(); }
+    
+VExprParamAssignmentHandle VExprParamAssignment::flatten(VExprIdentifierHandle pInstName) const {
+    VExprIdentifierHandle pFlatIdentifier = _pIdentifier->flatten(pInstName);
+    VExprExpressionHandle pFlatExpression = _pExpression->flatten(pInstName);
+    return VExprParamAssignmentHandle(VExprParamAssignment(pFlatIdentifier, pFlatExpression));
+}

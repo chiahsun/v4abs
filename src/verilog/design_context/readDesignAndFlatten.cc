@@ -33,12 +33,14 @@ int main(int argc, char** argv) {
         std::vector<VExprModuleHandle> vecModule = ConvertAst2VExpr::convert(pSourceText);
 
         VExprFlatten flattenFactory(vecModule);
+#if 0
         CONST_FOR_EACH(pModule, vecModule) {
             std::cout << pModule->getModuleName()->getString() << std::endl;
         }
         std::cout << std::endl;
+#endif
         CONST_FOR_EACH(pModule, vecModule) {
-            std::cout << pModule->getModuleName()->getString() << std::endl;
+      //      std::cout << pModule->getModuleName()->getString() << std::endl;
             VExprFlatModuleHandle pFlatModule = flattenFactory.flatten(pModule);
             std::cout << pFlatModule->getString() << std::endl;
         }

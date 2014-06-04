@@ -1,7 +1,7 @@
 #include "VExprPrimary.h"
 #include "VExprSelect.h"
 #include "exception/Exception.h"
-
+#include "utility/log/Log.h"
 
 VExprPrimaryHandle vexpr_primary_mk_unsigned_number(unsigned int unsignedNumber) {
     return VExprPrimaryHandle(VExprPrimary(vexpr_number_mk_unsigned_number(unsignedNumber)));
@@ -115,4 +115,23 @@ size_t VExprPrimary::getSize() const
 std::string VExprPrimary::getString() const
   { return _pInterface->getString(); }
     
+VExprPrimaryHandle VExprPrimary::flatten(VExprIdentifierHandle pInstName) const {
+    if (getNumberHandle().valid()) {
+        return VExprPrimaryHandle(VExprPrimary(getNumberHandle()->flatten(pInstName)));
+    } else if (getIdentifierHandle().valid()) {
+        return VExprPrimaryHandle(VExprPrimary(getIdentifierHandle()->flatten(pInstName)));
+    } else if (getSelectIdentifierHandle().valid()) {
+        return VExprPrimaryHandle(VExprPrimary(getSelectIdentifierHandle()->flatten(pInstName)));
+    } else if (getConcatenationHandle().valid()) {
+        return VExprPrimaryHandle(VExprPrimary(getConcatenationHandle()->flatten(pInstName)));
+    } else if (getMultipleConcatenationHandle().valid()) {
+        return VExprPrimaryHandle(VExprPrimary(getMultipleConcatenationHandle()->flatten(pInstName)));
+    } else {
+        LOG(ERROR) << "No valid type or not implemented";
+    }
+
+    assert(0);
+    return VExprPrimaryHandle(*this); // dummy return
+}
   
+    

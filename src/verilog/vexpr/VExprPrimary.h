@@ -60,6 +60,8 @@ public:
 
     size_t getSize() const;
     std::string getString() const;
+
+    VExprPrimaryHandle flatten(VExprIdentifierHandle pInstName) const;
 };
 
 

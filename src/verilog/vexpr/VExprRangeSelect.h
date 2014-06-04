@@ -21,6 +21,7 @@ public:
 
     std::string getString() const;
     size_t getSize() const;
+    VExprRangeSelectHandle flatten(VExprIdentifierHandle pInstName) const;
 };
 
 class VExprBitSelect : public VExprSelectInterface {
@@ -32,6 +33,7 @@ public:
 
     std::string getString() const;
     size_t getSize() const;
+    VExprBitSelectHandle flatten(VExprIdentifierHandle pInstName) const;
 };
 
 #endif // VEXPR_RANGE_SELECT_H

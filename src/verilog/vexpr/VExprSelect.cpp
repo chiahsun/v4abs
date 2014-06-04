@@ -1,5 +1,5 @@
 #include "VExprSelect.h"
-
+#include "utility/log/Log.h"
 #include "exception/Exception.h"
 
 VExprSelect::VExprSelect(VExprRangeSelectHandle pRangeSelect) 
@@ -26,3 +26,14 @@ size_t VExprSelect::getSize() const {
     return _pInterface->getSize();
 }
     
+    
+VExprSelectHandle VExprSelect::flatten(VExprIdentifierHandle pInstName) const {
+    if (getRangeSelectHandle().valid()) {
+        return VExprSelectHandle(VExprSelect(getRangeSelectHandle()->flatten(pInstName)));
+    } else if (getBitSelectHandle().valid()) {
+        return VExprSelectHandle(VExprSelect(getBitSelectHandle()->flatten(pInstName)));
+    } else {
+        LOG(ERROR) << "Invalid handles or not implemented type";
+    }
+    assert(0);
+}

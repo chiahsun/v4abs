@@ -1,5 +1,6 @@
 #include "VExprSelectIdentifier.h"
 #include "exception/Exception.h"
+#include "nstl/for_each/ForEach.h"
 
 VExprSelectIdentifierHandle vexpr_select_identifier_mk_bit_select(VExprIdentifierHandle pIdentifier, VExprBitSelectHandle pBitSelect) {
     return VExprSelectIdentifierHandle(VExprSelectIdentifier(pIdentifier, pBitSelect));
@@ -46,4 +47,12 @@ std::string VExprSelectIdentifier::getString() const {
     for (unsigned int i = 0; i < getSelectSize(); ++i)
         s += getSelect(i)->getString();
     return s;
+}
+    
+VExprSelectIdentifierHandle VExprSelectIdentifier::flatten(VExprIdentifierHandle pInstName) const {
+    VExprIdentifierHandle pFlatIdentifier = _pIdentifier->flatten(pInstName);
+    std::vector<VExprSelectHandle> vecFlatSelect;
+    CONST_FOR_EACH(pSelect, _vecSelect)
+        vecFlatSelect.push_back(pSelect->flatten(pInstName));
+    return VExprSelectIdentifierHandle(VExprSelectIdentifier(pFlatIdentifier, vecFlatSelect));
 }

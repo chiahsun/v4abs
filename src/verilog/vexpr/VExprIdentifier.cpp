@@ -33,6 +33,9 @@ std::string VExprIdentifierInterface::getString() const
     
 std::vector<std::string> VExprIdentifierInterface::getStringContainer() const
   { throw NotImplementedException(); }
+    
+VExprIdentifierHandle VExprIdentifierInterface::flatten(VExprIdentifierHandle pInstName) const
+  { throw NotImplementedException(); }
 
 VExprIdentifier::VExprIdentifier(VExprSingleIdentifierHandle pSingleIdentifier)
   : _pInterface(shared_ptr_cast<VExprIdentifierInterface>(pSingleIdentifier))
@@ -61,6 +64,9 @@ std::string VExprIdentifier::getString() const
 std::vector<std::string> VExprIdentifier::getStringContainer() const 
   { return _pInterface->getStringContainer(); }
     
+VExprIdentifierHandle VExprIdentifier::flatten(VExprIdentifierHandle pInstName) const
+  { return makeHierIdentifier(pInstName, *this); } 
+    
 VExprExpressionHandle VExprIdentifier::toExpressionHandle() const {
     return VExprExpressionHandle(VExprExpression(VExprPrimaryHandle(VExprPrimary(VExprIdentifierHandle(*this)))));
 }
@@ -74,9 +80,12 @@ VExprNetLvalueHandle VExprIdentifier::toNetLvalueHandle() const {
 }
 
 VExprIdentifierHandle makeHierIdentifier(VExprIdentifierHandle pPrefixIdentifier, VExprIdentifierHandle pIdentifier) {
+    return makeHierIdentifier(pPrefixIdentifier, *pIdentifier);
+}
+VExprIdentifierHandle makeHierIdentifier(VExprIdentifierHandle pPrefixIdentifier, VExprIdentifier identifier) {
     std::vector<std::string> vecString;
 
-    std::vector<std::string> vecStringIdentifier = pIdentifier->getStringContainer();
+    std::vector<std::string> vecStringIdentifier = identifier.getStringContainer();
     assert(vecStringIdentifier.size() > 0);
     for (unsigned int i = 1; i < vecStringIdentifier.size(); ++i)
         vecString.push_back(vecStringIdentifier[i]);

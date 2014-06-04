@@ -33,9 +33,6 @@ VExprNetAssignmentHandle VExprContinuousAssignment::getNetAssign(unsigned int po
 std::string VExprContinuousAssignment::getString() const {
     std::string s;
     for (unsigned int i = 0; i < getNetAssignSize(); ++i) {
-        if (i != 0)
-            s += "\n";
-
         s += getNetAssign(i)->getString();
     }
     return s;

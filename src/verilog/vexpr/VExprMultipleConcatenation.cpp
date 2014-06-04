@@ -1,5 +1,6 @@
 #include "VExprMultipleConcatenation.h"
 #include "VExprExpression.h"
+#include "nstl/for_each/ForEach.h"
 
 VExprMultipleConcatenationHandle vexpr_multiple_concatenation_mk_expr(VExprExpressionHandle pRepeat, VExprExpressionHandle pExpr) {
     return VExprMultipleConcatenationHandle(VExprMultipleConcatenation(pRepeat, pExpr));
@@ -56,4 +57,14 @@ size_t VExprMultipleConcatenation::getSize() const {
         sz += mul * getExpr(i)->getSize();
     }
     return sz;
+}
+    
+VExprMultipleConcatenationHandle VExprMultipleConcatenation::flatten(VExprIdentifierHandle pInstName) const {
+    VExprExpressionHandle pFlatExprRepeat = getExprRepeat()->flatten(pInstName);
+
+    std::vector<VExprExpressionHandle> vecFlatExpr;
+    CONST_FOR_EACH(pExpr, _vecExpr) {
+        vecFlatExpr.push_back(pExpr->flatten(pInstName));
+    }
+    return VExprMultipleConcatenationHandle(VExprMultipleConcatenation(pFlatExprRepeat, vecFlatExpr));
 }

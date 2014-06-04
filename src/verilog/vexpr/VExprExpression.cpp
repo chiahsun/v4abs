@@ -1,5 +1,5 @@
 #include "VExprExpression.h"
-
+#include "utility/log/Log.h"
 #include "exception/Exception.h"
 
 VExprExpressionHandle vexpr_expression_mk_unsigned_number(unsigned int unsignedNumber) {
@@ -136,6 +136,24 @@ std::string VExprExpression::getString() const
     
 size_t VExprExpression::getSize() const
   { return _pInterface->getSize(); }
+    
+VExprExpressionHandle VExprExpression::flatten(VExprIdentifierHandle pInstName) const { 
+    if (getPrimaryHandle().valid()) {
+        return VExprExpressionHandle(VExprExpression(getPrimaryHandle()->flatten(pInstName)));
+    } else if (getUnaryHandle().valid()) {
+        return VExprExpressionHandle(VExprExpression(getUnaryHandle()->flatten(pInstName)));
+    } else if (getBinaryHandle().valid()) {
+        return VExprExpressionHandle(VExprExpression(getBinaryHandle()->flatten(pInstName)));
+    } else if (getTernaryHandle().valid()) {
+        return VExprExpressionHandle(VExprExpression(getTernaryHandle()->flatten(pInstName)));
+    } else if (getBoolHandle().valid()) {
+        return VExprExpressionHandle(VExprExpression(getBoolHandle()));
+    } else {
+        LOG(ERROR) << "Not implemented type or invalid handles";
+    }
+
+    assert(0);
+}
 
 
 VExprUnary::VExprUnary(UnaryOpType opType, VExprPrimaryHandle pPrimary)
@@ -172,6 +190,11 @@ size_t VExprUnary::getSize() const {
     }
     throw NoSuchBranchException();
 }
+
+VExprUnaryHandle VExprUnary::flatten(VExprIdentifierHandle pInstName) const {
+    return VExprUnaryHandle(VExprUnary(getOpType(), getPrimaryHandle()->flatten(pInstName)));
+}
+
     
 std::string VExprUnary::getOpTypeSymbol() const {
     return vexpr_get_unary_op_symbol(getOpType());
@@ -236,6 +259,12 @@ size_t VExprBinary::getSize() const {
     throw NoSuchBranchException();
 
 }
+    
+VExprBinaryHandle VExprBinary::flatten(VExprIdentifierHandle pInstName) const {
+    return VExprBinaryHandle(VExprBinary( getFst()->flatten(pInstName)
+       , getOpType()
+       , getSnd()->flatten(pInstName)));
+}
 
 std::string VExprBinary::getOpTypeSymbol() const {
     return vexpr_get_binary_op_symbol(getOpType());
@@ -275,3 +304,8 @@ size_t VExprTernary::getSize() const {
     return sizeThen;
 }
     
+VExprTernaryHandle VExprTernary::flatten(VExprIdentifierHandle pInstName) const {
+    return VExprTernaryHandle(VExprTernary( getIf()->flatten(pInstName)
+         , getThen()->flatten(pInstName)
+         , getElse()->flatten(pInstName)));
+}

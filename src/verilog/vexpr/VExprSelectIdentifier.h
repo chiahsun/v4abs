@@ -25,6 +25,9 @@ public:
 
     size_t getSize() const;
     std::string getString() const;
+
+    VExprSelectIdentifierHandle flatten(VExprIdentifierHandle pInstName) const;
+
 };
 
 

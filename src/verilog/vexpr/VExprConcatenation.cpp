@@ -1,4 +1,5 @@
 #include "VExprConcatenation.h"
+#include "nstl/for_each/ForEach.h"
 
 VExprConcatenationHandle vexpr_concatenation_mk_expr(VExprExpressionHandle pFst, VExprExpressionHandle pSnd) {
     return VExprConcatenationHandle(VExprConcatenation(pFst, pSnd));
@@ -51,4 +52,12 @@ size_t VExprConcatenation::getSize() const {
     for (unsigned int i = 0; i < getExprSize(); ++i)
         sz += getExpr(i)->getSize();
     return sz;
+}
+    
+VExprConcatenationHandle VExprConcatenation::flatten(VExprIdentifierHandle pInstName) const {
+    std::vector<VExprExpressionHandle> vecFlatExpr;
+    CONST_FOR_EACH(pExpr, _vecExpr) {
+        vecFlatExpr.push_back(pExpr->flatten(pInstName));
+    }
+    return VExprConcatenationHandle(VExprConcatenation(vecFlatExpr));
 }

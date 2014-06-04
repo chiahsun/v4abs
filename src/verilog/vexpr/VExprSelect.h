@@ -23,6 +23,7 @@ public:
     std::string getString() const;
     size_t getSize() const;
 
+    VExprSelectHandle flatten(VExprIdentifierHandle pInstName) const;
 };
 
 #endif // VEXPR_SELECT_H

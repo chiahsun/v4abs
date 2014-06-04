@@ -11,7 +11,6 @@ public:
     virtual ~VExprExpressionInterface();
     virtual std::string getString() const;
     virtual size_t getSize() const;
-
 };
 
 

@@ -32,6 +32,10 @@ std::string VExprRangeSelect::getString() const {
 size_t VExprRangeSelect::getSize() const {
     throw NotImplementedException();
 }
+    
+VExprRangeSelectHandle VExprRangeSelect::flatten(VExprIdentifierHandle pInstName) const {
+    return VExprRangeSelectHandle(VExprRangeSelect(getExprFst()->flatten(pInstName), getExprSnd()->flatten(pInstName)));
+}
 
 VExprBitSelect::VExprBitSelect(VExprExpressionHandle pExpr)
   : _pExpr(pExpr)
@@ -50,4 +54,6 @@ size_t VExprBitSelect::getSize() const {
     throw NotImplementedException();
 }
 
-
+VExprBitSelectHandle VExprBitSelect::flatten(VExprIdentifierHandle pInstName) const {
+    return VExprBitSelectHandle(VExprBitSelect(getExpr()->flatten(pInstName)));
+}

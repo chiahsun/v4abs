@@ -95,6 +95,9 @@ std::string VExprNumber::getString() const
 
 std::string VExprNumber::getString(unsigned int indentLevel) const
   { return indent(indentLevel) + getString(); }
+    
+VExprNumberHandle VExprNumber::flatten(VExprIdentifierHandle pInstName) const 
+  { return VExprNumberHandle(VExprNumber(*this)); }
 
 
 VExprUnsignedNumber::VExprUnsignedNumber(unsigned int value)

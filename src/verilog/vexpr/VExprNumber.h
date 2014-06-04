@@ -47,6 +47,7 @@ public:
     unsigned int toUnsignedInt() const;
     std::string getString() const;
     std::string getString(unsigned int indentLevel) const;
+    VExprNumberHandle flatten(VExprIdentifierHandle pInstName) const;
 };
 
 class VExprUnsignedNumber : public VExprNumberInterface {

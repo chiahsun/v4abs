@@ -1,0 +1,18 @@
+[Reset Signal]
+reset 1 true
+
+module ATE(clk, reset, pix_data, type, bin, threshold);
+[Output Valid Signal]
+out_valid 1 true
+
+[Cared Combinational Module]
+sub_inst0
+neg_inst1
+add_inst2
+mul_inst2
+
+[Cared Control Signals]
+sub_sel
+neg_sel
+stateIn
+

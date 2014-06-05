@@ -1,0 +1,17 @@
+#################
+# Compile       #
+#################
+1. Configuration
+Change num_of_var and num_of_bit in main.cpp
+Note num_of_var should be power of 2
+2. Simply type
+make
+There will be the resulted file bsort.v
+
+#################
+# Clean         #
+#################
+1. Clean all generated files, type
+make clean
+
+

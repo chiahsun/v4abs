@@ -1,0 +1,6 @@
+[Reset Signal]
+reset 1 true
+
+[Output Valid Signal]
+out_valid 1 true
+

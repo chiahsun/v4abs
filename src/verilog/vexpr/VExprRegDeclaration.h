@@ -19,6 +19,7 @@ public:
     std::string getString() const;
     std::string getString(unsigned int indentLevel) const;
 
+    VExprRegDeclarationHandle flatten(VExprIdentifierHandle pInstName) const;
 };
 
 class VExprRegDecl {
@@ -37,6 +38,7 @@ public:
     const VExprRegisterNameHandle& getRegisterNameHandle() const;
 
     std::string getString() const;
+    VExprRegDeclHandle flatten(VExprIdentifierHandle pInstName) const;
 };
 
 #endif // VEXPR_REG_DECLARATION_H

@@ -1,4 +1,5 @@
 #include "VExprPrimary.h"
+#include "VExprConstantPrimary.h"
 #include "VExprSelect.h"
 #include "exception/Exception.h"
 #include "utility/log/Log.h"
@@ -135,3 +136,19 @@ VExprPrimaryHandle VExprPrimary::flatten(VExprIdentifierHandle pInstName) const 
 }
   
     
+VExprConstantPrimaryHandle VExprPrimary::toConstantPrimaryHandle() const {
+    if (getNumberHandle().valid()) {
+        return VExprConstantPrimaryHandle(VExprConstantPrimary(getNumberHandle()));
+    } else if (getIdentifierHandle().valid()) {
+        return VExprConstantPrimaryHandle(VExprConstantPrimary(getIdentifierHandle()));
+    } else if (getSelectIdentifierHandle().valid()) {
+        LOG(ERROR) << "Not support to constant primary";
+    } else if (getConcatenationHandle().valid()) {
+        return VExprConstantPrimaryHandle(VExprConstantPrimary(getConcatenationHandle()));
+    } else if (getMultipleConcatenationHandle().valid()) {
+        return VExprConstantPrimaryHandle(VExprConstantPrimary(getMultipleConcatenationHandle()));
+    } else {
+        LOG(ERROR) << "No such branch";
+    }
+    assert(0);
+}

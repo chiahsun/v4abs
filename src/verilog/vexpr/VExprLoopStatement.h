@@ -30,6 +30,7 @@ public:
     std::string getString() const;
     std::string getString(unsigned int indentLevel) const;
 
+    VExprLoopStatementHandle flatten(VExprIdentifierHandle pInstName) const;
 };
 
 #endif // VEXPR_LOOP_STATEMENT_H

@@ -1,6 +1,7 @@
 #include "VExprExpression.h"
 #include "utility/log/Log.h"
 #include "exception/Exception.h"
+#include "VExprNetLvalue.h"
 
 VExprExpressionHandle vexpr_expression_mk_unsigned_number(unsigned int unsignedNumber) {
     return VExprExpressionHandle(VExprExpression(vexpr_primary_mk_unsigned_number(unsignedNumber)));
@@ -155,6 +156,75 @@ VExprExpressionHandle VExprExpression::flatten(VExprIdentifierHandle pInstName) 
     assert(0);
 }
 
+VExprNetLvalueHandle VExprExpression::toNetLvalueHandle() const {
+    if (getPrimaryHandle().valid()) {
+        VExprPrimaryHandle pPrimary = getPrimaryHandle();
+        if (pPrimary->getNumberHandle().valid()) {
+            LOG(ERROR) << "Invalid type to net lvalue";
+        } else if (pPrimary->getIdentifierHandle().valid()) {
+            return VExprNetLvalueHandle(VExprNetLvalue(pPrimary->getIdentifierHandle()));
+        } else if (pPrimary->getSelectIdentifierHandle().valid()) {
+            VExprSelectIdentifierHandle pSelectIdentifier = pPrimary->getSelectIdentifierHandle();
+            VExprIdentifierHandle pIdentifier = pSelectIdentifier->getIdentifierHandle();
+            if (pSelectIdentifier->getSelectSize() != 1) {
+                LOG(ERROR) << "Connection for select identifier with size not 1";
+            }
+            VExprSelectHandle pSelect = pSelectIdentifier->getSelect(0);
+
+            if (pSelect->getRangeSelectHandle().valid()) {
+                VExprRangeSelectHandle pRangeSelect = pSelect->getRangeSelectHandle();
+                VExprExpressionHandle pExprFst = pRangeSelect->getExprFst();
+                VExprExpressionHandle pExprSnd = pRangeSelect->getExprSnd();
+                VExprConstantExpressionHandle pConstExprFst = pExprFst->toConstantExpressionHandle();
+                VExprConstantExpressionHandle pConstExprSnd = pExprSnd->toConstantExpressionHandle();
+                VExprNetLvalueRangeSelectHandle pNetLvalueRangeSelect = VExprNetLvalueRangeSelectHandle(VExprNetLvalueRangeSelect(pIdentifier, pConstExprFst, pConstExprSnd));
+                return VExprNetLvalueHandle(VExprNetLvalue(pNetLvalueRangeSelect));
+            } else if (pSelect->getBitSelectHandle().valid()) {
+                VExprBitSelectHandle pBitSelect = pSelect->getBitSelectHandle();
+                VExprExpressionHandle pExpr = pBitSelect->getExpr();
+                VExprNetLvalueBitSelectHandle pNetLvalueBitSelect = VExprNetLvalueBitSelectHandle(VExprNetLvalueBitSelect(pIdentifier, pExpr));
+                return VExprNetLvalueHandle(VExprNetLvalue(pNetLvalueBitSelect));
+            } else {
+                LOG(ERROR) << "No such branch";
+            }
+
+        } else if (pPrimary->getConcatenationHandle().valid()) {
+            return VExprNetLvalueHandle(VExprNetLvalue(pPrimary->getConcatenationHandle()));
+        } else if (pPrimary->getMultipleConcatenationHandle().valid()) {
+            LOG(ERROR) << "Invalid type to net lvalue";
+
+        }
+    } else if (getUnaryHandle().valid()) {
+        LOG(ERROR) << "Invalid type to net lvalue";
+    } else if (getBinaryHandle().valid()) {
+        LOG(ERROR) << "Invalid type to net lvalue";
+    } else if (getTernaryHandle().valid()) {
+        LOG(ERROR) << "Invalid type to net lvalue";
+    } else if (getBoolHandle().valid()) {
+        LOG(ERROR) << "Invalid type to net lvalue";
+    } else {
+        LOG(ERROR) << "Not implemented type or invalid handles";
+    }
+
+    assert(0);
+}
+
+VExprConstantExpressionHandle VExprExpression::toConstantExpressionHandle() const {
+    if (getPrimaryHandle().valid()) {
+        return VExprConstantExpressionHandle(VExprConstantExpression(getPrimaryHandle()->toConstantPrimaryHandle()));
+    } else if (getUnaryHandle().valid()) {
+        return VExprConstantExpressionHandle(VExprConstantExpression(getUnaryHandle()->toConstantUnaryHandle()));
+    } else if (getBinaryHandle().valid()) {
+        return VExprConstantExpressionHandle(VExprConstantExpression(getBinaryHandle()->toConstantBinaryHandle()));
+    } else if (getTernaryHandle().valid()) {
+        return VExprConstantExpressionHandle(VExprConstantExpression(getTernaryHandle()->toConstantTernaryHandle()));
+    } else if (getBoolHandle().valid()) {
+        return VExprConstantExpressionHandle(VExprConstantExpression(getBoolHandle()));
+    } else {
+        LOG(ERROR) << "Not implemented type or invalid handles";
+    }
+    assert(0);
+}
 
 VExprUnary::VExprUnary(UnaryOpType opType, VExprPrimaryHandle pPrimary)
   : _opType(opType)
@@ -195,6 +265,9 @@ VExprUnaryHandle VExprUnary::flatten(VExprIdentifierHandle pInstName) const {
     return VExprUnaryHandle(VExprUnary(getOpType(), getPrimaryHandle()->flatten(pInstName)));
 }
 
+VExprConstantUnaryHandle VExprUnary::toConstantUnaryHandle() const {
+    return VExprConstantUnaryHandle(VExprConstantUnary(getOpType(), getPrimaryHandle()->toConstantPrimaryHandle()));
+}
     
 std::string VExprUnary::getOpTypeSymbol() const {
     return vexpr_get_unary_op_symbol(getOpType());
@@ -265,6 +338,13 @@ VExprBinaryHandle VExprBinary::flatten(VExprIdentifierHandle pInstName) const {
        , getOpType()
        , getSnd()->flatten(pInstName)));
 }
+    
+VExprConstantBinaryHandle VExprBinary::toConstantBinaryHandle() const {
+    return VExprConstantBinaryHandle(
+            VExprConstantBinary( getFst()->toConstantExpressionHandle()
+                               , getOpType()
+                               , getSnd()->toConstantExpressionHandle()));
+}
 
 std::string VExprBinary::getOpTypeSymbol() const {
     return vexpr_get_binary_op_symbol(getOpType());
@@ -305,7 +385,18 @@ size_t VExprTernary::getSize() const {
 }
     
 VExprTernaryHandle VExprTernary::flatten(VExprIdentifierHandle pInstName) const {
-    return VExprTernaryHandle(VExprTernary( getIf()->flatten(pInstName)
+    return VExprTernaryHandle(VExprTernary(
+           getIf()->flatten(pInstName)
          , getThen()->flatten(pInstName)
          , getElse()->flatten(pInstName)));
 }
+    
+    
+VExprConstantTernaryHandle VExprTernary::toConstantTernaryHandle() const {
+    return VExprConstantTernaryHandle(VExprConstantTernary(
+                getIf()->toConstantExpressionHandle()
+              , getThen()->toConstantExpressionHandle()
+              , getElse()->toConstantExpressionHandle()
+                )) ;
+}
+

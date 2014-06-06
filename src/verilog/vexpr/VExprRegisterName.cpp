@@ -39,3 +39,13 @@ std::string VExprRegisterName::getString() const {
 
     return s;
 }
+    
+VExprRegisterNameHandle VExprRegisterName::flatten(VExprIdentifierHandle pInstName) const {
+    VExprIdentifierHandle pFlatIdentifier = getIdentifierHandle()->flatten(pInstName);
+    std::vector<VExprRangeHandle> vecFlatRange;
+    CONST_FOR_EACH(pRange, getRangeHandleContainer()) {
+        vecFlatRange.push_back(pRange);
+    }
+
+    return VExprRegisterNameHandle(VExprRegisterName(pFlatIdentifier, vecFlatRange));
+}

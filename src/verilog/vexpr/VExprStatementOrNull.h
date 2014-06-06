@@ -8,10 +8,10 @@ VExprStatementOrNullHandle vexpr_statement_or_null_mk_null();
 VExprStatementOrNullHandle vexpr_statement_or_null_mk_statement(VExprStatementHandle pStatement);
 
 class VExprStatementOrNull {
-    const VExprStatementOrNullInterfaceHandle _pInterface;
+    VExprStatementOrNullInterfaceHandle _pInterface;
 
-    const VExprStatementHandle _pStatement;
-    const VExprNullHandle _pNull;
+    VExprStatementHandle _pStatement;
+    VExprNullHandle _pNull;
 
 public:
     VExprStatementOrNull(VExprStatementHandle pStatement);
@@ -22,6 +22,8 @@ public:
 
     std::string getString() const;
     std::string getString(unsigned int indentLevel) const;
+
+    VExprStatementOrNullHandle flatten(VExprIdentifierHandle pInstName) const;
 };
 
 class VExprNull : public VExprStatementOrNullInterface {

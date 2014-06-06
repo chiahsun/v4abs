@@ -34,3 +34,10 @@ VExprStatementHandle VExprNonBlockingAssignment::toStatementHandle() const {
 VExprStatementOrNullHandle VExprNonBlockingAssignment::toStatementOrNullHandle() const {
     return VExprStatementOrNullHandle(VExprStatementOrNull(toStatementHandle()));
 }
+    
+VExprNonBlockingAssignmentHandle VExprNonBlockingAssignment::flatten(VExprIdentifierHandle pInstName) const {
+    return VExprNonBlockingAssignmentHandle(VExprNonBlockingAssignment(
+                getRegLvalueHandle()->flatten(pInstName)
+              , getExpressionHandle()->flatten(pInstName)
+            ));
+}

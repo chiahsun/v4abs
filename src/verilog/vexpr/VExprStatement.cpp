@@ -1,5 +1,6 @@
 #include "VExprStatement.h"
 #include "Indent.h"
+#include "utility/log/Log.h"
 
 VExprStatementHandle vexpr_statement_mk_blocking_assignment(VExprBlockingAssignmentHandle pBlockingAssign) {
     return VExprStatementHandle(VExprStatement(pBlockingAssign));
@@ -128,4 +129,27 @@ std::string VExprStatement::getString(unsigned int indentLevel) const {
     
 VExprStatementOrNullHandle VExprStatement::toStatementOrNullHandle() const {
     return VExprStatementOrNullHandle(VExprStatementOrNull(VExprStatementHandle(*this)));
+}
+    
+VExprStatementHandle VExprStatement::flatten(VExprIdentifierHandle pInstName) const {
+    if (getBlockingAssignHandle().valid()) {
+        return VExprStatementHandle(VExprStatement(getBlockingAssignHandle()->flatten(pInstName)));
+    } else if (getNonBlockingAssignHandle().valid()) {
+        return VExprStatementHandle(VExprStatement(getNonBlockingAssignHandle()->flatten(pInstName)));
+    } else if (getSeqBlockHandle().valid()) {
+        return VExprStatementHandle(VExprStatement(getSeqBlockHandle()->flatten(pInstName)));
+    } else if (getConditionalHandle().valid()) {
+        return VExprStatementHandle(VExprStatement(getConditionalHandle()->flatten(pInstName)));
+    } else if (getCaseStatementHandle().valid()) {
+        return VExprStatementHandle(VExprStatement(getCaseStatementHandle()->flatten(pInstName)));
+    } else if (getProceduralContinuousAssignmentHandle().valid()) {
+        return VExprStatementHandle(VExprStatement(getProceduralContinuousAssignmentHandle()->flatten(pInstName)));
+    } else if (getLoopStatementHandle().valid()) {
+        return VExprStatementHandle(VExprStatement(getLoopStatementHandle()->flatten(pInstName)));
+    } else if (getEventStatementHandle().valid()) {
+        return VExprStatementHandle(VExprStatement(getEventStatementHandle()->flatten(pInstName)));
+    } else {
+        LOG(ERROR) << "No such branch";
+    }
+    assert(0);
 }

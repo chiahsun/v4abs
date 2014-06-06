@@ -21,6 +21,8 @@ public:
 
     void addRange(VExprRangeHandle pRange);
     std::string getString() const;
+
+    VExprRegisterNameHandle flatten(VExprIdentifierHandle pInstName) const;
 };
 
 #endif // VEXPR_REGISTER_NAME_H

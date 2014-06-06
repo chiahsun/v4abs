@@ -24,3 +24,7 @@ const VExprExpressionHandle& VExprRegAssignment::getExpressionHandle() const
 //   or for(reg_assignment;; reg_assignment)
 std::string VExprRegAssignment::getString() const
   { return getRegLvalueHandle()->getString() + " = " + getExpressionHandle()->getString(); }
+    
+VExprRegAssignmentHandle VExprRegAssignment::flatten(VExprIdentifierHandle pInstName) const {
+    return VExprRegAssignmentHandle(VExprRegAssignment(getRegLvalueHandle()->flatten(pInstName), getExpressionHandle()->flatten(pInstName)));
+}

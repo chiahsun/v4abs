@@ -15,6 +15,8 @@ public:
 
     std::string getString() const;
     std::string getString(unsigned int indentLevel) const;
+
+    VExprProceduralContinuousAssignmentHandle flatten(VExprIdentifierHandle pInstName) const;
 };
 
 #endif // VEXPR_PROCEDURAL_CONTINUOUS_ASSIGNMENT_H

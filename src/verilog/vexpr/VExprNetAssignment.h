@@ -16,6 +16,8 @@ public:
     VExprExpressionHandle getExpressionHandle() const;
 
     std::string getString() const;
+
+    VExprNetAssignmentHandle flatten(VExprIdentifierHandle pInstName) const;
 };
 
 #endif // VEXPR_NET_ASSIGNMENT_H

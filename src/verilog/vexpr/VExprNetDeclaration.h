@@ -17,6 +17,7 @@ public:
 
     std::string getString() const;
     std::string getString(unsigned int indentLevel) const;
+    VExprNetDeclarationHandle flatten(VExprIdentifierHandle pInstName) const;
 };
 
 
@@ -35,6 +36,7 @@ public:
     const VExprIdentifierHandle& getIdentifierHandle() const;
 
     std::string getString() const;
+    VExprNetDeclHandle flatten(VExprIdentifierHandle pInstName) const;
 };
 
 #endif // VEXPR_NET_DECLARATION_H

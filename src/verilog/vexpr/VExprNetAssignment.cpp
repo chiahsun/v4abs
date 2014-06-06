@@ -19,3 +19,10 @@ std::string VExprNetAssignment::getString() const {
     return "assign " + getNetLvalueHandle()->getString()
          + "=" + getExpressionHandle()->getString() + ";\n";
 }
+    
+VExprNetAssignmentHandle VExprNetAssignment::flatten(VExprIdentifierHandle pInstName) const {
+    return VExprNetAssignmentHandle(VExprNetAssignment(
+                getNetLvalueHandle()->flatten(pInstName)
+              , getExpressionHandle()->flatten(pInstName)
+            ));
+}

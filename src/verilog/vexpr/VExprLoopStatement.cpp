@@ -51,4 +51,11 @@ std::string VExprLoopStatement::getString(unsigned int indentLevel) const {
     return s;
 }
 
-
+VExprLoopStatementHandle VExprLoopStatement::flatten(VExprIdentifierHandle pInstName) const {
+    return VExprLoopStatementHandle(VExprLoopStatement(
+              getForInitHandle()->flatten(pInstName)
+            , getForCondHandle()->flatten(pInstName)
+            , getForAssignHandle()->flatten(pInstName)
+            , getStatementHandle()->flatten(pInstName)
+            ));
+}

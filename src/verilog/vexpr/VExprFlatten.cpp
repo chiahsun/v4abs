@@ -96,9 +96,18 @@ VExprFlatModuleHandle VExprFlatten::flatten(VExprModuleHandle pModule) {
 
             addSubParameterDeclaration(pFlatModule, pModuleInstance, pFlatSubModule);
             addSubInputDeclaration(pFlatModule, pModuleInstance, pFlatSubModule);
+            addSubOutputDeclaration(pFlatModule, pModuleInstance, pFlatSubModule);
+            addSubInoutDeclaration(pFlatModule, pModuleInstance, pFlatSubModule);
+            addSubConnection(pFlatModule, pModuleInstance, pFlatSubModule);
+            addSubNetDeclaration(pFlatModule, pModuleInstance, pFlatSubModule);
+            addSubRegDeclaration(pFlatModule, pModuleInstance, pFlatSubModule);
+            addSubIntegerDeclaration(pFlatModule, pModuleInstance, pFlatSubModule);
+            
+            addSubAlways(pFlatModule, pModuleInstance, pFlatSubModule);
+            addSubContinuousAssignment(pFlatModule, pModuleInstance, pFlatSubModule);
+            addSubInitial(pFlatModule, pModuleInstance, pFlatSubModule);
         }
 
-        LOG(WARNING) << "Not implemented yet";
     }
 
     return pFlatModule;
@@ -107,6 +116,7 @@ VExprFlatModuleHandle VExprFlatten::flatten(VExprModuleHandle pModule) {
 bool VExprFlatten::isFlatBefore(VExprModuleHandle pModule, unsigned int & flatModuleId) {
     return isFlatBefore(pModule->getModuleName(), flatModuleId);
 }
+
 bool VExprFlatten::isFlatBefore(VExprIdentifierHandle pModuleName, unsigned int & flatModuleId) {
     unsigned int pos = 0;
     FOR_EACH(pFlatModule, _vecFlatModule) {
@@ -132,9 +142,8 @@ void VExprFlatten::addSubInputDeclaration(VExprFlatModuleHandle pFlatModule, VEx
 
     std::vector<VExprIdentifierHandle> vecInputIdentifier;
     std::vector<VExprNetDeclHandle> vecNetDecl;
-    std::vector<VExprNetAssignmentHandle> vecNetAssignment;
     // Add inputs as wire
-    FOR_EACH(pInputDeclaration, pFlatModule->getInputDeclarationContainer()) {
+    FOR_EACH(pInputDeclaration, pFlatSubModule->getInputDeclarationContainer()) {
         FOR_EACH(pInputDecl, pInputDeclaration->getContainer()) {
             VExprIdentifierHandle pInputIdentifier = pInputDecl->getPortDeclarationHandle()->getIdentifierHandle()->flatten(pModuleInstanceName);
             VExprRangeHandle pInputRange = pInputDecl->getPortDeclarationHandle()->getRangeHandle();
@@ -146,19 +155,119 @@ void VExprFlatten::addSubInputDeclaration(VExprFlatModuleHandle pFlatModule, VEx
                 vecNetDecl.push_back(VExprNetDeclHandle(VExprNetDecl(pInputIdentifier)));
             }
         }
-        // TODO add assignment
-        // 1. Named connections
-        if (!pModuleInstance->getListOfModuleConnectionsHandle()->isOrderedPortConnection()) {
-            FOR_EACH(pNamedPort, pModuleInstance->getListOfModuleConnectionsHandle()->getNamedPortConnectionContainer()) {
-                VExprIdentifierHandle pPortIdentifier = pNamedPort->getIdentifierHandle()->flatten(pModuleInstanceName);
-                VExprExpressionHandle pPortExpression = pNamedPort->getExpressionHandle();
-                vecNetAssignment.push_back(VExprNetAssignmentHandle(VExprNetAssignment(VExprNetLvalueHandle(VExprNetLvalue(pPortIdentifier)),  pPortExpression)));
-            }
-        } else { // Orderred connections
-            LOG(ERROR) << "Not implemented yet";
-        }
 
     }
     pFlatModule->addNetDeclaration(VExprNetDeclarationHandle(VExprNetDeclaration(vecNetDecl)));
+}
+    
+void VExprFlatten::addSubOutputDeclaration(VExprFlatModuleHandle pFlatModule, VExprModuleInstanceHandle pModuleInstance, VExprFlatModuleHandle pFlatSubModule) {
+    VExprIdentifierHandle pModuleInstanceName = pModuleInstance->getNameOfInstanceHandle()->getIdentifierHandle();
+
+    std::vector<VExprIdentifierHandle> vecOutputIdentifier;
+    std::vector<VExprNetDeclHandle> vecNetDecl;
+
+
+    FOR_EACH(pOutputDeclaration, pFlatSubModule->getOutputDeclarationContainer()) {
+        FOR_EACH(pOutputDecl, pOutputDeclaration->getContainer()) {
+            VExprIdentifierHandle pOutputIdentifier = pOutputDecl->getPortDeclarationHandle()->getIdentifierHandle()->flatten(pModuleInstanceName);
+            VExprRangeHandle pOutputRange = pOutputDecl->getPortDeclarationHandle()->getRangeHandle();
+            vecOutputIdentifier.push_back(pOutputIdentifier);
+
+            if (pOutputRange.valid()) {
+                vecNetDecl.push_back(VExprNetDeclHandle(VExprNetDecl(pOutputRange, pOutputIdentifier)));
+            } else {
+                vecNetDecl.push_back(VExprNetDeclHandle(VExprNetDecl(pOutputIdentifier)));
+            }
+        }
+    }
+    pFlatModule->addNetDeclaration(VExprNetDeclarationHandle(VExprNetDeclaration(vecNetDecl)));
+}
+
+void VExprFlatten::addSubInoutDeclaration(VExprFlatModuleHandle pFlatModule, VExprModuleInstanceHandle pModuleInstance, VExprFlatModuleHandle pFlatSubModule) {
+    VExprIdentifierHandle pModuleInstanceName = pModuleInstance->getNameOfInstanceHandle()->getIdentifierHandle();
+
+    std::vector<VExprIdentifierHandle> vecInoutIdentifier;
+    std::vector<VExprNetDeclHandle> vecNetDecl;
+
+
+    FOR_EACH(pInoutDeclaration, pFlatSubModule->getInoutDeclarationContainer()) {
+        FOR_EACH(pInoutDecl, pInoutDeclaration->getContainer()) {
+            VExprIdentifierHandle pInoutIdentifier = pInoutDecl->getPortDeclarationHandle()->getIdentifierHandle()->flatten(pModuleInstanceName);
+            VExprRangeHandle pOutputRange = pInoutDecl->getPortDeclarationHandle()->getRangeHandle();
+            vecInoutIdentifier.push_back(pInoutIdentifier);
+
+            if (pOutputRange.valid()) {
+                vecNetDecl.push_back(VExprNetDeclHandle(VExprNetDecl(pOutputRange, pInoutIdentifier)));
+            } else {
+                vecNetDecl.push_back(VExprNetDeclHandle(VExprNetDecl(pInoutIdentifier)));
+            }
+        }
+    }
+    pFlatModule->addNetDeclaration(VExprNetDeclarationHandle(VExprNetDeclaration(vecNetDecl)));
+}
+
+void VExprFlatten::addSubConnection(VExprFlatModuleHandle pFlatModule, VExprModuleInstanceHandle pModuleInstance, VExprFlatModuleHandle pFlatSubModule) {
+    VExprIdentifierHandle pModuleInstanceName = pModuleInstance->getNameOfInstanceHandle()->getIdentifierHandle();
+    std::vector<VExprNetAssignmentHandle> vecNetAssignment;
+    // 1. Named connections
+    if (pModuleInstance->getListOfModuleConnectionsHandle()->isNamedPortConnection()) {
+        FOR_EACH(pNamedPort, pModuleInstance->getListOfModuleConnectionsHandle()->getNamedPortConnectionContainer()) {
+            VExprIdentifierHandle pPortIdentifier = pNamedPort->getIdentifierHandle()->flatten(pModuleInstanceName);
+            VExprExpressionHandle pPortExpression = pNamedPort->getExpressionHandle();
+            vecNetAssignment.push_back(VExprNetAssignmentHandle(VExprNetAssignment(VExprNetLvalueHandle(VExprNetLvalue(pPortIdentifier)),  pPortExpression)));
+            }
+    } else { // Orderred connections
+        LOG(ERROR) << "Not implemented yet";
+    }
     pFlatModule->addContinuousAssignment(VExprContinuousAssignmentHandle(VExprContinuousAssignment(vecNetAssignment)));
+}
+
+    
+void VExprFlatten::addSubNetDeclaration(VExprFlatModuleHandle pFlatModule, VExprModuleInstanceHandle pModuleInstance, VExprFlatModuleHandle pFlatSubModule) {
+    VExprIdentifierHandle pModuleInstanceName = pModuleInstance->getNameOfInstanceHandle()->getIdentifierHandle();
+
+    FOR_EACH(pNetDeclaration, pFlatSubModule->getNetDeclarationContainer()) {
+        pFlatModule->addNetDeclaration(pNetDeclaration->flatten(pModuleInstanceName));
+    }
+}
+
+void VExprFlatten::addSubRegDeclaration(VExprFlatModuleHandle pFlatModule, VExprModuleInstanceHandle pModuleInstance, VExprFlatModuleHandle pFlatSubModule) {
+    VExprIdentifierHandle pModuleInstanceName = pModuleInstance->getNameOfInstanceHandle()->getIdentifierHandle();
+
+    FOR_EACH(pRegDeclaration, pFlatSubModule->getRegDeclarationContainer()) {
+        pFlatModule->addRegDeclaration(pRegDeclaration->flatten(pModuleInstanceName));
+    }
+}
+
+void VExprFlatten::addSubIntegerDeclaration(VExprFlatModuleHandle pFlatModule, VExprModuleInstanceHandle pModuleInstance, VExprFlatModuleHandle pFlatSubModule) {
+    VExprIdentifierHandle pModuleInstanceName = pModuleInstance->getNameOfInstanceHandle()->getIdentifierHandle();
+
+    FOR_EACH(pIntegerDeclaration, pFlatSubModule->getIntegerDeclarationContainer()) {
+        pFlatModule->addIntegerDeclaration(pIntegerDeclaration->flatten(pModuleInstanceName));
+    }
+}
+
+
+void VExprFlatten::addSubAlways(VExprFlatModuleHandle pFlatModule, VExprModuleInstanceHandle pModuleInstance, VExprFlatModuleHandle pFlatSubModule) {
+    VExprIdentifierHandle pModuleInstanceName = pModuleInstance->getNameOfInstanceHandle()->getIdentifierHandle();
+
+    FOR_EACH(pAlways, pFlatSubModule->getAlwaysContainer()) {
+        pFlatModule->addAlways(pAlways->flatten(pModuleInstanceName));
+    }
+}
+    
+void VExprFlatten::addSubContinuousAssignment(VExprFlatModuleHandle pFlatModule, VExprModuleInstanceHandle pModuleInstance, VExprFlatModuleHandle pFlatSubModule) {
+    VExprIdentifierHandle pModuleInstanceName = pModuleInstance->getNameOfInstanceHandle()->getIdentifierHandle();
+
+    FOR_EACH(pContinuousAssignment, pFlatSubModule->getContinuousAssignmentContainer()) {
+        pFlatModule->addContinuousAssignment(pContinuousAssignment->flatten(pModuleInstanceName));
+    }
+}
+
+void VExprFlatten::addSubInitial(VExprFlatModuleHandle pFlatModule, VExprModuleInstanceHandle pModuleInstance, VExprFlatModuleHandle pFlatSubModule) {
+    VExprIdentifierHandle pModuleInstanceName = pModuleInstance->getNameOfInstanceHandle()->getIdentifierHandle();
+    
+    FOR_EACH(pInitial, pFlatSubModule->getInitialContainer()) {
+        pFlatModule->addInitial(pInitial->flatten(pModuleInstanceName));
+    }
 }

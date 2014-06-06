@@ -80,6 +80,9 @@ VExprListOfModuleConnections::VExprListOfModuleConnections(const std::vector<VEx
 
 bool VExprListOfModuleConnections::isOrderedPortConnection() const
   { return _isOrderedPortConnection; }
+    
+bool VExprListOfModuleConnections::isNamedPortConnection() const
+  { return !isOrderedPortConnection(); }
 
 const std::vector<VExprOrderedPortConnectionHandle>& VExprListOfModuleConnections::getOrderedPortConnectionContainer() const
   { return _vecOrderedPortConnection; }

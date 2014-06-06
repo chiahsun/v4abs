@@ -22,6 +22,10 @@ public:
     std::string getString() const;
     std::string getString(unsigned int indentLevel) const;
 
+    std::vector<VExprStatementHandle>& getStatementContainer();
+    const std::vector<VExprStatementHandle>& getStatementContainer() const;
+
+    VExprSeqBlockHandle flatten(VExprIdentifierHandle pInstName) const;
 };
 
 #endif // VEXPR_SEQ_BLOCK_H

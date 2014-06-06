@@ -15,3 +15,6 @@ std::string VExprAlways::getString(unsigned int indentLevel) const {
     return indent(indentLevel) + getStatementHandle()->getString(indentLevel);
 }
 
+VExprAlwaysHandle VExprAlways::flatten(VExprIdentifierHandle pInstName) const {
+    return VExprAlwaysHandle(VExprAlways(getStatementHandle()->flatten(pInstName)));
+}

@@ -57,6 +57,7 @@ public:
     VExprListOfModuleConnections(const std::vector<VExprNamedPortConnectionHandle> & vecNamedPortConnection);
 
     bool isOrderedPortConnection() const;
+    bool isNamedPortConnection() const;
 
     const std::vector<VExprOrderedPortConnectionHandle>& getOrderedPortConnectionContainer() const;
     const std::vector<VExprNamedPortConnectionHandle>& getNamedPortConnectionContainer() const;

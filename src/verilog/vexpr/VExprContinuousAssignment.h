@@ -18,7 +18,11 @@ public:
     unsigned int getNetAssignSize() const;
     VExprNetAssignmentHandle getNetAssign(unsigned int pos) const;
 
+    const std::vector<VExprNetAssignmentHandle>& getNetAssignmentContainer() const;
+
     std::string getString() const;
+
+    VExprContinuousAssignmentHandle flatten(VExprIdentifierHandle pInstName) const;
 };
 
 #endif // VEXPR_CONTINUOUS_ASSIGNMENT_H

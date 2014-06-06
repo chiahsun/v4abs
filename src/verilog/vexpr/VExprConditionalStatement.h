@@ -26,6 +26,8 @@ public:
 
     std::string getString() const;
     std::string getString(unsigned int indentLevel) const;
+
+    VExprConditionalStatementHandle flatten(VExprIdentifierHandle pInstName) const;
 };
 
 #endif // VEXPR_CONDITIONAL_STATEMENT_H

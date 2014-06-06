@@ -33,6 +33,7 @@ public:
     VExprConcatenationHandle getConcatenationHandle() const;
 
     std::string getString() const;
+    VExprRegLvalueHandle flatten(VExprIdentifierHandle pInstName) const;
 };
 
 #endif // VEXPR_REG_LVALUE_H

@@ -21,6 +21,8 @@ public:
 
     VExprStatementHandle toStatementHandle() const;
     VExprStatementOrNullHandle toStatementOrNullHandle() const;
+
+    VExprNonBlockingAssignmentHandle flatten(VExprIdentifierHandle pInstName) const;
 };
 
 

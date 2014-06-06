@@ -10,6 +10,8 @@ public:
     VExprStatementHandle getStatementHandle() const;
     std::string getString() const;
     std::string getString(unsigned int indentLevel) const;
+
+    VExprAlwaysHandle flatten(VExprIdentifierHandle pInstName) const;
 };
 
 #endif // VEXPR_ALWAYS_H

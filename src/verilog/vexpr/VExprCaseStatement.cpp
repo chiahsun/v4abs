@@ -46,10 +46,22 @@ std::string VExprCaseStatement::getString(unsigned int indentLevel) const {
 VExprStatementHandle VExprCaseStatement::toStatemetHandle() const {
     return VExprStatementHandle(VExprStatement(VExprCaseStatementHandle(*this)));
 }
+
 VExprStatementOrNullHandle VExprCaseStatement::toStatemetOrNullHandle() const {
     return VExprStatementOrNullHandle(VExprStatementOrNull(toStatemetHandle()));
 }
     
+VExprCaseStatementHandle VExprCaseStatement::flatten(VExprIdentifierHandle pInstName) const {
+    VExprExpressionHandle pFlatExpr = getConstExpressionHandle()->flatten(pInstName);
+    std::vector<VExprCaseItemHandle> vecFlatCaseItem;
+
+    CONST_FOR_EACH(pCaseItem, getConstCaseItemContainer()) {
+        vecFlatCaseItem.push_back(pCaseItem->flatten(pInstName));
+    }
+
+    return VExprCaseStatementHandle(VExprCaseStatement(pFlatExpr, vecFlatCaseItem));
+}
+
 VExprCaseItem::VExprCaseItem(VExprExpressionHandle pExpr, VExprStatementOrNullHandle pStatementOrNull) {
     _vecExpression.push_back(pExpr);
     _pStatementOrNull = pStatementOrNull;
@@ -92,4 +104,15 @@ std::string VExprCaseItem::getString(unsigned int indentLevel) const  {
     }
     s += getStatementOrNullHandle()->getString(indentLevel+2);
     return s;
+}
+    
+VExprCaseItemHandle VExprCaseItem::flatten(VExprIdentifierHandle pInstName) const {
+    std::vector<VExprExpressionHandle> vecFlatExpression;
+    VExprStatementOrNullHandle pFlatStatementOrNull = getStatementOrNullHandle()->flatten(pInstName);
+
+    CONST_FOR_EACH(pExpression, getExpressionHandleContainer()) {
+        vecFlatExpression.push_back(pExpression->flatten(pInstName));
+    }
+
+    return VExprCaseItemHandle(VExprCaseItem(vecFlatExpression, pFlatStatementOrNull));
 }

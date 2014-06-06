@@ -18,6 +18,8 @@ public:
 
     std::string getString() const;
     std::string getString(unsigned int indentLevel) const;
+
+    VExprBlockingAssignmentHandle flatten(VExprIdentifierHandle pInstName) const;
 };
 
 #endif // VEXPR_BLOCKING_ASSIGNMENT_H

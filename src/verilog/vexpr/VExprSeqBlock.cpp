@@ -1,5 +1,6 @@
 #include "VExprSeqBlock.h"
 #include "Indent.h"
+#include "nstl/for_each/ForEach.h"
 
 VExprSeqBlockHandle vexpr_seq_block_mk() {
     return VExprSeqBlockHandle(VExprSeqBlock());
@@ -28,6 +29,12 @@ unsigned int VExprSeqBlock::getStatementHandleSize() const
     
 VExprStatementHandle VExprSeqBlock::getStatementHandle(unsigned int pos) const
   { return _vecStatement[pos]; }
+    
+std::vector<VExprStatementHandle>& VExprSeqBlock::getStatementContainer()
+  { return _vecStatement; }
+
+const std::vector<VExprStatementHandle>& VExprSeqBlock::getStatementContainer() const
+  { return _vecStatement; }
 
 std::string VExprSeqBlock::getString() const
   { return getString(0); }
@@ -38,4 +45,14 @@ std::string VExprSeqBlock::getString(unsigned int indentLevel) const {
         s = s + getStatementHandle(i)->getString(indentLevel+1);
     s = s + indent(indentLevel) + "end\n";
     return s;
+}
+    
+VExprSeqBlockHandle VExprSeqBlock::flatten(VExprIdentifierHandle pInstName) const {
+    std::vector<VExprStatementHandle> vecFlatStatement;
+
+    CONST_FOR_EACH(pStatement, getStatementContainer()) {
+        vecFlatStatement.push_back(pStatement->flatten(pInstName));
+    }
+
+    return VExprSeqBlockHandle(VExprSeqBlock(vecFlatStatement));
 }

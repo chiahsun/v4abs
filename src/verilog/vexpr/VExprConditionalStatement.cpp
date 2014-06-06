@@ -49,3 +49,16 @@ std::string VExprConditionalStatement::getString(unsigned int indentLevel) const
          
     return s;
 }
+    
+VExprConditionalStatementHandle VExprConditionalStatement::flatten(VExprIdentifierHandle pInstName) const {
+    VExprExpressionHandle pFlatIf = getIf()->flatten(pInstName);
+    VExprStatementOrNullHandle pFlatThen = getThen()->flatten(pInstName);
+
+    if (getElse().valid()) {
+        VExprStatementOrNullHandle pFlatElse = getElse()->flatten(pInstName);
+        return VExprConditionalStatementHandle(VExprConditionalStatement(pFlatIf, pFlatThen, pFlatElse));
+    } else {
+        return VExprConditionalStatementHandle(VExprConditionalStatement(pFlatIf, pFlatThen));
+    }
+    assert(0);
+}

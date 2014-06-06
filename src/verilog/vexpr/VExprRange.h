@@ -15,6 +15,8 @@ public:
     VExprConstantExpressionHandle getSnd() const;
 
     std::string getString() const;
+
+    VExprRangeHandle flatten(VExprIdentifierHandle pInstName) const;
 };
 
 #endif // VEXPR_RANGE_H

@@ -11,6 +11,7 @@ public:
     std::string getString() const;
     std::string getString(unsigned int indentLevel) const;
 
+    VExprInitialHandle flatten(VExprIdentifierHandle pInstName) const;
 };
 
 #endif // VEXPR_INITIAL_H

@@ -23,6 +23,16 @@ std::string VExprRegDeclaration::getString(unsigned int indentLevel) const {
 
     return s;
 }
+    
+VExprRegDeclarationHandle VExprRegDeclaration::flatten(VExprIdentifierHandle pInstName) const {
+    std::vector<VExprRegDeclHandle> vecFlatRegDecl;
+
+    CONST_FOR_EACH(pRegDecl, getContainer()) {
+        vecFlatRegDecl.push_back(pRegDecl->flatten(pInstName));
+    }
+
+    return VExprRegDeclarationHandle(VExprRegDeclaration(vecFlatRegDecl));
+}
 
 
 VExprRegDecl::VExprRegDecl(VExprRegisterNameHandle pRegisterName)
@@ -55,3 +65,14 @@ std::string VExprRegDecl::getString() const {
     return s;
 }
 
+VExprRegDeclHandle VExprRegDecl::flatten(VExprIdentifierHandle pInstName) const {
+    VExprRegisterNameHandle pFlatRegisterName = getRegisterNameHandle()->flatten(pInstName);
+
+    if (getRangeHandle().valid()) {
+        VExprRangeHandle pFlatRange = getRangeHandle()->flatten(pInstName);
+        return VExprRegDeclHandle(VExprRegDecl(pFlatRange, pFlatRegisterName));
+    } else {
+        return VExprRegDeclHandle(VExprRegDecl(pFlatRegisterName));
+    }
+    assert(0);
+}

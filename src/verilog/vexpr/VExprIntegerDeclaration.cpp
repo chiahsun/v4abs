@@ -28,3 +28,11 @@ std::string VExprIntegerDeclaration::getString(unsigned int indentLevel) const {
     s += ";\n";
     return s;
 }
+ 
+VExprIntegerDeclarationHandle VExprIntegerDeclaration::flatten(VExprIdentifierHandle pInstName) const {
+    std::vector<VExprRegisterNameHandle> vecFlatRegisterName;
+    CONST_FOR_EACH(pRegisterName, getContainer()) {
+        vecFlatRegisterName.push_back(pRegisterName);
+    }
+    return VExprIntegerDeclarationHandle(VExprIntegerDeclaration(vecFlatRegisterName));
+}

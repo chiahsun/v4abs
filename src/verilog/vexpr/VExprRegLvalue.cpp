@@ -1,4 +1,5 @@
 #include "VExprRegLvalue.h"
+#include "utility/log/Log.h"
 
 VExprRegLvalueHandle vexpr_reg_lvalue_mk_identifier(VExprIdentifierHandle pIdentifier) {
     return VExprRegLvalueHandle(VExprRegLvalue(pIdentifier));
@@ -51,4 +52,17 @@ VExprConcatenationHandle VExprRegLvalue::getConcatenationHandle() const
 
 std::string VExprRegLvalue::getString() const {
     return _pInterface->getString();
+}
+    
+VExprRegLvalueHandle VExprRegLvalue::flatten(VExprIdentifierHandle pInstName) const {
+    if (getIdentifierHandle().valid()) {
+        return VExprRegLvalueHandle(VExprRegLvalue(getIdentifierHandle()->flatten(pInstName)));
+    } else if (getSelectIdentifierHandle().valid()) {
+        return VExprRegLvalueHandle(VExprRegLvalue(getSelectIdentifierHandle()->flatten(pInstName)));
+    } else if (getConcatenationHandle().valid()) {
+        return VExprRegLvalueHandle(VExprRegLvalue(getConcatenationHandle()->flatten(pInstName)));
+    } else {
+        LOG(ERROR) << "No such branch";
+    }
+    assert(0);
 }

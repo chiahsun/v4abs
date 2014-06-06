@@ -62,6 +62,7 @@ public:
     std::string getString() const;
 
     VExprPrimaryHandle flatten(VExprIdentifierHandle pInstName) const;
+    VExprConstantPrimaryHandle toConstantPrimaryHandle() const;
 };
 
 

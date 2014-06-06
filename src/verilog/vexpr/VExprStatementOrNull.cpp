@@ -1,5 +1,6 @@
 #include "VExprStatementOrNull.h"
 #include "Indent.h"
+#include "utility/log/Log.h"
 
 VExprStatementOrNullHandle vexpr_statement_or_null_mk_null() {
     return VExprStatementOrNullHandle(VExprStatementOrNull(VExprNull::getNull()));
@@ -31,6 +32,17 @@ std::string VExprStatementOrNull::getString() const {
 
 std::string VExprStatementOrNull::getString(unsigned int indentLevel) const
   { return _pInterface->getString(indentLevel); }
+    
+VExprStatementOrNullHandle VExprStatementOrNull::flatten(VExprIdentifierHandle pInstName) const {
+    if (getStatementHandle().valid()) {
+        return VExprStatementOrNullHandle(VExprStatementOrNull(getStatementHandle()->flatten(pInstName)));
+    } else if (getNullHandle().valid()) {
+        return VExprStatementOrNullHandle(VExprStatementOrNull(getNullHandle()));
+    } else {
+        LOG(ERROR) << "No such branch";
+    }
+    assert(0);
+}
     
 VExprNullHandle VExprNull::getNull() {
     static VExprNullHandle pNull = VExprNullHandle(VExprNull());

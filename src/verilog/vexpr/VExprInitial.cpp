@@ -13,3 +13,7 @@ std::string VExprInitial::getString() const
 std::string VExprInitial::getString(unsigned int indentLevel) const {
     return "initial " + getStatementHandle()->getString(indentLevel);
 }
+    
+VExprInitialHandle VExprInitial::flatten(VExprIdentifierHandle pInstName) const {
+    return VExprInitialHandle(VExprInitial(getStatementHandle()->flatten(pInstName)));
+}

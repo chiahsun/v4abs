@@ -23,6 +23,14 @@ std::string VExprNetDeclaration::getString(unsigned int indentLevel) const {
     return s;
 }
     
+VExprNetDeclarationHandle VExprNetDeclaration::flatten(VExprIdentifierHandle pInstName) const {
+    std::vector<VExprNetDeclHandle> vecFlatNetDecl;
+    CONST_FOR_EACH(pNetDecl, getContainer()) { 
+        vecFlatNetDecl.push_back(pNetDecl->flatten(pInstName));
+    }
+    return VExprNetDeclarationHandle(VExprNetDeclaration(vecFlatNetDecl));
+}
+    
 VExprNetDecl::VExprNetDecl(VExprIdentifierHandle pIdentifier)
   : _pIdentifier(pIdentifier)
   { }
@@ -46,4 +54,14 @@ const VExprIdentifierHandle& VExprNetDecl::getIdentifierHandle() const
 
 std::string VExprNetDecl::getString() const {
     return "wire " + (getRangeHandle().valid() ? getRangeHandle()->getString() : "") + (getRangeHandle().valid() ? " " : "") + getIdentifierHandle()->getString() + ";\n";
+}
+    
+VExprNetDeclHandle VExprNetDecl::flatten(VExprIdentifierHandle pInstName) const {
+    VExprIdentifierHandle pFlatIdentifier = getIdentifierHandle()->flatten(pInstName);
+    if (getRangeHandle().valid()) {
+        VExprRangeHandle pFlatRange = getRangeHandle()->flatten(pInstName);
+        return VExprNetDeclHandle(VExprNetDecl(pFlatRange, pFlatIdentifier));
+    } else {
+        return VExprNetDeclHandle(VExprNetDecl(pFlatIdentifier));
+    }
 }

@@ -25,3 +25,10 @@ std::string VExprBlockingAssignment::getString(unsigned int indentLevel) const {
          + " = "
          + getExpressionHandle()->getString();
 }
+    
+VExprBlockingAssignmentHandle VExprBlockingAssignment::flatten(VExprIdentifierHandle pInstName) const {
+    return VExprBlockingAssignmentHandle(VExprBlockingAssignment(
+                getRegLvalueHandle()->flatten(pInstName)
+              , getExpressionHandle()->flatten(pInstName)
+            ));
+}

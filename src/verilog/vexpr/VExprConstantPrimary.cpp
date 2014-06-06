@@ -1,4 +1,5 @@
 #include "VExprConstantPrimary.h"
+#include "utility/log/Log.h"
 
 VExprConstantPrimaryHandle vexpr_constant_primary_mk_unsigned_number(unsigned int num) {
     return VExprConstantPrimaryHandle(VExprConstantPrimary(vexpr_number_mk_unsigned_number(num)));
@@ -91,4 +92,19 @@ std::string VExprConstantPrimary::getString() const {
     
 size_t VExprConstantPrimary::getSize() const {
     return _pInterface->getSize();
+}
+    
+VExprConstantPrimaryHandle VExprConstantPrimary::flatten(VExprIdentifierHandle pInstName) const {
+    if (getNumberHandle().valid()) {
+        return VExprConstantPrimaryHandle(VExprConstantPrimary(getNumberHandle()->flatten(pInstName)));
+    } else if (getIdentifierHandle().valid()) {
+        return VExprConstantPrimaryHandle(VExprConstantPrimary(getIdentifierHandle()->flatten(pInstName)));
+    } else if (getConcatenationHandle().valid()) {
+        return VExprConstantPrimaryHandle(VExprConstantPrimary(getConcatenationHandle()->flatten(pInstName)));
+    } else if (getMultipleConcatenationHandle().valid()) {
+        return VExprConstantPrimaryHandle(VExprConstantPrimary(getMultipleConcatenationHandle()->flatten(pInstName)));
+    } else {
+        LOG(ERROR) << "No such branch";
+    }
+    assert(0);
 }

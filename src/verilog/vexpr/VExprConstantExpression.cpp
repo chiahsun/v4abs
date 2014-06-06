@@ -1,5 +1,6 @@
 #include "VExprConstantExpression.h"
 #include "exception/Exception.h"
+#include "utility/log/Log.h"
 
 VExprConstantExpressionHandle vexpr_constant_expression_mk_unsigned_number(unsigned int unsignedNumber) {
     return VExprConstantExpressionHandle(VExprConstantExpression(vexpr_constant_primary_mk_unsigned_number(unsignedNumber)));
@@ -123,6 +124,23 @@ std::string VExprConstantExpression::getString() const {
     return _pInterface->getString();
 }
     
+VExprConstantExpressionHandle VExprConstantExpression::flatten(VExprIdentifierHandle pInstName) const {
+    if (getConstantPrimaryHandle().valid()) {
+        return VExprConstantExpressionHandle(VExprConstantExpression(getConstantPrimaryHandle()->flatten(pInstName)));
+    } else if (getConstantUnaryhandle().valid()) {
+        return VExprConstantExpressionHandle(VExprConstantExpression(getConstantUnaryhandle()->flatten(pInstName)));
+    } else if (getConstantBinaryHandle().valid()) {
+        return VExprConstantExpressionHandle(VExprConstantExpression(getConstantBinaryHandle()->flatten(pInstName)));
+    } else if (getConstantTernaryHandle().valid()) {
+        return VExprConstantExpressionHandle(VExprConstantExpression(getConstantTernaryHandle()->flatten(pInstName)));
+    } else if (getBoolHandle().valid()) {
+        return VExprConstantExpressionHandle(VExprConstantExpression(getBoolHandle()));
+    } else {
+        LOG(ERROR) << "No such branch";
+    }
+    assert(0);
+}
+    
 //size_t VExprConstantExpression::getSize() const {
 //    return _pInterface->getSize();
 //}
@@ -146,6 +164,10 @@ std::string VExprConstantUnary::getOpTypeSymbol() const {
 
 std::string VExprConstantUnary::getString() const {
     return getOpTypeSymbol() + getConstantPrimaryHandle()->getString();
+}
+    
+VExprConstantUnaryHandle VExprConstantUnary::flatten(VExprIdentifierHandle pInstName) const {
+    return VExprConstantUnaryHandle(VExprConstantUnary(getOpType(), getConstantPrimaryHandle()->flatten(pInstName)));
 }
 
 VExprConstantBinary::VExprConstantBinary(VExprConstantExpressionHandle pExprFst, BinaryOpType opType, VExprConstantExpressionHandle pExprSnd)
@@ -173,6 +195,10 @@ std::string VExprConstantBinary::getString() const {
                + ")";
 }
     
+VExprConstantBinaryHandle VExprConstantBinary::flatten(VExprIdentifierHandle pInstName) const {
+    return VExprConstantBinaryHandle(VExprConstantBinary(getExprFst()->flatten(pInstName), getOpType(), getExprSnd()->flatten(pInstName)));
+}
+    
 VExprConstantTernary::VExprConstantTernary(VExprConstantExpressionHandle pIf, VExprConstantExpressionHandle pThen, VExprConstantExpressionHandle pElse)
   : _pIf(pIf)
   , _pThen(pThen)
@@ -193,4 +219,8 @@ std::string VExprConstantTernary::getString() const {
          + " ? " + getThen()->getString()
          + " : " + getElse()->getString()
          + ")";
+}
+    
+VExprConstantTernaryHandle VExprConstantTernary::flatten(VExprIdentifierHandle pInstName) const {
+    return VExprConstantTernaryHandle(VExprConstantTernary(getIf()->flatten(pInstName), getThen()->flatten(pInstName), getElse()->flatten(pInstName)));
 }

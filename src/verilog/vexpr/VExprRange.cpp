@@ -21,3 +21,10 @@ std::string VExprRange::getString() const {
                + getSnd()->getString()
                + "]";
 }
+    
+VExprRangeHandle VExprRange::flatten(VExprIdentifierHandle pInstName) const {
+    return VExprRangeHandle(VExprRange(
+             getFst()->flatten(pInstName)
+           , getSnd()->flatten(pInstName)
+           ));
+}

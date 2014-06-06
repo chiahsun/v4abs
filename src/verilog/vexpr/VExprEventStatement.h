@@ -20,6 +20,8 @@ public:
 
     std::string getString() const;
     std::string getString(unsigned int indentLevel) const;
+
+    VExprEventStatementHandle flatten(VExprIdentifierHandle pInstName) const;
 };
 
 class VExprEventExpression {
@@ -29,13 +31,17 @@ public:
     VExprEventExpression(VExprEventHandle pEvent);
     // Join two event expression
     VExprEventExpression(VExprEventExpressionHandle pFst, VExprEventExpressionHandle pSnd);
+    VExprEventExpression(std::vector<VExprEventHandle> vecEvent);
     static VExprEventExpressionHandle getEmptyEventExpressionHandle();
     void push_back(VExprEventHandle pEvent);
 
     unsigned int getEventHandleSize() const;
     VExprEventHandle getEventHandle(unsigned int pos) const;
+    const std::vector<VExprEventHandle> & getEventHandleContainer() const;
 
-    std::string getString() const;        
+    std::string getString() const;
+
+    VExprEventExpressionHandle flatten(VExprIdentifierHandle pInstName) const;
 };
 
 class VExprEvent {
@@ -57,6 +63,8 @@ public:
     VExprNegedgeEventHandle getNegedgeEventHandle() const;
 
     std::string getString() const;
+
+    VExprEventHandle flatten(VExprIdentifierHandle pInstName) const;
 };
 
 class VExprPosedgeEvent : public VExprEventInterface {
@@ -67,6 +75,8 @@ public:
     VExprExpressionHandle getExpr() const;
 
     std::string getString() const;
+    
+    VExprPosedgeEventHandle flatten(VExprIdentifierHandle pInstName) const;
 };
 
 
@@ -78,6 +88,8 @@ public:
     VExprExpressionHandle getExpr() const;
 
     std::string getString() const;
+
+    VExprNegedgeEventHandle flatten(VExprIdentifierHandle pInstName) const;
 };
 
 #endif // VEXPR_EVENT_STATEMENT_H

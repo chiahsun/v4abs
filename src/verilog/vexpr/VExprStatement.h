@@ -63,6 +63,8 @@ public:
     std::string getString(unsigned int indentLevel) const;
 
     VExprStatementOrNullHandle toStatementOrNullHandle() const;
+
+    VExprStatementHandle flatten(VExprIdentifierHandle pInstName) const;
 };
 
 #endif // VEXPR_STATEMENT_H

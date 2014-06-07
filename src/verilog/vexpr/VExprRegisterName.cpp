@@ -44,7 +44,7 @@ VExprRegisterNameHandle VExprRegisterName::flatten(VExprIdentifierHandle pInstNa
     VExprIdentifierHandle pFlatIdentifier = getIdentifierHandle()->flatten(pInstName);
     std::vector<VExprRangeHandle> vecFlatRange;
     CONST_FOR_EACH(pRange, getRangeHandleContainer()) {
-        vecFlatRange.push_back(pRange);
+        vecFlatRange.push_back(pRange->flatten(pInstName));
     }
 
     return VExprRegisterNameHandle(VExprRegisterName(pFlatIdentifier, vecFlatRange));

@@ -1,6 +1,7 @@
 #ifndef HASH_TABLE_H
 #define HASH_TABLE_H
 
+#include <cstdlib>
 #include "HashTableInterface.h"
 #include "LinearProbingHash.h"
 

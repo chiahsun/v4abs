@@ -75,7 +75,7 @@ public:
             return !this->operator == (rhs);
         }
 
-        const_reference_type operator * () {
+        reference_type operator * () {
             return *((*_pVec)[_index]);
         }
 
@@ -217,8 +217,11 @@ public:
     inline size_t size() const { return _size; }
 
     void insert(const_reference_type value) {
-        if (cfind(value) != cend())
+        iterator it = end();
+        if ((it = find(value)) != end()) {
+            (*it) = value;
             return;
+        }
 //        bool ok = 
         int insertPos = insert_helper(_vecPointer, value);
         if (insertPos >= 0) {

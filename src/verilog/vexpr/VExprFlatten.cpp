@@ -140,14 +140,12 @@ void VExprFlatten::addSubParameterDeclaration(VExprFlatModuleHandle pFlatModule,
 void VExprFlatten::addSubInputDeclaration(VExprFlatModuleHandle pFlatModule, VExprModuleInstanceHandle pModuleInstance, VExprFlatModuleHandle pFlatSubModule) {
     VExprIdentifierHandle pModuleInstanceName = pModuleInstance->getNameOfInstanceHandle()->getIdentifierHandle();
 
-    std::vector<VExprIdentifierHandle> vecInputIdentifier;
     std::vector<VExprNetDeclHandle> vecNetDecl;
     // Add inputs as wire
     FOR_EACH(pInputDeclaration, pFlatSubModule->getInputDeclarationContainer()) {
         FOR_EACH(pInputDecl, pInputDeclaration->getContainer()) {
             VExprIdentifierHandle pInputIdentifier = pInputDecl->getPortDeclarationHandle()->getIdentifierHandle()->flatten(pModuleInstanceName);
             VExprRangeHandle pInputRange = pInputDecl->getPortDeclarationHandle()->getRangeHandle();
-            vecInputIdentifier.push_back(pInputIdentifier);
 
             if (pInputRange.valid()) {
                 vecNetDecl.push_back(VExprNetDeclHandle(VExprNetDecl(pInputRange, pInputIdentifier)));
@@ -163,7 +161,6 @@ void VExprFlatten::addSubInputDeclaration(VExprFlatModuleHandle pFlatModule, VEx
 void VExprFlatten::addSubOutputDeclaration(VExprFlatModuleHandle pFlatModule, VExprModuleInstanceHandle pModuleInstance, VExprFlatModuleHandle pFlatSubModule) {
     VExprIdentifierHandle pModuleInstanceName = pModuleInstance->getNameOfInstanceHandle()->getIdentifierHandle();
 
-    std::vector<VExprIdentifierHandle> vecOutputIdentifier;
     std::vector<VExprNetDeclHandle> vecNetDecl;
 
 
@@ -171,7 +168,6 @@ void VExprFlatten::addSubOutputDeclaration(VExprFlatModuleHandle pFlatModule, VE
         FOR_EACH(pOutputDecl, pOutputDeclaration->getContainer()) {
             VExprIdentifierHandle pOutputIdentifier = pOutputDecl->getPortDeclarationHandle()->getIdentifierHandle()->flatten(pModuleInstanceName);
             VExprRangeHandle pOutputRange = pOutputDecl->getPortDeclarationHandle()->getRangeHandle();
-            vecOutputIdentifier.push_back(pOutputIdentifier);
 
             if (pOutputRange.valid()) {
                 vecNetDecl.push_back(VExprNetDeclHandle(VExprNetDecl(pOutputRange, pOutputIdentifier)));
@@ -186,7 +182,6 @@ void VExprFlatten::addSubOutputDeclaration(VExprFlatModuleHandle pFlatModule, VE
 void VExprFlatten::addSubInoutDeclaration(VExprFlatModuleHandle pFlatModule, VExprModuleInstanceHandle pModuleInstance, VExprFlatModuleHandle pFlatSubModule) {
     VExprIdentifierHandle pModuleInstanceName = pModuleInstance->getNameOfInstanceHandle()->getIdentifierHandle();
 
-    std::vector<VExprIdentifierHandle> vecInoutIdentifier;
     std::vector<VExprNetDeclHandle> vecNetDecl;
 
 
@@ -194,7 +189,6 @@ void VExprFlatten::addSubInoutDeclaration(VExprFlatModuleHandle pFlatModule, VEx
         FOR_EACH(pInoutDecl, pInoutDeclaration->getContainer()) {
             VExprIdentifierHandle pInoutIdentifier = pInoutDecl->getPortDeclarationHandle()->getIdentifierHandle()->flatten(pModuleInstanceName);
             VExprRangeHandle pOutputRange = pInoutDecl->getPortDeclarationHandle()->getRangeHandle();
-            vecInoutIdentifier.push_back(pInoutIdentifier);
 
             if (pOutputRange.valid()) {
                 vecNetDecl.push_back(VExprNetDeclHandle(VExprNetDecl(pOutputRange, pInoutIdentifier)));

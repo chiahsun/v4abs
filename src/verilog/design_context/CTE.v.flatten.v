@@ -1,4 +1,3 @@
-LOG(WARNING) : Not implemented yet      (VExprFlatten.cpp : 111)
 module CTE(clk, reset, op_mode, in_en, yuv_in, rgb_in, busy, out_valid, rgb_out, yuv_out);
 
 input clk;

@@ -1,0 +1,19 @@
+1. C++ TR1 unordered map interface
+   - The internal implementation is hash table
+     http://www.cplusplus.com/reference/unordered_map/unordered_map/
+
+
+2. Google sparse hash @ googlecode
+   https://code.google.com/p/sparsehash/
+
+3. A comparison of hash table implementaions in C++
+   http://attractivechaos.wordpress.com/2008/08/28/comparison-of-hash-table-libraries/
+
+4. SGI hash map interface
+   http://www.sgi.com/tech/stl/hash_map.html
+
+5. CPP reference container unordered_map
+   http://en.cppreference.com/w/cpp/container
+
+6. JAVA HashMap interface
+   http://docs.oracle.com/javase/7/docs/api/java/util/HashMap.html

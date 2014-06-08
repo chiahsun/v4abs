@@ -3,6 +3,7 @@
 #include "VExprSelect.h"
 #include "exception/Exception.h"
 #include "utility/log/Log.h"
+#include "nstl/hash/HashFunction.h"
 
 VExprPrimaryHandle vexpr_primary_mk_unsigned_number(unsigned int unsignedNumber) {
     return VExprPrimaryHandle(VExprPrimary(vexpr_number_mk_unsigned_number(unsignedNumber)));
@@ -152,3 +153,6 @@ VExprConstantPrimaryHandle VExprPrimary::toConstantPrimaryHandle() const {
     }
     assert(0);
 }
+
+int VExprPrimary::hashFunction() const
+  { return HashFunction<std::string>::hashFunction(getString()); }

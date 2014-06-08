@@ -5,6 +5,7 @@
 #include "VExprRegLvalue.h"
 #include "VExprNetLvalue.h"
 #include "utility/log/Log.h"
+#include "nstl/hash/HashFunction.h"
 
 VExprIdentifierHandle vexpr_identifier_mk_single_identifier(std::string identifier, size_t size) {
     return VExprIdentifierHandle(VExprIdentifier(VExprSingleIdentifierHandle(VExprSingleIdentifier(identifier, size))));
@@ -36,6 +37,10 @@ std::vector<std::string> VExprIdentifierInterface::getStringContainer() const
     
 VExprIdentifierHandle VExprIdentifierInterface::flatten(VExprIdentifierHandle pInstName) const
   { throw NotImplementedException(); }
+    
+int VExprIdentifierInterface::hashFunction() const
+  { throw NotImplementedException(); }
+
 
 VExprIdentifier::VExprIdentifier(VExprSingleIdentifierHandle pSingleIdentifier)
   : _pInterface(shared_ptr_cast<VExprIdentifierInterface>(pSingleIdentifier))
@@ -78,6 +83,9 @@ VExprRegLvalueHandle VExprIdentifier::toRegLvalueHandle() const {
 VExprNetLvalueHandle VExprIdentifier::toNetLvalueHandle() const {
     return VExprNetLvalueHandle(VExprNetLvalue(VExprIdentifierHandle(*this)));
 }
+    
+int VExprIdentifier::hashFunction() const
+  { return _pInterface->hashFunction(); }
 
 VExprIdentifierHandle makeHierIdentifier(VExprIdentifierHandle pPrefixIdentifier, VExprIdentifierHandle pIdentifier) {
     return makeHierIdentifier(pPrefixIdentifier, *pIdentifier);
@@ -112,6 +120,9 @@ std::vector<std::string> VExprSingleIdentifier::getStringContainer() const {
     vecString.push_back(_identifier);
     return vecString;
 }
+    
+int VExprSingleIdentifier::hashFunction() const
+  { return HashFunction<std::string>::hashFunction(getString()); }
 
 VExprHierIdentifier::VExprHierIdentifier(std::string prefix, std::string identifier, size_t size) {
     _vecPrefix.push_back(prefix);
@@ -158,3 +169,7 @@ std::vector<std::string> VExprHierIdentifier::getStringContainer() const {
     vecString.insert(vecString.end(), _vecPrefix.begin(), _vecPrefix.end());
     return vecString;
 }
+
+int VExprHierIdentifier::hashFunction() const
+  { return HashFunction<std::string>::hashFunction(getString()); }
+    

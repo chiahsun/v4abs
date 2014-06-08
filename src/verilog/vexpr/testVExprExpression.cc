@@ -37,7 +37,7 @@ void test_ternary() {
         VExprExpressionHandle pTernary = vexpr_expression_mk_ternary( vexpr_expression_mk_true()
                                                                     , vexpr_expression_mk_true()
                                                                     , vexpr_expression_mk_false());
-        assertEqual("(true?true:false)", pTernary->getString(), "Test ternary get string");
+        assertEqual("(true ? true : false)", pTernary->getString(), "Test ternary get string");
     }
     UNIT_TEST_FUNCTION_END_FUNCTION_TEST();
 }

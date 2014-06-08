@@ -69,6 +69,8 @@ public:
     VExprExpressionHandle flatten(VExprIdentifierHandle pInstName) const;
     VExprNetLvalueHandle toNetLvalueHandle() const;
     VExprConstantExpressionHandle toConstantExpressionHandle() const;
+
+    int hashFunction() const;
 };
 
 class VExprUnary : public VExprExpressionInterface {

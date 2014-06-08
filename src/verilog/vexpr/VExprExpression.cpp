@@ -2,6 +2,7 @@
 #include "utility/log/Log.h"
 #include "exception/Exception.h"
 #include "VExprNetLvalue.h"
+#include "nstl/hash/HashFunction.h"
 
 VExprExpressionHandle vexpr_expression_mk_unsigned_number(unsigned int unsignedNumber) {
     return VExprExpressionHandle(VExprExpression(vexpr_primary_mk_unsigned_number(unsignedNumber)));
@@ -225,6 +226,9 @@ VExprConstantExpressionHandle VExprExpression::toConstantExpressionHandle() cons
     }
     assert(0);
 }
+
+int VExprExpression::hashFunction() const
+  { return HashFunction<std::string>::hashFunction(getString()); }
 
 VExprUnary::VExprUnary(UnaryOpType opType, VExprPrimaryHandle pPrimary)
   : _opType(opType)

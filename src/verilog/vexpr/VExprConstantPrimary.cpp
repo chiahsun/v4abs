@@ -108,3 +108,19 @@ VExprConstantPrimaryHandle VExprConstantPrimary::flatten(VExprIdentifierHandle p
     }
     assert(0);
 }
+    
+VExprPrimaryHandle VExprConstantPrimary::toPrimaryHandle() const {
+    if (getNumberHandle().valid()) {
+        return VExprPrimaryHandle(VExprPrimary(getNumberHandle()));
+    } else if (getIdentifierHandle().valid()) {
+        return VExprPrimaryHandle(VExprPrimary(getIdentifierHandle()));
+    } else if (getConcatenationHandle().valid()) {
+        return VExprPrimaryHandle(VExprPrimary(getConcatenationHandle()));
+    } else if (getMultipleConcatenationHandle().valid()) {
+        return VExprPrimaryHandle(VExprPrimary(getMultipleConcatenationHandle()));
+    } else {
+        LOG(ERROR) << "Cannot convert to primary for " << getString();
+    }
+    assert(0);
+    
+}

@@ -11,6 +11,7 @@ class VExprNetLvalueInterface {
 public:
     virtual ~VExprNetLvalueInterface();
     virtual std::string getString() const;
+    virtual int hashFunction() const;
 };
 
 #endif // VEXPR_NET_LVALUE_INTERFACE_H

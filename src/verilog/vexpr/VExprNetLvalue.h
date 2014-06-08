@@ -33,6 +33,8 @@ public:
     std::string getString() const;
 
     VExprNetLvalueHandle flatten(VExprIdentifierHandle pInstName) const;
+
+    VExprExpressionHandle toExpressionHandle() const;
 };
 
 
@@ -48,6 +50,7 @@ public:
     std::string getString() const;
 
     VExprNetLvalueBitSelectHandle flatten(VExprIdentifierHandle pInstName) const;
+    VExprExpressionHandle toExpressionHandle() const;
 };
 
 class VExprNetLvalueRangeSelect : public VExprNetLvalueInterface {
@@ -65,6 +68,7 @@ public:
     std::string getString() const;
 
     VExprNetLvalueRangeSelectHandle flatten(VExprIdentifierHandle pInstName) const;
+    VExprExpressionHandle toExpressionHandle() const;
 };
 
 

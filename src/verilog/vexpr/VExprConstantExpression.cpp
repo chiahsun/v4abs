@@ -141,9 +141,23 @@ VExprConstantExpressionHandle VExprConstantExpression::flatten(VExprIdentifierHa
     assert(0);
 }
     
-//size_t VExprConstantExpression::getSize() const {
-//    return _pInterface->getSize();
-//}
+VExprExpressionHandle VExprConstantExpression::toExpressionHandle() const {
+    if (getConstantPrimaryHandle().valid()) {
+        return VExprExpressionHandle(VExprExpression(getConstantPrimaryHandle()->toPrimaryHandle()));
+    } else if (getConstantUnaryhandle().valid()) {
+        return VExprExpressionHandle(VExprExpression(getConstantUnaryhandle()->toUnaryHandle()));
+    } else if (getConstantBinaryHandle().valid()) {
+        return VExprExpressionHandle(VExprExpression(getConstantBinaryHandle()->toBinaryHandle()));
+    } else if (getConstantTernaryHandle().valid()) {
+        return VExprExpressionHandle(VExprExpression(getConstantTernaryHandle()->toTernaryHandle()));
+    } else if (getBoolHandle().valid()) {
+        return VExprExpressionHandle(VExprExpression(getBoolHandle()));
+    } else {
+        LOG(ERROR) << "No such branch";
+    }
+    assert(0);
+}
+    
     
 VExprConstantUnary::VExprConstantUnary(UnaryOpType opType, VExprConstantPrimaryHandle pConstantPrimary)
   : _opType(opType)
@@ -168,6 +182,10 @@ std::string VExprConstantUnary::getString() const {
     
 VExprConstantUnaryHandle VExprConstantUnary::flatten(VExprIdentifierHandle pInstName) const {
     return VExprConstantUnaryHandle(VExprConstantUnary(getOpType(), getConstantPrimaryHandle()->flatten(pInstName)));
+}
+    
+VExprUnaryHandle VExprConstantUnary::toUnaryHandle() const {
+    return VExprUnaryHandle(VExprUnary(getOpType(), getConstantPrimaryHandle()->toPrimaryHandle()));
 }
 
 VExprConstantBinary::VExprConstantBinary(VExprConstantExpressionHandle pExprFst, BinaryOpType opType, VExprConstantExpressionHandle pExprSnd)
@@ -199,6 +217,10 @@ VExprConstantBinaryHandle VExprConstantBinary::flatten(VExprIdentifierHandle pIn
     return VExprConstantBinaryHandle(VExprConstantBinary(getExprFst()->flatten(pInstName), getOpType(), getExprSnd()->flatten(pInstName)));
 }
     
+VExprBinaryHandle VExprConstantBinary::toBinaryHandle() const {
+    return VExprBinaryHandle(VExprBinary(getExprFst()->toExpressionHandle(), getOpType(), getExprSnd()->toExpressionHandle()));
+}
+    
 VExprConstantTernary::VExprConstantTernary(VExprConstantExpressionHandle pIf, VExprConstantExpressionHandle pThen, VExprConstantExpressionHandle pElse)
   : _pIf(pIf)
   , _pThen(pThen)
@@ -223,4 +245,8 @@ std::string VExprConstantTernary::getString() const {
     
 VExprConstantTernaryHandle VExprConstantTernary::flatten(VExprIdentifierHandle pInstName) const {
     return VExprConstantTernaryHandle(VExprConstantTernary(getIf()->flatten(pInstName), getThen()->flatten(pInstName), getElse()->flatten(pInstName)));
+}
+    
+VExprTernaryHandle VExprConstantTernary::toTernaryHandle() const {
+    return VExprTernaryHandle(VExprTernary(getIf()->toExpressionHandle(), getThen()->toExpressionHandle(), getElse()->toExpressionHandle()));
 }

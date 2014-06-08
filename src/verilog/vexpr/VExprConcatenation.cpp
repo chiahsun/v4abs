@@ -61,3 +61,8 @@ VExprConcatenationHandle VExprConcatenation::flatten(VExprIdentifierHandle pInst
     }
     return VExprConcatenationHandle(VExprConcatenation(vecFlatExpr));
 }
+    
+VExprExpressionHandle VExprConcatenation::toExpressionHandle() const {
+    VExprConcatenationHandle pConcatenation = VExprConcatenationHandle(VExprConcatenation(*this));
+    return VExprExpressionHandle(VExprExpression(VExprPrimaryHandle(VExprPrimary(pConcatenation))));
+}

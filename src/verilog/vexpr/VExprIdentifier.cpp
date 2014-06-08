@@ -5,6 +5,7 @@
 #include "VExprRegLvalue.h"
 #include "VExprNetLvalue.h"
 #include "utility/log/Log.h"
+#include "nstl/hash/HashFunction.h"
 
 VExprIdentifierHandle vexpr_identifier_mk_single_identifier(std::string identifier, size_t size) {
     return VExprIdentifierHandle(VExprIdentifier(VExprSingleIdentifierHandle(VExprSingleIdentifier(identifier, size))));
@@ -37,6 +38,10 @@ std::vector<std::string> VExprIdentifierInterface::getStringContainer() const
 VExprIdentifierHandle VExprIdentifierInterface::flatten(VExprIdentifierHandle pInstName) const
   { throw NotImplementedException(); }
 
+int VExprIdentifierInterface::hashFunction() const
+  { return HashFunction<std::string>::hashFunction(getString()); }
+
+
 VExprIdentifier::VExprIdentifier(VExprSingleIdentifierHandle pSingleIdentifier)
   : _pInterface(shared_ptr_cast<VExprIdentifierInterface>(pSingleIdentifier))
   , _pSingleIdentifier(pSingleIdentifier)
@@ -66,6 +71,9 @@ std::vector<std::string> VExprIdentifier::getStringContainer() const
     
 VExprIdentifierHandle VExprIdentifier::flatten(VExprIdentifierHandle pInstName) const
   { return makeHierIdentifier(pInstName, *this); } 
+    
+int VExprIdentifier::hashFunction() const
+  { return _pInterface->hashFunction(); }
     
 VExprExpressionHandle VExprIdentifier::toExpressionHandle() const {
     return VExprExpressionHandle(VExprExpression(VExprPrimaryHandle(VExprPrimary(VExprIdentifierHandle(*this)))));
@@ -112,6 +120,7 @@ std::vector<std::string> VExprSingleIdentifier::getStringContainer() const {
     vecString.push_back(_identifier);
     return vecString;
 }
+    
 
 VExprHierIdentifier::VExprHierIdentifier(std::string prefix, std::string identifier, size_t size) {
     _vecPrefix.push_back(prefix);
@@ -158,3 +167,5 @@ std::vector<std::string> VExprHierIdentifier::getStringContainer() const {
     vecString.insert(vecString.end(), _vecPrefix.begin(), _vecPrefix.end());
     return vecString;
 }
+
+

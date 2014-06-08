@@ -1,6 +1,7 @@
 #include "exception/Exception.h"
 #include "VExprExpressionInterface.h"
 #include "VExprExpression.h"
+#include "nstl/hash/HashFunction.h"
 
 VExprExpressionInterface::~VExprExpressionInterface()
   { }
@@ -11,4 +12,5 @@ std::string VExprExpressionInterface::getString() const
 size_t VExprExpressionInterface::getSize() const
   { throw NotOverridenException(); }
 
-
+int VExprExpressionInterface::hashFunction() const
+  { return HashFunction<std::string>::hashFunction(getString()); }

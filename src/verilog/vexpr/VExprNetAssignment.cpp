@@ -1,4 +1,5 @@
 #include "VExprNetAssignment.h"
+#include "nstl/hash/HashFunction.h"
 
 VExprNetAssignmentHandle vexpr_net_assignment_mk(VExprNetLvalueHandle pNetLvalue, VExprExpressionHandle pExpr) {
     return VExprNetAssignmentHandle(VExprNetAssignment(pNetLvalue, pExpr));
@@ -26,3 +27,6 @@ VExprNetAssignmentHandle VExprNetAssignment::flatten(VExprIdentifierHandle pInst
               , getExpressionHandle()->flatten(pInstName)
             ));
 }
+
+int VExprNetAssignment::hashFunction() const
+  { return HashFunction<std::string>::hashFunction(getString()); }

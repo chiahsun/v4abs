@@ -68,6 +68,21 @@ VExprNetLvalueHandle VExprNetLvalue::flatten(VExprIdentifierHandle pInstName) co
     assert(0);
 }
     
+VExprExpressionHandle VExprNetLvalue::toExpressionHandle() const { 
+    if (getIdentifierHandle().valid()) {
+        return getIdentifierHandle()->toExpressionHandle(); 
+    } else if (getNetLvalueBitSelectHandle().valid()) {
+        return getNetLvalueBitSelectHandle()->toExpressionHandle();
+    } else if (getNetLvalueRangeSelectHandle().valid()) {
+        return getNetLvalueRangeSelectHandle()->toExpressionHandle();
+    } else if (getConcatenationHandle().valid()) {
+        return getConcatenationHandle()->toExpressionHandle();
+    } else {
+        LOG(ERROR) << "No such branch";
+    }
+    assert(0);
+}
+    
 VExprNetLvalueBitSelect::VExprNetLvalueBitSelect(VExprIdentifierHandle pIdentifier, VExprExpressionHandle pExpr)
   : _pIdentifier(pIdentifier)
   , _pExpr(pExpr)
@@ -90,6 +105,13 @@ VExprNetLvalueBitSelectHandle VExprNetLvalueBitSelect::flatten(VExprIdentifierHa
                 getIdentifierHandle()->flatten(pInstName)
               , getExpressionHandle()->flatten(pInstName)
             ));
+}
+    
+VExprExpressionHandle VExprNetLvalueBitSelect::toExpressionHandle() const {
+    VExprBitSelectHandle pBitSelect = VExprBitSelectHandle(VExprBitSelect(getExpressionHandle()));
+    VExprSelectIdentifierHandle pSelectIdentifier = VExprSelectIdentifierHandle(VExprSelectIdentifier(getIdentifierHandle(), pBitSelect));
+    VExprPrimaryHandle pPrimary = VExprPrimaryHandle(VExprPrimary(pSelectIdentifier));
+    return VExprExpressionHandle(VExprExpression(pPrimary));
 }
 
 VExprNetLvalueRangeSelect::VExprNetLvalueRangeSelect(VExprIdentifierHandle pIdentifier, VExprConstantExpressionHandle pConstExprFst, VExprConstantExpressionHandle pConstExprSnd)
@@ -121,3 +143,11 @@ VExprNetLvalueRangeSelectHandle VExprNetLvalueRangeSelect::flatten(VExprIdentifi
               , getSndConstExprHandle()->flatten(pInstName)
             ));
 }
+
+VExprExpressionHandle VExprNetLvalueRangeSelect::toExpressionHandle() const {
+    VExprRangeSelectHandle pRangeSelect = VExprRangeSelectHandle(VExprRangeSelect(getFstConstExprHandle()->toExpressionHandle(), getSndConstExprHandle()->toExpressionHandle()));
+    VExprSelectIdentifierHandle pSelectIdentifier = VExprSelectIdentifierHandle(VExprSelectIdentifier(getIdentifierHandle(), pRangeSelect));
+    VExprPrimaryHandle pPrimary = VExprPrimaryHandle(VExprPrimary(pSelectIdentifier));
+    return VExprExpressionHandle(VExprExpression(pPrimary));
+}
+

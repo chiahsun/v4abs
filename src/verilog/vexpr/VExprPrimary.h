@@ -63,6 +63,8 @@ public:
 
     VExprPrimaryHandle flatten(VExprIdentifierHandle pInstName) const;
     VExprConstantPrimaryHandle toConstantPrimaryHandle() const;
+
+    int hashFunction() const;
 };
 
 

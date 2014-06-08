@@ -23,7 +23,6 @@ public:
     virtual std::string getString() const;
     virtual std::vector<std::string> getStringContainer() const;
     virtual VExprIdentifierHandle flatten(VExprIdentifierHandle pInstName) const;
-    virtual int hashFunction() const;
 };
 
 class VExprIdentifier : public VExprPrimaryInterface, public VExprConstantPrimaryInterface, public VExprNetLvalueInterface, public VExprRegLvalueInterface, public VExprEventInterface {
@@ -65,6 +64,7 @@ public:
     size_t getSize() const;
     std::string getString() const;
     std::vector<std::string> getStringContainer() const;
+    int hashFunction() const;
 };
 
 class VExprHierIdentifier : public VExprIdentifierInterface {
@@ -84,6 +84,7 @@ public:
     size_t getSize() const;
     std::string getString() const;
     std::vector<std::string> getStringContainer() const;
+    int hashFunction() const;
 };
 
 

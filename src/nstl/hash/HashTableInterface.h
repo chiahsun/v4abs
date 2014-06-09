@@ -21,7 +21,7 @@ public:
     bool hasValue(const value_type & val) const {
         return _container.hasValue(val);
     }
-    void insert(const value_type & val) {
+    iterator insert(const value_type & val) {
         return _container.insert(val);
     }
     size_t size() const {

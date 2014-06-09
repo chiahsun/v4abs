@@ -37,7 +37,18 @@ public:
         std::vector<pointer_type>* _pVec;
         int _index;
 
+        Iterator() : _pVec(0), _index(0) { }
+        
+        Iterator(std::vector<pointer_type>* pVec, size_t pos) { 
+            _pVec = pVec;
+            _index = pos;
+            assert(_pVec);
+            if (pos != _pVec->size())
+                assert(valid());
+        }
+
         pointer_type operator -> () {
+            assert(valid());
             return (*_pVec)[_index];
         }
 
@@ -52,15 +63,13 @@ public:
             _index = rhs._index;
         }
 
-        Iterator(std::vector<pointer_type>* pVec, size_t pos) { 
-            _pVec = pVec;
-            _index = pos; 
-        }
 
         inline Iterator& operator++() {
             for (_index = _index + 1; static_cast<unsigned int>(_index) < _pVec->size(); ++_index) {
-                if ((*_pVec)[_index])
+                if ((*_pVec)[_index]) {
+                    assert(valid());
                     return *this;
+                }
             }
             _index = _pVec->size();
             return *this;
@@ -76,7 +85,12 @@ public:
         }
 
         reference_type operator * () {
+            assert(valid());
             return *((*_pVec)[_index]);
+        }
+
+        bool valid() const {
+            return (*_pVec)[_index];
         }
 
         void moveToBegin() {
@@ -96,8 +110,19 @@ public:
     public:
         const std::vector<pointer_type>* _pVec;
         size_t _index;
+   
+        ConstIterator() : _pVec(0), _index(0) { }
         
+        ConstIterator(const std::vector<pointer_type>* pVec, size_t pos) { 
+            _pVec = pVec;
+            _index = pos; 
+            assert(_pVec);
+            if (pos != _pVec->size())
+                assert(valid());
+        }
+
         pointer_type operator -> () {
+            assert(valid());
             return (*_pVec)[_index];
         }
 
@@ -107,25 +132,24 @@ public:
             return *this;
         }
         
+        void copy(const ConstIterator& rhs) {
+            _pVec = rhs._pVec;
+            _index = rhs._index;
+        }
+        
         inline ConstIterator& operator++() {
             for (_index = _index + 1; static_cast<unsigned int>(_index) < _pVec->size(); ++_index) {
-                if ((*_pVec)[_index])
+                if ((*_pVec)[_index]) {
+                    assert(valid());
                     return *this;
+                }
             }
             _index = _pVec->size();
             return *this;
         }
 
         
-        void copy(const ConstIterator& rhs) {
-            _pVec = rhs._pVec;
-            _index = rhs._index;
-        }
 
-        ConstIterator(const std::vector<pointer_type>* pVec, size_t pos) { 
-            _pVec = pVec;
-            _index = pos; 
-        }
 
         inline bool operator == (const ConstIterator & rhs) const {
             return (_pVec == rhs._pVec)
@@ -137,8 +161,14 @@ public:
         }
 
         const_reference_type operator * () {
+            assert(valid());
             return *((*_pVec)[_index]);
         }
+        
+        bool valid() const {
+            return ((*_pVec)[_index]);
+        }
+
 
         void moveToBegin() {
             assert(_index == 0);
@@ -160,6 +190,16 @@ public:
 
     LinearProbingHash() : _pBegin(end()) { init(DEFAULT_CAPCITY); }
     LinearProbingHash(const LinearProbingHash & rhs) : _pBegin(end()) {
+        copy(rhs);
+    }
+    LinearProbingHash& operator = (const LinearProbingHash & rhs) {
+        if (this != &rhs) {
+            destroy();
+            copy(rhs);
+        }
+        return *this;
+    }
+    void copy(const LinearProbingHash & rhs) {
         init(rhs.capacity());
         for (const_iterator it = rhs.cbegin(); it != rhs.cend(); ++it)
             insert(*it);
@@ -216,28 +256,29 @@ public:
 
     inline size_t size() const { return _size; }
 
-    void insert(const_reference_type value) {
-        iterator it = end();
+    iterator insert(const_reference_type value) {
+        iterator it;
         if ((it = find(value)) != end()) {
-            (*it) = value;
-            return;
+            *(it) = (value);
         }
-//        bool ok = 
+
         int insertPos = insert_helper(_vecPointer, value);
         if (insertPos >= 0) {
             ++_size;
             if (size() == 1) {
-                _pBegin = Iterator(&_vecPointer, insertPos);
+                _pBegin = it = Iterator(&_vecPointer, insertPos);
             } else {
                 if (insertPos < _pBegin._index)
-                    _pBegin = Iterator(&_vecPointer, insertPos);
+                    _pBegin = it = Iterator(&_vecPointer, insertPos);
             }
         }
-
         
-        
-        if (size() * BALANCE_RATIO > capacity())
+        if (size() * BALANCE_RATIO > capacity()) {
             resize(MULT_RATIO * capacity());
+            it = find(value);
+        }
+
+        return find(value);
     } 
 
     int insert_helper(std::vector<pointer_type>& vec, const value_type& value) {

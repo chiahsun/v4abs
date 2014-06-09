@@ -2,6 +2,8 @@
 #define VEXPR_FLAT_MODULE_H
 
 #include "VExprModule.h"
+#include "nstl/hash_map/HashMap.h"
+#include "nstl/hash/HashTable.h"
 
 class VExprFlatModule {
     VExprIdentifierHandle _pModuleName;
@@ -60,6 +62,7 @@ public:
     const std::vector<VExprContinuousAssignmentHandle>& getContinuousAssignmentContainer() const;
     const std::vector<VExprInitialHandle>& getInitialContainer() const;
 
+    VExprFlatModuleHandle substituteAndRemove(HashMap<VExprExpressionHandle, HashTable<VExprExpressionHandle> > hashSubstitute);
 };
 
 

@@ -1,6 +1,7 @@
 #include "test/UnitTest.h"
 #include "HashTable.h"
 #include "Random.h"
+#include "nstl/for_each/ForEach.h"
 
 #include <sstream>
 
@@ -9,13 +10,22 @@
 
 void test_linear_probing_hash_insert() {
     HashTable<int> hash;
-    hash.insert(10);
+    HashTable<int>::iterator it = hash.end();
+
+    it = hash.insert(10); 
+    assertEqual(*it, 10, "Test insert return iterator");
     assertEqual(1, hash.size(), "Test hash size");
-    hash.insert(11);
+
+    it = hash.insert(11); 
+    assertEqual(*it, 11, "Test insert return iterator");
     assertEqual(2, hash.size(), "Test hash size");
-    hash.insert(12);
+
+    it = hash.insert(12); 
+    assertEqual(*it, 12, "Test insert return iterator");
     assertEqual(3, hash.size(), "Test hash size");
-    hash.insert(10);
+
+    it = hash.insert(10); 
+    assertEqual(*it, 10, "Test insert return iterator");
     assertEqual(3, hash.size(), "Test hash size");
     assertEqual(true, hash.find(10) != hash.end(), "Test insert find");
     assertEqual(true, hash.find(11) != hash.end(), "Test insert find");
@@ -145,11 +155,33 @@ void test_linear_probing_hash_clear() {
 
 void test_vector_of_hash() {
     std::vector<HashTable<int> > vecHash;
-    const unsigned int size = 10;
-    for (unsigned int i = 0; i < size; ++i) {
+    const int size = 10;
+    for (int i = 0; i < size; ++i) {
         vecHash.push_back(HashTable<int>());
-        vecHash[i].insert(i);
+        HashTable<int>::iterator it = vecHash[i].end();
+        it = vecHash[i].insert(i);
+        assertEqual(i, *it, "Test dereference iterator");
     }
+    UNIT_TEST_FUNCTION_END_FUNCTION_TEST();
+}
+
+void test_hash_copy_constructor() {
+    HashTable<int> ht;
+    ht.insert(1);
+    ht.insert(2);
+    ht.insert(3);
+    std::stringstream ss;
+    FOR_EACH(i, ht) {
+        ss << i << " ";
+    }
+    assertEqual("1 2 3 ", ss.str(), "Test copy constructor");
+    HashTable<int> ht2(ht);
+    std::stringstream ss2;
+    FOR_EACH(i, ht2) {
+        ss2 << i << " ";
+    }
+    assertEqual("1 2 3 ", ss2.str(), "Test copy constructor");
+
     UNIT_TEST_FUNCTION_END_FUNCTION_TEST();
 }
 
@@ -161,5 +193,6 @@ int main() {
     test_linear_probing_hash_iteration();
     test_linear_probing_hash_clear();
     test_vector_of_hash();
+    test_hash_copy_constructor();
     return 0;
 }

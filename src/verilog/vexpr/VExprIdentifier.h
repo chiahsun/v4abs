@@ -23,6 +23,7 @@ public:
     virtual std::string getString() const;
     virtual std::vector<std::string> getStringContainer() const;
     virtual VExprIdentifierHandle flatten(VExprIdentifierHandle pInstName) const;
+    virtual int getHierarchicalLevel() const;
 };
 
 class VExprIdentifier : public VExprPrimaryInterface, public VExprConstantPrimaryInterface, public VExprNetLvalueInterface, public VExprRegLvalueInterface, public VExprEventInterface {
@@ -49,6 +50,7 @@ public:
 
     VExprIdentifierHandle flatten(VExprIdentifierHandle pInstName) const;
     int hashFunction() const;
+    int getHierarchicalLevel() const;
 };
     
 VExprIdentifierHandle makeHierIdentifier(VExprIdentifierHandle pPrefixIdentifier, VExprIdentifierHandle pIdentifier);
@@ -65,6 +67,7 @@ public:
     std::string getString() const;
     std::vector<std::string> getStringContainer() const;
     int hashFunction() const;
+    int getHierarchicalLevel() const;
 };
 
 class VExprHierIdentifier : public VExprIdentifierInterface {
@@ -85,6 +88,7 @@ public:
     std::string getString() const;
     std::vector<std::string> getStringContainer() const;
     int hashFunction() const;
+    int getHierarchicalLevel() const;
 };
 
 

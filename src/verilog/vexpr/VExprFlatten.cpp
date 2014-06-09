@@ -2,13 +2,16 @@
 
 #include "VExprFlatten.h"
 #include "nstl/for_each/ForEach.h"
+#include "nstl/union_find/UnionFind.h"
+#include "nstl/hash_map/HashMap.h"
+#include "nstl/hash/HashTable.h"
 #include "utility/log/Log.h"
 #include "VExprAlways.h"
 #include "VExprContinuousAssignment.h"
 #include "VExprInitial.h"
 #include "VExprModuleInstantiation.h"
 
-VExprFlatModuleHandle VExprFlatten::flatten(VExprModuleHandle pModule) {
+VExprFlatModuleHandle VExprFlatten::flattenOnly(VExprModuleHandle pModule) {
 
     unsigned flatModuleId = 0;
     if (isFlatBefore(pModule, flatModuleId))
@@ -109,6 +112,82 @@ VExprFlatModuleHandle VExprFlatten::flatten(VExprModuleHandle pModule) {
         }
 
     }
+
+    return pFlatModule;
+}
+    
+VExprFlatModuleHandle VExprFlatten::substituteShortCircuit(VExprFlatModuleHandle pFlatOnlyModule) {
+    UnionFind<VExprExpressionHandle> uf;
+
+    // Only short circuit identifier on both side
+    FOR_EACH(pContinuousAssignment, pFlatOnlyModule->getContinuousAssignmentContainer()) {
+        FOR_EACH(pNetAssignment, pContinuousAssignment->getNetAssignmentContainer()) {
+            VExprNetLvalueHandle pNetLvalue = pNetAssignment->getNetLvalueHandle();
+            VExprExpressionHandle pExpression = pNetAssignment->getExpressionHandle();
+
+            VExprExpressionHandle pNetLvalueExpression = pNetLvalue->toExpressionHandle();
+            if ( pNetLvalueExpression->getPrimaryHandle().valid()
+              && pNetLvalueExpression->getPrimaryHandle()->getIdentifierHandle().valid()
+              && pExpression->getPrimaryHandle().valid()
+              && pExpression->getPrimaryHandle()->getIdentifierHandle().valid())
+                uf.unite(pNetLvalueExpression, pExpression);
+        }
+    }
+
+    HashMap<VExprExpressionHandle, HashTable<VExprExpressionHandle> > shortCircuitMap;
+
+    // From union find data structure to hash map
+    FOR_EACH(pExpression, uf) {
+        VExprExpressionHandle pHead = uf.find(pExpression);
+        if (shortCircuitMap.find(pHead) == shortCircuitMap.end())
+            shortCircuitMap.insert(std::make_pair(pHead, HashTable<VExprExpressionHandle>()));
+        shortCircuitMap.find(pHead)->second.insert(pExpression);
+    }
+#if 1
+    FOR_EACH(pr, shortCircuitMap) {
+        std::cout << pr.first->getString() << "(" << pr.first->getPrimaryHandle()->getIdentifierHandle()->getHierarchicalLevel() << ")" << " : ";
+
+        FOR_EACH(pExpr, pr.second) {
+            std::cout << pExpr->getString() << "(" << pExpr->getPrimaryHandle()->getIdentifierHandle()->getHierarchicalLevel() << ")" << " ";
+        }
+        std::cout << std::endl;
+    }
+#endif
+
+    // Decision order
+    // 1. hierarchy level top > level sub
+    // 2. IO > internal(wire/reg)
+    // 3. If (1)(2) pass, randomly select one
+    HashMap<VExprExpressionHandle, HashTable<VExprExpressionHandle> > shortCircuitMapDecided;
+    FOR_EACH(pr, shortCircuitMap) {
+        VExprExpressionHandle pExprBest = pr.first;
+        FOR_EACH(pExpr, pr.second) {
+            if (pExpr->getPrimaryHandle()->getIdentifierHandle()->getHierarchicalLevel()
+              < pExprBest->getPrimaryHandle()->getIdentifierHandle()->getHierarchicalLevel())
+                pExprBest = pExpr;
+        }
+        shortCircuitMapDecided.insert(std::make_pair(pExprBest, pr.second));
+    }
+
+#if 1
+    FOR_EACH(pr, shortCircuitMapDecided) {
+        std::cout << pr.first->getString() << "(" << pr.first->getPrimaryHandle()->getIdentifierHandle()->getHierarchicalLevel() << ")" << " : ";
+
+        FOR_EACH(pExpr, pr.second) {
+            std::cout << pExpr->getString() << "(" << pExpr->getPrimaryHandle()->getIdentifierHandle()->getHierarchicalLevel() << ")" << " ";
+        }
+        std::cout << std::endl;
+    }
+#endif
+
+    VExprFlatModuleHandle pFlatModuleSubstituted = pFlatOnlyModule->substituteAndRemove(shortCircuitMapDecided);
+
+    return pFlatModuleSubstituted;
+}
+    
+VExprFlatModuleHandle VExprFlatten::flatten(VExprModuleHandle pModule) {
+    VExprFlatModuleHandle pFlatOnlyModule = flattenOnly(pModule);
+    VExprFlatModuleHandle pFlatModule = substituteShortCircuit(pFlatOnlyModule);
 
     return pFlatModule;
 }

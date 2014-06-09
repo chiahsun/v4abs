@@ -13,6 +13,8 @@ public:
     VExprFlatten(std::vector<VExprModuleHandle> vecModule)
       : _vecModule(vecModule)
       { }
+    VExprFlatModuleHandle flattenOnly(VExprModuleHandle pModule);
+    VExprFlatModuleHandle substituteShortCircuit(VExprFlatModuleHandle pFlatOnlyModule);
     VExprFlatModuleHandle flatten(VExprModuleHandle pModule);
 
     bool isFlatBefore(VExprModuleHandle pModule, unsigned int & flatModuleId); 

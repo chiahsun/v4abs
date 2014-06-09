@@ -2,6 +2,8 @@
 #define HASH_MAP_H
 
 #include "nstl/hash/HashTable.h"
+#include "nstl/for_each/ForEach.h"
+#include <iostream>
 #include <utility>
 
 template <class _KeyType, class _MappedType>
@@ -18,9 +20,13 @@ class HashMap {
         Pair(const Pair & rhs)
           { copy(rhs); }
         Pair& operator = (const Pair & rhs) {
+            first = rhs.first;
+            second = rhs.second;
+#if 0
             if (this != &rhs) {
                 copy(rhs);
             }
+#endif
             return *this;
         }
         int hashFunction() const { 
@@ -44,18 +50,36 @@ class HashMap {
     typedef HashMap<key_type, mapped_type> this_type;
 
     hash_type _hash;
-
+public:
     typedef typename hash_type::iterator iterator;
     typedef typename hash_type::const_iterator const_iterator;
 public:
     HashMap() { }
-    HashMap(const this_type & rhs) : _hash(rhs._hash) { }
+    HashMap(const HashMap & rhs) 
+      { copy(rhs); }
+
+    HashMap& operator=(const HashMap & rhs) {
+        if (this != &rhs) {
+            copy(rhs);
+        }
+        return *this;
+    }
+
+    void copy(const HashMap & rhs) {
+        _hash = rhs._hash;
+    }
 
     bool hasKey(const key_type & key) const
       { return _hash.hasValue(pair_type(key)); }
 
-    void insert(std::pair<key_type, mapped_type> pr) 
-      { _hash.insert(pair_type(pr.first, pr.second)); }
+    iterator insert(std::pair<key_type, mapped_type> pr) {
+        // TODO
+        // bug for return iterator returned by insert
+        // so use find again 
+//        return 
+          _hash.insert(pair_type(pr.first, pr.second));
+          return find(pr.first);
+    }
 
     size_t size() const
       { return _hash.size(); }
@@ -79,7 +103,7 @@ public:
       { return _hash.end(); }
 
     const_iterator find(key_type key) const
-      { return _hash.find(key); }
+      { return _hash.find(pair_type(key, mapped_type())); }
 
     iterator find(key_type key) 
       { return _hash.find(pair_type(key, mapped_type())); }

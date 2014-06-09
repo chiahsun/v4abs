@@ -27,8 +27,8 @@ public:
     bool hasValue(const value_type & val) const
       { return _hash.hasValue(val); }
 
-    void insert(const value_type & val)
-      { _hash.insert(val); }
+    iterator insert(const value_type & val)
+      { return _hash.insert(val); }
 
     size_t size() const
       { return _hash.size(); }

@@ -38,6 +38,9 @@ std::vector<std::string> VExprIdentifierInterface::getStringContainer() const
 VExprIdentifierHandle VExprIdentifierInterface::flatten(VExprIdentifierHandle pInstName) const
   { throw NotImplementedException(); }
     
+int VExprIdentifierInterface::getHierarchicalLevel() const
+  { throw NotImplementedException(); }
+    
 VExprIdentifier::VExprIdentifier(VExprSingleIdentifierHandle pSingleIdentifier)
   : _pInterface(shared_ptr_cast<VExprIdentifierInterface>(pSingleIdentifier))
   , _pSingleIdentifier(pSingleIdentifier)
@@ -70,6 +73,9 @@ VExprIdentifierHandle VExprIdentifier::flatten(VExprIdentifierHandle pInstName) 
     
 int VExprIdentifier::hashFunction() const
   { return HashFunction<std::string>::hashFunction(getString()); }
+    
+int VExprIdentifier::getHierarchicalLevel() const
+  { return _pInterface->getHierarchicalLevel(); }
     
 VExprExpressionHandle VExprIdentifier::toExpressionHandle() const {
     return VExprExpressionHandle(VExprExpression(VExprPrimaryHandle(VExprPrimary(VExprIdentifierHandle(*this)))));
@@ -119,6 +125,9 @@ std::vector<std::string> VExprSingleIdentifier::getStringContainer() const {
     
 int VExprSingleIdentifier::hashFunction() const
   { return HashFunction<std::string>::hashFunction(getString()); }
+    
+int VExprSingleIdentifier::getHierarchicalLevel() const
+  { return 1; }
 
 VExprHierIdentifier::VExprHierIdentifier(std::string prefix, std::string identifier, size_t size) {
     _vecPrefix.push_back(prefix);
@@ -169,3 +178,5 @@ std::vector<std::string> VExprHierIdentifier::getStringContainer() const {
 int VExprHierIdentifier::hashFunction() const
   { return HashFunction<std::string>::hashFunction(getString()); }
     
+int VExprHierIdentifier::getHierarchicalLevel() const
+  { return 1 + getPrefixContainer().size(); }

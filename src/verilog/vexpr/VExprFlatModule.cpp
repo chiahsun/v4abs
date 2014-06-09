@@ -190,3 +190,7 @@ const std::vector<VExprContinuousAssignmentHandle>& VExprFlatModule::getContinuo
 const std::vector<VExprInitialHandle>& VExprFlatModule::getInitialContainer() const
   { return _vecInitial; }
 
+VExprFlatModuleHandle VExprFlatModule::substituteAndRemove(HashMap<VExprExpressionHandle, HashTable<VExprExpressionHandle> > hashSubstitute) {
+    return VExprFlatModuleHandle(VExprFlatModule(*this));
+}
+

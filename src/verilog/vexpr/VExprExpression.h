@@ -71,6 +71,9 @@ public:
     VExprConstantExpressionHandle toConstantExpressionHandle() const;
 
     int hashFunction() const;
+    VExprExpressionHandle substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const;
+
+//    bool operator == (const VExprExpression & rhs) const;
 };
 
 class VExprUnary : public VExprExpressionInterface {
@@ -87,6 +90,7 @@ public:
 
     VExprUnaryHandle flatten(VExprIdentifierHandle pInstName) const;
     VExprConstantUnaryHandle toConstantUnaryHandle() const;
+    VExprUnaryHandle substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const;
 private:
     std::string getOpTypeSymbol() const;
 };
@@ -105,6 +109,7 @@ public:
     std::string getString() const;
     size_t getSize() const;
     VExprBinaryHandle flatten(VExprIdentifierHandle pInstName) const;
+    VExprBinaryHandle substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const;
     VExprConstantBinaryHandle toConstantBinaryHandle() const;
 private:
     std::string getOpTypeSymbol() const;
@@ -124,6 +129,7 @@ public:
     std::string getString() const;
     size_t getSize() const;
     VExprTernaryHandle flatten(VExprIdentifierHandle pInstName) const;
+    VExprTernaryHandle substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const;
     VExprConstantTernaryHandle toConstantTernaryHandle() const;
 };
 

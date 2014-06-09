@@ -28,6 +28,7 @@ public:
     std::string getString(unsigned int indentLevel) const;
 
     VExprConditionalStatementHandle flatten(VExprIdentifierHandle pInstName) const;
+    VExprConditionalStatementHandle substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const;
 };
 
 #endif // VEXPR_CONDITIONAL_STATEMENT_H

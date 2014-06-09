@@ -133,7 +133,24 @@ VExprPrimaryHandle VExprPrimary::flatten(VExprIdentifierHandle pInstName) const 
     }
 
     assert(0);
-    return VExprPrimaryHandle(*this); // dummy return
+}
+    
+VExprPrimaryHandle VExprPrimary::substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const {
+    if (getNumberHandle().valid()) {
+        return VExprPrimaryHandle(VExprPrimary(getNumberHandle()));
+    } else if (getIdentifierHandle().valid()) {
+        return VExprPrimaryHandle(VExprPrimary(getIdentifierHandle()->substitute(pDst, hashSrc)));
+    } else if (getSelectIdentifierHandle().valid()) {
+        return VExprPrimaryHandle(VExprPrimary(getSelectIdentifierHandle()->substitute(pDst, hashSrc)));
+    } else if (getConcatenationHandle().valid()) {
+        return VExprPrimaryHandle(VExprPrimary(getConcatenationHandle()->substitute(pDst, hashSrc)));
+    } else if (getMultipleConcatenationHandle().valid()) {
+        return VExprPrimaryHandle(VExprPrimary(getMultipleConcatenationHandle()->substitute(pDst, hashSrc)));
+    } else {
+        LOG(ERROR) << "No valid type or not implemented";
+    }
+
+    assert(0);
 }
   
     

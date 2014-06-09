@@ -4,6 +4,7 @@
 #include "VExprTypes.h"
 #include "VExprPrimaryInterface.h"
 #include "VExprConstantPrimaryInterface.h"
+#include "nstl/hash/HashTable.h"
 
 #include <vector>
 
@@ -25,6 +26,7 @@ public:
     std::string getString() const;
     size_t getSize() const;
     VExprMultipleConcatenationHandle flatten(VExprIdentifierHandle pInstName) const;
+    VExprMultipleConcatenationHandle substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const;
 };
 
 #endif // VEXPR_MULTIPLE_CONCATENATION_H

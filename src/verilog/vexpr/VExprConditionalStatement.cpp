@@ -62,3 +62,16 @@ VExprConditionalStatementHandle VExprConditionalStatement::flatten(VExprIdentifi
     }
     assert(0);
 }
+    
+VExprConditionalStatementHandle VExprConditionalStatement::substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const {
+    VExprExpressionHandle pNewIf = getIf()->substitute(pDst, hashSrc);
+    VExprStatementOrNullHandle pNewThen = getThen()->substitute(pDst, hashSrc);
+
+    if (getElse().valid()) {
+        VExprStatementOrNullHandle pNewElse = getElse()->substitute(pDst, hashSrc);
+        return VExprConditionalStatementHandle(VExprConditionalStatement(pNewIf, pNewThen, pNewElse));
+    } else {
+        return VExprConditionalStatementHandle(VExprConditionalStatement(pNewIf, pNewThen));
+    }
+    assert(0);
+}

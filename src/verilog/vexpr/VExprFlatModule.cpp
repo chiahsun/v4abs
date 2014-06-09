@@ -191,6 +191,86 @@ const std::vector<VExprInitialHandle>& VExprFlatModule::getInitialContainer() co
   { return _vecInitial; }
 
 VExprFlatModuleHandle VExprFlatModule::substituteAndRemove(HashMap<VExprExpressionHandle, HashTable<VExprExpressionHandle> > hashSubstitute) {
-    return VExprFlatModuleHandle(VExprFlatModule(*this));
+    VExprFlatModuleHandle pNewFlatModule = VExprFlatModuleHandle(VExprFlatModule(getModuleName()));
+    pNewFlatModule->_vecPortIdentifier = _vecPortIdentifier;
+    pNewFlatModule->_vecParameterDeclaration = _vecParameterDeclaration;
+    pNewFlatModule->_vecInputDeclaration = _vecInputDeclaration;
+    pNewFlatModule->_vecOutputDeclaration = _vecOutputDeclaration;
+    pNewFlatModule->_vecInoutDeclaration = _vecInoutDeclaration;
+    pNewFlatModule->_vecIntegerDeclaration = _vecIntegerDeclaration;
+    std::vector<VExprNetDeclHandle> vecNetDecl;
+    CONST_FOR_EACH(pNetDeclaration, _vecNetDeclaration) {
+        CONST_FOR_EACH(pNetDecl, pNetDeclaration->getContainer()) {
+            VExprExpressionHandle pIdentifierExpression =
+                pNetDecl->getIdentifierHandle()->toExpressionHandle();
+            bool isGood = true;
+            CONST_FOR_EACH(pr, hashSubstitute) {
+                if (pr.first->getString() == pIdentifierExpression->getString()) {
+                    break; // At lhs, good
+                } else {
+                    CONST_FOR_EACH(pExpr, pr.second) {
+                        if (pExpr->getString() == pIdentifierExpression->getString())
+                            isGood = false; // At rhs, not good
+                    }
+                }
+            }
+            if (isGood)
+                vecNetDecl.push_back(pNetDecl);
+        }
+    }
+
+    pNewFlatModule->addNetDeclaration(VExprNetDeclarationHandle(VExprNetDeclaration(vecNetDecl)));
+
+    std::vector<VExprRegDeclHandle> vecRegDecl;
+    CONST_FOR_EACH(pRegDeclaration, _vecRegDeclaration) {
+        CONST_FOR_EACH(pRegDecl, pRegDeclaration->getContainer()) {
+            VExprExpressionHandle pIdentifierExpression =
+                pRegDecl->getRegisterNameHandle()->getIdentifierHandle()->toExpressionHandle();
+            bool isGood = true;
+            CONST_FOR_EACH(pr, hashSubstitute) {
+                if (pr.first->getString() == pIdentifierExpression->getString()) {
+                    break; // At lhs, good
+                } else {
+                    CONST_FOR_EACH(pExpr, pr.second) {
+                        if (pExpr->getString() == pIdentifierExpression->getString())
+                            isGood = false; // At rhs, not good
+                    }
+                }
+            }
+            if (isGood)
+                vecRegDecl.push_back(pRegDecl);
+        }
+    }
+
+    pNewFlatModule->addRegDeclaration(VExprRegDeclarationHandle(VExprRegDeclaration(vecRegDecl)));
+
+    CONST_FOR_EACH(pAlways, _vecAlways) {
+        VExprAlwaysHandle pNewAlways = pAlways;
+        CONST_FOR_EACH(pr, hashSubstitute) {
+            DEBUG_EXPR(pr.first->getString());
+            pNewAlways = pNewAlways->substitute(pr.first, pr.second);
+        }
+        pNewFlatModule->addAlways(pNewAlways);
+    }
+
+    CONST_FOR_EACH(pContinuousAssign, getContinuousAssignmentContainer()) {
+        VExprContinuousAssignmentHandle pNewContinuousAssign = pContinuousAssign;
+        CONST_FOR_EACH(pr, hashSubstitute) {
+            pNewContinuousAssign = pNewContinuousAssign->substitute(pr.first, pr.second);
+        }
+        pNewFlatModule->addContinuousAssignment(pNewContinuousAssign);
+    }
+
+    CONST_FOR_EACH(pInitial, _vecInitial) {
+        VExprInitialHandle pNewInitial = pInitial;
+        CONST_FOR_EACH(pr, hashSubstitute) {
+            pNewInitial = pNewInitial->substitute(pr.first, pr.second);
+        }
+        pNewFlatModule->addInitial(pNewInitial);
+    }
+   
+    return pNewFlatModule;
+    //    return VExprFlatModuleHandle(VExprFlatModule(*this));
+
 }
 

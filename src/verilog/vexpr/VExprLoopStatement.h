@@ -31,6 +31,7 @@ public:
     std::string getString(unsigned int indentLevel) const;
 
     VExprLoopStatementHandle flatten(VExprIdentifierHandle pInstName) const;
+    VExprLoopStatementHandle substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const;
 };
 
 #endif // VEXPR_LOOP_STATEMENT_H

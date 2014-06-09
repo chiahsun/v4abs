@@ -7,6 +7,7 @@
 #include "VExprRegLvalueInterface.h"
 #include "VExprNetLvalueInterface.h"
 #include "VExprEventInterface.h"
+#include "nstl/hash/HashTable.h"
 
 #include <vector>
 #include <string>
@@ -49,6 +50,7 @@ public:
     friend VExprIdentifierHandle makeHierIdentifier(VExprIdentifierHandle pPrefixIdentifier, VExprIdentifier identifier);
 
     VExprIdentifierHandle flatten(VExprIdentifierHandle pInstName) const;
+    VExprIdentifierHandle substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const;
     int hashFunction() const;
     int getHierarchicalLevel() const;
 };

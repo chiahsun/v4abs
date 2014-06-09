@@ -109,6 +109,21 @@ VExprConstantPrimaryHandle VExprConstantPrimary::flatten(VExprIdentifierHandle p
     assert(0);
 }
     
+VExprConstantPrimaryHandle VExprConstantPrimary::substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const {
+    if (getNumberHandle().valid()) {
+        return VExprConstantPrimaryHandle(VExprConstantPrimary(getNumberHandle()));
+    } else if (getIdentifierHandle().valid()) {
+        return VExprConstantPrimaryHandle(VExprConstantPrimary(getIdentifierHandle()->substitute(pDst, hashSrc)));
+    } else if (getConcatenationHandle().valid()) {
+        return VExprConstantPrimaryHandle(VExprConstantPrimary(getConcatenationHandle()->substitute(pDst, hashSrc)));
+    } else if (getMultipleConcatenationHandle().valid()) {
+        return VExprConstantPrimaryHandle(VExprConstantPrimary(getMultipleConcatenationHandle()->substitute(pDst, hashSrc)));
+    } else {
+        LOG(ERROR) << "No such branch";
+    }
+    assert(0);
+}
+    
 VExprPrimaryHandle VExprConstantPrimary::toPrimaryHandle() const {
     if (getNumberHandle().valid()) {
         return VExprPrimaryHandle(VExprPrimary(getNumberHandle()));

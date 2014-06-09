@@ -18,3 +18,7 @@ std::string VExprAlways::getString(unsigned int indentLevel) const {
 VExprAlwaysHandle VExprAlways::flatten(VExprIdentifierHandle pInstName) const {
     return VExprAlwaysHandle(VExprAlways(getStatementHandle()->flatten(pInstName)));
 }
+    
+VExprAlwaysHandle VExprAlways::substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const {
+    return VExprAlwaysHandle(VExprAlways(getStatementHandle()->substitute(pDst, hashSrc)));
+}

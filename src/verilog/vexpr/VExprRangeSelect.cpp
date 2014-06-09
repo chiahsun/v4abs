@@ -36,6 +36,10 @@ size_t VExprRangeSelect::getSize() const {
 VExprRangeSelectHandle VExprRangeSelect::flatten(VExprIdentifierHandle pInstName) const {
     return VExprRangeSelectHandle(VExprRangeSelect(getExprFst()->flatten(pInstName), getExprSnd()->flatten(pInstName)));
 }
+    
+VExprRangeSelectHandle VExprRangeSelect::substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const {
+    return VExprRangeSelectHandle(VExprRangeSelect(getExprFst()->substitute(pDst, hashSrc), getExprSnd()->substitute(pDst, hashSrc)));
+}
 
 VExprBitSelect::VExprBitSelect(VExprExpressionHandle pExpr)
   : _pExpr(pExpr)
@@ -56,4 +60,8 @@ size_t VExprBitSelect::getSize() const {
 
 VExprBitSelectHandle VExprBitSelect::flatten(VExprIdentifierHandle pInstName) const {
     return VExprBitSelectHandle(VExprBitSelect(getExpr()->flatten(pInstName)));
+}
+    
+VExprBitSelectHandle VExprBitSelect::substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const {
+    return VExprBitSelectHandle(VExprBitSelect(getExpr()->substitute(pDst, hashSrc)));
 }

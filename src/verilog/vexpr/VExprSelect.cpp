@@ -37,3 +37,14 @@ VExprSelectHandle VExprSelect::flatten(VExprIdentifierHandle pInstName) const {
     }
     assert(0);
 }
+    
+VExprSelectHandle VExprSelect::substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const {
+    if (getRangeSelectHandle().valid()) {
+        return VExprSelectHandle(VExprSelect(getRangeSelectHandle()->substitute(pDst, hashSrc)));
+    } else if (getBitSelectHandle().valid()) {
+        return VExprSelectHandle(VExprSelect(getBitSelectHandle()->substitute(pDst, hashSrc)));
+    } else {
+        LOG(ERROR) << "Invalid handles or not implemented type";
+    }
+    assert(0);
+}

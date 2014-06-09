@@ -21,3 +21,7 @@ std::string VExprProceduralContinuousAssignment::getString(unsigned int indentLe
 VExprProceduralContinuousAssignmentHandle VExprProceduralContinuousAssignment::flatten(VExprIdentifierHandle pInstName) const {
     return VExprProceduralContinuousAssignmentHandle(VExprProceduralContinuousAssignment(getRegAssignment()->flatten(pInstName)));
 }
+    
+VExprProceduralContinuousAssignmentHandle VExprProceduralContinuousAssignment::substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const {
+    return VExprProceduralContinuousAssignmentHandle(VExprProceduralContinuousAssignment(getRegAssignment()->substitute(pDst, hashSrc)));
+}

@@ -34,6 +34,7 @@ public:
 
     std::string getString() const;
     VExprRegLvalueHandle flatten(VExprIdentifierHandle pInstName) const;
+    VExprRegLvalueHandle substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const;
 };
 
 #endif // VEXPR_REG_LVALUE_H

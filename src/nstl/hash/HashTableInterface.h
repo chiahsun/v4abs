@@ -48,6 +48,9 @@ public:
     const_iterator find(const value_type & val) const {
         return _container.cfind(val);
     }
+    const_iterator cfind(const value_type & val) const {
+        return _container.cfind(val);
+    }
     iterator find(const value_type & val) {
         return _container.find(val);
     }

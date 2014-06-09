@@ -24,6 +24,7 @@ public:
     std::string getString(unsigned int indentLevel) const;
 
     VExprStatementOrNullHandle flatten(VExprIdentifierHandle pInstName) const;
+    VExprStatementOrNullHandle substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const;
 };
 
 class VExprNull : public VExprStatementOrNullInterface {

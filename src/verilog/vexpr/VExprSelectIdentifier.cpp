@@ -56,3 +56,11 @@ VExprSelectIdentifierHandle VExprSelectIdentifier::flatten(VExprIdentifierHandle
         vecFlatSelect.push_back(pSelect->flatten(pInstName));
     return VExprSelectIdentifierHandle(VExprSelectIdentifier(pFlatIdentifier, vecFlatSelect));
 }
+    
+VExprSelectIdentifierHandle VExprSelectIdentifier::substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const {
+    VExprIdentifierHandle pNewIdentifier = _pIdentifier->substitute(pDst, hashSrc);
+    std::vector<VExprSelectHandle> vecNewSelect;
+    CONST_FOR_EACH(pSelect, _vecSelect) 
+        vecNewSelect.push_back(pSelect->substitute(pDst, hashSrc));
+    return VExprSelectIdentifierHandle(VExprSelectIdentifier(pNewIdentifier, vecNewSelect));
+}

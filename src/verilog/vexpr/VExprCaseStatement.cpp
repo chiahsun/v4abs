@@ -62,6 +62,17 @@ VExprCaseStatementHandle VExprCaseStatement::flatten(VExprIdentifierHandle pInst
     return VExprCaseStatementHandle(VExprCaseStatement(pFlatExpr, vecFlatCaseItem));
 }
 
+VExprCaseStatementHandle VExprCaseStatement::substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const {
+    VExprExpressionHandle pNewExpr = getConstExpressionHandle()->substitute(pDst, hashSrc);
+    std::vector<VExprCaseItemHandle> vecNewCaseItem;
+
+    CONST_FOR_EACH(pCaseItem, getConstCaseItemContainer()) {
+        vecNewCaseItem.push_back(pCaseItem->substitute(pDst, hashSrc));
+    }
+
+    return VExprCaseStatementHandle(VExprCaseStatement(pNewExpr, vecNewCaseItem));
+}
+
 VExprCaseItem::VExprCaseItem(VExprExpressionHandle pExpr, VExprStatementOrNullHandle pStatementOrNull) {
     _vecExpression.push_back(pExpr);
     _pStatementOrNull = pStatementOrNull;
@@ -115,4 +126,15 @@ VExprCaseItemHandle VExprCaseItem::flatten(VExprIdentifierHandle pInstName) cons
     }
 
     return VExprCaseItemHandle(VExprCaseItem(vecFlatExpression, pFlatStatementOrNull));
+}
+    
+VExprCaseItemHandle VExprCaseItem::substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const {
+    std::vector<VExprExpressionHandle> vecNewExpression;
+    VExprStatementOrNullHandle pNewStatementOrNull = getStatementOrNullHandle()->substitute(pDst, hashSrc);
+
+    CONST_FOR_EACH(pExpression, getExpressionHandleContainer()) {
+        vecNewExpression.push_back(pExpression->substitute(pDst, hashSrc));
+    }
+
+    return VExprCaseItemHandle(VExprCaseItem(vecNewExpression, pNewStatementOrNull));
 }

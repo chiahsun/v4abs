@@ -68,6 +68,21 @@ VExprNetLvalueHandle VExprNetLvalue::flatten(VExprIdentifierHandle pInstName) co
     assert(0);
 }
     
+VExprNetLvalueHandle VExprNetLvalue::substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const {
+    if (getIdentifierHandle().valid()) {
+        return VExprNetLvalueHandle(VExprNetLvalue(getIdentifierHandle()->substitute(pDst, hashSrc)));
+    } else if (getNetLvalueBitSelectHandle().valid()) {
+        return VExprNetLvalueHandle(VExprNetLvalue(getNetLvalueBitSelectHandle()->substitute(pDst, hashSrc)));
+    } else if (getNetLvalueRangeSelectHandle().valid()) {
+        return VExprNetLvalueHandle(VExprNetLvalue(getNetLvalueRangeSelectHandle()->substitute(pDst, hashSrc)));
+    } else if (getConcatenationHandle().valid()) {
+        return VExprNetLvalueHandle(VExprNetLvalue(getConcatenationHandle()->substitute(pDst, hashSrc)));
+    } else {
+        LOG(ERROR) << "No such branch";
+    }
+    assert(0);
+}
+    
 VExprExpressionHandle VExprNetLvalue::toExpressionHandle() const { 
     if (getIdentifierHandle().valid()) {
         return getIdentifierHandle()->toExpressionHandle(); 
@@ -107,6 +122,13 @@ VExprNetLvalueBitSelectHandle VExprNetLvalueBitSelect::flatten(VExprIdentifierHa
             ));
 }
     
+VExprNetLvalueBitSelectHandle VExprNetLvalueBitSelect::substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const {
+    return VExprNetLvalueBitSelectHandle(VExprNetLvalueBitSelect(
+                getIdentifierHandle()->substitute(pDst, hashSrc)
+              , getExpressionHandle()->substitute(pDst, hashSrc)
+            ));
+}
+    
 VExprExpressionHandle VExprNetLvalueBitSelect::toExpressionHandle() const {
     VExprBitSelectHandle pBitSelect = VExprBitSelectHandle(VExprBitSelect(getExpressionHandle()));
     VExprSelectIdentifierHandle pSelectIdentifier = VExprSelectIdentifierHandle(VExprSelectIdentifier(getIdentifierHandle(), pBitSelect));
@@ -141,6 +163,14 @@ VExprNetLvalueRangeSelectHandle VExprNetLvalueRangeSelect::flatten(VExprIdentifi
                 getIdentifierHandle()->flatten(pInstName)
               , getFstConstExprHandle()->flatten(pInstName)
               , getSndConstExprHandle()->flatten(pInstName)
+            ));
+}
+    
+VExprNetLvalueRangeSelectHandle VExprNetLvalueRangeSelect::substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const {
+    return VExprNetLvalueRangeSelectHandle(VExprNetLvalueRangeSelect(
+                getIdentifierHandle()->substitute(pDst, hashSrc)
+              , getFstConstExprHandle()->substitute(pDst, hashSrc)
+              , getSndConstExprHandle()->substitute(pDst, hashSrc)
             ));
 }
 

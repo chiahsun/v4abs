@@ -22,6 +22,7 @@ public:
     std::string getString(unsigned int indentLevel) const;
 
     VExprEventStatementHandle flatten(VExprIdentifierHandle pInstName) const;
+    VExprEventStatementHandle substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const;
 };
 
 class VExprEventExpression {
@@ -42,6 +43,7 @@ public:
     std::string getString() const;
 
     VExprEventExpressionHandle flatten(VExprIdentifierHandle pInstName) const;
+    VExprEventExpressionHandle substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const;
 };
 
 class VExprEvent {
@@ -65,6 +67,7 @@ public:
     std::string getString() const;
 
     VExprEventHandle flatten(VExprIdentifierHandle pInstName) const;
+    VExprEventHandle substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const;
 };
 
 class VExprPosedgeEvent : public VExprEventInterface {
@@ -77,6 +80,7 @@ public:
     std::string getString() const;
     
     VExprPosedgeEventHandle flatten(VExprIdentifierHandle pInstName) const;
+    VExprPosedgeEventHandle substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const;
 };
 
 
@@ -90,6 +94,7 @@ public:
     std::string getString() const;
 
     VExprNegedgeEventHandle flatten(VExprIdentifierHandle pInstName) const;
+    VExprNegedgeEventHandle substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const;
 };
 
 #endif // VEXPR_EVENT_STATEMENT_H

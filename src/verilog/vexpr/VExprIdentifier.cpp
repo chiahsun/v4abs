@@ -6,6 +6,7 @@
 #include "VExprNetLvalue.h"
 #include "utility/log/Log.h"
 #include "nstl/hash/HashFunction.h"
+#include "nstl/for_each/ForEach.h"
 
 VExprIdentifierHandle vexpr_identifier_mk_single_identifier(std::string identifier, size_t size) {
     return VExprIdentifierHandle(VExprIdentifier(VExprSingleIdentifierHandle(VExprSingleIdentifier(identifier, size))));
@@ -70,6 +71,17 @@ std::vector<std::string> VExprIdentifier::getStringContainer() const
     
 VExprIdentifierHandle VExprIdentifier::flatten(VExprIdentifierHandle pInstName) const
   { return makeHierIdentifier(pInstName, *this); } 
+    
+VExprIdentifierHandle VExprIdentifier::substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const {
+    VExprExpressionHandle pIdentifierExpression = toExpressionHandle();
+
+    CONST_FOR_EACH(pExpr, hashSrc) {
+        if (pExpr->getString() == getString())
+            return pDst->getPrimaryHandle()->getIdentifierHandle();
+    }
+        
+    return VExprIdentifierHandle(VExprIdentifier(*this));
+}
     
 int VExprIdentifier::hashFunction() const
   { return HashFunction<std::string>::hashFunction(getString()); }

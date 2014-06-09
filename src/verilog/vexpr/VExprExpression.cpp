@@ -229,6 +229,47 @@ VExprConstantExpressionHandle VExprExpression::toConstantExpressionHandle() cons
 
 int VExprExpression::hashFunction() const
   { return HashFunction<std::string>::hashFunction(getString()); }
+    
+VExprExpressionHandle VExprExpression::substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const {
+    if (getPrimaryHandle().valid()) {
+        return VExprExpressionHandle(VExprExpression(getPrimaryHandle()->substitute(pDst, hashSrc)));
+    } else if (getUnaryHandle().valid()) {
+        return VExprExpressionHandle(VExprExpression(getUnaryHandle()->substitute(pDst, hashSrc)));
+    } else if (getBinaryHandle().valid()) {
+        return VExprExpressionHandle(VExprExpression(getBinaryHandle()->substitute(pDst, hashSrc)));
+    } else if (getTernaryHandle().valid()) {
+        return VExprExpressionHandle(VExprExpression(getTernaryHandle()->substitute(pDst, hashSrc)));
+    } else if (getBoolHandle().valid()) {
+        return VExprExpressionHandle(VExprExpression(getBoolHandle()));
+    } else {
+        LOG(ERROR) << "Not implemented type or invalid handles";
+    }
+    assert(0);
+}
+#if 0 
+bool VExprExpression::operator == (const VExprExpression & rhs) const {
+    if (getPrimaryHandle().valid()) {
+        return rhs.getPrimaryHandle().valid() 
+            && (*getPrimaryHandle()) == *(rhs.getPrimaryHandle());
+    } else if (getUnaryHandle().valid()) {
+        return rhs.getUnaryHandle().valid() 
+            && (*getUnaryHandle()) == *(rhs.getUnaryHandle());
+    } else if (getBinaryHandle().valid()) {
+        return rhs.getBinaryHandle().valid() 
+            && (*getBinaryHandle()) == *(rhs.getBinaryHandle());
+    } else if (getTernaryHandle().valid()) {
+        return rhs.getTernaryHandle().valid() 
+            && (*getTernaryHandle()) == *(rhs.getTernaryHandle());
+    } else if (getBoolHandle().valid()) {
+        return rhs.getBoolHandle().valid() 
+            && (*getBoolHandle()) == *(rhs.getBoolHandle());
+    } else {
+        LOG(ERROR) << "Not implemented type or invalid handles";
+    }
+    assert(0);
+
+}
+#endif
 
 VExprUnary::VExprUnary(UnaryOpType opType, VExprPrimaryHandle pPrimary)
   : _opType(opType)
@@ -275,6 +316,10 @@ VExprConstantUnaryHandle VExprUnary::toConstantUnaryHandle() const {
     
 std::string VExprUnary::getOpTypeSymbol() const {
     return vexpr_get_unary_op_symbol(getOpType());
+}
+    
+VExprUnaryHandle VExprUnary::substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const {
+    return VExprUnaryHandle(VExprUnary(getOpType(), getPrimaryHandle()->substitute(pDst, hashSrc)));
 }
 
 VExprBinary::VExprBinary(VExprExpressionHandle pExprFst, BinaryOpType opType, VExprExpressionHandle pExprSnd) 
@@ -343,6 +388,13 @@ VExprBinaryHandle VExprBinary::flatten(VExprIdentifierHandle pInstName) const {
        , getSnd()->flatten(pInstName)));
 }
     
+VExprBinaryHandle VExprBinary::substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const {
+    return VExprBinaryHandle(VExprBinary( 
+         getFst()->substitute(pDst, hashSrc)
+       , getOpType()
+       , getSnd()->substitute(pDst, hashSrc)));
+}
+    
 VExprConstantBinaryHandle VExprBinary::toConstantBinaryHandle() const {
     return VExprConstantBinaryHandle(
             VExprConstantBinary( getFst()->toConstantExpressionHandle()
@@ -393,6 +445,13 @@ VExprTernaryHandle VExprTernary::flatten(VExprIdentifierHandle pInstName) const 
            getIf()->flatten(pInstName)
          , getThen()->flatten(pInstName)
          , getElse()->flatten(pInstName)));
+}
+    
+VExprTernaryHandle VExprTernary::substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const {
+    return VExprTernaryHandle(VExprTernary(
+           getIf()->substitute(pDst, hashSrc)
+         , getThen()->substitute(pDst, hashSrc)
+         , getElse()->substitute(pDst, hashSrc)));
 }
     
     

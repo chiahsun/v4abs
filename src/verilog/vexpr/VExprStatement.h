@@ -10,6 +10,7 @@
 #include "VExprProceduralContinuousAssignment.h"
 #include "VExprLoopStatement.h"
 #include "VExprEventStatement.h"
+#include "nstl/hash/HashTable.h"
 
 VExprStatementHandle vexpr_statement_mk_blocking_assignment(VExprBlockingAssignmentHandle pBlockingAssign);
 VExprStatementHandle vexpr_statement_mk_non_blocking_assignment(VExprNonBlockingAssignmentHandle pNonBlockingAssign);
@@ -65,6 +66,7 @@ public:
     VExprStatementOrNullHandle toStatementOrNullHandle() const;
 
     VExprStatementHandle flatten(VExprIdentifierHandle pInstName) const;
+    VExprStatementHandle substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const;
 };
 
 #endif // VEXPR_STATEMENT_H

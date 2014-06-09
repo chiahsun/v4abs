@@ -59,3 +59,12 @@ VExprLoopStatementHandle VExprLoopStatement::flatten(VExprIdentifierHandle pInst
             , getStatementHandle()->flatten(pInstName)
             ));
 }
+    
+VExprLoopStatementHandle VExprLoopStatement::substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const {
+    return VExprLoopStatementHandle(VExprLoopStatement(
+              getForInitHandle()->substitute(pDst, hashSrc)
+            , getForCondHandle()->substitute(pDst, hashSrc)
+            , getForAssignHandle()->substitute(pDst, hashSrc)
+            , getStatementHandle()->substitute(pDst, hashSrc)
+            ));
+}

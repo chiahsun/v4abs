@@ -58,6 +58,7 @@ public:
     std::string getString() const;
 
     VExprConstantExpressionHandle flatten(VExprIdentifierHandle pInstName) const;
+    VExprConstantExpressionHandle substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const;
 
     VExprExpressionHandle toExpressionHandle() const;
 //    size_t getSize() const;
@@ -75,6 +76,7 @@ public:
 
     std::string getString() const;
     VExprConstantUnaryHandle flatten(VExprIdentifierHandle pInstName) const;
+    VExprConstantUnaryHandle substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const;
     VExprUnaryHandle toUnaryHandle() const;
 };
 
@@ -92,6 +94,7 @@ public:
 
     std::string getString() const;
     VExprConstantBinaryHandle flatten(VExprIdentifierHandle pInstName) const;
+    VExprConstantBinaryHandle substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const;
     VExprBinaryHandle toBinaryHandle() const;
 };
 
@@ -109,6 +112,7 @@ public:
 
     std::string getString() const;
     VExprConstantTernaryHandle flatten(VExprIdentifierHandle pInstName) const;
+    VExprConstantTernaryHandle substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const;
     VExprTernaryHandle toTernaryHandle() const;
 };
 

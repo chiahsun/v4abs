@@ -153,3 +153,26 @@ VExprStatementHandle VExprStatement::flatten(VExprIdentifierHandle pInstName) co
     }
     assert(0);
 }
+    
+VExprStatementHandle VExprStatement::substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const {
+    if (getBlockingAssignHandle().valid()) {
+        return VExprStatementHandle(VExprStatement(getBlockingAssignHandle()->substitute(pDst, hashSrc)));
+    } else if (getNonBlockingAssignHandle().valid()) {
+        return VExprStatementHandle(VExprStatement(getNonBlockingAssignHandle()->substitute(pDst, hashSrc)));
+    } else if (getSeqBlockHandle().valid()) {
+        return VExprStatementHandle(VExprStatement(getSeqBlockHandle()->substitute(pDst, hashSrc)));
+    } else if (getConditionalHandle().valid()) {
+        return VExprStatementHandle(VExprStatement(getConditionalHandle()->substitute(pDst, hashSrc)));
+    } else if (getCaseStatementHandle().valid()) {
+        return VExprStatementHandle(VExprStatement(getCaseStatementHandle()->substitute(pDst, hashSrc)));
+    } else if (getProceduralContinuousAssignmentHandle().valid()) {
+        return VExprStatementHandle(VExprStatement(getProceduralContinuousAssignmentHandle()->substitute(pDst, hashSrc)));
+    } else if (getLoopStatementHandle().valid()) {
+        return VExprStatementHandle(VExprStatement(getLoopStatementHandle()->substitute(pDst, hashSrc)));
+    } else if (getEventStatementHandle().valid()) {
+        return VExprStatementHandle(VExprStatement(getEventStatementHandle()->substitute(pDst, hashSrc)));
+    } else {
+        LOG(ERROR) << "No such branch";
+    }
+    assert(0);
+}

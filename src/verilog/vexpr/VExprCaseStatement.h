@@ -28,6 +28,7 @@ public:
     VExprStatementOrNullHandle toStatemetOrNullHandle() const;
 
     VExprCaseStatementHandle flatten(VExprIdentifierHandle pInstName) const;
+    VExprCaseStatementHandle substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const;
 };
 
 class VExprCaseItem {
@@ -49,6 +50,7 @@ public:
     std::string getString(unsigned int indentLevel) const; 
     
     VExprCaseItemHandle flatten(VExprIdentifierHandle pInstName) const;
+    VExprCaseItemHandle substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const;
 };
 
 #endif // VEXPR_CASE_STATEMENT_H

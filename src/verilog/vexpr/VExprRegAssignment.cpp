@@ -28,3 +28,7 @@ std::string VExprRegAssignment::getString() const
 VExprRegAssignmentHandle VExprRegAssignment::flatten(VExprIdentifierHandle pInstName) const {
     return VExprRegAssignmentHandle(VExprRegAssignment(getRegLvalueHandle()->flatten(pInstName), getExpressionHandle()->flatten(pInstName)));
 }
+    
+VExprRegAssignmentHandle VExprRegAssignment::substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const {
+    return VExprRegAssignmentHandle(VExprRegAssignment(getRegLvalueHandle()->substitute(pDst, hashSrc), getExpressionHandle()->substitute(pDst, hashSrc)));
+}

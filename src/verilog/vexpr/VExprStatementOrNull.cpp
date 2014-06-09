@@ -44,6 +44,17 @@ VExprStatementOrNullHandle VExprStatementOrNull::flatten(VExprIdentifierHandle p
     assert(0);
 }
     
+VExprStatementOrNullHandle VExprStatementOrNull::substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const {
+    if (getStatementHandle().valid()) {
+        return VExprStatementOrNullHandle(VExprStatementOrNull(getStatementHandle()->substitute(pDst, hashSrc)));
+    } else if (getNullHandle().valid()) {
+        return VExprStatementOrNullHandle(VExprStatementOrNull(getNullHandle()));
+    } else {
+        LOG(ERROR) << "No such branch";
+    }
+    assert(0);
+}
+    
 VExprNullHandle VExprNull::getNull() {
     static VExprNullHandle pNull = VExprNullHandle(VExprNull());
     return pNull;

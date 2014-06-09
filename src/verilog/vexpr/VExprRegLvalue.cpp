@@ -66,3 +66,16 @@ VExprRegLvalueHandle VExprRegLvalue::flatten(VExprIdentifierHandle pInstName) co
     }
     assert(0);
 }
+    
+VExprRegLvalueHandle VExprRegLvalue::substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const {
+    if (getIdentifierHandle().valid()) {
+        return VExprRegLvalueHandle(VExprRegLvalue(getIdentifierHandle()->substitute(pDst, hashSrc)));
+    } else if (getSelectIdentifierHandle().valid()) {
+        return VExprRegLvalueHandle(VExprRegLvalue(getSelectIdentifierHandle()->substitute(pDst, hashSrc)));
+    } else if (getConcatenationHandle().valid()) {
+        return VExprRegLvalueHandle(VExprRegLvalue(getConcatenationHandle()->substitute(pDst, hashSrc)));
+    } else {
+        LOG(ERROR) << "No such branch";
+    }
+    assert(0);
+}

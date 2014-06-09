@@ -17,3 +17,7 @@ std::string VExprInitial::getString(unsigned int indentLevel) const {
 VExprInitialHandle VExprInitial::flatten(VExprIdentifierHandle pInstName) const {
     return VExprInitialHandle(VExprInitial(getStatementHandle()->flatten(pInstName)));
 }
+    
+VExprInitialHandle VExprInitial::substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const {
+    return VExprInitialHandle(VExprInitial(getStatementHandle()->substitute(pDst, hashSrc)));
+}

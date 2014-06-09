@@ -62,6 +62,14 @@ VExprConcatenationHandle VExprConcatenation::flatten(VExprIdentifierHandle pInst
     return VExprConcatenationHandle(VExprConcatenation(vecFlatExpr));
 }
     
+VExprConcatenationHandle VExprConcatenation::substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const {
+    std::vector<VExprExpressionHandle> vecNewExpr;
+    CONST_FOR_EACH(pExpr, _vecExpr) {
+        vecNewExpr.push_back(pExpr->substitute(pDst, hashSrc));
+    }
+    return VExprConcatenationHandle(VExprConcatenation(vecNewExpr));
+}
+    
 VExprExpressionHandle VExprConcatenation::toExpressionHandle() const {
     VExprConcatenationHandle pConcatenation = VExprConcatenationHandle(VExprConcatenation(*this));
     return VExprExpressionHandle(VExprExpression(VExprPrimaryHandle(VExprPrimary(pConcatenation))));

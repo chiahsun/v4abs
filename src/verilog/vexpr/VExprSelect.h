@@ -24,6 +24,7 @@ public:
     size_t getSize() const;
 
     VExprSelectHandle flatten(VExprIdentifierHandle pInstName) const;
+    VExprSelectHandle substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const;
 };
 
 #endif // VEXPR_SELECT_H

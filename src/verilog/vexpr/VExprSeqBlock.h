@@ -26,6 +26,8 @@ public:
     const std::vector<VExprStatementHandle>& getStatementContainer() const;
 
     VExprSeqBlockHandle flatten(VExprIdentifierHandle pInstName) const;
+    VExprSeqBlockHandle substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const;
+
 };
 
 #endif // VEXPR_SEQ_BLOCK_H

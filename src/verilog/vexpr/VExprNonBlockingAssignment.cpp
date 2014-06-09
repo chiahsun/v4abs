@@ -41,3 +41,10 @@ VExprNonBlockingAssignmentHandle VExprNonBlockingAssignment::flatten(VExprIdenti
               , getExpressionHandle()->flatten(pInstName)
             ));
 }
+    
+VExprNonBlockingAssignmentHandle VExprNonBlockingAssignment::substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const {
+    return VExprNonBlockingAssignmentHandle(VExprNonBlockingAssignment(
+                getRegLvalueHandle()->substitute(pDst, hashSrc)
+              , getExpressionHandle()->substitute(pDst, hashSrc)
+            ));
+}

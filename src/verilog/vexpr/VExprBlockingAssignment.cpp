@@ -32,3 +32,10 @@ VExprBlockingAssignmentHandle VExprBlockingAssignment::flatten(VExprIdentifierHa
               , getExpressionHandle()->flatten(pInstName)
             ));
 }
+    
+VExprBlockingAssignmentHandle VExprBlockingAssignment::substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const {
+    return VExprBlockingAssignmentHandle(VExprBlockingAssignment(
+                getRegLvalueHandle()->substitute(pDst, hashSrc)
+              , getExpressionHandle()->substitute(pDst, hashSrc)
+            ));
+}

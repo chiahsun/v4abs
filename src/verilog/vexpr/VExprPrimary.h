@@ -62,6 +62,7 @@ public:
     std::string getString() const;
 
     VExprPrimaryHandle flatten(VExprIdentifierHandle pInstName) const;
+    VExprPrimaryHandle substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const;
     VExprConstantPrimaryHandle toConstantPrimaryHandle() const;
 
     int hashFunction() const;

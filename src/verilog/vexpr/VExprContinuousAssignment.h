@@ -23,6 +23,7 @@ public:
     std::string getString() const;
 
     VExprContinuousAssignmentHandle flatten(VExprIdentifierHandle pInstName) const;
+    VExprContinuousAssignmentHandle substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const;
 };
 
 #endif // VEXPR_CONTINUOUS_ASSIGNMENT_H

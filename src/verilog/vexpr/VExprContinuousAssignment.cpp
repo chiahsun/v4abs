@@ -52,3 +52,19 @@ VExprContinuousAssignmentHandle VExprContinuousAssignment::flatten(VExprIdentifi
 
     return VExprContinuousAssignmentHandle(VExprContinuousAssignment(vecFlatNetAssignment));
 }
+    
+VExprContinuousAssignmentHandle VExprContinuousAssignment::substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const {
+    std::vector<VExprNetAssignmentHandle> vecNewNetAssignment;
+
+    CONST_FOR_EACH(pNetAssignment, getNetAssignmentContainer()) {
+        VExprNetAssignmentHandle pNewNetAssignment = pNetAssignment->substitute(pDst, hashSrc);
+        if (pNewNetAssignment->getNetLvalueHandle()->toExpressionHandle()->getString() == pNewNetAssignment->getExpressionHandle()->getString()) {
+            // do nothing, don't add assign a = a;
+        } else {
+            vecNewNetAssignment.push_back(pNewNetAssignment);
+        }
+    }
+
+    return VExprContinuousAssignmentHandle(VExprContinuousAssignment(vecNewNetAssignment));
+}
+

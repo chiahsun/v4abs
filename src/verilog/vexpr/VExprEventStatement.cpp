@@ -36,6 +36,13 @@ VExprEventStatementHandle VExprEventStatement::flatten(VExprIdentifierHandle pIn
               , getStatementOrNullHandle()->flatten(pInstName)
             ));
 }
+
+VExprEventStatementHandle VExprEventStatement::substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const {
+    return VExprEventStatementHandle(VExprEventStatement(
+                getEventExpressionHandle()->substitute(pDst, hashSrc)
+              , getStatementOrNullHandle()->substitute(pDst, hashSrc)
+            ));
+}
     
 VExprEventExpression::VExprEventExpression() { }
     
@@ -95,6 +102,15 @@ VExprEventExpressionHandle VExprEventExpression::flatten(VExprIdentifierHandle p
     return VExprEventExpressionHandle(VExprEventExpression(vecFlatEvent));
 }
     
+VExprEventExpressionHandle VExprEventExpression::substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const {
+    std::vector<VExprEventHandle> vecNewEvent;
+    CONST_FOR_EACH(pEvent, getEventHandleContainer()) {
+        vecNewEvent.push_back(pEvent->substitute(pDst, hashSrc));
+    }
+
+    return VExprEventExpressionHandle(VExprEventExpression(vecNewEvent));
+}
+    
 VExprEvent::VExprEvent(VExprExpressionHandle pExpr)
   : _pInterface(shared_ptr_cast<VExprEventInterface>(pExpr))
   , _pExpr(pExpr)
@@ -144,6 +160,21 @@ VExprEventHandle VExprEvent::flatten(VExprIdentifierHandle pInstName) const {
     }
     assert(0);
 }
+    
+VExprEventHandle VExprEvent::substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const {
+    if (getExpressionHandle().valid()) {
+        return VExprEventHandle(VExprEvent(getExpressionHandle()->substitute(pDst, hashSrc)));
+    } else if (getIdentifierHandle().valid()) {
+        return VExprEventHandle(VExprEvent(getIdentifierHandle()->substitute(pDst, hashSrc)));
+    } else if (getPosedgeEventHandle().valid()) {
+        return VExprEventHandle(VExprEvent(getPosedgeEventHandle()->substitute(pDst, hashSrc)));
+    } else if (getNegedgeEventHandle().valid()) {
+        return VExprEventHandle(VExprEvent(getNegedgeEventHandle()->substitute(pDst, hashSrc)));
+    } else {
+        LOG(ERROR) << "No such branch";
+    }
+    assert(0);
+}
 
 VExprPosedgeEvent::VExprPosedgeEvent(VExprExpressionHandle pExpr)
   : _pExpr(pExpr)
@@ -159,6 +190,10 @@ std::string VExprPosedgeEvent::getString() const {
 VExprPosedgeEventHandle VExprPosedgeEvent::flatten(VExprIdentifierHandle pInstName) const {
     return VExprPosedgeEventHandle(VExprPosedgeEvent(getExpr()->flatten(pInstName)));
 }
+    
+VExprPosedgeEventHandle VExprPosedgeEvent::substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const {
+    return VExprPosedgeEventHandle(VExprPosedgeEvent(getExpr()->substitute(pDst, hashSrc)));
+}
 
 VExprNegedgeEvent::VExprNegedgeEvent(VExprExpressionHandle pExpr)
   : _pExpr(pExpr)
@@ -173,4 +208,8 @@ std::string VExprNegedgeEvent::getString() const {
     
 VExprNegedgeEventHandle VExprNegedgeEvent::flatten(VExprIdentifierHandle pInstName) const {
     return VExprNegedgeEventHandle(VExprNegedgeEvent(getExpr()->flatten(pInstName)));
+}
+    
+VExprNegedgeEventHandle VExprNegedgeEvent::substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const {
+    return VExprNegedgeEventHandle(VExprNegedgeEvent(getExpr()->substitute(pDst, hashSrc)));
 }

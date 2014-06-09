@@ -27,6 +27,13 @@ VExprNetAssignmentHandle VExprNetAssignment::flatten(VExprIdentifierHandle pInst
               , getExpressionHandle()->flatten(pInstName)
             ));
 }
+    
+VExprNetAssignmentHandle VExprNetAssignment::substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const {
+    return VExprNetAssignmentHandle(VExprNetAssignment(
+                getNetLvalueHandle()->substitute(pDst, hashSrc)
+              , getExpressionHandle()->substitute(pDst, hashSrc)
+            ));
+}
 
 int VExprNetAssignment::hashFunction() const
   { return HashFunction<std::string>::hashFunction(getString()); }

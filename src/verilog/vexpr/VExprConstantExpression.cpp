@@ -141,6 +141,23 @@ VExprConstantExpressionHandle VExprConstantExpression::flatten(VExprIdentifierHa
     assert(0);
 }
     
+VExprConstantExpressionHandle VExprConstantExpression::substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const {
+    if (getConstantPrimaryHandle().valid()) {
+        return VExprConstantExpressionHandle(VExprConstantExpression(getConstantPrimaryHandle()->substitute(pDst, hashSrc)));
+    } else if (getConstantUnaryhandle().valid()) {
+        return VExprConstantExpressionHandle(VExprConstantExpression(getConstantUnaryhandle()->substitute(pDst, hashSrc)));
+    } else if (getConstantBinaryHandle().valid()) {
+        return VExprConstantExpressionHandle(VExprConstantExpression(getConstantBinaryHandle()->substitute(pDst, hashSrc)));
+    } else if (getConstantTernaryHandle().valid()) {
+        return VExprConstantExpressionHandle(VExprConstantExpression(getConstantTernaryHandle()->substitute(pDst, hashSrc)));
+    } else if (getBoolHandle().valid()) {
+        return VExprConstantExpressionHandle(VExprConstantExpression(getBoolHandle()));
+    } else {
+        LOG(ERROR) << "No such branch";
+    }
+    assert(0);
+}
+    
 VExprExpressionHandle VExprConstantExpression::toExpressionHandle() const {
     if (getConstantPrimaryHandle().valid()) {
         return VExprExpressionHandle(VExprExpression(getConstantPrimaryHandle()->toPrimaryHandle()));
@@ -184,6 +201,10 @@ VExprConstantUnaryHandle VExprConstantUnary::flatten(VExprIdentifierHandle pInst
     return VExprConstantUnaryHandle(VExprConstantUnary(getOpType(), getConstantPrimaryHandle()->flatten(pInstName)));
 }
     
+VExprConstantUnaryHandle VExprConstantUnary::substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const {
+    return VExprConstantUnaryHandle(VExprConstantUnary(getOpType(), getConstantPrimaryHandle()->substitute(pDst, hashSrc)));
+}
+    
 VExprUnaryHandle VExprConstantUnary::toUnaryHandle() const {
     return VExprUnaryHandle(VExprUnary(getOpType(), getConstantPrimaryHandle()->toPrimaryHandle()));
 }
@@ -217,6 +238,10 @@ VExprConstantBinaryHandle VExprConstantBinary::flatten(VExprIdentifierHandle pIn
     return VExprConstantBinaryHandle(VExprConstantBinary(getExprFst()->flatten(pInstName), getOpType(), getExprSnd()->flatten(pInstName)));
 }
     
+VExprConstantBinaryHandle VExprConstantBinary::substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const {
+    return VExprConstantBinaryHandle(VExprConstantBinary(getExprFst()->substitute(pDst, hashSrc), getOpType(), getExprSnd()->substitute(pDst, hashSrc)));
+}
+    
 VExprBinaryHandle VExprConstantBinary::toBinaryHandle() const {
     return VExprBinaryHandle(VExprBinary(getExprFst()->toExpressionHandle(), getOpType(), getExprSnd()->toExpressionHandle()));
 }
@@ -245,6 +270,10 @@ std::string VExprConstantTernary::getString() const {
     
 VExprConstantTernaryHandle VExprConstantTernary::flatten(VExprIdentifierHandle pInstName) const {
     return VExprConstantTernaryHandle(VExprConstantTernary(getIf()->flatten(pInstName), getThen()->flatten(pInstName), getElse()->flatten(pInstName)));
+}
+    
+VExprConstantTernaryHandle VExprConstantTernary::substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const {
+    return VExprConstantTernaryHandle(VExprConstantTernary(getIf()->substitute(pDst, hashSrc), getThen()->substitute(pDst, hashSrc), getElse()->substitute(pDst, hashSrc)));
 }
     
 VExprTernaryHandle VExprConstantTernary::toTernaryHandle() const {

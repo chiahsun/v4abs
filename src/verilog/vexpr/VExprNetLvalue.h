@@ -33,6 +33,7 @@ public:
     std::string getString() const;
 
     VExprNetLvalueHandle flatten(VExprIdentifierHandle pInstName) const;
+    VExprNetLvalueHandle substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const;
 
     VExprExpressionHandle toExpressionHandle() const;
 };
@@ -50,6 +51,7 @@ public:
     std::string getString() const;
 
     VExprNetLvalueBitSelectHandle flatten(VExprIdentifierHandle pInstName) const;
+    VExprNetLvalueBitSelectHandle substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const;
     VExprExpressionHandle toExpressionHandle() const;
 };
 
@@ -68,6 +70,7 @@ public:
     std::string getString() const;
 
     VExprNetLvalueRangeSelectHandle flatten(VExprIdentifierHandle pInstName) const;
+    VExprNetLvalueRangeSelectHandle substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const;
     VExprExpressionHandle toExpressionHandle() const;
 };
 

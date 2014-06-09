@@ -23,6 +23,7 @@ public:
     VExprStatementOrNullHandle toStatementOrNullHandle() const;
 
     VExprNonBlockingAssignmentHandle flatten(VExprIdentifierHandle pInstName) const;
+    VExprNonBlockingAssignmentHandle substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const;
 };
 
 

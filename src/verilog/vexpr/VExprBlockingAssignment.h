@@ -20,6 +20,7 @@ public:
     std::string getString(unsigned int indentLevel) const;
 
     VExprBlockingAssignmentHandle flatten(VExprIdentifierHandle pInstName) const;
+    VExprBlockingAssignmentHandle substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const;
 };
 
 #endif // VEXPR_BLOCKING_ASSIGNMENT_H

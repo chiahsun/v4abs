@@ -27,6 +27,7 @@ public:
     std::string getString() const;
 
     VExprSelectIdentifierHandle flatten(VExprIdentifierHandle pInstName) const;
+    VExprSelectIdentifierHandle substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const;
 
 };
 

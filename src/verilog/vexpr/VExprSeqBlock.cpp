@@ -56,3 +56,13 @@ VExprSeqBlockHandle VExprSeqBlock::flatten(VExprIdentifierHandle pInstName) cons
 
     return VExprSeqBlockHandle(VExprSeqBlock(vecFlatStatement));
 }
+    
+VExprSeqBlockHandle VExprSeqBlock::substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const {
+    std::vector<VExprStatementHandle> vecNewStatement;
+
+    CONST_FOR_EACH(pStatement, getStatementContainer()) {
+        vecNewStatement.push_back(pStatement->substitute(pDst, hashSrc));
+    }
+
+    return VExprSeqBlockHandle(VExprSeqBlock(vecNewStatement));
+}

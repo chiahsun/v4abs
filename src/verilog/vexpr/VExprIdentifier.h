@@ -53,6 +53,8 @@ public:
     VExprIdentifierHandle substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const;
     int hashFunction() const;
     int getHierarchicalLevel() const;
+
+    bool operator == (const VExprIdentifier & rhs) const;
 };
     
 VExprIdentifierHandle makeHierIdentifier(VExprIdentifierHandle pPrefixIdentifier, VExprIdentifierHandle pIdentifier);

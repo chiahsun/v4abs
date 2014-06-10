@@ -73,7 +73,7 @@ public:
     int hashFunction() const;
     VExprExpressionHandle substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const;
 
-//    bool operator == (const VExprExpression & rhs) const;
+    bool operator == (const VExprExpression & rhs) const;
 };
 
 class VExprUnary : public VExprExpressionInterface {

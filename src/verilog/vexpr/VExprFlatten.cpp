@@ -143,7 +143,7 @@ VExprFlatModuleHandle VExprFlatten::substituteShortCircuit(VExprFlatModuleHandle
             shortCircuitMap.insert(std::make_pair(pHead, HashTable<VExprExpressionHandle>()));
         shortCircuitMap.find(pHead)->second.insert(pExpression);
     }
-#if 1
+#if 0
     FOR_EACH(pr, shortCircuitMap) {
         std::cout << pr.first->getString() << "(" << pr.first->getPrimaryHandle()->getIdentifierHandle()->getHierarchicalLevel() << ")" << " : ";
 
@@ -169,7 +169,7 @@ VExprFlatModuleHandle VExprFlatten::substituteShortCircuit(VExprFlatModuleHandle
         shortCircuitMapDecided.insert(std::make_pair(pExprBest, pr.second));
     }
 
-#if 1
+#if 0 
     FOR_EACH(pr, shortCircuitMapDecided) {
         std::cout << pr.first->getString() << "(" << pr.first->getPrimaryHandle()->getIdentifierHandle()->getHierarchicalLevel() << ")" << " : ";
 

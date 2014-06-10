@@ -246,30 +246,10 @@ VExprExpressionHandle VExprExpression::substitute(VExprExpressionHandle pDst, co
     }
     assert(0);
 }
-#if 0 
-bool VExprExpression::operator == (const VExprExpression & rhs) const {
-    if (getPrimaryHandle().valid()) {
-        return rhs.getPrimaryHandle().valid() 
-            && (*getPrimaryHandle()) == *(rhs.getPrimaryHandle());
-    } else if (getUnaryHandle().valid()) {
-        return rhs.getUnaryHandle().valid() 
-            && (*getUnaryHandle()) == *(rhs.getUnaryHandle());
-    } else if (getBinaryHandle().valid()) {
-        return rhs.getBinaryHandle().valid() 
-            && (*getBinaryHandle()) == *(rhs.getBinaryHandle());
-    } else if (getTernaryHandle().valid()) {
-        return rhs.getTernaryHandle().valid() 
-            && (*getTernaryHandle()) == *(rhs.getTernaryHandle());
-    } else if (getBoolHandle().valid()) {
-        return rhs.getBoolHandle().valid() 
-            && (*getBoolHandle()) == *(rhs.getBoolHandle());
-    } else {
-        LOG(ERROR) << "Not implemented type or invalid handles";
-    }
-    assert(0);
 
+bool VExprExpression::operator == (const VExprExpression & rhs) const {
+    return getString() == rhs.getString();
 }
-#endif
 
 VExprUnary::VExprUnary(UnaryOpType opType, VExprPrimaryHandle pPrimary)
   : _opType(opType)

@@ -79,10 +79,10 @@ public:
     }
 
     bool operator == (const handle_type & rhs) const {
-        return (valid() == rhs.valid())
-//            && (!valid() || *(_pStorage)==*(rhs._pStorage));
+        return (!valid() && !rhs.valid())
+            || (valid() && rhs.valid() &&  *(_pStorage)==*(rhs._pStorage));
 //            && (!valid() || _pStorage->operator=(*rhs._pStorage));
-              && (!valid() || _pStorage == rhs._pStorage);
+//              && (!valid() || _pStorage == rhs._pStorage);
     }
 
     bool operator != (const handle_type & rhs) const {

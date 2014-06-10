@@ -19,16 +19,8 @@ parameter yuv_to_rgb_inst0.S_BUSY1 = 4'b0011;
 parameter yuv_to_rgb_inst0.S_Y2 = 4'b0100;
 parameter yuv_to_rgb_inst0.S_BUSY2 = 4'b0101;
 
-wire yuv_to_rgb_in_en;
 wire yuv_to_rgb_busy;
 wire yuv_to_rgb_out_valid;
-wire yuv_to_rgb_inst0.clk;
-wire yuv_to_rgb_inst0.reset;
-wire yuv_to_rgb_inst0.in_en;
-wire [7:0] yuv_to_rgb_inst0.yuv_in;
-wire yuv_to_rgb_inst0.busy;
-wire yuv_to_rgb_inst0.out_valid;
-wire [23:0] yuv_to_rgb_inst0.rgb_out;
 wire [7:0] yuv_to_rgb_inst0.reg_U_next;
 wire [7:0] yuv_to_rgb_inst0.reg_Y1_next;
 wire [7:0] yuv_to_rgb_inst0.reg_V_next;
@@ -50,23 +42,15 @@ reg [7:0] yuv_to_rgb_inst0.reg_Y1;
 reg [7:0] yuv_to_rgb_inst0.reg_V;
 reg [7:0] yuv_to_rgb_inst0.reg_Y2;
 
-assign yuv_to_rgb_in_en=in_en;
 assign busy=(!op_mode ? yuv_to_rgb_busy : 1'b1);
 assign out_valid=(!op_mode ? yuv_to_rgb_out_valid : 1'b0);
 assign yuv_out=8'b0;
-assign yuv_to_rgb_inst0.clk=clk;
-assign yuv_to_rgb_inst0.reset=reset;
-assign yuv_to_rgb_inst0.in_en=yuv_to_rgb_in_en;
-assign yuv_to_rgb_inst0.yuv_in=yuv_in;
-assign yuv_to_rgb_inst0.busy=yuv_to_rgb_busy;
-assign yuv_to_rgb_inst0.out_valid=yuv_to_rgb_out_valid;
-assign yuv_to_rgb_inst0.rgb_out=rgb_out;
-assign yuv_to_rgb_inst0.busy=((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2));
-assign yuv_to_rgb_inst0.out_valid=((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2));
-assign yuv_to_rgb_inst0.reg_U_next=((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U) ? yuv_to_rgb_inst0.yuv_in : yuv_to_rgb_inst0.reg_U);
-assign yuv_to_rgb_inst0.reg_Y1_next=((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1) ? yuv_to_rgb_inst0.yuv_in : yuv_to_rgb_inst0.reg_Y1);
-assign yuv_to_rgb_inst0.reg_V_next=((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V) ? yuv_to_rgb_inst0.yuv_in : yuv_to_rgb_inst0.reg_V);
-assign yuv_to_rgb_inst0.reg_Y2_next=((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2) ? yuv_to_rgb_inst0.yuv_in : yuv_to_rgb_inst0.reg_Y2);
+assign yuv_to_rgb_busy=((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2));
+assign yuv_to_rgb_out_valid=((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2));
+assign yuv_to_rgb_inst0.reg_U_next=((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U) ? yuv_in : yuv_to_rgb_inst0.reg_U);
+assign yuv_to_rgb_inst0.reg_Y1_next=((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1) ? yuv_in : yuv_to_rgb_inst0.reg_Y1);
+assign yuv_to_rgb_inst0.reg_V_next=((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V) ? yuv_in : yuv_to_rgb_inst0.reg_V);
+assign yuv_to_rgb_inst0.reg_Y2_next=((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2) ? yuv_in : yuv_to_rgb_inst0.reg_Y2);
 assign yuv_to_rgb_inst0.U_ext={{8{yuv_to_rgb_inst0.reg_U[7]}},yuv_to_rgb_inst0.reg_U};
 assign yuv_to_rgb_inst0.Y_ext=((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1) ? {8'b0,yuv_to_rgb_inst0.reg_Y1} : {8'b0,yuv_to_rgb_inst0.reg_Y2});
 assign yuv_to_rgb_inst0.V_ext={{8{yuv_to_rgb_inst0.reg_V[7]}},yuv_to_rgb_inst0.reg_V};
@@ -76,7 +60,7 @@ assign yuv_to_rgb_inst0.B_ext=((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b10000*yuv_
 assign yuv_to_rgb_inst0.R_out=(yuv_to_rgb_inst0.R_ext[15] ? 8'b0 : (((yuv_to_rgb_inst0.R_ext[14:11]!=4'b0) ? 8'd255 : yuv_to_rgb_inst0.R_ext[2]) ? ((yuv_to_rgb_inst0.R_ext[10:3]=8'd255) ? 8'd255 : (yuv_to_rgb_inst0.R_ext[10:3]+8'd1)) : yuv_to_rgb_inst0.R_ext[10:3]));
 assign yuv_to_rgb_inst0.G_out=(yuv_to_rgb_inst0.G_ext[15] ? 8'b0 : (((yuv_to_rgb_inst0.G_ext[14:11]!=4'b0) ? 8'd255 : yuv_to_rgb_inst0.G_ext[2]) ? ((yuv_to_rgb_inst0.G_ext[10:3]=8'd255) ? 8'd255 : (yuv_to_rgb_inst0.G_ext[10:3]+8'd1)) : yuv_to_rgb_inst0.G_ext[10:3]));
 assign yuv_to_rgb_inst0.B_out=(yuv_to_rgb_inst0.B_ext[15] ? 8'b0 : (((yuv_to_rgb_inst0.B_ext[14:11]!=4'b0) ? 8'd255 : yuv_to_rgb_inst0.B_ext[2]) ? ((yuv_to_rgb_inst0.B_ext[10:3]=8'd255) ? 8'd255 : (yuv_to_rgb_inst0.B_ext[10:3]+8'd1)) : yuv_to_rgb_inst0.B_ext[10:3]));
-assign yuv_to_rgb_inst0.rgb_out={yuv_to_rgb_inst0.R_out,yuv_to_rgb_inst0.G_out,yuv_to_rgb_inst0.B_out};
+assign rgb_out={yuv_to_rgb_inst0.R_out,yuv_to_rgb_inst0.G_out,yuv_to_rgb_inst0.B_out};
 
 always @ (*)
   begin
@@ -113,9 +97,9 @@ always @ (*)
     end
   end
 
-always @ (posedge yuv_to_rgb_inst0.clk)
+always @ (posedge clk)
   begin
-    if ((yuv_to_rgb_inst0.reset||!yuv_to_rgb_inst0.in_en)) begin
+    if ((reset||!in_en)) begin
       begin
         yuv_to_rgb_inst0.state <= yuv_to_rgb_inst0.S_U;
         yuv_to_rgb_inst0.reg_U <= 8'b0;

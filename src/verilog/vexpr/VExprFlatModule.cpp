@@ -247,7 +247,7 @@ VExprFlatModuleHandle VExprFlatModule::substituteAndRemove(HashMap<VExprExpressi
     CONST_FOR_EACH(pAlways, _vecAlways) {
         VExprAlwaysHandle pNewAlways = pAlways;
         CONST_FOR_EACH(pr, hashSubstitute) {
-            DEBUG_EXPR(pr.first->getString());
+            // DEBUG_EXPR(pr.first->getString());
             pNewAlways = pNewAlways->substitute(pr.first, pr.second);
         }
         pNewFlatModule->addAlways(pNewAlways);

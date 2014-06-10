@@ -88,6 +88,9 @@ int VExprIdentifier::hashFunction() const
     
 int VExprIdentifier::getHierarchicalLevel() const
   { return _pInterface->getHierarchicalLevel(); }
+   
+bool VExprIdentifier::operator == (const VExprIdentifier & rhs) const 
+  { return getString() == rhs.getString(); }
     
 VExprExpressionHandle VExprIdentifier::toExpressionHandle() const {
     return VExprExpressionHandle(VExprExpression(VExprPrimaryHandle(VExprPrimary(VExprIdentifierHandle(*this)))));

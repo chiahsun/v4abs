@@ -25,6 +25,9 @@ VExprSelectIdentifier::VExprSelectIdentifier(VExprIdentifierHandle pIdentifier, 
     _pIdentifier = pIdentifier;
     _vecSelect = vecSelect;
 }
+    
+const std::vector<VExprSelectHandle> & VExprSelectIdentifier::getSelectContainer() const
+  { return _vecSelect; }
 
 VExprIdentifierHandle VExprSelectIdentifier::getIdentifierHandle() const 
   { return _pIdentifier; }
@@ -63,4 +66,8 @@ VExprSelectIdentifierHandle VExprSelectIdentifier::substitute(VExprExpressionHan
     CONST_FOR_EACH(pSelect, _vecSelect) 
         vecNewSelect.push_back(pSelect->substitute(pDst, hashSrc));
     return VExprSelectIdentifierHandle(VExprSelectIdentifier(pNewIdentifier, vecNewSelect));
+}
+    
+VExprExpressionHandle VExprSelectIdentifier::toExpressionHandle() const {
+    return VExprExpressionHandle(VExprExpression(VExprPrimaryHandle(VExprPrimary(VExprSelectIdentifierHandle(VExprSelectIdentifier(*this))))));
 }

@@ -1,7 +1,6 @@
 #ifndef VREXPR_EXPRESSION_H
 #define VREXPR_EXPRESSION_H
 
-#include "VRExprExpressionOrNullInterface.h"
 #include "VRExprInterface.h"
 
 #include "VRExprSelectInterface.h"
@@ -20,6 +19,9 @@
 class VRExprExpression;
 class VRExprConcatenation;
 class VRExprMultConcatentation;
+class VRExprIte;
+class VRExprIt;
+class VRExprIe;
 
 
 class VRExprSelect {
@@ -113,17 +115,20 @@ VRExprPrimary makeIdentifier(std::string name);
  */
 
 class VRExprExpressionImpl {
-    Variant3<VRExprPrimary, VRExprUnaryExpression, VRExprBinaryExpression, VRExprExpressionInterface> _variant;
+    Variant6<VRExprPrimary, VRExprUnaryExpression, VRExprBinaryExpression, VRExprIte, VRExprIt, VRExprIe, VRExprExpressionInterface> _variant;
 public:
     VRExprExpressionImpl(VRExprPrimary primary);
     VRExprExpressionImpl(VRExprUnaryExpression unary_expr);
     VRExprExpressionImpl(VRExprBinaryExpression binary_expr);
+    VRExprExpressionImpl(VRExprIte ite);
+    VRExprExpressionImpl(VRExprIt it);
+    VRExprExpressionImpl(VRExprIe ie);
     std::string toString() const;
 
 };
 
 
-class VRExprExpression : public VRExprExpressionOrNullInterface, public VRExprInterface {
+class VRExprExpression : public VRExprInterface {
     typedef VRExprExpressionImpl impl_type;
     typedef SharedPtr<impl_type> impl_shared_ptr_type;
 
@@ -132,7 +137,15 @@ public:
     VRExprExpression(VRExprPrimary primary);
     VRExprExpression(VRExprUnaryExpression unary_expr);
     VRExprExpression(VRExprBinaryExpression binary_expr);
+    VRExprExpression(VRExprIte ite);
+    VRExprExpression(VRExprIt it);
+    VRExprExpression(VRExprIe ie);
     std::string toString() const;
+    int hashFunction() const;
+    bool operator == (const VRExprExpression & rhs) const;
+
+    VRExprExpression appendIfByThen(VRExprExpression exprIf) const;
+    VRExprExpression appendIfByElse(VRExprExpression exprIf) const;
 
     friend VRExprExpression makePrimaryExpression(VRExprPrimary primary);
     friend VRExprExpression makeUnaryExpression(UnaryOpType opType, VRExprPrimary primary);
@@ -180,6 +193,62 @@ public:
     VRExprBinaryExpression(VRExprExpression exprFst, BinaryOpType opType, VRExprExpression exprSnd);
     std::string toString() const; 
 };
+
+class VRExprIte : public VRExprExpressionInterface {
+    class Impl {
+        VRExprExpression _exprIf;
+        VRExprExpression _exprThen;
+        VRExprExpression _exprElse;
+    public:
+        Impl(VRExprExpression exprIf, VRExprExpression exprThen, VRExprExpression exprElse);
+        std::string toString() const;
+    };
+    typedef Impl impl_type;
+    typedef SharedPtr<impl_type> impl_shared_ptr_type;
+
+    impl_shared_ptr_type _pImpl;
+public:
+
+    VRExprIte(VRExprExpression exprIf, VRExprExpression exprThen, VRExprExpression exprElse);
+    std::string toString() const;
+};
+
+class VRExprIt : public VRExprExpressionInterface {
+    class Impl {
+        VRExprExpression _exprIf;
+        VRExprExpression _exprThen;
+    public:
+        Impl(VRExprExpression exprIf, VRExprExpression exprThen);
+        std::string toString() const;
+    };
+    typedef Impl impl_type;
+    typedef SharedPtr<impl_type> impl_shared_ptr_type;
+
+    impl_shared_ptr_type _pImpl;
+public:
+    VRExprIt(VRExprExpression exprIf, VRExprExpression exprThen);
+    std::string toString() const;
+};
+
+class VRExprIe : public VRExprExpressionInterface {
+    class Impl {
+        VRExprExpression _exprIf;
+        VRExprExpression _exprElse;
+    public:
+        Impl(VRExprExpression exprIf, void* pThen, VRExprExpression exprElse);
+        std::string toString() const;
+    };
+    typedef Impl impl_type;
+    typedef SharedPtr<impl_type> impl_shared_ptr_type;
+
+    impl_shared_ptr_type _pImpl;
+public:
+    VRExprIe(VRExprExpression exprIf, void* pThen, VRExprExpression exprElse);
+    std::string toString() const;
+};
+
+
+
 class VRExprBitSelect : public VRExprSelectInterface {
 
     class Impl : public VRExprSelectInterface {

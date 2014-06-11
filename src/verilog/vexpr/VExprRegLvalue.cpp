@@ -79,3 +79,16 @@ VExprRegLvalueHandle VExprRegLvalue::substitute(VExprExpressionHandle pDst, cons
     }
     assert(0);
 }
+    
+VExprExpressionHandle VExprRegLvalue::toExpressionHandle() const {
+    if (getIdentifierHandle().valid()) {
+        return getIdentifierHandle()->toExpressionHandle();
+    } else if (getSelectIdentifierHandle().valid()) {
+        return getSelectIdentifierHandle()->toExpressionHandle();
+    } else if (getConcatenationHandle().valid()) {
+        return getConcatenationHandle()->toExpressionHandle();
+    } else {
+        LOG(ERROR) << "No such branch";
+    }
+    assert(0);
+}

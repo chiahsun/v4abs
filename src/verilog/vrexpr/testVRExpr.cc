@@ -127,12 +127,12 @@ void test_vrexpr_expression() {
 
 void test_vrexpr() {
     {
-        VRExpr expr = makeIte(makeBinaryExpression(makeIdentifier("a"), BINARY_GT, makeIdentifier("b")), makeBinaryNumber("1'b1"), makeBinaryNumber("1'b0"));
+        VRExprExpression expr = VRExprExpression(VRExprIte(makeBinaryExpression(makeIdentifier("a"), BINARY_GT, makeIdentifier("b")), makeBinaryNumber("1'b1"), makeBinaryNumber("1'b0")));
         assertEqual("ite((a>b), 1'b1, 1'b0)", expr.toString(), "Test to string");
     }
     {
-        VRExpr expr = makeIte(makeBinaryExpression(makeIdentifier("a"), BINARY_GT, makeIdentifier("b")), makeBinaryNumber("1'b1"));
-        assertEqual("ite((a>b), 1'b1, null)", expr.toString(), "Test to string");
+        VRExprExpression expr = VRExprExpression(VRExprIt(makeBinaryExpression(makeIdentifier("a"), BINARY_GT, makeIdentifier("b")), makeBinaryNumber("1'b1")));
+        assertEqual("it((a>b), 1'b1)", expr.toString(), "Test to string");
     }
     {
     }

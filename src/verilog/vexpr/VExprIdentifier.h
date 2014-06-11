@@ -83,6 +83,7 @@ public:
     VExprHierIdentifier(std::vector<std::string> vecPrefix, std::string identifier, size_t size = 1);
     VExprHierIdentifier(std::vector<std::string> vecAll, size_t size = 1);
 
+    // XXX, cannot be used in for_each, try const ... & next time
     std::vector<std::string> getPrefixContainer() const
       { return _vecPrefix; }
     std::string getIdentifier() const
@@ -90,6 +91,7 @@ public:
     std::string getName() const;
     size_t getSize() const;
     std::string getString() const;
+    // XXX, cannot be used in for_each
     std::vector<std::string> getStringContainer() const;
     int hashFunction() const;
     int getHierarchicalLevel() const;

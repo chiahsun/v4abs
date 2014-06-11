@@ -20,6 +20,8 @@ public:
     VExprConcatenation(VExprExpressionHandle pFst, VExprExpressionHandle pSnd, VExprExpressionHandle pTrd);
     VExprConcatenation(std::vector<VExprExpressionHandle> vecExpr);
 
+    const std::vector<VExprExpressionHandle> & getExprContainer() const;
+
     VExprExpressionHandle getExpr(unsigned int pos) const;
     unsigned int getExprSize() const;
 

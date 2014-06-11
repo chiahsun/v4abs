@@ -169,7 +169,7 @@ std::string VExprHierIdentifier::getName() const {
         return _identifier;
 
     std::string s = _vecPrefix[0];
-    for (unsigned int i = 1; i < _vecPrefix.size(); ++i)
+    for (unsigned int i = _vecPrefix.size()-1; i > 0; --i)
         s = s + "." + _vecPrefix[i];
     s = s + "." + _identifier;
     return s;

@@ -29,6 +29,9 @@ VExprConcatenation::VExprConcatenation(std::vector<VExprExpressionHandle> vecExp
   : _vecExpr(vecExpr)
   { }
     
+const std::vector<VExprExpressionHandle> & VExprConcatenation::getExprContainer() const
+  { return _vecExpr; }
+
 VExprExpressionHandle VExprConcatenation::getExpr(unsigned int pos) const { 
     assert(pos < getExprSize());
     return _vecExpr[pos];

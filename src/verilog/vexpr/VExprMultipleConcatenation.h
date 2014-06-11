@@ -18,9 +18,12 @@ public:
     VExprMultipleConcatenation(VExprExpressionHandle pExprRepeat, VExprExpressionHandle pExpr);
     VExprMultipleConcatenation(VExprExpressionHandle pExprRepeat, VExprExpressionHandle pExprFst, VExprExpressionHandle pExprSnd);
     VExprMultipleConcatenation(VExprExpressionHandle pExprRepeat, const std::vector<VExprExpressionHandle> & vecExpr);
+    
 
     VExprExpressionHandle getExprRepeat() const;
+    const std::vector<VExprExpressionHandle> & getExprContainer() const;
     VExprExpressionHandle getExpr(unsigned int pos) const;
+
     unsigned int getExprSize() const;
 
     std::string getString() const;

@@ -19,6 +19,8 @@ public:
     VExprSelectIdentifier(VExprIdentifierHandle pIdentifier, VExprRangeSelectHandle pRangeSelect);
     VExprSelectIdentifier(VExprIdentifierHandle pIdentifier, std::vector<VExprSelectHandle> vecSelect);
 
+    const std::vector<VExprSelectHandle> & getSelectContainer() const;
+
     VExprIdentifierHandle getIdentifierHandle() const;
     unsigned int getSelectSize() const;
     VExprSelectHandle getSelect(unsigned int pos) const;
@@ -29,6 +31,7 @@ public:
     VExprSelectIdentifierHandle flatten(VExprIdentifierHandle pInstName) const;
     VExprSelectIdentifierHandle substitute(VExprExpressionHandle pDst, const HashTable<VExprExpressionHandle> & hashSrc) const;
 
+    VExprExpressionHandle toExpressionHandle() const;
 };
 
 

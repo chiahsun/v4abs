@@ -1,5 +1,8 @@
 #include "VRExprExpression.h"
 #include <sstream>
+
+#include "nstl/hash/HashFunction.h"
+
 VRExprBitSelect::VRExprBitSelect(const VRExprExpression & expr)
   { _pImpl = impl_shared_ptr_type(impl_type(expr)); }
   
@@ -162,6 +165,18 @@ VRExprExpressionImpl::VRExprExpressionImpl(VRExprUnaryExpression unary_expr)
 VRExprExpressionImpl::VRExprExpressionImpl(VRExprBinaryExpression binary_expr)
   : _variant(binary_expr)
   { }
+    
+VRExprExpressionImpl::VRExprExpressionImpl(VRExprIte ite)
+  : _variant(ite)
+  { }
+
+VRExprExpressionImpl::VRExprExpressionImpl(VRExprIt it)
+  : _variant(it)
+  { }
+
+VRExprExpressionImpl::VRExprExpressionImpl(VRExprIe ie)
+  : _variant(ie)
+  { }
 
 std::string VRExprExpressionImpl::toString() const 
   { return _variant->toString(); }
@@ -175,6 +190,34 @@ VRExprExpression::VRExprExpression(VRExprUnaryExpression unary_expr)
 VRExprExpression::VRExprExpression(VRExprBinaryExpression binary_expr)
   { _pImpl = impl_shared_ptr_type(impl_type(binary_expr)); }
     
+VRExprExpression::VRExprExpression(VRExprIte ite)
+  { _pImpl = impl_shared_ptr_type(impl_type(ite)); } 
+
+VRExprExpression::VRExprExpression(VRExprIt it)
+  { _pImpl = impl_shared_ptr_type(impl_type(it)); } 
+    
+VRExprExpression::VRExprExpression(VRExprIe ie)
+  { _pImpl = impl_shared_ptr_type(impl_type(ie)); }
+
+std::string VRExprExpression::toString() const 
+  { return _pImpl->toString(); }
+    
+int VRExprExpression::hashFunction() const
+  { return HashFunction<std::string>::hashFunction(toString()); }
+    
+bool VRExprExpression::operator == (const VRExprExpression & rhs) const
+  { return toString() == rhs.toString(); }
+
+VRExprExpression VRExprExpression::appendIfByThen(VRExprExpression exprIf) const {
+    VRExprIt it(exprIf, *this);
+    return it;
+}
+
+VRExprExpression VRExprExpression::appendIfByElse(VRExprExpression exprIf) const {
+    VRExprIe ie(exprIf, 0, *this);
+    return ie;
+}   
+    
 VRExprExpression makePrimaryExpression(VRExprPrimary primary)
   { return VRExprExpression(primary); }
 
@@ -184,9 +227,6 @@ VRExprExpression makeUnaryExpression(UnaryOpType opType, VRExprPrimary primary)
 VRExprExpression makeBinaryExpression(VRExprExpression exprFst, BinaryOpType opType, VRExprExpression exprSnd)
   { return VRExprExpression(VRExprBinaryExpression(exprFst, opType, exprSnd)); }
 
-
-std::string VRExprExpression::toString() const 
-  { return _pImpl->toString(); }
 
 VRExprUnaryExpressionImpl::VRExprUnaryExpressionImpl(UnaryOpType opType, VRExprPrimary primary)
   : _opType(opType)
@@ -219,6 +259,54 @@ VRExprBinaryExpression::VRExprBinaryExpression(VRExprExpression exprFst, BinaryO
 std::string VRExprBinaryExpression::toString() const {
     return _pImpl->toString();
 }
+
+VRExprIte::Impl::Impl(VRExprExpression exprIf, VRExprExpression exprThen, VRExprExpression exprElse)
+  : _exprIf(exprIf)
+  , _exprThen(exprThen)
+  , _exprElse(exprElse)
+  { }
+
+std::string VRExprIte::Impl::toString() const {
+    return "ite(" + _exprIf.toString() + ", " + _exprThen.toString() + ", " + _exprElse.toString() + ")";
+}
+    
+VRExprIte::VRExprIte(VRExprExpression exprIf, VRExprExpression exprThen, VRExprExpression exprElse)
+  { _pImpl = impl_shared_ptr_type(impl_type(exprIf, exprThen, exprElse)); }
+
+std::string VRExprIte::toString() const
+  { return _pImpl->toString(); }
+
+VRExprIt::Impl::Impl(VRExprExpression exprIf, VRExprExpression exprThen)
+  : _exprIf(exprIf)
+  , _exprThen(exprThen)
+  { }
+
+std::string VRExprIt::Impl::toString() const {
+    return "it(" + _exprIf.toString() + ", " + _exprThen.toString() + ")";
+}
+    
+VRExprIt::VRExprIt(VRExprExpression exprIf, VRExprExpression exprThen)
+  { _pImpl = impl_shared_ptr_type(impl_type(exprIf, exprThen)); }
+
+std::string VRExprIt::toString() const
+  { return _pImpl->toString(); }
+
+VRExprIe::Impl::Impl(VRExprExpression exprIf, void* pThen, VRExprExpression exprElse)
+  : _exprIf(exprIf)
+  , _exprElse(exprElse)
+  { assert(pThen == 0); }
+
+std::string VRExprIe::Impl::toString() const {
+    return "ie(" + _exprIf.toString() + ", 0, " + _exprElse.toString() + ")";
+}
+    
+VRExprIe::VRExprIe(VRExprExpression exprIf, void* pThen, VRExprExpression exprElse)
+  { _pImpl = impl_shared_ptr_type(impl_type(exprIf, pThen, exprElse)); }
+
+std::string VRExprIe::toString() const
+  { return _pImpl->toString(); }
+
+
 
 VRExprConcatenation::Impl::Impl(VRExprExpression exprFst, VRExprExpression exprSnd) {
     _vecExpr.push_back(exprFst);

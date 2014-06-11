@@ -30,6 +30,9 @@ VExprMultipleConcatenation::VExprMultipleConcatenation(VExprExpressionHandle pEx
 VExprExpressionHandle VExprMultipleConcatenation::getExprRepeat() const
   { return _pExprRepeat; }
     
+const std::vector<VExprExpressionHandle> & VExprMultipleConcatenation::getExprContainer() const
+  { return _vecExpr; }
+    
 VExprExpressionHandle VExprMultipleConcatenation::getExpr(unsigned int pos) const {
     assert(pos < getExprSize());
     return _vecExpr[pos];

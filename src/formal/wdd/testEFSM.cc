@@ -76,7 +76,7 @@ void test_efsm() {
     WddNodeHandle pStateEqANeqStateEqB = wddManager.makeNeq(pStateEqA, pStateEqB);
     WddNodeHandle pStateEqANeqStateEqC = wddManager.makeNeq(pStateEqA, pStateEqC);
     WddNodeHandle pStateEqBNeqStateEqC = wddManager.makeNeq(pStateEqB, pStateEqC);
-    WddNodeHandle pStateConstrraint = wddManager.makeAnd(pStateEqANeqStateEqB, wddManager.makeAnd(pStateEqANeqStateEqC, pStateEqBNeqStateEqC));
+    WddNodeHandle pStateConstraint = wddManager.makeAnd(pStateEqANeqStateEqB, wddManager.makeAnd(pStateEqANeqStateEqC, pStateEqBNeqStateEqC));
 
     WddNodeHandle pNextReg, pNextOut1, pNextOut2, pNextState;
     // reg
@@ -92,7 +92,7 @@ void test_efsm() {
 
         WddNodeHandle p = wddManager.makeAnd(wddManager.makeNeg(pReset), pB0);
 
-        pNextReg = wddManager.makeAnd(p, pStateConstrraint);
+        pNextReg = wddManager.makeAnd(p, pStateConstraint);
 
         assertEqual("1 : reg\n"
                     "2 : reg*2\n"
@@ -139,7 +139,7 @@ void test_efsm() {
 
         WddNodeHandle p = wddManager.makeAnd(wddManager.makeNeg(pReset), pB0);
 
-        pNextOut1 = wddManager.makeAnd(p, pStateConstrraint);
+        pNextOut1 = wddManager.makeAnd(p, pStateConstraint);
         
         assertEqual("ite(reset, FALSE, ite(state==C, ite(state==B, FALSE, ite(state==A, FALSE, ite(in2!=0, 1, ite(in1==0, reg, reg/2)))), ite(state==B, ite(state==A, FALSE, ite(0, ite(reg==1, TRUE, reg), ite(reg==1, FALSE, reg))), ite(state==A, ite(in1==0, 0, 1), FALSE))))", pNextOut1->toString(wddManager), "Test to string");
         if (isWriteFile)

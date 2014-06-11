@@ -1,4 +1,4 @@
-CODE_DIRS = antlr_vsyntax vast_generation vast vexpr design_context 
+CODE_DIRS = antlr_vsyntax vast_generation vast vexpr vrexpr design_context 
 
 all:
 	@for DIR in $(CODE_DIRS); \

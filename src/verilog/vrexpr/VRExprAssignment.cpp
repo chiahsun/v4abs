@@ -1,5 +1,6 @@
 #include "VRExprAssignment.h"
 #include "nstl/for_each/ForEach.h"
+#include "utility/log/Log.h"
 
 VRExprAssignment::VRExprAssignment(VRExprExpression lhs, VRExprExpression rhs)
   : _exprLhs(lhs)
@@ -55,7 +56,9 @@ std::string VRExprAssignment::toString() const {
         s = s + "negedge " + negSens.toString();
         begin = true;
     }
-
+    s += ")\n";
+    s = s + _exprLhs.toString() + " = " ;
+    s += _exprRhs.toString();
     return s;
 }
     

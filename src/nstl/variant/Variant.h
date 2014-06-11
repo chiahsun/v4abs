@@ -1,7 +1,6 @@
 #ifndef VARIANT_H
 #define VARIANT_H
 
-#include "utility/log/Log.h"
 
 /***
  * XXX: TODO copy constructor for 3..7

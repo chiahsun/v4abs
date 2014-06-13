@@ -256,6 +256,17 @@ public:
 
     inline size_t size() const { return _size; }
 
+    void insert(const_iterator itBegin, const_iterator itEnd) {
+        for (const_iterator it = itBegin; it != itEnd; ++it)
+            insert(*it);
+    }
+    
+    void insert(iterator itBegin, iterator itEnd) {
+        for (iterator it = itBegin; it != itEnd; ++it)
+            insert(*it);
+    }
+
+
     iterator insert(const_reference_type value) {
         iterator it;
         if ((it = find(value)) != end()) {

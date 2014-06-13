@@ -62,12 +62,14 @@ public:
         _pInterface = 0;
     }
 
-    T1* getFstHandle() { 
-        return _p1; 
-    }
-    T2* getSndHandle() { 
-        return _p2; 
-    }
+    T1* getFstHandle() 
+      { return _p1; }
+    T2* getSndHandle()
+      { return _p2; }
+    const T1* getFstHandle() const
+      { return _p1; }
+    const T2* getSndHandle() const
+      { return _p2; }
     
     Interface* getInterfacePointer() const
       { return _pInterface; }
@@ -114,6 +116,9 @@ public:
     T1* getFstHandle() { return _variant2.getFstHandle(); };
     T2* getSndHandle() { return _variant2.getSndHandle(); }
     T3* getTrdHandle() { return _p3; }
+    const T1* getFstHandle() const { return _variant2.getFstHandle(); };
+    const T2* getSndHandle() const { return _variant2.getSndHandle(); }
+    const T3* getTrdHandle() const { return _p3; }
     Interface* operator -> () const { return getInterfacePointer(); }
     Interface* getInterfacePointer() const 
       { return _variant2.getInterfacePointer(); }
@@ -170,6 +175,10 @@ public:
     T2* getSndHandle() { return _variant3.getSndHandle(); }
     T3* getTrdHandle() { return _variant3.getTrdHandle(); }
     T4* getForthHandle() { return _p4; }
+    const T1* getFstHandle() const { return _variant3.getFstHandle(); };
+    const T2* getSndHandle() const { return _variant3.getSndHandle(); }
+    const T3* getTrdHandle() const { return _variant3.getTrdHandle(); }
+    const T4* getForthHandle() const { return _p4; }
     Interface* operator -> () const { return getInterfacePointer(); }
     Interface* getInterfacePointer() const 
       { return _variant3.getInterfacePointer(); }
@@ -228,6 +237,11 @@ public:
     T3* getTrdHandle() { return _variant4.getTrdHandle(); }
     T4* getForthHandle() { return _variant4.getForthHandle(); }
     T5* getFifthHandle() { return _p5; }
+    const T1* getFstHandle() const { return _variant4.getFstHandle(); };
+    const T2* getSndHandle() const { return _variant4.getSndHandle(); }
+    const T3* getTrdHandle() const { return _variant4.getTrdHandle(); }
+    const T4* getForthHandle() const { return _variant4.getForthHandle(); }
+    const T5* getFifthHandle() const { return _p5; }
     Interface* operator -> () const { return getInterfacePointer(); }
     Interface* getInterfacePointer() const 
       { return _variant4.getInterfacePointer(); }
@@ -290,6 +304,12 @@ public:
     T4* getForthHandle() { return _variant5.getForthHandle(); }
     T5* getFifthHandle() { return _variant5.getFifthHandle(); }
     T6* getSixthHandle() { return _p6; }
+    const T1* getFstHandle() const { return _variant5.getFstHandle(); };
+    const T2* getSndHandle() const { return _variant5.getSndHandle(); }
+    const T3* getTrdHandle() const { return _variant5.getTrdHandle(); }
+    const T4* getForthHandle() const { return _variant5.getForthHandle(); }
+    const T5* getFifthHandle() const { return _variant5.getFifthHandle(); }
+    const T6* getSixthHandle() const { return _p6; }
     Interface* operator -> () const { return getInterfacePointer(); }
     Interface* getInterfacePointer() const 
       { return _variant5.getInterfacePointer(); }
@@ -353,6 +373,13 @@ public:
     T5* getFifthHandle() { return _variant6.getFifthHandle(); }
     T6* getSixthHandle() { return _variant6.getSixthHandle(); }
     T7* getSeventhHandle() { return _p7; }
+    const T1* getFstHandle() const { return _variant6.getFstHandle(); };
+    const T2* getSndHandle() const { return _variant6.getSndHandle(); }
+    const T3* getTrdHandle() const { return _variant6.getTrdHandle(); }
+    const T4* getForthHandle() const { return _variant6.getForthHandle(); }
+    const T5* getFifthHandle() const { return _variant6.getFifthHandle(); }
+    const T6* getSixthHandle() const { return _variant6.getSixthHandle(); }
+    const T7* getSeventhHandle() const { return _p7; }
     Interface* operator -> () const { return getInterfacePointer(); }
     Interface* getInterfacePointer() const 
       { return _variant6.getInterfacePointer(); }

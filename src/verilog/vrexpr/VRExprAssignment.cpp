@@ -43,22 +43,28 @@ void VRExprAssignment::addNegedgeSensitivity(VRExprIdentifier identifier) {
 std::string VRExprAssignment::toString() const {
     bool begin = false;
     std::string s = "always @ (";
-    CONST_FOR_EACH(staticSens, _hashStaticSensitivity) {
-        if (begin) 
-            s += " or ";
-        s = s + staticSens.toString();
-        begin = true;
-    }
     CONST_FOR_EACH(posSens, _hashPosedgeSensitivity) {
         if (begin) 
             s += " or ";
         s = s + "posedge " + posSens.toString();
         begin = true;
     }
+    if (_hashPosedgeSensitivity.size() != 0) 
+        s += ") @ (";
+    begin = false;
     CONST_FOR_EACH(negSens, _hashNegedgeSensitivity) {
         if (begin) 
             s += " or ";
         s = s + "negedge " + negSens.toString();
+        begin = true;
+    }
+    if (_hashNegedgeSensitivity.size() != 0)
+        s += ") @ (";
+    begin = false;
+    CONST_FOR_EACH(staticSens, _hashStaticSensitivity) {
+        if (begin) 
+            s += " or ";
+        s = s + staticSens.toString();
         begin = true;
     }
     s += ")\n";
@@ -68,5 +74,5 @@ std::string VRExprAssignment::toString() const {
 }
     
 void VRExprAssignment::initStaticSensitivity() {
-   // TODO
+    _hashStaticSensitivity = _exprRhs.getStaticSensitivity();
 }

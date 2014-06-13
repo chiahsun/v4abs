@@ -31,6 +31,7 @@ public:
 
     bool operator == (const VRExprIdentifier & rhs) const;
     int hashFunction() const;
+    
 };
 
 

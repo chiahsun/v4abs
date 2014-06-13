@@ -49,3 +49,4 @@ bool VRExprIdentifier::operator == (const VRExprIdentifier & rhs) const{
     
 int VRExprIdentifier::hashFunction() const
   { return HashFunction<std::string>::hashFunction(toString()); }
+    

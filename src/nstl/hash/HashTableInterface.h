@@ -63,6 +63,11 @@ public:
     void clear() {
         _container.clear();
     }
+    void insert(const_iterator itBegin, const_iterator itEnd)  
+      { _container.insert(itBegin, itEnd); }
+
+    void insert(iterator itBegin, iterator itEnd)
+      { _container.insert(itBegin, itEnd); }
 };
 
 #endif // HASH_TABLE_INTERFACE_H

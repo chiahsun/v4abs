@@ -185,6 +185,23 @@ void test_hash_copy_constructor() {
     UNIT_TEST_FUNCTION_END_FUNCTION_TEST();
 }
 
+void test_insert_begin_end() {\
+    LinearProbingHash<int> ht1, ht2;
+    for (int i = 0; i < 4; ++i)
+        ht1.insert(i);
+    ht1.insert(4);
+    ht1.insert(6);
+    ht1.insert(9);
+    for (int i = 4; i < 10; ++i)
+        ht2.insert(i);
+    ht1.insert(ht2.begin(), ht2.end());
+    std::stringstream ss;
+    FOR_EACH(i, ht1)
+        ss << i << " ";
+    assertEqual("0 1 2 3 4 5 6 7 8 9 ", ss.str(), "Test insert begin end");
+    UNIT_TEST_FUNCTION_END_FUNCTION_TEST();
+}
+
 int main() {
     test_linear_probing_hash_insert();
     test_linear_probing_hash_resize();
@@ -194,5 +211,6 @@ int main() {
     test_linear_probing_hash_clear();
     test_vector_of_hash();
     test_hash_copy_constructor();
+    test_insert_begin_end();
     return 0;
 }

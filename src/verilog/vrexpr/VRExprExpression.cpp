@@ -2,18 +2,32 @@
 #include <sstream>
 
 #include "nstl/hash/HashFunction.h"
+#include "nstl/for_each/ForEach.h"
+#include "utility/log/Log.h"
 
 VRExprBitSelect::VRExprBitSelect(const VRExprExpression & expr)
   { _pImpl = impl_shared_ptr_type(impl_type(expr)); }
   
 std::string VRExprBitSelect::toString() const
   { return _pImpl->toString(); }
+
+HashTable<VRExprExpression> VRExprBitSelect::getStaticSensitivity() const {
+    return getExpr().getStaticSensitivity();
+}
+    
     
 VRExprRangeSelect::VRExprRangeSelect(VRExprExpression exprFst, VRExprExpression exprSnd)
   { _pImpl = impl_shared_ptr_type(impl_type(exprFst, exprSnd)); }
 
 std::string VRExprRangeSelect::toString() const
   { return _pImpl->toString(); }
+
+HashTable<VRExprExpression> VRExprRangeSelect::getStaticSensitivity() const {
+    HashTable<VRExprExpression> ht = getExprFst().getStaticSensitivity();
+    HashTable<VRExprExpression> ht2 = getExprSnd().getStaticSensitivity();
+    ht.insert(ht2.begin(), ht2.end());
+    return ht;
+}
   
 VRExprSelect::VRExprSelect(const VRExprBitSelect & bitSelect)
   : _variant(bitSelect)
@@ -25,6 +39,9 @@ VRExprSelect::VRExprSelect(const VRExprRangeSelect & rangeSelect)
 
 std::string VRExprSelect::toString() const
   { return _variant->toString(); }
+    
+HashTable<VRExprExpression> VRExprSelect::getStaticSensitivity() const
+  { return _variant->getStaticSensitivity(); }
     
 VRExprSelect makeBitSelect(const VRExprExpression & expr)
   { return VRExprSelect(VRExprBitSelect(expr)); }
@@ -63,6 +80,16 @@ VRExprSelectIdentifier::VRExprSelectIdentifier(VRExprIdentifier identifier, std:
 
 std::string VRExprSelectIdentifier::toString() const
   { return _pImpl->toString(); }
+
+HashTable<VRExprExpression> VRExprSelectIdentifier::getStaticSensitivity() const {
+    HashTable<VRExprExpression> ht;
+    ht.insert(VRExprExpression(VRExprPrimary(getIdenifier())));
+    CONST_FOR_EACH(select, getSelectContainer()) {
+        HashTable<VRExprExpression> htSelect = select.getStaticSensitivity();
+        ht.insert(htSelect.begin(), htSelect.end());
+    }
+    return ht;
+}
 
 VRExprSelectIdentifier VRExprSelectIdentifier::makeSelectIdentifier(VRExprIdentifier identifier, VRExprSelect select)
   { return VRExprSelectIdentifier(identifier, select); }
@@ -111,6 +138,26 @@ VRExprPrimary::VRExprPrimary(VRExprMultConcatentation mult_concat)
 
 std::string VRExprPrimary::toString() const 
   { return _pImpl->toString(); }
+    
+HashTable<VRExprExpression> VRExprPrimary::getStaticSensitivity() const { 
+    HashTable<VRExprExpression> ht;
+    if (getIdentifierHandle()) {
+        ht.insert(VRExprExpression(VRExprPrimary(*getIdentifierHandle())));
+        return ht;
+    } else if (getNumberHandle()) {
+        return ht;
+    } else if (getSelectIdentifierHandle()) {
+        return getSelectIdentifierHandle()->getStaticSensitivity();
+    } else if (getConcatenationHandle()) {
+        return getConcatenationHandle()->getStaticSensitivity();
+    } else if (getMultConcatenationHandle()) {
+        return getMultConcatenationHandle()->getStaticSensitivity();
+    } else {
+        LOG(ERROR) << "No such branch";
+    }
+    assert(0);
+}
+
     
 VRExprPrimary makeBinaryNumber(std::string numberLiterals)
   { return VRExprPrimary(VRExprNumber::makeBinaryNumber(numberLiterals)); }
@@ -181,6 +228,9 @@ VRExprExpressionImpl::VRExprExpressionImpl(VRExprIe ie)
 std::string VRExprExpressionImpl::toString() const 
   { return _variant->toString(); }
     
+HashTable<VRExprExpression> VRExprExpressionImpl::getStaticSensitivity() const
+  { return _variant->getStaticSensitivity(); }
+    
 VRExprExpression::VRExprExpression()
   { _pImpl = impl_shared_ptr_type(impl_type(makeIdentifier("default"))); }
 
@@ -204,6 +254,9 @@ VRExprExpression::VRExprExpression(VRExprIe ie)
 
 std::string VRExprExpression::toString() const 
   { return _pImpl->toString(); }
+    
+HashTable<VRExprExpression> VRExprExpression::getStaticSensitivity() const
+  { return _pImpl->getStaticSensitivity(); }
     
 int VRExprExpression::hashFunction() const
   { return HashFunction<std::string>::hashFunction(toString()); }
@@ -241,8 +294,12 @@ std::string VRExprUnaryExpressionImpl::toString() const {
 
 VRExprUnaryExpression::VRExprUnaryExpression(UnaryOpType opType, VRExprPrimary primary)
   { _pImpl = impl_shared_ptr_type(impl_type(opType, primary)); }
+
 std::string VRExprUnaryExpression::toString() const 
   { return _pImpl->toString(); }
+    
+HashTable<VRExprExpression> VRExprUnaryExpression::getStaticSensitivity() const
+  { return getPrimary().getStaticSensitivity(); }
 
 
 VRExprBinaryExpressionImpl::VRExprBinaryExpressionImpl(VRExprExpression exprFst, BinaryOpType opType, VRExprExpression exprSnd)
@@ -253,7 +310,7 @@ VRExprBinaryExpressionImpl::VRExprBinaryExpressionImpl(VRExprExpression exprFst,
 
 std::string VRExprBinaryExpressionImpl::toString() const {
     return "(" + _exprFst.toString() + vexpr_get_binary_op_symbol(_opType) + _exprSnd.toString() + ")";
-}
+}  
     
 VRExprBinaryExpression::VRExprBinaryExpression(VRExprExpression exprFst, BinaryOpType opType, VRExprExpression exprSnd) {
     _pImpl = impl_shared_ptr_type(impl_type(exprFst, opType, exprSnd));
@@ -261,6 +318,13 @@ VRExprBinaryExpression::VRExprBinaryExpression(VRExprExpression exprFst, BinaryO
 
 std::string VRExprBinaryExpression::toString() const {
     return _pImpl->toString();
+}
+    
+HashTable<VRExprExpression> VRExprBinaryExpression::getStaticSensitivity() const {
+    HashTable<VRExprExpression> ht = getExprFst().getStaticSensitivity();
+    HashTable<VRExprExpression> ht2 = getExprSnd().getStaticSensitivity();
+    ht.insert(ht2.begin(), ht2.end());
+    return ht;
 }
 
 VRExprIte::Impl::Impl(VRExprExpression exprIf, VRExprExpression exprThen, VRExprExpression exprElse)
@@ -278,6 +342,16 @@ VRExprIte::VRExprIte(VRExprExpression exprIf, VRExprExpression exprThen, VRExprE
 
 std::string VRExprIte::toString() const
   { return _pImpl->toString(); }
+    
+HashTable<VRExprExpression> VRExprIte::getStaticSensitivity() const {
+    HashTable<VRExprExpression> ht = getExprIf().getStaticSensitivity();
+    HashTable<VRExprExpression> ht2 = getExprThen().getStaticSensitivity();
+    HashTable<VRExprExpression> ht3 = getExprElse().getStaticSensitivity();
+
+    ht.insert(ht2.begin(), ht2.end());
+    ht.insert(ht3.begin(), ht3.end());
+    return ht;
+}
 
 VRExprIt::Impl::Impl(VRExprExpression exprIf, VRExprExpression exprThen)
   : _exprIf(exprIf)
@@ -286,6 +360,13 @@ VRExprIt::Impl::Impl(VRExprExpression exprIf, VRExprExpression exprThen)
 
 std::string VRExprIt::Impl::toString() const {
     return "it(" + _exprIf.toString() + ", " + _exprThen.toString() + ")";
+}
+    
+HashTable<VRExprExpression> VRExprIt::getStaticSensitivity() const {
+    HashTable<VRExprExpression> ht = getExprIf().getStaticSensitivity();
+    HashTable<VRExprExpression> ht2 = getExprThen().getStaticSensitivity();
+    ht.insert(ht2.begin(), ht2.end());
+    return ht;
 }
     
 VRExprIt::VRExprIt(VRExprExpression exprIf, VRExprExpression exprThen)
@@ -309,6 +390,12 @@ VRExprIe::VRExprIe(VRExprExpression exprIf, void* pThen, VRExprExpression exprEl
 std::string VRExprIe::toString() const
   { return _pImpl->toString(); }
 
+HashTable<VRExprExpression> VRExprIe::getStaticSensitivity() const {
+    HashTable<VRExprExpression> ht = getExprIf().getStaticSensitivity();
+    HashTable<VRExprExpression> ht2 = getExprElse().getStaticSensitivity();
+    ht.insert(ht2.begin(), ht2.end());
+    return ht;
+}
 
 
 VRExprConcatenation::Impl::Impl(VRExprExpression exprFst, VRExprExpression exprSnd) {
@@ -347,6 +434,15 @@ VRExprConcatenation::VRExprConcatenation(std::vector<VRExprExpression> vecExpr)
 
 std::string VRExprConcatenation::toString() const
   { return _pImpl->toString(); }
+    
+HashTable<VRExprExpression> VRExprConcatenation::getStaticSensitivity() const {
+    HashTable<VRExprExpression> ht;
+    CONST_FOR_EACH(expr, getExprContainer()) {
+        HashTable<VRExprExpression> htExpr = expr.getStaticSensitivity();
+        ht.insert(htExpr.begin(), htExpr.end());
+    }
+    return ht;
+}
         
 VRExprMultConcatentation::Impl::Impl(VRExprExpression exprRepeat, VRExprExpression expr) 
   : _exprRepeat(exprRepeat) {
@@ -387,3 +483,14 @@ VRExprMultConcatentation::VRExprMultConcatentation(VRExprExpression exprRepeat, 
 
 std::string VRExprMultConcatentation::toString() const
   { return _pImpl->toString(); }
+    
+HashTable<VRExprExpression> VRExprMultConcatentation::getStaticSensitivity() const {
+    HashTable<VRExprExpression> ht = getExprRepeat().getStaticSensitivity();
+
+    CONST_FOR_EACH(expr, getExprContainer()) {
+        HashTable<VRExprExpression> htExpr = expr.getStaticSensitivity();
+        ht.insert(htExpr.begin(), htExpr.end());
+    }
+
+    return ht;
+}

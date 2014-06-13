@@ -5,3 +5,5 @@ End of test : test_linear_probing_hash_erase2
 End of test : test_linear_probing_hash_iteration
 End of test : test_linear_probing_hash_clear
 End of test : test_vector_of_hash
+End of test : test_hash_copy_constructor
+End of test : test_insert_begin_end

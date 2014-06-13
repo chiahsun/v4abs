@@ -65,6 +65,13 @@ public:
 
     void clear()
       { _hash.clear(); }
+    
+    void insert(const_iterator itBegin, const_iterator itEnd)  
+      { _hash.insert(itBegin, itEnd); }
+
+    void insert(iterator itBegin, iterator itEnd)
+      { _hash.insert(itBegin, itEnd); }
+
 };
 
 #endif // HASH_TABLE_H

@@ -1,6 +1,11 @@
 #include "VRExprAssignment.h"
 #include "nstl/for_each/ForEach.h"
 #include "utility/log/Log.h"
+    
+VRExprAssignment::VRExprAssignment()
+  : _exprLhs(makeIdentifier("default"))
+  , _exprRhs(makeIdentifier("default"))
+  { }
 
 VRExprAssignment::VRExprAssignment(VRExprExpression lhs, VRExprExpression rhs)
   : _exprLhs(lhs)

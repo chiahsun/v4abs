@@ -1,9 +1,9 @@
 #include "BddManager.h"
 #include "test/UnitTest.h"
-#include "Debug.h"
+#include "utility/log/Log.h"
 
 BddNodeHandle TRUE = BddNode::getConstOneHandle();
-BddNodeHandle FALSE = BddNode::getConstZeroHandle();
+BddNodeHandle BDD_FALSE = BddNode::getConstZeroHandle();
 
 const static bool isWriteFile = false;
 
@@ -29,18 +29,18 @@ void test_state() {
 
     if (isWriteFile) {
         TRUE->writeDotFile("ite_true.dot");
-        FALSE->writeDotFile("ite_false.dot");
+        BDD_FALSE->writeDotFile("ite_false.dot");
     }
 
 
-    BddNodeHandle pInner = bddManager.ite(en, val_one, FALSE);
+    BddNodeHandle pInner = bddManager.ite(en, val_one, BDD_FALSE);
 
     BddNodeHandle en_bar = bddManager.makeNeg(en);
-    BddNodeHandle p1 = bddManager.ite(en_bar, val_zero, FALSE);
+    BddNodeHandle p1 = bddManager.ite(en_bar, val_zero, BDD_FALSE);
     assert(!val_one->equal(val_zero));
     BddNodeHandle p2 = bddManager.ite(en, val_one, val_zero);
-    BddNodeHandle p3 = bddManager.ite(rst, p2, FALSE);
-    BddNodeHandle p4 = bddManager.ite(bddManager.makeNeg(rst), FALSE, FALSE);
+    BddNodeHandle p3 = bddManager.ite(rst, p2, BDD_FALSE);
+    BddNodeHandle p4 = bddManager.ite(bddManager.makeNeg(rst), BDD_FALSE, BDD_FALSE);
 
     BddNodeHandle pOuter = bddManager.ite(rst, p3, p4);
 
@@ -69,7 +69,7 @@ void test_ite2() {
     BddNodeHandle one = bddManager.makeBddNode(3);
     BddNodeHandle zero = bddManager.makeBddNode(4);
 
-    BddNodeHandle p2 = bddManager.ite(rst, zero, FALSE);
+    BddNodeHandle p2 = bddManager.ite(rst, zero, BDD_FALSE);
     BddNodeHandle p1 = bddManager.ite(bddManager.makeAnd(rst, en), one, p2);
 
     assertEqual("4 Bdd(n1, n0, false)\n"
@@ -102,9 +102,9 @@ void test_ite3() {
     BddNodeHandle en = bddManager.makeBddNode(3);
     BddNodeHandle rst = bddManager.makeBddNode(4);
 
-    BddNodeHandle p1 = bddManager.ite(rst, zero, BddManager::FALSE);
-    BddNodeHandle p2 = bddManager.ite(en, one, BddManager::FALSE);
-    BddNodeHandle p3 = bddManager.ite(en, p2, BddManager::FALSE);
+    BddNodeHandle p1 = bddManager.ite(rst, zero, BddManager::BDD_FALSE);
+    BddNodeHandle p2 = bddManager.ite(en, one, BddManager::BDD_FALSE);
+    BddNodeHandle p3 = bddManager.ite(en, p2, BddManager::BDD_FALSE);
     BddNodeHandle p4 = bddManager.ite(rst, p1, p3);
 
     p4->writeDotFile("ite3_p4.dot");

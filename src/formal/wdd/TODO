@@ -1,8 +1,8 @@
 1. Strictly speaking,
    
-   we need use word level solver to determine to containment/implication relation between terms
+   We need use word level solver to determine the containment/implication relation between terms
 
-   and then encode the relation as stateConstaint into the final WDD term handle.
+   and then encode the relation as the stateConstraints into the final WDD term handle.
 
    e.g. 
 

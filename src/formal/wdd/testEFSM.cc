@@ -73,9 +73,9 @@ void test_efsm() {
     WddNodeHandle pStateEqC = wddManager.addTerm(pTermStateEqC);
     WddNodeHandle pReset = wddManager.addTerm(pTermReset);
 
-    WddNodeHandle pStateEqANeqStateEqB = wddManager.makeNeq(pStateEqA, pStateEqB);
-    WddNodeHandle pStateEqANeqStateEqC = wddManager.makeNeq(pStateEqA, pStateEqC);
-    WddNodeHandle pStateEqBNeqStateEqC = wddManager.makeNeq(pStateEqB, pStateEqC);
+    WddNodeHandle pStateEqANeqStateEqB = wddManager.makeOneNeg(pStateEqA, pStateEqB);
+    WddNodeHandle pStateEqANeqStateEqC = wddManager.makeOneNeg(pStateEqA, pStateEqC);
+    WddNodeHandle pStateEqBNeqStateEqC = wddManager.makeOneNeg(pStateEqB, pStateEqC);
     WddNodeHandle pStateConstraint = wddManager.makeAnd(pStateEqANeqStateEqB, wddManager.makeAnd(pStateEqANeqStateEqC, pStateEqBNeqStateEqC));
 
     WddNodeHandle pNextReg, pNextOut1, pNextOut2, pNextState;
@@ -91,6 +91,8 @@ void test_efsm() {
         WddNodeHandle pB0 = wddManager.ite(pStateEqA, pB3, pB1_and_B2);
 
         WddNodeHandle p = wddManager.makeAnd(wddManager.makeNeg(pReset), pB0);
+        
+        assertEqual("ite(reset, FALSE, ite(state==C, ite(state==B, ite(state==A, ite(in1==0, in2, in1), reg*in1), ite(state==A, ite(in1==0, in2, in1), ite(in2!=0, reg+in2, FALSE))), ite(state==B, ite(state==A, ite(in1==0, in2, in1), reg*in1), ite(state==A, ite(in1==0, in2, in1), FALSE))))", p->toString(wddManager), "Test to string");
 
         pNextReg = wddManager.makeAnd(p, pStateConstraint);
 

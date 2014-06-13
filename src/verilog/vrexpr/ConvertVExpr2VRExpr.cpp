@@ -1,6 +1,8 @@
 #include "ConvertVExpr2VRExpr.h"
 #include "utility/log/Log.h"    
 #include "nstl/for_each/ForEach.h"
+#include "nstl/hash_map/HashMap.h"
+#include "nstl/hash/HashTable.h"
 
 VRExprModule ConvertVExpr2VRExpr::convert(VExprFlatModuleHandle pFlatModule) {
     VRExprModule mod(ConvertVExpr2VRExpr::convert(pFlatModule->getModuleName()));
@@ -252,17 +254,59 @@ std::vector<VRExprAssignment> ConvertVExpr2VRExpr::convert(VExprConditionalState
 
     std::vector<VRExprAssignment> vecThen = ConvertVExpr2VRExpr::convert(pConditional->getThen());
     std::vector<VRExprAssignment> vecElse = ConvertVExpr2VRExpr::convert(pConditional->getElse());
-
+   
+    HashTable<VRExprExpression> hashBoth;
+    // Unique assignment for each LHS checking
+    HashMap<VRExprExpression, VRExprAssignment> mapThenAssign;
+    CONST_FOR_EACH(thenAssign, vecThen) {
+        if (mapThenAssign.find(thenAssign.getExprLhs()) != mapThenAssign.end()) {
+            LOG(ERROR) << "More than once assignment for " << mapThenAssign.find(thenAssign.getExprLhs())->first.toString() << "\n"
+                       << "  in " << thenAssign.toString() << "\n"
+                       << "  in " << mapThenAssign.find(thenAssign.getExprLhs())->second.toString() << std::endl;
+        }
+        mapThenAssign.insert(std::make_pair(thenAssign.getExprLhs(), thenAssign));
+        hashBoth.insert(thenAssign.getExprLhs());
+    }
+    
+    // Unique assignment for each LHS checking
+    HashMap<VRExprExpression, VRExprAssignment> mapElseAssign;
+    CONST_FOR_EACH(elseAssign, vecElse) {
+        if (mapElseAssign.find(elseAssign.getExprLhs()) != mapElseAssign.end()) {
+            LOG(ERROR) << "More than once assignment for " << mapElseAssign.find(elseAssign.getExprLhs())->first.toString() << "\n"
+                       << "  in " << elseAssign.toString() << "\n"
+                       << "  in " << mapElseAssign.find(elseAssign.getExprLhs())->second.toString() << std::endl;
+        }
+        mapElseAssign.insert(std::make_pair(elseAssign.getExprLhs(), elseAssign));
+        hashBoth.insert(elseAssign.getExprLhs());
+    }
+    
     std::vector<VRExprAssignment> vec;
+    // Add both then and else
+    CONST_FOR_EACH(assignLhs, hashBoth) {
+        assert(mapThenAssign.find(assignLhs) != mapThenAssign.end());
+        assert(mapElseAssign.find(assignLhs) != mapElseAssign.end());
+        vec.push_back(VRExprAssignment( assignLhs
+                                      , VRExprExpression(VRExprIte( exprIf
+                                                                  , mapThenAssign.find(assignLhs)->second.getExprRhs()
+                                                                  , mapElseAssign.find(assignLhs)->second.getExprRhs()))));
+    }
+   
+    // Add only then
     CONST_FOR_EACH(exprThen, vecThen) {
-        VRExprExpression rhs = exprThen.getExprRhs().appendIfByThen(exprIf);
-        vec.push_back(VRExprAssignment(exprThen.getExprLhs(), rhs));
+        if (hashBoth.find(exprThen.getExprLhs()) == hashBoth.end()) {
+            VRExprExpression rhs = exprThen.getExprRhs().appendIfByThen(exprIf);
+            vec.push_back(VRExprAssignment(exprThen.getExprLhs(), rhs));
+        }
     }
 
+    // Add only else
     CONST_FOR_EACH(exprElse, vecElse) {
-        VRExprExpression rhs = exprElse.getExprRhs().appendIfByElse(exprIf);
-        vec.push_back(VRExprAssignment(exprElse.getExprLhs(), rhs));
+        if (hashBoth.find(exprElse.getExprLhs()) == hashBoth.end()) {
+            VRExprExpression rhs = exprElse.getExprRhs().appendIfByElse(exprIf);
+            vec.push_back(VRExprAssignment(exprElse.getExprLhs(), rhs));
+        }
     }
+    
 
     return vec;
 }

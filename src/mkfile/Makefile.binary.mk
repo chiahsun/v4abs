@@ -35,7 +35,9 @@ PKG_LFLAGS=-L$(INNER_LIBS_PATH) $(INNER_LIBS_FLAGS) $(INNER_LIBS_FLAGS)
 CXX = g++ 
 # CFLAGS = -Wall -pedantic -Wextra -Wconversion -Wno-cpp
 
-CFLAGS = -pedantic -Wall -Wextra -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdisabled-optimization -Wformat=2 -Winit-self -Wmissing-include-dirs -Wold-style-cast -Woverloaded-virtual -Wredundant-decls -Wshadow -Wsign-promo -Wstrict-null-sentinel -Wswitch-default -Wundef -Wno-unused # -Werror -Wnoexcept -Wsign-conversion -Wstrict-overflow=5 -Wlogical -Wmissing-declarations
+CFLAGS = -pedantic -Wall -Wextra -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdisabled-optimization -Wformat=2 -Winit-self -Wmissing-include-dirs -Wold-style-cast -Woverloaded-virtual -Wredundant-decls -Wshadow -Wsign-promo -Wstrict-null-sentinel -Wswitch-default -Wundef -Wno-unused 
+#-Wno-language-extension-token
+# -Werror -Wnoexcept -Wsign-conversion -Wstrict-overflow=5 -Wlogical -Wmissing-declarations
 #CFLAGS = -pedantic -Wall -Wextra -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdisabled-optimization -Wformat=2 -Winit-self -Wmissing-include-dirs -Wold-style-cast -Woverloaded-virtual -Wredundant-decls -Wshadow -Wsign-promo -Wstrict-null-sentinel -Wswitch-default -Wundef -Wno-unused -Wno-ignored-qualifiers # -Werror -Wnoexcept -Wsign-conversion -Wstrict-overflow=5 -Wlogical -Wmissing-declarations
 
 # http://stackoverflow.com/questions/1134237/pedantic-gcc-warning-type-qualifiers-on-function-return-type

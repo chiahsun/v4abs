@@ -27,8 +27,10 @@ public:
     
     WddNode(BddNodeHandle pBddNode, term_handle_type pTerm) 
       : _pBddNode(pBddNode) 
-      , _pTerm(pTerm)
-      { }
+      , _pTerm(pTerm) { 
+          assert(pBddNode->getPosHandle()->isTerminal());
+          assert(pBddNode->getNegHandle()->isTerminal());
+      }
 
     WddNodeHandle getPosHandle(const WddManager<_TermHandle> & wddManager) const {
         if (isTerm()) {
@@ -72,8 +74,12 @@ public:
     bool isTerm() const { return _pTerm.valid(); }
 
     std::string toString(const WddManager<_TermHandle>& wddManager) const {
-        if (getTermHandle().valid()) 
-            return _pTerm->toString();
+        if (getTermHandle().valid()) { 
+            if (getBddNodeHandle()->getPosHandle()->getBool())
+                return _pTerm->toString();
+            else
+                return "not " + _pTerm->toString();
+        }
 
         int curLevelId = getBddNodeHandle()->getCurDecisionLevel();
         if (curLevelId == 0) {
@@ -220,11 +226,9 @@ public:
         return WddNode<term_handle_type>::makeWddNodeHandle(*this, pBddNode);
 //        return WddNodeHandle(WddNode<term_handle_type>(pBddNode));
     }
-
     WddNodeHandle makeEq(WddNodeHandle pFst, WddNodeHandle pSnd) {
         BddNodeHandle pBddNode = _bddManager.makeEq(pFst->getBddNodeHandle(), pSnd->getBddNodeHandle());
         return WddNode<term_handle_type>::makeWddNodeHandle(*this, pBddNode);
-        //return WddNodeHandle(WddNode<term_handle_type>(pBddNode));
     }
 
     WddNodeHandle ite(WddNodeHandle pFst, WddNodeHandle pSnd, WddNodeHandle pTrd) {
@@ -232,20 +236,68 @@ public:
         return WddNode<term_handle_type>::makeWddNodeHandle(*this, pBddNode);
 //        return WddNodeHandle(WddNode<term_handle_type>(pBddNode));
     }
-
+    WddNodeHandle makeNeq(WddNodeHandle pFst, WddNodeHandle pSnd) {
+        BddNodeHandle pBddNode = _bddManager.makeXor(pFst->getBddNodeHandle(), pSnd->getBddNodeHandle());
+        return WddNode<term_handle_type>::makeWddNodeHandle(*this, pBddNode);
+    }
+    WddNodeHandle makeOneNeg(WddNodeHandle pFst, WddNodeHandle pSnd) {
+        BddNodeHandle pBddNode = _bddManager.makeOr(_bddManager.makeNeg(pFst->getBddNodeHandle()), _bddManager.makeNeg(pSnd->getBddNodeHandle()));
+        return WddNode<term_handle_type>::makeWddNodeHandle(*this, pBddNode);
+    }
+#if 0
     WddNodeHandle makeNeq(WddNodeHandle pFst, WddNodeHandle pSnd) {
         BddNodeHandle pBddNodeFst = pFst->getBddNodeHandle();
         BddNodeHandle pBddNodeSnd = pSnd->getBddNodeHandle();
-
+#if 0
+        BddNodeHandle p1 = _bddManager.makeAnd(_bddManager.makeNeg(pBddNodeFst), pBddNodeSnd);
+        BddNodeHandle p2 = _bddManager.makeAnd(pBddNodeFst, _bddManager.makeNeg(pBddNodeSnd));
+        BddNodeHandle pBddNode = _bddManager.makeOr(p1, p2);
+# endif
+#if 0 // good
         BddNodeHandle p1 = _bddManager.makeOr(_bddManager.makeNeg(pBddNodeFst), _bddManager.makeNeg(pBddNodeSnd));
         BddNodeHandle p2 = _bddManager.makeOr(_bddManager.makeNeg(pBddNodeSnd), _bddManager.makeNeg(pBddNodeFst));
 
         BddNodeHandle pBddNode = _bddManager.makeAnd(p1, p2);
+#endif
+#if 0
+        BddNodeHandle pBddNode = _bddManager.makeXor(pBddNodeFst, pBddNodeSnd);
+#endif
+        BddNodeHandle pBddNode = _bddManager.makeOr(_bddManager.makeNeg(pBddNodeFst), _bddManager.makeNeg(pBddNodeSnd));
         return WddNode<term_handle_type>::makeWddNodeHandle(*this, pBddNode);
        // return WddNodeHandle(WddNode<term_handle_type>(pBddNode));
     }
+#endif
 
-#if 1
+    WddNodeHandle makeBasicBlockIfThen(WddNodeHandle pIf, WddNodeHandle pThen) {
+        BddNodeHandle pBddNodeIf = pIf->getBddNodeHandle();
+        BddNodeHandle pBddNodeThen = pThen->getBddNodeHandle();
+        BddNodeHandle pBddNode = _bddManager.makeAnd(pBddNodeIf, pBddNodeThen);
+        return WddNode<term_handle_type>::makeWddNodeHandle(*this, pBddNode);
+    }
+
+    WddNodeHandle makeBasicBlockIfElse(WddNodeHandle pIf, WddNodeHandle pElse) {
+        BddNodeHandle pBddNodeIf = pIf->getBddNodeHandle();
+        BddNodeHandle pBddNodeElse = pElse->getBddNodeHandle();
+        BddNodeHandle pBddNode = _bddManager.makeAnd(makeNeg(pBddNodeIf), pBddNodeElse);
+        return WddNode<term_handle_type>::makeWddNodeHandle(*this, pBddNode);
+    }
+    
+    WddNodeHandle makeBasicBlockIfThenElse(WddNodeHandle pIf, WddNodeHandle pThen, WddNodeHandle pElse) {
+        BddNodeHandle pBddNodeIf = pIf->getBddNodeHandle();
+        BddNodeHandle pBddNodeThen = pThen->getBddNodeHandle();
+        BddNodeHandle pBddNodeElse = pElse->getBddNodeHandle();
+        BddNodeHandle pBddNode = _bddManager.ite(pBddNodeIf, pBddNodeThen, pBddNodeElse);
+        return WddNode<term_handle_type>::makeWddNodeHandle(*this, pBddNode);
+    }
+
+    WddNodeHandle makeBasicBlockCofactor(WddNodeHandle pExpr, WddNodeHandle pCofactor) {
+        BddNodeHandle pBddNodeExpr = pExpr->getBddNodeHandle();
+        BddNodeHandle pBddNodeCofactor = pCofactor->getBddNodeHandle();
+        BddNodeHandle pBddNode = _bddManager.makeAnd(pBddNodeExpr, pBddNodeCofactor);
+        return WddNode<term_handle_type>::makeWddNodeHandle(*this, pBddNode);
+    }
+
+#if 1 
     WddNodeHandle getPosCofactor(WddNodeHandle pWddNode, WddNodeHandle pCofactor) {
         BddNodeHandle pBddNode = pWddNode->getBddNodeHandle();
 

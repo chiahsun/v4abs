@@ -3,7 +3,6 @@
 #include <fstream>
 
 #include "utility/convert/ConvertUtil.h"
-#include "Debug.h"
 #include "nstl/for_each/ForEach.h"
 
 
@@ -368,7 +367,12 @@ bool BddNode::isLess(const BddNodeHandle & pBddNode) const {
 }
     
 BddNodeHandle BddNode::getPosCofactor(BddNodeHandle pBddNode, int curDecisionLevel) {
-    assert(!pBddNode->isTerminal());
+    if(pBddNode->isTerminal()) {
+       if (pBddNode->getBool()) 
+           return getConstOneHandle();
+       else
+           return getConstZeroHandle();
+    }
     if (pBddNode->getCurDecisionLevel() < curDecisionLevel)
         return pBddNode;
     if (pBddNode->getCurDecisionLevel() == curDecisionLevel)

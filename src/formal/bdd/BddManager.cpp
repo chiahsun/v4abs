@@ -1,15 +1,16 @@
 #include "BddManager.h"
-#include "Debug.h"
-#include "nstl/for_each/ForEach.h"
 
 #include <cassert>
 
+#include "nstl/for_each/ForEach.h"
+
+#include "utility/log/Log.h"
 // #define USE_AND_MAP
 
 // const bool verbose = true;
 const bool verbose = false;
-BddNodeHandle BddManager::TRUE = BddNode::getConstOneHandle();
-BddNodeHandle BddManager::FALSE = BddNode::getConstZeroHandle();
+BddNodeHandle BddManager::BDD_TRUE = BddNode::getConstOneHandle();
+BddNodeHandle BddManager::BDD_FALSE = BddNode::getConstZeroHandle();
 /**
  * Reference
  * 1. Write Bdd dot with the same rank
@@ -61,12 +62,12 @@ BddNodeHandle BddManager::findHandleInPairMap(BddNodeAndPairMap  & m, BddNodeHan
 }
     
 BddNodeHandle BddManager::makeAnd(BddNodeHandle pFst, BddNodeHandle pSnd) {
-    if (pFst == TRUE)
+    if (pFst == BDD_TRUE)
         return pSnd;
-    if (pSnd == TRUE)
+    if (pSnd == BDD_TRUE)
         return pFst;
-    if (pFst == FALSE || pSnd == FALSE)
-        return BddNode::getConstZeroHandle();
+    if (pFst == BDD_FALSE || pSnd == BDD_FALSE)
+        return BDD_FALSE;
 
     BddNodeHandle pBddNode;
 #ifdef USE_AND_MAP
@@ -74,6 +75,8 @@ BddNodeHandle BddManager::makeAnd(BddNodeHandle pFst, BddNodeHandle pSnd) {
         return pBddNode;
 #endif
 
+    assert(!pFst->isTerminal());
+    assert(!pSnd->isTerminal());
 
     int topVar = max(pFst->getCurDecisionLevel(), pSnd->getCurDecisionLevel());
 

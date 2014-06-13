@@ -13,6 +13,7 @@ class VRExprAssignment {
     HashTable<VRExprExpression> _hashNegedgeSensitivity;
 
 public:
+    VRExprAssignment();
     VRExprAssignment(VRExprExpression lhs, VRExprExpression rhs);
     
     VRExprExpression getExprLhs() const;

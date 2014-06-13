@@ -134,6 +134,7 @@ class VRExprExpression : public VRExprInterface {
 
     impl_shared_ptr_type _pImpl;
 public:
+    VRExprExpression();
     VRExprExpression(VRExprPrimary primary);
     VRExprExpression(VRExprUnaryExpression unary_expr);
     VRExprExpression(VRExprBinaryExpression binary_expr);
@@ -150,7 +151,6 @@ public:
     friend VRExprExpression makePrimaryExpression(VRExprPrimary primary);
     friend VRExprExpression makeUnaryExpression(UnaryOpType opType, VRExprPrimary primary);
     friend VRExprExpression makeBinaryExpression(VRExprExpression exprFst, BinaryOpType opType, VRExprExpression exprSnd);
-
 };
 
 VRExprExpression makeUnaryExpression(UnaryOpType opType, VRExprPrimary primary);

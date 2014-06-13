@@ -38,8 +38,8 @@ class BddManager {
 
 
 public:
-    static BddNodeHandle TRUE;
-    static BddNodeHandle FALSE;
+    static BddNodeHandle BDD_TRUE;
+    static BddNodeHandle BDD_FALSE;
 
     BddManager();
 

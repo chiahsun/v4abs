@@ -180,6 +180,9 @@ VRExprExpressionImpl::VRExprExpressionImpl(VRExprIe ie)
 
 std::string VRExprExpressionImpl::toString() const 
   { return _variant->toString(); }
+    
+VRExprExpression::VRExprExpression()
+  { _pImpl = impl_shared_ptr_type(impl_type(makeIdentifier("default"))); }
 
 VRExprExpression::VRExprExpression(VRExprPrimary primary)
   { _pImpl = impl_shared_ptr_type(impl_type(primary)); }

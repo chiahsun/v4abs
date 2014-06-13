@@ -144,6 +144,8 @@ public:
     std::string toString() const;
     int hashFunction() const;
     bool operator == (const VRExprExpression & rhs) const;
+    bool operator < (const VRExprExpression & rhs) const
+      { return toString().compare(rhs.toString()) < 0; }
 
     VRExprExpression appendIfByThen(VRExprExpression exprIf) const;
     VRExprExpression appendIfByElse(VRExprExpression exprIf) const;

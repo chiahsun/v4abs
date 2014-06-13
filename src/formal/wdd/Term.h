@@ -11,10 +11,8 @@ typedef SharedPtrE<Term> TermHandle;
 class Term : public WddTermInterface {
     std::string _name;
 
-    static hash_id _hashId;
 public:
     Term(const std::string& nm);
-    hash_id getTermHashId();
     std::string toString() const;
 
     bool operator < (const Term & rhs) const;

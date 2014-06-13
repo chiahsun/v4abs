@@ -159,9 +159,12 @@ public:
         return it->second;
     }
 
+    std::string stringOfNode(const WddNodeHandle & pNode) const {
+        return pNode->toString(*this);
+    }
+
 
     WddNodeHandle addTerm(const term_handle_type & pTerm) {
-#if 1 
         typename TermIdMap::const_iterator it;
         
         if ((it = _mapTermId.find(pTerm)) == _mapTermId.end()) {
@@ -174,13 +177,20 @@ public:
             _mapNodeTerm.insert(std::make_pair(pWddNode, pTerm));
             return pWddNode; 
         } else {
-            int id = _mapTermId[pTerm];
-            WddNode<term_handle_type> wddNode(_bddManager.makeBddNode(id), pTerm);
-            return WddNodeHandle(wddNode);
+            findTerm(pTerm);
         }
-#endif
 
         assert(0);
+    }
+
+
+
+    WddNodeHandle findTerm(const term_handle_type & pTerm) {
+        assert(_mapTermId.find(pTerm) != _mapTermId.end());
+
+        int id = _mapTermId[pTerm];
+        WddNode<term_handle_type> wddNode(_bddManager.makeBddNode(id), pTerm);
+        return WddNodeHandle(wddNode);
     }
 
 #if 0

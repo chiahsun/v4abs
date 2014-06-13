@@ -57,11 +57,9 @@ public:
     typedef int hash_id;
 
 
-    virtual ~WddTermInterface(); 
+    virtual ~WddTermInterface() {} 
 
-
-    virtual hash_id getTermHashId();
-    virtual std::string toString() const;
+    virtual std::string toString() const = 0;
 
 protected:
         

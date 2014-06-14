@@ -16,6 +16,27 @@ VRExprTermManager::WddNodeHandle VRExprTermManager::addExpr(VRExprExpression exp
     
 VRExprTermManager::WddNodeHandle VRExprTermManager::ite(WddNodeHandle pIf, WddNodeHandle pThen, WddNodeHandle pElse)
   { return _wddManager.ite(pIf, pThen, pElse); }
+    
+VRExprTermManager::WddNodeHandle VRExprTermManager::makeAnd(WddNodeHandle pFst, WddNodeHandle pSnd)
+  { return _wddManager.makeAnd(pFst, pSnd); }
+
+VRExprTermManager::WddNodeHandle VRExprTermManager::makeOr(WddNodeHandle pFst, WddNodeHandle pSnd)
+  { return _wddManager.makeOr(pFst, pSnd); }
+
+VRExprTermManager::WddNodeHandle VRExprTermManager::makeImply(WddNodeHandle pFst, WddNodeHandle pSnd)
+  { return _wddManager.makeImply(pFst, pSnd); }
+
+VRExprTermManager::WddNodeHandle VRExprTermManager::makeNeg(WddNodeHandle pNode)
+  { return _wddManager.makeNeg(pNode); }
+
+VRExprTermManager::WddNodeHandle VRExprTermManager::makeBasicBlockIfThen(WddNodeHandle pIf, WddNodeHandle pThen)
+  { return _wddManager.makeBasicBlockIfThen(pIf, pThen); }
+
+VRExprTermManager::WddNodeHandle VRExprTermManager::makeBasicBlockIfElse(WddNodeHandle pIf, WddNodeHandle pElse)
+  { return _wddManager.makeBasicBlockIfElse(pIf, pElse); }
+
+VRExprTermManager::WddNodeHandle VRExprTermManager::makeBasicBlockIfThenElse(WddNodeHandle pIf, WddNodeHandle pThen, WddNodeHandle pElse)
+  { return _wddManager.makeBasicBlockIfThenElse(pIf, pThen, pElse); }
 
 VRExprTermManager::WddNodeHandle VRExprTermManager::ite(VRExprExpression eIf, VRExprExpression eThen, VRExprExpression eElse) {
     return ite(

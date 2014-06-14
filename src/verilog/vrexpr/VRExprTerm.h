@@ -21,6 +21,14 @@ public:
     WddNodeHandle ite(VRExprExpression eIf, VRExprExpression eThen, VRExprExpression eElse);
 
     WddNodeHandle ite(WddNodeHandle pIf, WddNodeHandle pThen, WddNodeHandle pElse);
+    WddNodeHandle makeAnd(WddNodeHandle pFst, WddNodeHandle pSnd);
+    WddNodeHandle makeOr(WddNodeHandle pFst, WddNodeHandle pSnd);
+    WddNodeHandle makeImply(WddNodeHandle pFst, WddNodeHandle pSnd);
+    WddNodeHandle makeNeg(WddNodeHandle pNode);
+
+    WddNodeHandle makeBasicBlockIfThen(WddNodeHandle pIf, WddNodeHandle pThen);
+    WddNodeHandle makeBasicBlockIfElse(WddNodeHandle pIf, WddNodeHandle pElse);
+    WddNodeHandle makeBasicBlockIfThenElse(WddNodeHandle pIf, WddNodeHandle pThen, WddNodeHandle pElse);
 
     const WddManager<VRExprTermHandle> & getWddManager() const
       { return _wddManager; }

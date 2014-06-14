@@ -177,7 +177,7 @@ public:
             _mapNodeTerm.insert(std::make_pair(pWddNode, pTerm));
             return pWddNode; 
         } else {
-            findTerm(pTerm);
+            return findTerm(pTerm);
         }
 
         assert(0);
@@ -288,7 +288,7 @@ public:
     WddNodeHandle makeBasicBlockIfElse(WddNodeHandle pIf, WddNodeHandle pElse) {
         BddNodeHandle pBddNodeIf = pIf->getBddNodeHandle();
         BddNodeHandle pBddNodeElse = pElse->getBddNodeHandle();
-        BddNodeHandle pBddNode = _bddManager.makeAnd(makeNeg(pBddNodeIf), pBddNodeElse);
+        BddNodeHandle pBddNode = _bddManager.makeAnd(_bddManager.makeNeg(pBddNodeIf), pBddNodeElse);
         return WddNode<term_handle_type>::makeWddNodeHandle(*this, pBddNode);
     }
     

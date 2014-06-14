@@ -330,6 +330,25 @@ std::vector<VRExprExpression> VRExprExpression::getMuxExpressions() const {
     assert(0);
 }
 
+VRExprTermManager::WddNodeHandle VRExprExpression::buildWddNode(VRExprTermManager & _termManager) const {
+    if (getPrimaryHandle()) {
+        return _termManager.addExpr(VRExprExpression(*getPrimaryHandle()));
+    } else if (getUnaryExpressionHandle()) {
+        return getUnaryExpressionHandle()->buildWddNode(_termManager);
+    } else if (getBinaryExpressionHandle()) {
+        return getBinaryExpressionHandle()->buildWddNode(_termManager);
+    } else if (getIteHandle()) {
+        return getIteHandle()->buildWddNode(_termManager);
+    } else if (getItHandle()) {
+        return getItHandle()->buildWddNode(_termManager);
+    } else if (getIeHandle()) {
+        return getIeHandle()->buildWddNode(_termManager);
+    } else {
+        LOG(ERROR) << "No such branch";
+    }
+    assert(0);
+}
+
 VRExprExpression VRExprExpression::appendIfByThen(VRExprExpression exprIf) const {
     VRExprIt it(exprIf, *this);
     return it;
@@ -354,6 +373,7 @@ VRExprUnaryExpressionImpl::VRExprUnaryExpressionImpl(UnaryOpType opType, VRExprP
   : _opType(opType)
   , _primary(primary)
   { }
+
 std::string VRExprUnaryExpressionImpl::toString() const {
     return vexpr_get_unary_op_symbol(_opType) + _primary.toString();
 }
@@ -366,7 +386,15 @@ std::string VRExprUnaryExpression::toString() const
     
 HashTable<VRExprExpression> VRExprUnaryExpression::getStaticSensitivity() const
   { return getPrimary().getStaticSensitivity(); }
-
+    
+VRExprTermManager::WddNodeHandle VRExprUnaryExpression::buildWddNode(VRExprTermManager & _termManager) const {
+    VRExprTermManager::WddNodeHandle pNodePrimary =
+        _termManager.addExpr(VRExprExpression(getPrimary()));
+    if (getOpType() == UNARY_NOT) {
+        return _termManager.makeNeg(pNodePrimary);
+    }
+    return _termManager.addExpr(VRExprExpression(getPrimary()));
+}
 
 VRExprBinaryExpressionImpl::VRExprBinaryExpressionImpl(VRExprExpression exprFst, BinaryOpType opType, VRExprExpression exprSnd)
   : _exprFst(exprFst)
@@ -392,6 +420,27 @@ HashTable<VRExprExpression> VRExprBinaryExpression::getStaticSensitivity() const
     ht.insert(ht2.begin(), ht2.end());
     return ht;
 }
+
+VRExprTermManager::WddNodeHandle VRExprBinaryExpression::buildWddNode(VRExprTermManager & _termManager) const {
+    switch(getOpType()) {
+        case BINARY_LOGICAL_AND:
+            return _termManager.makeAnd(
+                       getExprFst().buildWddNode(_termManager)
+                     , getExprSnd().buildWddNode(_termManager));
+        case BINARY_LOGICAL_OR:
+            return _termManager.makeOr(
+                       getExprFst().buildWddNode(_termManager)
+                     , getExprSnd().buildWddNode(_termManager));
+        case BINARY_EQ:
+            // TODO
+        case BINARY_NEQ:
+            // TODO
+        default:
+            return _termManager.addExpr(VRExprExpression(*this));
+    }
+    assert(0);
+}
+
 
 VRExprIte::Impl::Impl(VRExprExpression exprIf, VRExprExpression exprThen, VRExprExpression exprElse)
   : _exprIf(exprIf)
@@ -435,6 +484,16 @@ std::vector<VRExprExpression> VRExprIte::getMuxExpressions() const {
     vec.insert(vec.end(), vec3.begin(), vec3.end());
     return vec;
 }
+    
+VRExprTermManager::WddNodeHandle VRExprIte::buildWddNode(VRExprTermManager & _termManager) const {
+    VRExprTermManager::WddNodeHandle pNodeIf =
+        getExprIf().buildWddNode(_termManager);
+    VRExprTermManager::WddNodeHandle pNodeThen =
+        getExprThen().buildWddNode(_termManager);
+    VRExprTermManager::WddNodeHandle pNodeElse =
+        getExprElse().buildWddNode(_termManager);
+    return _termManager.makeBasicBlockIfThenElse(pNodeIf, pNodeThen, pNodeElse);
+}
 
 VRExprIt::Impl::Impl(VRExprExpression exprIf, VRExprExpression exprThen)
   : _exprIf(exprIf)
@@ -462,6 +521,14 @@ std::vector<VRExprExpression> VRExprIt::getMuxExpressions() const {
     std::vector<VRExprExpression> vec2 = getExprThen().getMuxExpressions();
     vec.insert(vec.end(), vec2.begin(), vec2.end());
     return vec;
+}
+    
+VRExprTermManager::WddNodeHandle VRExprIt::buildWddNode(VRExprTermManager & _termManager) const {
+    VRExprTermManager::WddNodeHandle pNodeIf =
+        getExprIf().buildWddNode(_termManager);
+    VRExprTermManager::WddNodeHandle pNodeThen =
+        getExprThen().buildWddNode(_termManager);
+    return _termManager.makeBasicBlockIfThen(pNodeIf, pNodeThen);
 }
 
     
@@ -504,7 +571,14 @@ std::vector<VRExprExpression> VRExprIe::getMuxExpressions() const {
     vec.insert(vec.end(), vec2.begin(), vec2.end());
     return vec;
 }
-
+    
+VRExprTermManager::WddNodeHandle VRExprIe::buildWddNode(VRExprTermManager & _termManager) const {
+    VRExprTermManager::WddNodeHandle pNodeIf =
+        getExprIf().buildWddNode(_termManager);
+    VRExprTermManager::WddNodeHandle pNodeElse =
+        getExprElse().buildWddNode(_termManager);
+    return _termManager.makeBasicBlockIfElse(pNodeIf, pNodeElse);
+}
 
 
 VRExprConcatenation::Impl::Impl(VRExprExpression exprFst, VRExprExpression exprSnd) {

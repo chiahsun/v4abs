@@ -194,6 +194,7 @@ public:
     HashTable<VRExprExpression> getStaticSensitivity() const;
     HashTable<VRExprExpression> getTerminalExpressions() const;
     std::vector<VRExprExpression> getMuxExpressions() const;
+    VRExprTermManager::WddNodeHandle buildWddNode(VRExprTermManager & _termManager) const;
     int hashFunction() const;
     bool operator == (const VRExprExpression & rhs) const;
     bool operator < (const VRExprExpression & rhs) const
@@ -230,6 +231,8 @@ public:
     VRExprUnaryExpressionImpl(UnaryOpType opType, VRExprPrimary primary);
     VRExprPrimary getPrimary() const
       { return _primary; }
+    UnaryOpType getOpType() const
+      { return _opType; }
     std::string toString() const; 
 };
 
@@ -241,8 +244,11 @@ public:
     VRExprUnaryExpression(UnaryOpType opType, VRExprPrimary primary);
     VRExprPrimary getPrimary() const
       { return _pImpl->getPrimary(); }
+    UnaryOpType getOpType() const
+      { return _pImpl->getOpType(); }
     std::string toString() const;
     HashTable<VRExprExpression> getStaticSensitivity() const;
+    VRExprTermManager::WddNodeHandle buildWddNode(VRExprTermManager & _termManager) const;
 };
 
 
@@ -255,6 +261,8 @@ public:
     std::string toString() const; 
     VRExprExpression getExprFst() const
       { return _exprFst; }
+    BinaryOpType getOpType() const
+      { return _opType; }
     VRExprExpression getExprSnd() const
       { return _exprSnd; }
 };
@@ -269,8 +277,11 @@ public:
     VRExprBinaryExpression(VRExprExpression exprFst, BinaryOpType opType, VRExprExpression exprSnd);
     std::string toString() const; 
     HashTable<VRExprExpression> getStaticSensitivity() const;
+    VRExprTermManager::WddNodeHandle buildWddNode(VRExprTermManager & _termManager) const;
     VRExprExpression getExprFst() const
       { return _pImpl->getExprFst(); }
+    BinaryOpType getOpType() const
+      { return _pImpl->getOpType(); }
     VRExprExpression getExprSnd() const
       { return _pImpl->getExprSnd(); }
 };
@@ -304,6 +315,7 @@ public:
     HashTable<VRExprExpression> getStaticSensitivity() const;
     HashTable<VRExprExpression> getTerminalExpressions() const;
     std::vector<VRExprExpression> getMuxExpressions() const;
+    VRExprTermManager::WddNodeHandle buildWddNode(VRExprTermManager & _termManager) const;
 };
 
 class VRExprIt : public VRExprExpressionInterface {
@@ -330,6 +342,7 @@ public:
     HashTable<VRExprExpression> getStaticSensitivity() const;
     HashTable<VRExprExpression> getTerminalExpressions() const;
     std::vector<VRExprExpression> getMuxExpressions() const;
+    VRExprTermManager::WddNodeHandle buildWddNode(VRExprTermManager & _termManager) const;
 };
 
 class VRExprIe : public VRExprExpressionInterface {
@@ -356,6 +369,7 @@ public:
     HashTable<VRExprExpression> getStaticSensitivity() const;
     HashTable<VRExprExpression> getTerminalExpressions() const;
     std::vector<VRExprExpression> getMuxExpressions() const;
+    VRExprTermManager::WddNodeHandle buildWddNode(VRExprTermManager & _termManager) const;
 };
 
 

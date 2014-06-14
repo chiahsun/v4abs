@@ -114,5 +114,6 @@ void VRExprAssignment::initTermManager() {
     for (int i = static_cast<int>(_vecMux.size())-1; i >= 0; --i)
         _termManager.addExpr(_vecMux[i]);
 
-//    WddNodeHandle pRhs = _exprRhs.buildWddNode(_termManager);
+    WddNodeHandle pRhs = _exprRhs.buildWddNode(_termManager);
+    DEBUG_EXPR(_termManager.stringOfNode(pRhs));
 }

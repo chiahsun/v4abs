@@ -7,7 +7,7 @@
 
 
 
-std::string indent(unsigned int indentLevel = 0) {
+static std::string indent(unsigned int indentLevel = 0) {
     std::string s = "";
     for (unsigned int i = 0; i < indentLevel; ++i)
         s += " ";

@@ -1,4 +1,5 @@
 #include "VRExprTerm.h"
+#include "VRExprExpression.h"
 #include "utility/log/Log.h"
 #include "test/UnitTest.h"
 
@@ -11,7 +12,7 @@ void test_add_term() {
     WddNodeHandle pb = manager.addExpr(makeIdentifier("b"));
     WddNodeHandle pc = manager.addExpr(makeBinaryExpression(makeIdentifier("a"), BINARY_GT, makeIdentifier("b")));
     WddNodeHandle p1 = manager.ite(pc, pa, pb);
-    assertEqual("", manager.stringOfNode(p1), "Test to string");
+    assertEqual("ite((a>b), a, b)", manager.stringOfNode(p1), "Test to string");
     UNIT_TEST_FUNCTION_END_FUNCTION_TEST();
 }
 

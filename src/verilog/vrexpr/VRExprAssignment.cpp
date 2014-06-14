@@ -9,8 +9,12 @@ VRExprAssignment::VRExprAssignment()
 
 VRExprAssignment::VRExprAssignment(VRExprExpression lhs, VRExprExpression rhs)
   : _exprLhs(lhs)
-  , _exprRhs(rhs)
-  { initStaticSensitivity(); }
+  , _exprRhs(rhs) { 
+    initStaticSensitivity();
+    initTerminalExpressions();
+    initMuxExpressions();
+    initTermManager();
+}
 
 VRExprExpression VRExprAssignment::getExprLhs() const
   { return _exprLhs; }
@@ -68,6 +72,23 @@ std::string VRExprAssignment::toString() const {
         begin = true;
     }
     s += ")\n";
+    s = s + "       => (rhs_terminals ";
+    unsigned int pos = 0;
+    CONST_FOR_EACH(terminal, _hashTerminals) {
+        if (pos++ != 0)
+            s += ", ";
+        s += terminal.toString();
+    }
+    s += ")\n";
+    
+    s = s + "       => (mux_terminals ";
+    pos = 0;
+    CONST_FOR_EACH(mux, _vecMux) {
+        if (pos++ != 0)
+            s += ", ";
+        s += mux.toString();
+    }
+    s += ")\n";
     s = s + _exprLhs.toString() + " = " ;
     s += _exprRhs.toString();
     return s;
@@ -75,4 +96,23 @@ std::string VRExprAssignment::toString() const {
     
 void VRExprAssignment::initStaticSensitivity() {
     _hashStaticSensitivity = _exprRhs.getStaticSensitivity();
+}
+
+void VRExprAssignment::initTerminalExpressions() {
+    _hashTerminals = _exprRhs.getTerminalExpressions();
+}
+
+void VRExprAssignment::initMuxExpressions() {
+    _vecMux = _exprRhs.getMuxExpressions();
+}
+
+void VRExprAssignment::initTermManager() {
+    CONST_FOR_EACH(terminal, _hashTerminals) {
+        _termManager.addExpr(terminal);
+    }
+
+    for (int i = static_cast<int>(_vecMux.size())-1; i >= 0; --i)
+        _termManager.addExpr(_vecMux[i]);
+
+//    WddNodeHandle pRhs = _exprRhs.buildWddNode(_termManager);
 }

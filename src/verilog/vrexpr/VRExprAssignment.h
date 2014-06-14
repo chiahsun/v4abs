@@ -3,6 +3,7 @@
 
 #include "VRExprExpression.h"
 #include "nstl/hash/HashTable.h"
+#include "VRExprTerm.h"
 
 class VRExprAssignment {
     VRExprExpression _exprLhs;
@@ -12,6 +13,13 @@ class VRExprAssignment {
     HashTable<VRExprExpression> _hashPosedgeSensitivity;
     HashTable<VRExprExpression> _hashNegedgeSensitivity;
 
+    HashTable<VRExprExpression> _hashTerminals;
+    std::vector<VRExprExpression> _vecMux;
+
+    typedef VRExprTermManager::VRExprTermHandle VRExprTermHandle;
+    typedef VRExprTermManager::WddNodeHandle WddNodeHandle;
+
+    VRExprTermManager _termManager;
 public:
     VRExprAssignment();
     VRExprAssignment(VRExprExpression lhs, VRExprExpression rhs);
@@ -31,6 +39,9 @@ public:
 
 private:
     void initStaticSensitivity();
+    void initTerminalExpressions();
+    void initMuxExpressions();
+    void initTermManager();
 };
 
 

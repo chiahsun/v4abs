@@ -13,6 +13,8 @@ class VRExprUnaryExpression;
 class VRExprPrimary;
 class VRExprExpressionImpl;
 class VRExprExpression;
+class VRExprTerm;
+class VRExprTermManager;
 
 
 #endif // VREXPR_TYPES_H

@@ -1,7 +1,7 @@
 #ifndef VREXPR_TERM_H
 #define VREXPR_TERM_H
 
-#include "VRExprExpression.h"
+#include "VRExprTypes.h"
 #include "formal/wdd/WddManager.h"
 #include "formal/wdd/WddTermInterface.h"
 #include "nstl/shared_ptr/SharedPtrE.h"
@@ -31,11 +31,12 @@ public:
 };
 
 class VRExprTerm : public WddTermInterface {
-    VRExprExpression _expr;
+    typedef SharedPtrE<VRExprExpression> VRExprExpressionHandle;
+    VRExprExpressionHandle _pExpr;
 public:
     VRExprTerm(VRExprExpression expr);
     std::string toString() const;
-    bool operator < (const VRExprTerm & rhs) const { return _expr < rhs._expr; }
+    bool operator < (const VRExprTerm & rhs) const;
 };
 
 

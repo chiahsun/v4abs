@@ -175,11 +175,13 @@ void test_hash_copy_constructor() {
         ss << i << " ";
     }
     assertEqual("1 2 3 ", ss.str(), "Test copy constructor");
+    assertEqual(3, ht.size(), "Test ht size");
     HashTable<int> ht2(ht);
     std::stringstream ss2;
     FOR_EACH(i, ht2) {
         ss2 << i << " ";
     }
+    assertEqual(3, ht2.size(), "Test ht2 size");
     assertEqual("1 2 3 ", ss2.str(), "Test copy constructor");
 
     UNIT_TEST_FUNCTION_END_FUNCTION_TEST();

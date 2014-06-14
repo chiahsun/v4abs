@@ -2,6 +2,7 @@
 #define HASH_FUNCTION_H
 
 #include <string>
+#include <cassert>
 
 /**
  * Problem for multiple definition
@@ -15,6 +16,7 @@ struct HashFunction {
         return value.hashFunction();
     }
     static int hashCode(const _Value & value, int size) {
+        assert(size > 0);
         return (HashFunction<_Value>::hashFunction(value) & 0x7fffffff) % size;
     }
 };

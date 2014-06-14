@@ -145,6 +145,7 @@ HashTable<VRExprExpression> VRExprPrimary::getStaticSensitivity() const {
         ht.insert(VRExprExpression(VRExprPrimary(*getIdentifierHandle())));
         return ht;
     } else if (getNumberHandle()) {
+        ht.insert(VRExprExpression(VRExprPrimary(*getNumberHandle())));
         return ht;
     } else if (getSelectIdentifierHandle()) {
         return getSelectIdentifierHandle()->getStaticSensitivity();
@@ -152,6 +153,29 @@ HashTable<VRExprExpression> VRExprPrimary::getStaticSensitivity() const {
         return getConcatenationHandle()->getStaticSensitivity();
     } else if (getMultConcatenationHandle()) {
         return getMultConcatenationHandle()->getStaticSensitivity();
+    } else {
+        LOG(ERROR) << "No such branch";
+    }
+    assert(0);
+}
+
+HashTable<VRExprExpression> VRExprPrimary::getTerminalExpressions() const {
+    HashTable<VRExprExpression> ht;
+    if (getIdentifierHandle()) {
+        ht.insert(VRExprExpression(VRExprPrimary(*getIdentifierHandle())));
+        return ht;
+    } else if (getNumberHandle()) {
+        ht.insert(VRExprExpression(VRExprPrimary(*getNumberHandle())));
+        return ht;
+    } else if (getSelectIdentifierHandle()) {
+        ht.insert(VRExprPrimary(*getSelectIdentifierHandle()));
+        return ht;
+    } else if (getConcatenationHandle()) {
+        ht.insert(VRExprPrimary(*getConcatenationHandle()));
+        return ht;
+    } else if (getMultConcatenationHandle()) {
+        ht.insert(VRExprPrimary(*getMultConcatenationHandle()));
+        return ht;
     } else {
         LOG(ERROR) << "No such branch";
     }
@@ -263,6 +287,48 @@ int VRExprExpression::hashFunction() const
     
 bool VRExprExpression::operator == (const VRExprExpression & rhs) const
   { return toString() == rhs.toString(); }
+    
+HashTable<VRExprExpression> VRExprExpression::getTerminalExpressions() const {
+    HashTable<VRExprExpression> ht;
+    if (getPrimaryHandle()) {
+        return getPrimaryHandle()->getTerminalExpressions();
+    } else if (getUnaryExpressionHandle()) {
+        ht.insert(*getUnaryExpressionHandle());
+        return ht;
+    } else if (getBinaryExpressionHandle()) {
+        ht.insert(*getBinaryExpressionHandle());
+        return ht;
+    } else if (getIteHandle()) {
+        return getIteHandle()->getTerminalExpressions();
+    } else if (getItHandle()) {
+        return getItHandle()->getTerminalExpressions();
+    } else if (getIeHandle()) {
+        return getIeHandle()->getTerminalExpressions();
+    } else {
+        LOG(ERROR) << "No such branch";
+    }
+    assert(0);
+}
+    
+std::vector<VRExprExpression> VRExprExpression::getMuxExpressions() const {
+    std::vector<VRExprExpression> vec;
+    if (getPrimaryHandle()) {
+        return vec;
+    } else if (getUnaryExpressionHandle()) {
+        return vec;
+    } else if (getBinaryExpressionHandle()) {
+        return vec;
+    } else if (getIteHandle()) {
+        return getIteHandle()->getMuxExpressions();
+    } else if (getItHandle()) {
+        return getItHandle()->getMuxExpressions();
+    } else if (getIeHandle()) {
+        return getIeHandle()->getMuxExpressions();
+    } else {
+        LOG(ERROR) << "No such branch";
+    }
+    assert(0);
+}
 
 VRExprExpression VRExprExpression::appendIfByThen(VRExprExpression exprIf) const {
     VRExprIt it(exprIf, *this);
@@ -352,6 +418,23 @@ HashTable<VRExprExpression> VRExprIte::getStaticSensitivity() const {
     ht.insert(ht3.begin(), ht3.end());
     return ht;
 }
+    
+HashTable<VRExprExpression> VRExprIte::getTerminalExpressions() const {
+    HashTable<VRExprExpression> ht = getExprThen().getTerminalExpressions();
+    HashTable<VRExprExpression> ht2 = getExprElse().getTerminalExpressions();
+    ht.insert(ht2.begin(), ht2.end());
+    return ht;
+}
+    
+std::vector<VRExprExpression> VRExprIte::getMuxExpressions() const {
+    std::vector<VRExprExpression> vec;
+    vec.push_back(getExprIf());
+    std::vector<VRExprExpression> vec2 = getExprThen().getMuxExpressions();
+    vec.insert(vec.end(), vec2.begin(), vec2.end());
+    std::vector<VRExprExpression> vec3 = getExprElse().getMuxExpressions();
+    vec.insert(vec.end(), vec3.begin(), vec3.end());
+    return vec;
+}
 
 VRExprIt::Impl::Impl(VRExprExpression exprIf, VRExprExpression exprThen)
   : _exprIf(exprIf)
@@ -368,6 +451,19 @@ HashTable<VRExprExpression> VRExprIt::getStaticSensitivity() const {
     ht.insert(ht2.begin(), ht2.end());
     return ht;
 }
+    
+HashTable<VRExprExpression> VRExprIt::getTerminalExpressions() const {
+    return getExprThen().getTerminalExpressions();
+}
+
+std::vector<VRExprExpression> VRExprIt::getMuxExpressions() const {
+    std::vector<VRExprExpression> vec;
+    vec.push_back(getExprIf());
+    std::vector<VRExprExpression> vec2 = getExprThen().getMuxExpressions();
+    vec.insert(vec.end(), vec2.begin(), vec2.end());
+    return vec;
+}
+
     
 VRExprIt::VRExprIt(VRExprExpression exprIf, VRExprExpression exprThen)
   { _pImpl = impl_shared_ptr_type(impl_type(exprIf, exprThen)); }
@@ -396,6 +492,19 @@ HashTable<VRExprExpression> VRExprIe::getStaticSensitivity() const {
     ht.insert(ht2.begin(), ht2.end());
     return ht;
 }
+    
+HashTable<VRExprExpression> VRExprIe::getTerminalExpressions() const {
+    return getExprElse().getTerminalExpressions();
+}
+
+std::vector<VRExprExpression> VRExprIe::getMuxExpressions() const {
+    std::vector<VRExprExpression> vec;
+    vec.push_back(getExprIf());
+    std::vector<VRExprExpression> vec2 = getExprElse().getMuxExpressions();
+    vec.insert(vec.end(), vec2.begin(), vec2.end());
+    return vec;
+}
+
 
 
 VRExprConcatenation::Impl::Impl(VRExprExpression exprFst, VRExprExpression exprSnd) {

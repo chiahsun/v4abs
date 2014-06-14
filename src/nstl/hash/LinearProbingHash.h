@@ -199,10 +199,25 @@ public:
         }
         return *this;
     }
+
     void copy(const LinearProbingHash & rhs) {
         init(rhs.capacity());
+#if 1
+        bool isStart = false;
+        for (unsigned int i = 0; i < rhs._vecPointer.size(); ++i) {
+            if (rhs._vecPointer[i]) {
+                _vecPointer[i] = new value_type(*(rhs._vecPointer[i]));
+                ++_size;
+                if (!isStart) {
+                    _pBegin = Iterator(&_vecPointer, i);
+                    isStart = true;
+                }
+            }
+        }
+#else
         for (const_iterator it = rhs.cbegin(); it != rhs.cend(); ++it)
             insert(*it);
+#endif
     }
     void init(size_t cap) {
         assert(cap > 0);

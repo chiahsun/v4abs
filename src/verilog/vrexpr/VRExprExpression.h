@@ -1,6 +1,7 @@
 #ifndef VREXPR_EXPRESSION_H
 #define VREXPR_EXPRESSION_H
 
+#include "VRExprTypes.h"
 #include "VRExprInterface.h"
 
 #include "VRExprSelectInterface.h"
@@ -8,7 +9,6 @@
 #include <vector>
 #include "VRExprPrimaryInterface.h"
 
-#include "VRExprTypes.h"
 #include "nstl/shared_ptr/SharedPtr.h"
 #include "nstl/variant/Variant.h"
 #include "nstl/hash/HashTable.h"
@@ -17,6 +17,7 @@
 #include "VRExprExpressionInterface.h"
 #include "VRExprIdentifier.h"
 #include "VRExprNumber.h"
+#include "VRExprTerm.h"
 
 class VRExprExpression;
 class VRExprConcatenation;
@@ -122,6 +123,7 @@ public:
       { return _pImpl->getMultConcatenationHandle(); }
     std::string toString() const;
     HashTable<VRExprExpression> getStaticSensitivity() const;
+    HashTable<VRExprExpression> getTerminalExpressions() const;
 
     friend VRExprPrimary makeBinaryNumber(std::string numberLiterals);
     friend VRExprPrimary makeOctalNumber(std::string numberLiterals);
@@ -160,7 +162,18 @@ public:
     VRExprExpressionImpl(VRExprIe ie);
     std::string toString() const;
     HashTable<VRExprExpression> getStaticSensitivity() const;
-
+    const VRExprPrimary* getPrimaryHandle() const
+      { return _variant.getFstHandle(); }
+    const VRExprUnaryExpression* getUnaryExpressionHandle() const
+      { return _variant.getSndHandle(); }
+    const VRExprBinaryExpression* getBinaryExpressionHandle() const
+      { return _variant.getTrdHandle(); }
+    const VRExprIte* getIteHandle() const
+      { return _variant.getForthHandle(); }
+    const VRExprIt* getItHandle() const
+      { return _variant.getFifthHandle(); }
+    const VRExprIe* getIeHandle() const
+      { return _variant.getSixthHandle(); }
 };
 
 
@@ -179,6 +192,8 @@ public:
     VRExprExpression(VRExprIe ie);
     std::string toString() const;
     HashTable<VRExprExpression> getStaticSensitivity() const;
+    HashTable<VRExprExpression> getTerminalExpressions() const;
+    std::vector<VRExprExpression> getMuxExpressions() const;
     int hashFunction() const;
     bool operator == (const VRExprExpression & rhs) const;
     bool operator < (const VRExprExpression & rhs) const
@@ -186,6 +201,19 @@ public:
 
     VRExprExpression appendIfByThen(VRExprExpression exprIf) const;
     VRExprExpression appendIfByElse(VRExprExpression exprIf) const;
+    const VRExprPrimary* getPrimaryHandle() const
+      { return _pImpl->getPrimaryHandle(); }
+    const VRExprUnaryExpression* getUnaryExpressionHandle() const
+      { return _pImpl->getUnaryExpressionHandle(); }
+    const VRExprBinaryExpression* getBinaryExpressionHandle() const
+      { return _pImpl->getBinaryExpressionHandle(); }
+    const VRExprIte* getIteHandle() const
+      { return _pImpl->getIteHandle(); }
+    const VRExprIt* getItHandle() const
+      { return _pImpl->getItHandle(); }
+    const VRExprIe* getIeHandle() const
+      { return _pImpl->getIeHandle(); }
+
 
     friend VRExprExpression makePrimaryExpression(VRExprPrimary primary);
     friend VRExprExpression makeUnaryExpression(UnaryOpType opType, VRExprPrimary primary);
@@ -274,6 +302,8 @@ public:
       { return _pImpl->getExprElse(); }
     std::string toString() const;
     HashTable<VRExprExpression> getStaticSensitivity() const;
+    HashTable<VRExprExpression> getTerminalExpressions() const;
+    std::vector<VRExprExpression> getMuxExpressions() const;
 };
 
 class VRExprIt : public VRExprExpressionInterface {
@@ -298,6 +328,8 @@ public:
       { return _pImpl->getExprThen(); } 
     std::string toString() const;
     HashTable<VRExprExpression> getStaticSensitivity() const;
+    HashTable<VRExprExpression> getTerminalExpressions() const;
+    std::vector<VRExprExpression> getMuxExpressions() const;
 };
 
 class VRExprIe : public VRExprExpressionInterface {
@@ -322,6 +354,8 @@ public:
       { return _pImpl->getExprElse(); } 
     std::string toString() const;
     HashTable<VRExprExpression> getStaticSensitivity() const;
+    HashTable<VRExprExpression> getTerminalExpressions() const;
+    std::vector<VRExprExpression> getMuxExpressions() const;
 };
 
 

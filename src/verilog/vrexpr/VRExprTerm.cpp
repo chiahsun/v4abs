@@ -1,12 +1,12 @@
 #include "VRExprTerm.h"
-
+#include "VRExprExpression.h"
     
 VRExprTerm::VRExprTerm(VRExprExpression expr)
-  : _expr(expr)
+  : _pExpr(VRExprExpressionHandle(VRExprExpression(expr)))
   { }
     
 std::string VRExprTerm::toString() const
-  { return _expr.toString(); }
+  { return _pExpr->toString(); }
 
 VRExprTermManager::VRExprTermManager()
   { }
@@ -23,4 +23,8 @@ VRExprTermManager::WddNodeHandle VRExprTermManager::ite(VRExprExpression eIf, VR
            , _wddManager.findTerm(VRExprTermHandle(VRExprTerm(eThen)))
            , _wddManager.findTerm(VRExprTermHandle(VRExprTerm(eElse)))
            );
+}
+    
+bool VRExprTerm::operator < (const VRExprTerm & rhs) const { 
+    return (*_pExpr) < (*rhs._pExpr); 
 }

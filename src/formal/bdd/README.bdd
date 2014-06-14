@@ -1,7 +1,25 @@
-1. Binary Decision Diagrams
+[1] Binary Decision Diagrams
    Document of Formal Verificaiton, Unitversity of Cincinnati
    http://gauss.ececs.uc.edu/Courses/c626/lectures/BDD/bdd-desc.pdf
 
-2. Binary Decision Diagrams, Fabio Somenzi
+[2] Binary Decision Diagrams, Fabio Somenzi
    http://www.ecs.umass.edu/ece/labs/vlsicad/ece667/reading/somenzi99bdd.pdf
-  
+
+--------------------------------------------
+Implementation of generalized cofactor (gcf)
+--------------------------------------------
+1. Example adopted from
+   SBSAT User Manual and Quick Start Guide
+   http://gauss.ececs.uc.edu/sbsat_user_manual/node77.html
+
+   NOTE: The bdd doesn't provide the order mixing, so the test code is different in the variable order with the example.
+
+    Test code    Example
+       x4          x1
+       x3          x2
+       x2          x3
+       x1          x4
+     T    F      T    F
+
+2. Algorithm from the implemenation [1], page 12, algorithm 6
+   Reduce can be found at [1], page 4, algorithm 3

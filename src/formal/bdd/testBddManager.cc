@@ -259,12 +259,135 @@ void test_propositional_logic() {
     UNIT_TEST_FUNCTION_END_FUNCTION_TEST();
 }
 
+/**
+ *
+ *  f = ite(x4, not x2, x1)
+ *        
+ *          x4
+ *      1/     \0
+ *     x2       x1 
+ *   1/  \0   1/   \0
+ *   F    T   T     F
+ *
+ *  c = or(x1, x2)
+ *
+ *       x2
+ *    1/    \0
+ *    T      x1
+ *         1/  \0
+ *         T    F
+ *
+ *  gcf(f, c)
+ *
+ *         x4
+ *      1/    \0
+ *     x2       x2
+ *   1/ \0    1/  \0
+ *   F   T   x1    T
+ *         1/  \0
+ *         T    F
+ */
+
+
+void test_generalized_cofactor() {
+    BddManager bddManager;
+
+
+    BddNodeHandle pF = bddManager.makeBddNode(
+              4
+            , bddManager.makeNeg(bddManager.makeBddNode(2))
+            , bddManager.makeBddNode(1));
+
+    BddNodeHandle pC = bddManager.makeBddNode(
+              2
+            , BddManager::BDD_TRUE
+            , bddManager.makeBddNode(1));
+    BddNodeHandle pGcf = bddManager.getGeneralizedCofactor(pF, pC);
+
+    assertEqual("4 Bdd(n1, n0, n2)\n"
+                " 2 Bdd(false, n1, true)\n"
+                " 1 Bdd(true, n2, false)\n", pF->toString(), "Test to string");
+    assertEqual("2 Bdd(true, n0, n2)\n"
+                " 1 Bdd(true, n2, false)\n", pC->toString(), "Test to string");
+    assertEqual("4 Bdd(n1, n0, n2)\n"
+                " 2 Bdd(false, n1, true)\n"
+                " 2 Bdd(n5, n2, true)\n"
+                "  1 Bdd(true, n5, false)\n", pGcf->toString(), "Test to string");
+
+    UNIT_TEST_FUNCTION_END_FUNCTION_TEST();
+}
+
+/**
+ *
+ *  f = ite(x4, x2->(not x1), (not x2) ^ (not x1))
+ *        
+ *             x4
+ *         1/     \0
+ *        x2       x2
+ *      1/  \0   1/   \0
+ *     x1    T   F     x1
+ *   1/  \0          1/  \0
+ *   F    T          F    T
+ *
+ *  c = or(x4, x2)
+ *
+ *       x4
+ *    1/    \0
+ *    T      x2
+ *         1/  \0
+ *         T    F
+ *
+ *  gcf(f, c)
+ *
+ *            x4
+ *         1/    \0
+ *        x2       F
+ *      1/  \0    
+ *     x1     T  
+ *   1/ \0        
+ *   F   T         
+ */
+
+
+void test_generalized_cofactor2() {
+    BddManager bddManager;
+
+    BddNodeHandle p1 = bddManager.makeBddNode(1);
+    BddNodeHandle p2 = bddManager.makeBddNode(2);
+    BddNodeHandle p3 = bddManager.makeBddNode(3);
+    BddNodeHandle p4 = bddManager.makeBddNode(4);
+
+    BddNodeHandle pF = bddManager.makeBddNode(
+        4
+      , bddManager.makeBddNode(2, bddManager.makeNeg(p1), BddManager::BDD_TRUE)
+      , bddManager.makeBddNode(2, BddManager::BDD_FALSE, bddManager.makeNeg(p1))  );
+
+    BddNodeHandle pC = bddManager.makeBddNode(4, BddManager::BDD_TRUE, p2);
+
+    BddNodeHandle pGcf = bddManager.getGeneralizedCofactor(pF, pC);
+
+    assertEqual("4 Bdd(n1, n0, n2)\n"
+                " 2 Bdd(n3, n1, true)\n"
+                "  1 Bdd(false, n3, true)\n"
+                " 2 Bdd(false, n2, n6)\n"
+                "  1 Bdd(false, n6, true)\n", pF->toString(), "Test to string");
+    assertEqual("4 Bdd(true, n0, n2)\n"
+                " 2 Bdd(true, n2, false)\n", pC->toString(), "Test to string");
+    assertEqual("4 Bdd(n1, n0, false)\n"
+                " 2 Bdd(n3, n1, true)\n"
+                "  1 Bdd(false, n3, true)\n", pGcf->toString(), "Test to string");
+
+    UNIT_TEST_FUNCTION_END_FUNCTION_TEST();
+}
+
 int main() {
 
     test_make_the_same_node();
     test_operations();
     test_demorgan();
     test_propositional_logic();
+    test_generalized_cofactor();
+    test_generalized_cofactor2();
 
     return 0;
 }

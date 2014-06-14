@@ -60,6 +60,8 @@ public:
     BddNodeHandle makeXor(BddNodeHandle pFst, BddNodeHandle pSnd);
     BddNodeHandle makeXnor(BddNodeHandle pFst, BddNodeHandle pSnd);
 
+    BddNodeHandle getGeneralizedCofactor(BddNodeHandle pF, BddNodeHandle pC);
+
     bool isNeg(BddNodeHandle pFst, BddNodeHandle pSnd);
 private:
 //    bool findBddNode(int curDecisionLevel, BddNodeHandle pPos, BddNodeHandle pNeg);

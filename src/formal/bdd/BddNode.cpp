@@ -48,6 +48,18 @@ BddNode::BddNode(bool val)
   , _hashValue(computeHashFunction())
   , _uniqueId(getBool() ? 1 : 0)
   { }
+    
+BddNodeHandle BddNode::reduce1(int varDecisionLevel) const {
+    if (varDecisionLevel == getCurDecisionLevel())
+        return getPosHandle();
+    return BddNodeHandle(*this);
+}
+
+BddNodeHandle BddNode::reduce0(int varDecisionLevel) const {
+    if (varDecisionLevel == getCurDecisionLevel())
+        return getNegHandle();
+    return BddNodeHandle(*this);
+}
 
 
 BddNodeHandle BddNode::getConstOneHandle() {

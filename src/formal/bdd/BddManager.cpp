@@ -251,6 +251,32 @@ BddNodeHandle BddManager::makeXor(BddNodeHandle pFst, BddNodeHandle pSnd) {
 BddNodeHandle BddManager::makeXnor(BddNodeHandle pFst, BddNodeHandle pSnd) {
     return makeNeg(makeXor(pFst, pSnd));
 }
+    
+BddNodeHandle BddManager::getGeneralizedCofactor(BddNodeHandle pF, BddNodeHandle pC) {
+    if (pF == BDD_FALSE || pC == BDD_FALSE)
+        return BDD_FALSE;
+    if (pF == BDD_TRUE || pC == BDD_TRUE)
+        return pF;
+
+    int topDecisionLevel = max(pF->getCurDecisionLevel(), pC->getCurDecisionLevel());
+
+    if (pC->reduce0(topDecisionLevel) == BDD_FALSE)
+        return getGeneralizedCofactor( pF->reduce1(topDecisionLevel)
+                                     , pC->reduce1(topDecisionLevel));
+    if (pC->reduce1(topDecisionLevel) == BDD_FALSE)
+        return getGeneralizedCofactor( pF->reduce0(topDecisionLevel)
+                                     , pC->reduce0(topDecisionLevel));
+
+    BddNodeHandle pH1 = getGeneralizedCofactor( pF->reduce1(topDecisionLevel)
+                                              , pC->reduce1(topDecisionLevel));
+
+    BddNodeHandle pH0 = getGeneralizedCofactor( pF->reduce0(topDecisionLevel)
+                                              , pC->reduce0(topDecisionLevel));
+
+    if (pH1 == pH0)
+        return pH1;
+    return makeBddNode(topDecisionLevel, pH1, pH0);
+}
 
     
 bool BddManager::isNeg(BddNodeHandle pFst, BddNodeHandle pSnd) {

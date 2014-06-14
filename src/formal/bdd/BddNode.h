@@ -38,6 +38,9 @@ public:
     BddNodeHandle getPosHandle() const;
     BddNodeHandle getNegHandle() const;
 
+    BddNodeHandle reduce1(int varDecisionLevel) const;
+    BddNodeHandle reduce0(int varDecisionLevel) const;
+
     int getCurDecisionLevel() const;
     bdd_id_type getBddId() const;
     int getUniqueId() const { return _uniqueId; }

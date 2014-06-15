@@ -20,6 +20,7 @@ class VRExprAssignment {
     typedef VRExprTermManager::WddNodeHandle WddNodeHandle;
 
     VRExprTermManager _termManager;
+    WddNodeHandle _wddNode;
 public:
     VRExprAssignment();
     VRExprAssignment(VRExprExpression lhs, VRExprExpression rhs);
@@ -41,7 +42,7 @@ private:
     void initStaticSensitivity();
     void initTerminalExpressions();
     void initMuxExpressions();
-    void initTermManager();
+    void buildWddNode(); 
 };
 
 

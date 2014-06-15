@@ -334,15 +334,53 @@ VRExprTermManager::WddNodeHandle VRExprExpression::buildWddNode(VRExprTermManage
     if (getPrimaryHandle()) {
         return _termManager.addExpr(VRExprExpression(*getPrimaryHandle()));
     } else if (getUnaryExpressionHandle()) {
-        return getUnaryExpressionHandle()->buildWddNode(_termManager);
+        return getUnaryExpressionHandle()->buildWddNodeTerminal(_termManager);
     } else if (getBinaryExpressionHandle()) {
-        return getBinaryExpressionHandle()->buildWddNode(_termManager);
+        return getBinaryExpressionHandle()->buildWddNodeTerminal(_termManager);
     } else if (getIteHandle()) {
         return getIteHandle()->buildWddNode(_termManager);
     } else if (getItHandle()) {
         return getItHandle()->buildWddNode(_termManager);
     } else if (getIeHandle()) {
         return getIeHandle()->buildWddNode(_termManager);
+    } else {
+        LOG(ERROR) << "No such branch";
+    }
+    assert(0);
+}
+    
+VRExprTermManager::WddNodeHandle VRExprExpression::buildWddNodeTerminal(VRExprTermManager & _termManager) const {
+    if (getPrimaryHandle()) {
+        return _termManager.addExpr(VRExprExpression(*getPrimaryHandle()));
+    } else if (getUnaryExpressionHandle()) {
+        return getUnaryExpressionHandle()->buildWddNodeTerminal(_termManager);
+    } else if (getBinaryExpressionHandle()) {
+        return getBinaryExpressionHandle()->buildWddNodeTerminal(_termManager);
+    } else if (getIteHandle()) {
+        return getIteHandle()->buildWddNode(_termManager);
+    } else if (getItHandle()) {
+        return getItHandle()->buildWddNode(_termManager);
+    } else if (getIeHandle()) {
+        return getIeHandle()->buildWddNode(_termManager);
+    } else {
+        LOG(ERROR) << "No such branch";
+    }
+    assert(0);
+}
+
+VRExprTermManager::WddNodeHandle VRExprExpression::buildWddNodeMux(VRExprTermManager & _termManager) const {
+    if (getPrimaryHandle()) {
+        return _termManager.addExpr(VRExprExpression(*getPrimaryHandle()));
+    } else if (getUnaryExpressionHandle()) {
+        return getUnaryExpressionHandle()->buildWddNodeMux(_termManager);
+    } else if (getBinaryExpressionHandle()) {
+        return getBinaryExpressionHandle()->buildWddNodeMux(_termManager);
+    } else if (getIteHandle()) {
+        return getIteHandle()->buildWddNodeMux(_termManager);
+    } else if (getItHandle()) {
+        return getItHandle()->buildWddNodeMux(_termManager);
+    } else if (getIeHandle()) {
+        return getIeHandle()->buildWddNodeMux(_termManager);
     } else {
         LOG(ERROR) << "No such branch";
     }
@@ -387,13 +425,17 @@ std::string VRExprUnaryExpression::toString() const
 HashTable<VRExprExpression> VRExprUnaryExpression::getStaticSensitivity() const
   { return getPrimary().getStaticSensitivity(); }
     
-VRExprTermManager::WddNodeHandle VRExprUnaryExpression::buildWddNode(VRExprTermManager & _termManager) const {
+VRExprTermManager::WddNodeHandle VRExprUnaryExpression::buildWddNodeTerminal(VRExprTermManager & _termManager) const {
+    return _termManager.addExpr(*this);
+}
+
+VRExprTermManager::WddNodeHandle VRExprUnaryExpression::buildWddNodeMux(VRExprTermManager & _termManager) const {
     VRExprTermManager::WddNodeHandle pNodePrimary =
         _termManager.addExpr(VRExprExpression(getPrimary()));
     if (getOpType() == UNARY_NOT) {
         return _termManager.makeNeg(pNodePrimary);
     }
-    return _termManager.addExpr(VRExprExpression(getPrimary()));
+    return _termManager.addExpr(VRExprExpression(*this));
 }
 
 VRExprBinaryExpressionImpl::VRExprBinaryExpressionImpl(VRExprExpression exprFst, BinaryOpType opType, VRExprExpression exprSnd)
@@ -420,7 +462,7 @@ HashTable<VRExprExpression> VRExprBinaryExpression::getStaticSensitivity() const
     ht.insert(ht2.begin(), ht2.end());
     return ht;
 }
-
+#if 0
 VRExprTermManager::WddNodeHandle VRExprBinaryExpression::buildWddNode(VRExprTermManager & _termManager) const {
     switch(getOpType()) {
         case BINARY_LOGICAL_AND:
@@ -431,16 +473,52 @@ VRExprTermManager::WddNodeHandle VRExprBinaryExpression::buildWddNode(VRExprTerm
             return _termManager.makeOr(
                        getExprFst().buildWddNode(_termManager)
                      , getExprSnd().buildWddNode(_termManager));
+#if 0 // Since eq may be word level equivalence, we cannot use bdd operation to model it
         case BINARY_EQ:
-            // TODO
+            return _termManager.makeEq(
+                       getExprFst().buildWddNode(_termManager)
+                     , getExprSnd().buildWddNode(_termManager));
         case BINARY_NEQ:
-            // TODO
+            return _termManager.makeEq(
+                       getExprFst().buildWddNode(_termManager)
+                     , getExprSnd().buildWddNode(_termManager));
+#endif
         default:
             return _termManager.addExpr(VRExprExpression(*this));
     }
     assert(0);
 }
+#endif
+    
+VRExprTermManager::WddNodeHandle VRExprBinaryExpression::buildWddNodeTerminal(VRExprTermManager & _termManager) const {
+    return _termManager.addExpr(VRExprExpression(*this));
+}
 
+VRExprTermManager::WddNodeHandle VRExprBinaryExpression::buildWddNodeMux(VRExprTermManager & _termManager) const {
+    switch(getOpType()) {
+        case BINARY_LOGICAL_AND:
+            return _termManager.makeAnd(
+                       getExprFst().buildWddNodeMux(_termManager)
+                     , getExprSnd().buildWddNodeMux(_termManager));
+        case BINARY_LOGICAL_OR:
+            return _termManager.makeOr(
+                       getExprFst().buildWddNodeMux(_termManager)
+                     , getExprSnd().buildWddNodeMux(_termManager));
+#if 0 // Since eq may be word level equivalence, we cannot use bdd operation to model it
+        case BINARY_EQ:
+            return _termManager.makeEq(
+                       getExprFst().buildWddNode(_termManager)
+                     , getExprSnd().buildWddNode(_termManager));
+        case BINARY_NEQ:
+            return _termManager.makeEq(
+                       getExprFst().buildWddNode(_termManager)
+                     , getExprSnd().buildWddNode(_termManager));
+#endif
+        default:
+            return _termManager.addExpr(VRExprExpression(*this));
+    }
+    assert(0);
+}
 
 VRExprIte::Impl::Impl(VRExprExpression exprIf, VRExprExpression exprThen, VRExprExpression exprElse)
   : _exprIf(exprIf)
@@ -487,11 +565,21 @@ std::vector<VRExprExpression> VRExprIte::getMuxExpressions() const {
     
 VRExprTermManager::WddNodeHandle VRExprIte::buildWddNode(VRExprTermManager & _termManager) const {
     VRExprTermManager::WddNodeHandle pNodeIf =
-        getExprIf().buildWddNode(_termManager);
+        getExprIf().buildWddNodeMux(_termManager);
     VRExprTermManager::WddNodeHandle pNodeThen =
         getExprThen().buildWddNode(_termManager);
     VRExprTermManager::WddNodeHandle pNodeElse =
         getExprElse().buildWddNode(_termManager);
+    return _termManager.makeBasicBlockIfThenElse(pNodeIf, pNodeThen, pNodeElse);
+}
+    
+VRExprTermManager::WddNodeHandle VRExprIte::buildWddNodeMux(VRExprTermManager & _termManager) const {
+    VRExprTermManager::WddNodeHandle pNodeIf =
+        getExprIf().buildWddNodeMux(_termManager);
+    VRExprTermManager::WddNodeHandle pNodeThen =
+        getExprThen().buildWddNodeMux(_termManager);
+    VRExprTermManager::WddNodeHandle pNodeElse =
+        getExprElse().buildWddNodeMux(_termManager);
     return _termManager.makeBasicBlockIfThenElse(pNodeIf, pNodeThen, pNodeElse);
 }
 
@@ -525,12 +613,19 @@ std::vector<VRExprExpression> VRExprIt::getMuxExpressions() const {
     
 VRExprTermManager::WddNodeHandle VRExprIt::buildWddNode(VRExprTermManager & _termManager) const {
     VRExprTermManager::WddNodeHandle pNodeIf =
-        getExprIf().buildWddNode(_termManager);
+        getExprIf().buildWddNodeMux(_termManager);
     VRExprTermManager::WddNodeHandle pNodeThen =
         getExprThen().buildWddNode(_termManager);
     return _termManager.makeBasicBlockIfThen(pNodeIf, pNodeThen);
 }
 
+VRExprTermManager::WddNodeHandle VRExprIt::buildWddNodeMux(VRExprTermManager & _termManager) const {
+    VRExprTermManager::WddNodeHandle pNodeIf =
+        getExprIf().buildWddNodeMux(_termManager);
+    VRExprTermManager::WddNodeHandle pNodeThen =
+        getExprThen().buildWddNodeMux(_termManager);
+    return _termManager.makeBasicBlockIfThen(pNodeIf, pNodeThen);
+}
     
 VRExprIt::VRExprIt(VRExprExpression exprIf, VRExprExpression exprThen)
   { _pImpl = impl_shared_ptr_type(impl_type(exprIf, exprThen)); }
@@ -574,9 +669,17 @@ std::vector<VRExprExpression> VRExprIe::getMuxExpressions() const {
     
 VRExprTermManager::WddNodeHandle VRExprIe::buildWddNode(VRExprTermManager & _termManager) const {
     VRExprTermManager::WddNodeHandle pNodeIf =
-        getExprIf().buildWddNode(_termManager);
+        getExprIf().buildWddNodeMux(_termManager);
     VRExprTermManager::WddNodeHandle pNodeElse =
         getExprElse().buildWddNode(_termManager);
+    return _termManager.makeBasicBlockIfElse(pNodeIf, pNodeElse);
+}
+
+VRExprTermManager::WddNodeHandle VRExprIe::buildWddNodeMux(VRExprTermManager & _termManager) const {
+    VRExprTermManager::WddNodeHandle pNodeIf =
+        getExprIf().buildWddNodeMux(_termManager);
+    VRExprTermManager::WddNodeHandle pNodeElse =
+        getExprElse().buildWddNodeMux(_termManager);
     return _termManager.makeBasicBlockIfElse(pNodeIf, pNodeElse);
 }
 

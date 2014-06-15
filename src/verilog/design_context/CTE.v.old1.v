@@ -82,16 +82,16 @@ assign B_ext = 16'b1000 * Y_ext + 16'b10000 * U_ext;
 wire [7:0] R_out, G_out, B_out;
 
 assign R_out = R_ext[15] ? 8'b0 
-               : ( R_ext[14:11] != 4'b0 ? 8'd255 : ((R_ext[2]) ? ((R_ext[10:3] == 8'd255) ? 8'd255 : (R_ext[10:3] + 8'd1))
-                                                  : R_ext[10:3]));
+               : ( R_ext[14:11] != 4'b0 ? 8'd255 : (R_ext[2]) ? ((R_ext[10:3] == 8'd255) ? 8'd255 : (R_ext[10:3] + 8'd1))
+                                                  : R_ext[10:3]);
 
 assign G_out = G_ext[15] ? 8'b0 
-               : ( G_ext[14:11] != 4'b0 ? 8'd255 : ((G_ext[2]) ? ((G_ext[10:3] == 8'd255) ? 8'd255 : (G_ext[10:3] + 8'd1))
-                                                  : G_ext[10:3]));
+               : ( G_ext[14:11] != 4'b0 ? 8'd255 : (G_ext[2]) ? ((G_ext[10:3] == 8'd255) ? 8'd255 : (G_ext[10:3] + 8'd1))
+                                                  : G_ext[10:3]);
 
 assign B_out = B_ext[15] ? 8'b0 
-               : ( B_ext[14:11] != 4'b0 ? 8'd255 : ((B_ext[2]) ? ((B_ext[10:3] == 8'd255) ? 8'd255 : (B_ext[10:3] + 8'd1))
-                                                  : B_ext[10:3]));
+               : ( B_ext[14:11] != 4'b0 ? 8'd255 : (B_ext[2]) ? ((B_ext[10:3] == 8'd255) ? 8'd255 : (B_ext[10:3] + 8'd1))
+                                                  : B_ext[10:3]);
 
 assign rgb_out = {R_out, G_out, B_out};
 

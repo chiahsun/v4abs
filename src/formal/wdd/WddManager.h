@@ -246,10 +246,12 @@ public:
         return WddNode<term_handle_type>::makeWddNodeHandle(*this, pBddNode);
 //        return WddNodeHandle(WddNode<term_handle_type>(pBddNode));
     }
+
     WddNodeHandle makeNeq(WddNodeHandle pFst, WddNodeHandle pSnd) {
         BddNodeHandle pBddNode = _bddManager.makeXor(pFst->getBddNodeHandle(), pSnd->getBddNodeHandle());
         return WddNode<term_handle_type>::makeWddNodeHandle(*this, pBddNode);
     }
+
     WddNodeHandle makeOneNeg(WddNodeHandle pFst, WddNodeHandle pSnd) {
         BddNodeHandle pBddNode = _bddManager.makeOr(_bddManager.makeNeg(pFst->getBddNodeHandle()), _bddManager.makeNeg(pSnd->getBddNodeHandle()));
         return WddNode<term_handle_type>::makeWddNodeHandle(*this, pBddNode);

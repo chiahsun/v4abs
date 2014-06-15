@@ -25,6 +25,8 @@ public:
     WddNodeHandle makeOr(WddNodeHandle pFst, WddNodeHandle pSnd);
     WddNodeHandle makeImply(WddNodeHandle pFst, WddNodeHandle pSnd);
     WddNodeHandle makeNeg(WddNodeHandle pNode);
+    WddNodeHandle makeEq(WddNodeHandle pFst, WddNodeHandle pSnd);
+    WddNodeHandle makeNeq(WddNodeHandle pFst, WddNodeHandle pSnd);
 
     WddNodeHandle makeBasicBlockIfThen(WddNodeHandle pIf, WddNodeHandle pThen);
     WddNodeHandle makeBasicBlockIfElse(WddNodeHandle pIf, WddNodeHandle pElse);

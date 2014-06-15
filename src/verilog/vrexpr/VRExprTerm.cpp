@@ -28,6 +28,13 @@ VRExprTermManager::WddNodeHandle VRExprTermManager::makeImply(WddNodeHandle pFst
 
 VRExprTermManager::WddNodeHandle VRExprTermManager::makeNeg(WddNodeHandle pNode)
   { return _wddManager.makeNeg(pNode); }
+    
+VRExprTermManager::WddNodeHandle VRExprTermManager::makeEq(WddNodeHandle pFst, WddNodeHandle pSnd)
+  { return _wddManager.makeEq(pFst, pSnd); }
+
+VRExprTermManager::WddNodeHandle VRExprTermManager::makeNeq(WddNodeHandle pFst, WddNodeHandle pSnd)
+  { return _wddManager.makeNeq(pFst, pSnd); }
+
 
 VRExprTermManager::WddNodeHandle VRExprTermManager::makeBasicBlockIfThen(WddNodeHandle pIf, WddNodeHandle pThen)
   { return _wddManager.makeBasicBlockIfThen(pIf, pThen); }

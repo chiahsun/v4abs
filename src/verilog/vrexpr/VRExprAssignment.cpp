@@ -13,7 +13,7 @@ VRExprAssignment::VRExprAssignment(VRExprExpression lhs, VRExprExpression rhs)
     initStaticSensitivity();
     initTerminalExpressions();
     initMuxExpressions();
-    initTermManager();
+    buildWddNode();
 }
 
 VRExprExpression VRExprAssignment::getExprLhs() const
@@ -89,7 +89,12 @@ std::string VRExprAssignment::toString() const {
         s += mux.toString();
     }
     s += ")\n";
-    s = s + _exprLhs.toString() + " = " ;
+
+    s = s + "       => (rhs_wdd_format ";
+    s += _termManager.stringOfNode(_wddNode);
+    s += ")\n";
+
+    s = s + "       => " + _exprLhs.toString() + " = " ;
     s += _exprRhs.toString();
     return s;
 }
@@ -106,14 +111,16 @@ void VRExprAssignment::initMuxExpressions() {
     _vecMux = _exprRhs.getMuxExpressions();
 }
 
-void VRExprAssignment::initTermManager() {
+void VRExprAssignment::buildWddNode() {
+    // Init term manager terminals
     CONST_FOR_EACH(terminal, _hashTerminals) {
         _termManager.addExpr(terminal);
     }
 
     for (int i = static_cast<int>(_vecMux.size())-1; i >= 0; --i)
         _termManager.addExpr(_vecMux[i]);
-
-    WddNodeHandle pRhs = _exprRhs.buildWddNode(_termManager);
-    DEBUG_EXPR(_termManager.stringOfNode(pRhs));
+    
+    // Build the rhs wdd
+    _wddNode = _exprRhs.buildWddNode(_termManager);
 }
+

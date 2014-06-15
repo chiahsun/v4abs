@@ -13,7 +13,7 @@ s2:
         goto s3;
     }
     if (!reset)
-        goto S2;
+        goto s2;
     assert(0);
 s3:
     if (!reset && in_en) {
@@ -29,21 +29,13 @@ s4:
     assert(0);
     
 s5:
-    if (!reset && in_en) {
-        check(!busy);
-        goto s6;
-    }
-    assert(0);
-    
-s6:
-    if (!reset&& busy)
-        goto s6;
-    if (!reset&& !busy){
+    if (!busy) {
         check(out_valid);
         write(rgb_out);
         goto s7;
     }
-    assert(0);
+    goto s5;
+
     
 s7:
     if (!reset&& in_en){
@@ -53,28 +45,21 @@ s7:
     assert(0);
     
 s8:
-    if (!reset){
-        check(busy);
-        goto s9;
-    }
-    assert(0);
-    
-s9:
-    if (!reset && busy)
-        goto s9;
-    if (!reset&& !busy){
+    if (!busy){
         check(out_valid);
         write(rgb_out);
         goto s10;
     }
-    assert(0);
+    goto s8;
     
 s10:
-    if (!reset && en_in) {
+    if (!reset && in_en) {
         read(yuv_in);
         goto s3;
     }
-    if (!reset && !en_in )
+    if (reset)
+        goto s1;
+    if (in_en)
         goto s2;
     assert(0);
 

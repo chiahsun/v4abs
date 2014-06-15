@@ -5,15 +5,25 @@ ProtocolGraph::state_type Convert2Graph::convert(ProtocolGraph & graph, const PE
 }
 
 void Convert2Graph::convert(ProtocolGraph & graph, const PExprIfStatementWithGotoHandle & pIfStatementWithGoto, PExprBoolExpressionHandle & pConditional, std::vector<PExprAllUpdateStatementHandle>& vecAllUpdateStatement, ProtocolGraph::state_type stateFrom){
-#if 1
     PExprBoolExpressionHandle pBoolExpression;
     if(pConditional.valid()){
         pBoolExpression = PExprBoolExpression::makeBinaryAndHandle(pIfStatementWithGoto->getIfStatementPrefix()->getBoolExpressionHandle(), pConditional);
-        pConditional = PExprBoolExpression::makeBinaryAndHandle(pConditional, PExprBoolExpression::makeUnaryNotHandle(pIfStatementWithGoto->getIfStatementPrefix()->getBoolExpressionHandle()));
+
+        if(pIfStatementWithGoto->getIfStatementPrefix()->getBoolExpressionHandle()->getOp() == 4){
+            pConditional = PExprBoolExpression::makeBinaryAndHandle(pConditional, pIfStatementWithGoto->getIfStatementPrefix()->getBoolExpressionHandle()->getFst());
+        }
+        else{
+            pConditional = PExprBoolExpression::makeBinaryAndHandle(pConditional, PExprBoolExpression::makeUnaryNotHandle(pIfStatementWithGoto->getIfStatementPrefix()->getBoolExpressionHandle()));
+        }
     }
     else{
         pBoolExpression = pIfStatementWithGoto->getIfStatementPrefix()->getBoolExpressionHandle();
-        pConditional = PExprBoolExpression::makeUnaryNotHandle(pBoolExpression);
+        if(pBoolExpression->getOp() == 4){
+            pConditional = pBoolExpression->getFst();
+        }
+        else{
+            pConditional = PExprBoolExpression::makeUnaryNotHandle(pBoolExpression);
+        }
     }
 
     PExprUpdateStatementHandle pUpdateStatement;
@@ -35,7 +45,6 @@ void Convert2Graph::convert(ProtocolGraph & graph, const PExprIfStatementWithGot
         pUpdateStatement = PExprUpdateStatement::makeHandle(vecAllUpdateStatement);
 
     graph.addEdge(stateFrom, stateTo, std::make_pair(pBoolExpression, pUpdateStatement));
-#endif
 }
 
 void Convert2Graph::convert(ProtocolGraph & graph, const PExprEdgeStatementHandle & pEdgeStatement, PExprBoolExpressionHandle & pConditional, std::vector<PExprAllUpdateStatementHandle>& vecAllUpdateStatement, ProtocolGraph::state_type stateFrom){
@@ -77,20 +86,16 @@ void Convert2Graph::convert(ProtocolGraph & graph, const PExprEdgeStatementHandl
 }
 
 void Convert2Graph::convert(ProtocolGraph & graph, const PExprTransitionStatementHandle & pTransitionStatement, ProtocolGraph::state_type stateFrom){
-#if 1
     PExprBoolExpressionHandle pConditional;
     std::vector<PExprAllUpdateStatementHandle> vecAllUpdateStatement;
     FOR_EACH(p, pTransitionStatement->getEdgeContainer()){
         convert(graph, p, pConditional, vecAllUpdateStatement, stateFrom);
     }
-#endif
 }
 
 void Convert2Graph::convert(ProtocolGraph & graph, const PExprStateStatementHandle & pStateStatement){
-#if 1
     ProtocolGraph::state_type stateFrom = Convert2Graph::convert(graph, pStateStatement->getStateLabel());
     Convert2Graph::convert(graph, pStateStatement->getTrans(), stateFrom);
-#endif
 }
 
 void Convert2Graph::convert(ProtocolGraph & graph, const PExprSourceTextHandle & pSourceText){

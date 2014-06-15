@@ -1,0 +1,28 @@
+#!/bin/bash
+
+TOP=../../..
+
+ANTLR_JAR_PATH=$TOP/ext_libs
+ANTLR_JAR_FLAGS=$ANTLR_JAR_PATH/antlr-4.0-complete.jar
+
+CLASSPATH=.:$TOP/src/protocol/antlr_psyntax/SourceTextInit:$ANTLR_JAR_FLAGS:$CLASSPATH
+
+export CLASSPATH
+
+JAVA_PARSE_RULE_HOME=$TOP/src/protocol/past/parseSourceText
+JAVA_PARSE_RULE=javaParseSourceText.sh
+JAVA_EXE=$JAVA_PARSE_RULE_HOME/$JAVA_PARSE_RULE
+
+DESING_NAME=$1
+CPP_EXE=./readProtocol2Graph.out
+BASE_NAME=${DESING_NAME%.*}
+
+echo "Read protocol $DESING_NAME..."
+
+cmd1="$JAVA_EXE $DESING_NAME &> $DESING_NAME.ast"
+eval $cmd1
+echo "Run exe $CPP_EXE..."
+cmd2="$CPP_EXE $DESING_NAME.ast $BASE_NAME.protocol.dot"
+echo "Write dot file $BASE_NAME.protocol.dot ..."
+eval $cmd2
+

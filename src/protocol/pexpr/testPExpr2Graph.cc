@@ -85,12 +85,6 @@ void test_convert_source_text(){
     ProtocolGraph graph;
     Convert2Graph::convert(graph, pSourceText);
     graph.writeDotFile("MB.dot");
-    FOR_EACH(firstPr, graph.getConnectionMap(0)){
-        std::cout << firstPr.first << " " << firstPr.second << std::endl;
-    }
-    FOR_EACH(firstPr, graph.getConnectionMap(1)){
-        std::cout << firstPr.first << " " << firstPr.second << std::endl;
-    }
 
     UNIT_TEST_FUNCTION_END_FUNCTION_TEST();
 #endif

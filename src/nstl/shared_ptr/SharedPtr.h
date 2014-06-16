@@ -89,6 +89,11 @@ public:
         return !this->operator==(rhs);
     }
 
+    bool operator < (const handle_type & rhs) const {
+        return (!valid() && rhs.valid())
+            || (valid() && rhs.valid() && *(_pStorage)<*(rhs._pStorage));
+    }
+
     int hashFunction() const {
         return _pStorage->hashFunction();
     }

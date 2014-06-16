@@ -9,23 +9,24 @@
 #include <fstream>
 
 #include "nstl/for_each/ForEach.h"
-
+#include "nstl/shared_ptr/SharedPtr.h"
 
 template <const char* _ComponentSymbol, class _Value>
 class GraphComponent {
+public:
     typedef _Value value_type;
     typedef size_t id_type;
-
-    value_type _value;
+    value_type value;
+private:
     id_type _id;
 public:
-    GraphComponent() : _value(value_type()), _id(0) { } 
+    GraphComponent() : value(value_type()), _id(0) { } 
     GraphComponent(value_type val, id_type id)
-      : _value(val)
+      : value(val)
       , _id(id)
       { }
 
-    value_type getValue() const { return _value; }
+    const value_type & getValue() const { return value; }
 
     std::string getIdName() const { 
         std::stringstream ss;
@@ -33,9 +34,11 @@ public:
         return ss.str();
     }
 
-    bool operator == (const GraphComponent & rhs) {
-        return (_value == rhs._value);
-    }
+    bool operator == (const GraphComponent & rhs) const 
+      { return (value == rhs.value); }
+
+    bool operator < (const GraphComponent & rhs) const
+      { return (value < rhs.value); }
 
     id_type getId() const { return _id; }
 
@@ -57,83 +60,106 @@ extern char kEdgeName[];
 template <class _StateValue, class _EdgeValue>
 class Graph {
 public:
-    typedef size_t id_type;
-    typedef id_type state_id_type;
-    typedef id_type edge_id_type;
     typedef _StateValue state_value_type;
     typedef _EdgeValue edge_value_type;
 
     typedef GraphComponent<kStateName, state_value_type> state_type;
     typedef GraphComponent<kEdgeName, edge_value_type> edge_type;
 
-    typedef std::vector<state_type> state_container_type;
-    typedef std::vector<edge_type> edge_container_type;
+    typedef typename state_type::id_type state_id_type;
+    typedef typename edge_type::id_type edge_id_type;
 
-    typedef state_type* state_handle_type;
-    typedef edge_type* edge_handle_type;
-//    typedef typename state_container_type::iterator state_handle_type;
-//    typedef typename edge_container_type::iterator edge_handle_type;
+    typedef state_type & state_reference_type;
+    typedef const state_reference_type const_state_reference_type;
+    typedef edge_type & edge_reference_type;
+    typedef const edge_reference_type const_edge_reference_type;
+
+    typedef SharedPtr<state_type> state_handle_type;
+    typedef SharedPtr<edge_type> edge_handle_type;
+
+    typedef const SharedPtr<state_type> const_state_handle_type;
+    typedef const SharedPtr<edge_type> const_edge_handle_type;
+    
+    typedef std::vector<state_handle_type> state_handle_container_type;
+    typedef std::vector<edge_handle_type> edge_handle_container_type;
 
 private:
-    typedef std::map<state_value_type, state_id_type> state_id_map_type;
-    typedef std::map<edge_value_type, edge_id_type> edge_id_map_type;
+    typedef std::map<state_handle_type, state_id_type> state_id_map_type;
+    typedef std::map<edge_handle_type, edge_id_type> edge_id_map_type;
     typedef typename state_id_map_type::iterator state_id_map_iterator;
     typedef typename edge_id_map_type::iterator edge_id_map_iterator;
 
-    state_container_type _containerState;
-    edge_container_type _containerEdge;
+    state_handle_container_type _containerStateHandle;
+    edge_handle_container_type _containerEdge;
 
     state_id_map_type _mapStateId;
 
-    typedef std::map<state_id_type, std::map<state_id_type, edge_id_type> > connection_map_type;
+    typedef std::map<state_id_type, edge_id_type> connection_map_inner_map_type;
+    typedef std::map<state_id_type, connection_map_inner_map_type > connection_map_type;
 
     connection_map_type _mapConnect;
 public:
     Graph() { }
 
-    state_type addState(state_value_type stateValue) {
+    state_handle_type addState(state_value_type stateValue) {
         state_id_type id = 0;
         state_id_map_iterator it;
 
-        if ((it = _mapStateId.find(stateValue)) != _mapStateId.end()) {
+        id = _containerStateHandle.size();
+        state_handle_type pValue = state_handle_type(state_type(stateValue, id));
+        if ((it = _mapStateId.find(pValue)) != _mapStateId.end()) {
             id = it->second;
         } else {
-            id = _containerState.size();
-            state_type state(stateValue, id);
-            _containerState.push_back(state);
-            _mapStateId.insert(std::make_pair(stateValue, state.getId()));
+            state_handle_type pState = state_handle_type(state_type(stateValue, id));
+            _containerStateHandle.push_back(pState);
+            _mapStateId.insert(std::make_pair(pState, pState->getId()));
         }
 
-
-        return _containerState[id];
+        return _containerStateHandle[id];
     }
 
-    edge_type addEdge(state_type from, state_type to, edge_value_type edgeValue) {
+    edge_handle_type addEdge(state_handle_type pFrom, state_handle_type pTo, edge_value_type edgeValue) {
         edge_id_type id = _containerEdge.size();
 
         edge_type edge(edgeValue, id);
-        _containerEdge.push_back(edge);
-        if ( _mapConnect.find(from.getId()) != _mapConnect.end() 
-          && _mapConnect[from.getId()].find(to.getId()) != _mapConnect[from.getId()].end()) {
-            std::cerr << "*Warning: " << "already insert at " << from.getId() << " , " << to.getId() << std::endl;
+        edge_handle_type pEdge = edge_handle_type(edge);
+        _containerEdge.push_back(pEdge);
+        state_id_type fromStateId = pFrom->getId();
+        state_id_type toStateId = pTo->getId();
+        if ( _mapConnect.find(fromStateId) != _mapConnect.end() 
+          && _mapConnect[fromStateId].find(toStateId) != _mapConnect[fromStateId].end()) {
+            std::cerr << "*Warning: " << "already insert at " << fromStateId << " , " << toStateId << std::endl;
         }
-        _mapConnect[from.getId()][to.getId()] = id;
+        _mapConnect[fromStateId][toStateId] = id;
 
-        return edge;
+        return _containerEdge.back();
     }
 
-    state_container_type& getStateContainer() { return _containerState; }
-    edge_container_type& getEdgeContainer() { return _containerEdge; }
+    state_handle_container_type& getStateHandleContainer() { return _containerStateHandle; }
+    edge_handle_container_type& getEdgeHandleContainer() { return _containerEdge; }
+
     std::map<state_id_type, edge_id_type>& getConnectionMap(state_id_type FromId) {
         if(_mapConnect.find(FromId) != _mapConnect.end())
             return _mapConnect[FromId];
         else
             std::cerr << "*Warning: " << "no such connection in this graph." << std::endl;
     }
+
+    edge_handle_type getEdgeHandle(state_handle_type pFromState, state_handle_type pToState) {
+        state_id_type fromStateId = pFromState->getId();
+        state_id_type toStateId = pToState->getId();
+        return getEdgeHandle(fromStateId, toStateId);
+    }
+
+    edge_handle_type getEdgeHandle(state_id_type fromStateId, state_id_type toStateId) 
+      { return _containerEdge[getEdgeIdHelper(fromStateId, toStateId)]; }
+
+    const_edge_handle_type getEdgeHandle(state_id_type fromStateId, state_id_type toStateId) const 
+      { return _containerEdge[getEdgeIdHelper(fromStateId, toStateId)]; }
+
     
-    
-    const state_container_type& getStateContainer() const { return _containerState; }
-    const edge_container_type& getEdgeContainer() const { return _containerEdge; }
+    const state_handle_container_type& getStateHandleContainer() const { return _containerStateHandle; }
+    const edge_handle_container_type& getEdgeHandleContainer() const { return _containerEdge; }
 
     void writeDotFile(std::string outputDotFileName) const {
         std::ofstream fout(outputDotFileName.c_str());
@@ -155,32 +181,48 @@ public:
         ss << indent << "rankdir = TD;\n";
         ss << indent << "node [ shape = circle, color = lightblue, fontname = \"Helvetica\"];\n";
 
-        FOR_EACH(state, getStateContainer()) {
-            ss << indent << state.getIdName() << " [label=\""
-               << state.getValue() << "\"]\n";
+        FOR_EACH(pState, getStateHandleContainer()) {
+            ss << indent << pState->getIdName() << " [label=\""
+               << pState->getValue() << "\"]\n";
         }
 
         FOR_EACH(pair1, _mapConnect) {
             state_id_type fromId = pair1.first;
-            state_type fromState = _containerState[fromId];
+            state_handle_type pFromState = _containerStateHandle[fromId];
 
             FOR_EACH(pair2, pair1.second) {
                 state_id_type toId = pair2.first;
-                state_type toState = _containerState[toId];
+                state_handle_type pToState = _containerStateHandle[toId];
                 
                 edge_id_type edgeId = pair2.second;
-                edge_type edge = _containerEdge[edgeId];
+                edge_handle_type pEdge = _containerEdge[edgeId];
 
-                ss << indent << fromState.getIdName() << arrow << edge.getIdName() << ";\n";
-                ss << indent << edge.getIdName() << arrow << toState.getIdName() << ";\n";
-                ss << indent << edge.getIdName() << " [shape=record, color=red, height=.08, fontsize=11, label=\""
-                   << edge.getValue() << "\"]\n\n";
+                ss << indent << pFromState->getIdName() << arrow << pEdge->getIdName() << ";\n";
+                ss << indent << pEdge->getIdName() << arrow << pToState->getIdName() << ";\n";
+                ss << indent << pEdge->getIdName() << " [shape=record, color=red, height=.08, fontsize=11, label=\""
+                   << pEdge->getValue() << "\"]\n\n";
             }
         }
 
         ss << "\n}\n";
         return ss.str();
     }
+
+private:
+    edge_id_type getEdgeIdHelper(state_id_type fromStateId, state_id_type toStateId) {
+        typename connection_map_type::iterator it1;
+        if ((it1 = _mapConnect.find(fromStateId)) == _mapConnect.end())
+            std::cerr << "*Warning: no such connect - from_state_id : " << fromStateId << " to_state_id : " << toStateId << std::endl;
+        
+        typename connection_map_inner_map_type::iterator it2;
+        if ((it2 = it1->second.find(toStateId)) == it1->second.end()) 
+            std::cerr << "*Warning: no such connect in inner map - from_state_id : " << fromStateId << " to_state_id : " << toStateId << std::endl;
+
+        return it2->second;
+    }
+
+
+    
 };
 
 

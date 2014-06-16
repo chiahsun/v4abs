@@ -1,4 +1,4 @@
-generate_composite_with_name.py
+generate_composite_without_name.py
 rwc_or_without_goto
 pRWCOrWithoutGoto
 CAstRWCOrWithoutGoto

@@ -14,8 +14,8 @@ public:
     typedef std::pair<PExprBoolExpressionHandle, PExprUpdateStatementHandle> edge_value_type;
 
     typedef Graph<node_type, edge_value_type> graph_type;
-    typedef graph_type::state_type state_type;
-    typedef graph_type::edge_type edge_type;
+    typedef graph_type::state_handle_type state_type;
+    typedef graph_type::edge_handle_type edge_type;
     typedef graph_type::state_value_type state_value_type;
 
 private:
@@ -24,8 +24,8 @@ private:
 public:
     ProtocolGraph() { }
 
-    graph_type::state_container_type& getStateContainer();
-    graph_type::edge_container_type& getEdgeContainer();
+    graph_type::state_handle_container_type& getStateHandleContainer();
+    graph_type::edge_handle_container_type& getEdgeHandleContainer();
     std::map<graph_type::state_id_type, graph_type::edge_id_type>& getConnectionMap(graph_type::state_id_type FromId);
     state_type addState(state_value_type stateValue);
     edge_type addEdge(state_type stateFrom, state_type stateTo, edge_value_type edgeValue);

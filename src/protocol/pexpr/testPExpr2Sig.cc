@@ -220,26 +220,27 @@ void test_convert_end_statement(){
 }
 
 void test_convert_if_statement_without_goto(){
-    Signal sig("!", "y_valid");
-    Signal sig2("\"", "y");
-    Signal sig3("#", "Dout");
-    sig.addTimeValue(0, "1");
+    Signal sig("!", "a");
+    Signal sig2("\"", "b");
+    Signal sig3("#", "c");
+    sig.addTimeValue(0, "0");
     sig2.addTimeValue(0, "1");
-    sig3.addTimeValue(0, "1");
+    sig3.addTimeValue(0, "0");
     std::vector<Signal> _vec;
     std::map<std::string, std::string> _map;
     _vec.push_back(sig);
     _vec.push_back(sig2);
     _vec.push_back(sig3);
-    _map["y_valid"] = "!";
-    _map["y"] = "\"";
-    _map["Dout"] = "#";
+    _map["a"] = "!";
+    _map["b"] = "\"";
+    _map["c"] = "#";
 
     CAstIfStatementWithoutGotoParser parser;
-    CAstIfStatementWithoutGotoHandle pCAstIfStatementWithoutGoto = parser.parseString("(if_statement_without_goto (if_statement_prefix if ( (bool_expression (identifier y_valid)) )) (read_or_write_or_check_statement (write_statement write ( (identifier y) ) ;)))");
+    CAstIfStatementWithoutGotoHandle pCAstIfStatementWithoutGoto = parser.parseString("(if_statement_without_goto (if_statement_prefix if  ( (bool_expression (identifier a)) )) { (specific_update_statement (read_or_write_or_check_statement (write_statement write ( (identifier b) ) ;))) (specific_update_statement (read_or_write_or_check_statement (read_statement read ( (identifier c) ) ;))) (specific_update_statement (read_or_write_or_check_statement (check_statement check ( (bool_expression (identifier b)) ) ;))) (specific_update_statement (read_or_write_or_check_statement (check_statement check ( (bool_expression ! (bool_expression (identifier c))) ) ;))) })");
+    //CAstIfStatementWithoutGotoHandle pCAstIfStatementWithoutGoto = parser.parseString("(if_statement_without_goto (if_statement_prefix if ( (bool_expression (identifier y_valid)) )) { (read_or_write_or_check_statement (write_statement write ( (identifier y) ) ;)) })");
 
     PExprIfStatementWithoutGotoHandle pIfStatementWithoutGoto = ConvertCAst2PExpr::convert(pCAstIfStatementWithoutGoto);
-    assertEqual("(if_statement_without_goto (if_statement_prefix (bool_expression y_valid)) (read_or_write_or_check_statement (write_statement y)))", pIfStatementWithoutGoto->toString(), "test");
+    assertEqual("(if_statement_without_goto (if_statement_prefix (bool_expression a)) (read_or_write_or_check_statement (write_statement b)) (read_or_write_or_check_statement (read_statement c)) (read_or_write_or_check_statement (check_statement (bool_expression b))) (read_or_write_or_check_statement (check_statement (bool_expression ! (bool_expression c)))))", pIfStatementWithoutGoto->toString(), "test");
 
     SigExpressionHandle exp = ConvertGraphInfo::convert(pIfStatementWithoutGoto, _vec, _map);
     std::cout << exp->calculate() << std::endl;

@@ -34,7 +34,7 @@ void RunCheck(ProtocolGraph graph, std::vector<Signal> & _vec, std::map<std::str
         std::cout << "now value : " << sig.value() << std::endl;
         std::cout << "curState : " << curState << std::endl;
         FOR_EACH(firstPr, graph.getConnectionMap(curState)){
-            ProtocolGraph::graph_type::edge_type edge = graph.getEdgeContainer()[firstPr.second];
+            ProtocolGraph::graph_type::edge_type edge = *(graph.getEdgeHandleContainer())[firstPr.second];
             SigExpressionHandle SExp = ConvertGraphInfo::convert(edge.getValue().first, _vec, _map);
             if(SExp->calculate() == "1") {
                 nextState = firstPr.first;

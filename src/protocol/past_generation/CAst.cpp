@@ -157,27 +157,27 @@ std::string CAstBitLiteral::bit_literal() const
   { return _bit_literal; }
 std::string CAstBitLiteral::toString() const
   { return "(bit_literal " + bit_literal() + ")";}
-CAstMultuWithoutGoto::CAstMultuWithoutGoto() { }
-void CAstMultuWithoutGoto::push_back(CAstIfStatementPrefixHandle pIfStatementPrefix0, CAstZeroOrMoreRWCOrWithoutGotoHandle pZeroOrMoreRWCOrWithoutGoto1) {
-    _vecElements.push_back(ElementType(pIfStatementPrefix0, pZeroOrMoreRWCOrWithoutGoto1));
+CAstMultiWithoutGoto::CAstMultiWithoutGoto() { }
+void CAstMultiWithoutGoto::push_back(CAstIfStatementPrefixHandle pIfStatementPrefix0, CAstZeroOrMoreSpecificHandle pZeroOrMoreSpecific1) {
+    _vecElements.push_back(ElementType(pIfStatementPrefix0, pZeroOrMoreSpecific1));
 }
-std::vector<CAstMultuWithoutGoto::ElementType>& CAstMultuWithoutGoto::container() {
+std::vector<CAstMultiWithoutGoto::ElementType>& CAstMultiWithoutGoto::container() {
     return _vecElements;
 }
-const std::vector<CAstMultuWithoutGoto::ElementType>& CAstMultuWithoutGoto::container() const {
+const std::vector<CAstMultiWithoutGoto::ElementType>& CAstMultiWithoutGoto::container() const {
     return _vecElements;
 }
-CAstMultuWithoutGoto::ElementType CAstMultuWithoutGoto::element(unsigned int pos) const {
+CAstMultiWithoutGoto::ElementType CAstMultiWithoutGoto::element(unsigned int pos) const {
     assert(pos < element_size());
     return _vecElements[pos];
 }
-unsigned int CAstMultuWithoutGoto::element_size() const
+unsigned int CAstMultiWithoutGoto::element_size() const
   { return _vecElements.size(); }
-std::string CAstMultuWithoutGoto::toString() const {
+std::string CAstMultiWithoutGoto::toString() const {
     std::string s = "(multi_without_goto";
     for (unsigned int i = 0; i < element_size(); ++i) {
         s = s + " " + _vecElements[i]._pIfStatementPrefix0->toString();
-        s = s + " " + _vecElements[i]._pZeroOrMoreRWCOrWithoutGoto1->toString();
+        s = s + " " + _vecElements[i]._pZeroOrMoreSpecific1->toString();
     }
         s += ")";    return s;
 }
@@ -637,14 +637,14 @@ CAstIfStatementWithoutGoto::CAstIfStatementWithoutGoto(CAstOnlyRWCWithoutGotoHan
 CAstIfStatementWithoutGoto::CAstIfStatementWithoutGoto(CAstOnlyWithoutGotoWithoutGotoHandle pOnlyWithoutGotoWithoutGoto)
   : _pOnlyWithoutGotoWithoutGoto(pOnlyWithoutGotoWithoutGoto)
   { }
-CAstIfStatementWithoutGoto::CAstIfStatementWithoutGoto(CAstMultuWithoutGotoHandle pMultiWithoutGoto)
+CAstIfStatementWithoutGoto::CAstIfStatementWithoutGoto(CAstMultiWithoutGotoHandle pMultiWithoutGoto)
   : _pMultiWithoutGoto(pMultiWithoutGoto)
   { }
 CAstOnlyRWCWithoutGotoHandle CAstIfStatementWithoutGoto::only_rwc_without_goto() const
   { return _pOnlyRWCWithoutGoto; }
 CAstOnlyWithoutGotoWithoutGotoHandle CAstIfStatementWithoutGoto::only_without_goto_without_goto() const
   { return _pOnlyWithoutGotoWithoutGoto; }
-CAstMultuWithoutGotoHandle CAstIfStatementWithoutGoto::multi_without_goto() const
+CAstMultiWithoutGotoHandle CAstIfStatementWithoutGoto::multi_without_goto() const
   { return _pMultiWithoutGoto; }
 std::string CAstIfStatementWithoutGoto::toString() const {
     std::string s = "(if_statement_without_goto";

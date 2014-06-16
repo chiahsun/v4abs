@@ -154,13 +154,13 @@ public:
       { return "bit_literal"; }
 };
 
-class CAstMultuWithoutGotoParser : public CAstParserBase<CAstMultuWithoutGotoHandle> {
+class CAstMultiWithoutGotoParser : public CAstParserBase<CAstMultiWithoutGotoHandle> {
 public:
-    CAstMultuWithoutGotoParser() { }
-    CAstMultuWithoutGotoParser(TokenStructureHandle pTokenStructure, TokenHandle pToken)
+    CAstMultiWithoutGotoParser() { }
+    CAstMultiWithoutGotoParser(TokenStructureHandle pTokenStructure, TokenHandle pToken)
       { initFromToken(pTokenStructure, pToken); }
 
-    bool parse(CAstMultuWithoutGotoHandle &  pMultiWithoutGoto);
+    bool parsePos(CAstMultiWithoutGotoHandle &  pMultiWithoutGoto, unsigned int & pos);
     std::string getTokenName() const
       { return "multi_without_goto"; }
 };
@@ -259,7 +259,7 @@ public:
     CAstRWCOrWithoutGotoParser(TokenStructureHandle pTokenStructure, TokenHandle pToken)
       { initFromToken(pTokenStructure, pToken); }
 
-    bool parse(CAstRWCOrWithoutGotoHandle &  pRWCOrWithoutGoto);
+    bool parsePos(CAstRWCOrWithoutGotoHandle &  pRWCOrWithoutGoto, unsigned int & pos);
     std::string getTokenName() const
       { return "rwc_or_without_goto"; }
 };

@@ -32,8 +32,8 @@ class CAstBoolNot;
 typedef SharedPtr<CAstBoolNot> CAstBoolNotHandle;
 class CAstBitLiteral;
 typedef SharedPtr<CAstBitLiteral> CAstBitLiteralHandle;
-class CAstMultuWithoutGoto;
-typedef SharedPtr<CAstMultuWithoutGoto> CAstMultuWithoutGotoHandle;
+class CAstMultiWithoutGoto;
+typedef SharedPtr<CAstMultiWithoutGoto> CAstMultiWithoutGotoHandle;
 class CAstIdentifier;
 typedef SharedPtr<CAstIdentifier> CAstIdentifierHandle;
 class CAstIfStatementPrefix;
@@ -246,20 +246,20 @@ public:
     std::string toString() const;
 };
 
-class CAstMultuWithoutGoto
+class CAstMultiWithoutGoto
   : public CAst {
     struct ElementType {
         CAstIfStatementPrefixHandle _pIfStatementPrefix0;
-        CAstZeroOrMoreRWCOrWithoutGotoHandle _pZeroOrMoreRWCOrWithoutGoto1;
-        ElementType(CAstIfStatementPrefixHandle pIfStatementPrefix0, CAstZeroOrMoreRWCOrWithoutGotoHandle pZeroOrMoreRWCOrWithoutGoto1) {
+        CAstZeroOrMoreSpecificHandle _pZeroOrMoreSpecific1;
+        ElementType(CAstIfStatementPrefixHandle pIfStatementPrefix0, CAstZeroOrMoreSpecificHandle pZeroOrMoreSpecific1) {
             _pIfStatementPrefix0 = pIfStatementPrefix0;
-            _pZeroOrMoreRWCOrWithoutGoto1 = pZeroOrMoreRWCOrWithoutGoto1;
+            _pZeroOrMoreSpecific1 = pZeroOrMoreSpecific1;
         }
     };
     std::vector<ElementType> _vecElements;
 public:
-    CAstMultuWithoutGoto();
-    void push_back(CAstIfStatementPrefixHandle pIfStatementPrefix0, CAstZeroOrMoreRWCOrWithoutGotoHandle pZeroOrMoreRWCOrWithoutGoto1);
+    CAstMultiWithoutGoto();
+    void push_back(CAstIfStatementPrefixHandle pIfStatementPrefix0, CAstZeroOrMoreSpecificHandle pZeroOrMoreSpecific1);
     std::vector<ElementType>& container();
     const std::vector<ElementType>& container() const;
     ElementType element(unsigned int pos) const;
@@ -600,12 +600,12 @@ public:
     CAstOnlyWithoutGotoWithoutGotoHandle _pOnlyWithoutGotoWithoutGoto;
 public:
     CAstIfStatementWithoutGoto(CAstOnlyWithoutGotoWithoutGotoHandle pOnlyWithoutGotoWithoutGoto);
-    CAstMultuWithoutGotoHandle _pMultiWithoutGoto;
+    CAstMultiWithoutGotoHandle _pMultiWithoutGoto;
 public:
-    CAstIfStatementWithoutGoto(CAstMultuWithoutGotoHandle pMultiWithoutGoto);
+    CAstIfStatementWithoutGoto(CAstMultiWithoutGotoHandle pMultiWithoutGoto);
     CAstOnlyRWCWithoutGotoHandle only_rwc_without_goto() const;
     CAstOnlyWithoutGotoWithoutGotoHandle only_without_goto_without_goto() const;
-    CAstMultuWithoutGotoHandle multi_without_goto() const;
+    CAstMultiWithoutGotoHandle multi_without_goto() const;
     std::string toString() const;
 };
 class CAstSourceText : public CAst {

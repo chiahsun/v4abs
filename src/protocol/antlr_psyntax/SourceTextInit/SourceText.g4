@@ -68,7 +68,8 @@ if_statement_with_goto :
 if_statement_without_goto :
     if_statement_prefix read_or_write_or_check_statement // only one statement
   | if_statement_prefix if_statement_without_goto // only one statement
-  | if_statement_prefix Punc_Braces_Left (read_or_write_or_check_statement|if_statement_without_goto)* Punc_Braces_Right
+  //| if_statement_prefix Punc_Braces_Left (read_or_write_or_check_statement|if_statement_without_goto)* Punc_Braces_Right
+  | if_statement_prefix Punc_Braces_Left specific_update_statement* Punc_Braces_Right
   ;
 
 if_statement_prefix :

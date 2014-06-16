@@ -192,14 +192,15 @@ bool CAstBitLiteralParser::parse(CAstBitLiteralHandle & pBitLiteral) {
         return true;
     }
     return false;
-}bool CAstMultuWithoutGotoParser::parse(
-    CAstMultuWithoutGotoHandle & pMultiWithoutGoto)
+}bool CAstMultiWithoutGotoParser::parsePos(
+    CAstMultiWithoutGotoHandle & pMultiWithoutGoto
+  , unsigned int & pos)
 {
-    unsigned int pos = 0, old_pos = 0;
-    pMultiWithoutGoto = CAstMultuWithoutGotoHandle(CAstMultuWithoutGoto());
+    unsigned int old_pos = pos;
+    pMultiWithoutGoto = CAstMultiWithoutGotoHandle(CAstMultiWithoutGoto());
 
     CAstIfStatementPrefixHandle pIfStatementPrefix0;
-    CAstZeroOrMoreRWCOrWithoutGotoHandle pZeroOrMoreRWCOrWithoutGoto1 = CAstZeroOrMoreRWCOrWithoutGotoHandle(CAstZeroOrMoreRWCOrWithoutGoto())
+    CAstZeroOrMoreSpecificHandle pZeroOrMoreSpecific1 = CAstZeroOrMoreSpecificHandle(CAstZeroOrMoreSpecific())
 ;
     if (getTokenChildSize() > pos && CAstIfStatementPrefixParser(getTokenStructure(), getTokenChild(pos)).parse(pIfStatementPrefix0)) {
         ++pos;
@@ -215,7 +216,7 @@ bool CAstBitLiteralParser::parse(CAstBitLiteralHandle & pBitLiteral) {
         return false;
     }
 
-    if (CAstZeroOrMoreRWCOrWithoutGotoParser(getTokenStructure(), getToken()).parsePos(pZeroOrMoreRWCOrWithoutGoto1, pos)) {
+    if (CAstZeroOrMoreSpecificParser(getTokenStructure(), getToken()).parsePos(pZeroOrMoreSpecific1, pos)) {
         /* do nothing */
     } else {
         pos = old_pos;
@@ -229,7 +230,7 @@ bool CAstBitLiteralParser::parse(CAstBitLiteralHandle & pBitLiteral) {
         return false;
     }
 
-    pMultiWithoutGoto->push_back(pIfStatementPrefix0, pZeroOrMoreRWCOrWithoutGoto1);
+    pMultiWithoutGoto->push_back(pIfStatementPrefix0, pZeroOrMoreSpecific1);
     return true;
 }
 bool CAstIdentifierParser::parse(CAstIdentifierHandle & pIdentifier) {
@@ -420,22 +421,22 @@ bool CAstKeywordTrueParser::parsePos(
     pKeywordTrue->push_back();
     return true;
 }
-bool CAstRWCOrWithoutGotoParser::parse(CAstRWCOrWithoutGotoHandle & pRWCOrWithoutGoto) {
-    if (getTokenName() != getToken()->name())
-        return false;
+bool CAstRWCOrWithoutGotoParser::parsePos(
+    CAstRWCOrWithoutGotoHandle & pRWCOrWithoutGoto
+  , unsigned int & pos)
+ {
 
-    unsigned int pos = 0, old_pos = 0;
+    unsigned int old_pos = pos;
+
     CAstReadOrWriteOrCheckStatementHandle pReadOrWriteOrCheckStatement0;
     if (getTokenChildSize() > pos && CAstReadOrWriteOrCheckStatementParser(getTokenStructure(), getTokenChild(pos)).parse(pReadOrWriteOrCheckStatement0)) {
         ++pos;
     } else {
         pos = old_pos;
     }
-    if (pos == getTokenChildSize()) {
+    if (pos != old_pos) {
         pRWCOrWithoutGoto = CAstRWCOrWithoutGotoHandle(CAstRWCOrWithoutGoto(pReadOrWriteOrCheckStatement0));
         return true;
-    } else {
-        pos = old_pos;
     }
     CAstIfStatementWithoutGotoHandle pIfStatementWithoutGoto0;
     if (getTokenChildSize() > pos && CAstIfStatementWithoutGotoParser(getTokenStructure(), getTokenChild(pos)).parse(pIfStatementWithoutGoto0)) {
@@ -443,14 +444,12 @@ bool CAstRWCOrWithoutGotoParser::parse(CAstRWCOrWithoutGotoHandle & pRWCOrWithou
     } else {
         pos = old_pos;
     }
-    if (pos == getTokenChildSize()) {
+    if (pos != old_pos) {
         pRWCOrWithoutGoto = CAstRWCOrWithoutGotoHandle(CAstRWCOrWithoutGoto(pIfStatementWithoutGoto0));
         return true;
-    } else {
-        pos = old_pos;
     }
     reportChild();
-    throw InvalidFormatException("No valid option in composite");
+    throw InvalidFormatException("Not valid option in composite rule without name");
 }
 
 bool CAstBoolExpressionParser::parse(CAstBoolExpressionHandle & pBoolExpression) {
@@ -791,8 +790,8 @@ bool CAstZeroOrMoreRWCOrWithoutGotoParser::parsePos(
 
     while(true) {
         unsigned int old_pos = pos;
-    if (getTokenChildSize() > pos && CAstRWCOrWithoutGotoParser(getTokenStructure(), getTokenChild(pos)).parse(pRWCOrWithoutGoto0)) {
-        ++pos;
+    if (getTokenChildSize() > pos && CAstRWCOrWithoutGotoParser(getTokenStructure(), getToken()).parsePos(pRWCOrWithoutGoto0, pos)) {
+        /* do nothing */
     } else {
         pos = old_pos;
         break;
@@ -885,9 +884,9 @@ bool CAstIfStatementWithoutGotoParser::parse(CAstIfStatementWithoutGotoHandle & 
     } else {
         pos = old_pos;
     }
-    CAstMultuWithoutGotoHandle pMultiWithoutGoto0;
-    if (getTokenChildSize() > pos && CAstMultuWithoutGotoParser(getTokenStructure(), getTokenChild(pos)).parse(pMultiWithoutGoto0)) {
-        ++pos;
+    CAstMultiWithoutGotoHandle pMultiWithoutGoto0;
+    if (getTokenChildSize() > pos && CAstMultiWithoutGotoParser(getTokenStructure(), getToken()).parsePos(pMultiWithoutGoto0, pos)) {
+        /* do nothing */
     } else {
         pos = old_pos;
     }

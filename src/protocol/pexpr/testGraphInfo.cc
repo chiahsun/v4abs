@@ -15,7 +15,7 @@ void test_convert_source_text(){
     graph.writeDotFile("MB.dot");
     FOR_EACH(firstPr, graph.getConnectionMap(0)){
         std::cout << "From State0 to State" << firstPr.first << " edge:" << firstPr.second << std::endl;
-        ProtocolGraph::graph_type::edge_type edge = graph.getEdgeContainer()[firstPr.second];
+        ProtocolGraph::graph_type::edge_type edge = *(graph.getEdgeHandleContainer())[firstPr.second];
         std::cout << "value: " << edge.getValue() << std::endl;
         std::cout << edge.getValue().first->toString() << std::endl;
     }

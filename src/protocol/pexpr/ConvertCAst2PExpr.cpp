@@ -136,6 +136,17 @@ PExprIfStatementWithoutGotoHandle ConvertCAst2PExpr::convert(const CAstIfStateme
     else if(pIfStatementWithoutGoto->multi_without_goto().valid()){
         pIfStatementPrefix = ConvertCAst2PExpr::convert(pIfStatementWithoutGoto->multi_without_goto()
                                                                           ->container()[0]._pIfStatementPrefix0);
+        FOR_EACH(p, pIfStatementWithoutGoto->multi_without_goto()->container()[0]._pZeroOrMoreSpecific1->container()){
+            if(p._pSpecificUpdateStatement->read_or_write_or_check_statement().valid()){
+                vecRWC.push_back(ConvertCAst2PExpr::convert(p._pSpecificUpdateStatement->read_or_write_or_check_statement()));
+            }
+            else if(p._pSpecificUpdateStatement->if_statement_without_goto().valid()){
+                vecWithoutGoto.push_back(ConvertCAst2PExpr::convert(p._pSpecificUpdateStatement->if_statement_without_goto()));
+            }
+            else
+                assert(0);
+        }
+#if 0
         CAstZeroOrMoreRWCOrWithoutGotoHandle pCAst = pIfStatementWithoutGoto->multi_without_goto()->container()[0]._pZeroOrMoreRWCOrWithoutGoto1;
         FOR_EACH(p, pCAst->container()){
             if(p._pRWCOrWithoutGoto->read_or_write_or_check_statement().valid()){
@@ -147,6 +158,7 @@ PExprIfStatementWithoutGotoHandle ConvertCAst2PExpr::convert(const CAstIfStateme
             else 
                 assert(0);
         }
+#endif
     }
     else
         assert(0);

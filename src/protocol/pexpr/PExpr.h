@@ -3,9 +3,8 @@
 
 #include <vector>
 
-#include "nstl/shared_ptr/SharedPtr.h"
-#include "exception/Exception.h"
 #include "PExprType.h"
+#include "exception/Exception.h"
 #include "nstl/for_each/ForEach.h"
 
 class PExpr {

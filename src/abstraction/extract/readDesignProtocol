@@ -1,0 +1,38 @@
+#!/bin/bash
+
+TOP=../../..
+
+ANTLR_JAR_PATH=$TOP/ext_libs
+ANTLR_JAR_FLAGS=$ANTLR_JAR_PATH/antlr-4.0-complete.jar
+
+CLASSPATH_ORI=$CLASSPATH
+CLASSPATH=.:$TOP/src/verilog/antlr_vsyntax/SourceTextInit:$ANTLR_JAR_FLAGS:$CLASSPATH
+echo $CLASSPATH
+export CLASSPATH
+
+VERILOG_RULE_HOME=$TOP/src/verilog/vast/parseSourceText
+VERILOG_RULE=javaParseSourceText.sh
+VERILOG_RUN=$VERILOG_RULE_HOME/$VERILOG_RULE
+VERILOG_NAME=$1
+cmd1="$VERILOG_RUN $VERILOG_NAME &> $VERILOG_NAME.ast"
+echo $cmd1
+eval $cmd1
+
+CLASSPATH=.:$TOP/src/protocol/antlr_psyntax/SourceTextInit:$ANTLR_JAR_FLAGS:$CLASSPATH_ORI
+echo $CLASSPATH
+export CLASSPATH
+
+
+PROTOCOL_RULE_HOME=$TOP/src/protocol/past/parseSourceText
+PROTOCOL_RULE=javaParseSourceText.sh
+PROTOCOL_RUN=$PROTOCOL_RULE_HOME/$PROTOCOL_RULE
+PROTOCOL_NAME=$2
+cmd2="$PROTOCOL_RUN $PROTOCOL_NAME &> $PROTOCOL_NAME.ast"
+echo $cmd2
+eval $cmd2
+
+CPP_RUN=./readDesignProtocol.out
+
+cmd3="$CPP_RUN $VERILOG_NAME.ast $PROTOCOL_NAME.ast $3"
+echo $cmd3
+eval $cmd3

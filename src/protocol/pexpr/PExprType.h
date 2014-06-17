@@ -1,6 +1,8 @@
 #ifndef PEXPR_TYPE_H
 #define PEXPR_TYPE_H
 
+#include "nstl/shared_ptr/SharedPtr.h"
+
 class PExpr;
 typedef SharedPtr<PExpr> PExprHandle;
 

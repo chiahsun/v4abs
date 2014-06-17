@@ -1,4 +1,6 @@
 #include "ConvertCAst2PExpr.h"
+#include "PExpr.h"
+
 PExprConstantHandle ConvertCAst2PExpr::convert(const CAstConstantHandle & pConstant){
     std::string constant;
     if( pConstant->integer_literal().valid() ){

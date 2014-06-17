@@ -1,5 +1,5 @@
-#ifndef PEXPR_H
-#define PEXPR_H
+#ifndef VEXPR_H
+#define VEXPR_H
 
 #include "VExprTypes.h"
 #include "VExprBool.h"
@@ -49,4 +49,4 @@
 #include "VExprModuleItem.h"
 #include "VExprFlatModule.h"
 
-#endif // PEXPR_H
+#endif // VEXPR_H

@@ -1,8 +1,6 @@
 #ifndef CONVERT_AST_TO_VEXPR_H
 #define CONVERT_AST_TO_VEXPR_H 
 
-#define DEBUG_EXPR(expr) do { std::cerr << "*Debug: " << #expr << " : " << (expr) << " @ " << __FILE__ << ":" << __LINE__ <<std::endl; } while(0)
-
 #include "nstl/for_each/ForEach.h"
 #include "verilog/vast/Ast.h"
 #include "verilog/vexpr/VExpr.h"

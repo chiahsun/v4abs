@@ -1,8 +1,6 @@
 #ifndef CONVERT_CAST_TO_PEXPR_H
 #define CONVERT_CAST_TO_PEXPR_H
 
-#define DEBUG_EXPR(expr) do { std::cerr << "*Debug: " << #expr << " : " << (expr) << " @ " << __FILE__ << ":" << __LINE__ <<std::endl; } while(0)
-
 #include "PExpr.h"
 #include "nstl/for_each/ForEach.h"
 #include "protocol/past/CAst.h"

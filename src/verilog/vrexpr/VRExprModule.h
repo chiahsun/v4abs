@@ -14,6 +14,10 @@ public:
 
     VRExprIdentifier getModuleName() const;
 
+    const std::vector<VRExprIdentifier>& getPortIdentifierContainer() const;
+    const std::vector<VRExprAssignment>& getAssignmentContainer() const;
+    const std::vector<VRExprAssignment>& getInitialContainer() const;
+
     void addIdentifier(VRExprIdentifier identifier);
     void addAssignment(VRExprAssignment assignment);
     void addAssignment(std::vector<VRExprAssignment> vecAssign);

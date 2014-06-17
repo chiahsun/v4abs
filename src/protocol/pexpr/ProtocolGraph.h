@@ -45,7 +45,8 @@ public:
     std::map<graph_type::state_id_type, graph_type::edge_id_type>& getConnectionMap(graph_type::state_id_type FromId);
     state_type addState(state_value_type stateValue);
     edge_type addEdge(state_type stateFrom, state_type stateTo, edge_value_type edgeValue);
-    
+   
+    std::string toString() const;
     void writeDotFile(const std::string & dotOutputFilename);
 };
    

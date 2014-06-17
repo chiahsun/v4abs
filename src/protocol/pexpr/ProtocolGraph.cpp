@@ -31,6 +31,10 @@ ProtocolGraph::edge_type ProtocolGraph::addEdge(state_type stateFrom, state_type
     return _graph.addEdge(stateFrom, stateTo, edgeValue);
 }
     
+std::string ProtocolGraph::toString() const {
+    return  _graph.toString();
+}
+    
 void ProtocolGraph::writeDotFile(const std::string & dotOutputFilename) {
     _graph.writeDotFile(dotOutputFilename);
 }

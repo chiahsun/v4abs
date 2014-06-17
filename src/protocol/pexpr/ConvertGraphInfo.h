@@ -1,7 +1,6 @@
 #ifndef CONVERT_GRAPH_INFO_H
 #define CONVERT_GRAPH_INFO_H
 
-#define DEBUG_EXPR(expr) do { std::cerr << "*Debug: " << #expr << " : " << (expr) << " @ " << __FILE__ << ":" << __LINE__ <<std::endl; } while(0)
 
 #include "nstl/for_each/ForEach.h"
 #include "protocol/past/CAst.h"

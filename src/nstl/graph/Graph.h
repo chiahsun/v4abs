@@ -202,6 +202,7 @@ public:
             return _mapConnect[FromId];
         else
             std::cerr << "*Warning: " << "no such connection in this graph." << std::endl;
+        assert(0);
     }
 
     edge_handle_type getEdgeHandle(state_handle_type pFromState, state_handle_type pToState) {

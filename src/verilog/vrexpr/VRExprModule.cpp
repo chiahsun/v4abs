@@ -7,6 +7,15 @@ VRExprModule::VRExprModule(VRExprIdentifier modName)
 
 VRExprIdentifier VRExprModule::getModuleName() const
   { return _modName; }
+
+const std::vector<VRExprIdentifier>& VRExprModule::getPortIdentifierContainer() const
+  { return _vecIdentifier; }
+
+const std::vector<VRExprAssignment>& VRExprModule::getAssignmentContainer() const
+  { return _vecAssignment; }
+
+const std::vector<VRExprAssignment>& VRExprModule::getInitialContainer() const
+  { return _vecInitial; }
   
 void VRExprModule::addIdentifier(VRExprIdentifier identifier)
   { _vecIdentifier.push_back(identifier); }

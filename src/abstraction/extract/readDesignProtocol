@@ -31,7 +31,8 @@ cmd2="$PROTOCOL_RUN $PROTOCOL_NAME &> $PROTOCOL_NAME.ast"
 echo $cmd2
 eval $cmd2
 
-CPP_RUN=./readDesignProtocol.out
+CPP_RUN=./extractDesign.out
+#CPP_RUN=./readDesignProtocol.out
 
 cmd3="$CPP_RUN $VERILOG_NAME.ast $PROTOCOL_NAME.ast $3"
 echo $cmd3

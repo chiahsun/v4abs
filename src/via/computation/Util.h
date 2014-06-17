@@ -3,7 +3,8 @@
 
 #include <sstream>
 #include <cstring>
-#include <math.h>
+#include <cmath>
+#include <cstdlib>
 
 float str2float(std::string s);
 int str2int(std::string s);

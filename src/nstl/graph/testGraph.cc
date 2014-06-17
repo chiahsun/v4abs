@@ -26,6 +26,9 @@ void test_graph() {
     assertEqual(20, pEdge1->getValue(), "Test get value");
     assertEqual(0, pEdge1->getId(), "Test get id");
 
+    assertEqual("[(state State0) : hello]\n"
+                "[(state State1) : world]\n"
+                "[(edge : Edge0) (State0 -> State1) : 20]\n", graph.toString(), "Test to string");
     graph.writeDotFile("graph_test.dot");
     UNIT_TEST_FUNCTION_END_FUNCTION_TEST();
 }

@@ -72,7 +72,7 @@ std::string VRExprAssignment::toString() const {
         begin = true;
     }
     s += ")\n";
-    s = s + "       => (rhs_terminals ";
+    s = s + "       + (rhs_terminals ";
     unsigned int pos = 0;
     CONST_FOR_EACH(terminal, _hashTerminals) {
         if (pos++ != 0)
@@ -81,7 +81,7 @@ std::string VRExprAssignment::toString() const {
     }
     s += ")\n";
     
-    s = s + "       => (mux_terminals ";
+    s = s + "       + (mux_terminals ";
     pos = 0;
     CONST_FOR_EACH(mux, _vecMux) {
         if (pos++ != 0)
@@ -90,11 +90,11 @@ std::string VRExprAssignment::toString() const {
     }
     s += ")\n";
 
-    s = s + "       => (rhs_wdd_format ";
+    s = s + "       + (rhs_wdd_format ";
     s += _termManager.stringOfNode(_wddNode);
     s += ")\n";
 
-    s = s + "       => " + _exprLhs.toString() + " = " ;
+    s = s + "       - " + _exprLhs.toString() + " = " ;
     s += _exprRhs.toString();
     return s;
 }
@@ -124,3 +124,6 @@ void VRExprAssignment::buildWddNode() {
     _wddNode = _exprRhs.buildWddNode(_termManager);
 }
 
+VRExprAssignment makeAssignment(VRExprExpression lhs, VRExprExpression rhs) {
+    return VRExprAssignment(lhs, rhs);
+}

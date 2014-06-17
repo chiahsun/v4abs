@@ -11,6 +11,60 @@
 #include "nstl/for_each/ForEach.h"
 #include "nstl/shared_ptr/SharedPtr.h"
 
+template <class T>
+struct GraphComponentToString {
+    static std::string toString(const T & value) {
+        return value.toString(); 
+    }
+    static std::string toDotString(const T & value) {
+        return value.toDotString();
+    }
+
+};
+
+// TODO: move the template specialization function to cpp
+template <> struct GraphComponentToString<int> {
+//    static std::string toString(const int & value);
+#if 1
+    static std::string toString(const int & value) {
+    std::stringstream ss;
+    ss << value;
+    return ss.str();
+    }
+#endif
+    static std::string toDotString(const int & value) {
+    std::stringstream ss;
+    ss << value;
+    return ss.str();
+    }
+};
+
+template <> struct GraphComponentToString<std::string> {
+    static std::string toString(const std::string & value) {
+    return value;
+    }
+    static std::string toDotString(const std::string & value) {
+    return value;
+    }
+};
+#if 0
+// TODO: try to remove redundant declaration warning
+template <>
+std::string GraphComponentToString<int>::toDotString(const int & x); 
+
+template <>
+std::string GraphComponentToString<std::string>::toDotString(const std::string & x); 
+
+
+
+
+template <>
+std::string GraphComponentToString<int>::toString(const int & x); 
+template <>
+std::string GraphComponentToString<std::string>::toString(const std::string & x); 
+
+#endif
+
 template <const char* _ComponentSymbol, class _Value>
 class GraphComponent {
 public:
@@ -118,14 +172,12 @@ public:
         return _containerStateHandle[id];
     }
 
-    edge_handle_type addEdge(state_handle_type pFrom, state_handle_type pTo, edge_value_type edgeValue) {
+    edge_handle_type addEdge(state_id_type fromStateId, state_id_type toStateId, edge_value_type edgeValue) {
         edge_id_type id = _containerEdge.size();
 
         edge_type edge(edgeValue, id);
         edge_handle_type pEdge = edge_handle_type(edge);
         _containerEdge.push_back(pEdge);
-        state_id_type fromStateId = pFrom->getId();
-        state_id_type toStateId = pTo->getId();
         if ( _mapConnect.find(fromStateId) != _mapConnect.end() 
           && _mapConnect[fromStateId].find(toStateId) != _mapConnect[fromStateId].end()) {
             std::cerr << "*Warning: " << "already insert at " << fromStateId << " , " << toStateId << std::endl;
@@ -133,6 +185,13 @@ public:
         _mapConnect[fromStateId][toStateId] = id;
 
         return _containerEdge.back();
+    }
+
+    edge_handle_type addEdge(state_handle_type pFrom, state_handle_type pTo, edge_value_type edgeValue) {
+        state_id_type fromStateId = pFrom->getId();
+        state_id_type toStateId = pTo->getId();
+
+        return addEdge(fromStateId, toStateId, edgeValue);
     }
 
     state_handle_container_type& getStateHandleContainer() { return _containerStateHandle; }
@@ -169,13 +228,54 @@ public:
             assert(0);
         }
 
-        fout << toDotFormat();
+        fout << toDotString();
         fout.close();
     }
 
-    std::string toDotFormat() const {
+       
+    std::string toString() const {
+        std::stringstream ss;
+        static const std::string arrow(" -> ");
+
+        FOR_EACH(pState, getStateHandleContainer()) {
+            ss << "[(state " << pState->getIdName() << ") : " << GraphComponentToString<state_value_type>::toString(pState->getValue()) << "]\n";
+        }
+
+        FOR_EACH(pair1, _mapConnect) {
+            state_id_type fromId = pair1.first;
+            state_handle_type pFromState = _containerStateHandle[fromId];
+
+            FOR_EACH(pair2, pair1.second) {
+                state_id_type toId = pair2.first;
+                state_handle_type pToState = _containerStateHandle[toId];
+                
+                edge_id_type edgeId = pair2.second;
+                edge_handle_type pEdge = _containerEdge[edgeId];
+
+                ss << "[(edge : " << pEdge->getIdName() << ") (" << pFromState->getIdName() << arrow << pToState->getIdName() << ") : ";
+                ss << GraphComponentToString<edge_value_type>::toString(pEdge->getValue()) << "]\n";
+            }
+        }
+
+        return ss.str();
+     }
+
+private:
+    edge_id_type getEdgeIdHelper(state_id_type fromStateId, state_id_type toStateId) {
+        typename connection_map_type::iterator it1;
+        if ((it1 = _mapConnect.find(fromStateId)) == _mapConnect.end())
+            std::cerr << "*Warning: no such connect - from_state_id : " << fromStateId << " to_state_id : " << toStateId << std::endl;
+        
+        typename connection_map_inner_map_type::iterator it2;
+        if ((it2 = it1->second.find(toStateId)) == it1->second.end()) 
+            std::cerr << "*Warning: no such connect in inner map - from_state_id : " << fromStateId << " to_state_id : " << toStateId << std::endl;
+
+        return it2->second;
+    }
+
+    std::string toDotString() const {
         std::string indent("   ");
-        std::string arrow(" -> ");
+        static const std::string arrow(" -> ");
         std::stringstream ss;
         ss << "digraph Protocol {\n";
         ss << indent << "rankdir = TD;\n";
@@ -183,7 +283,7 @@ public:
 
         FOR_EACH(pState, getStateHandleContainer()) {
             ss << indent << pState->getIdName() << " [label=\""
-               << pState->getValue() << "\"]\n";
+               << GraphComponentToString<state_value_type>::toDotString(pState->getValue()) << "\"]\n";
         }
 
         FOR_EACH(pair1, _mapConnect) {
@@ -200,27 +300,13 @@ public:
                 ss << indent << pFromState->getIdName() << arrow << pEdge->getIdName() << ";\n";
                 ss << indent << pEdge->getIdName() << arrow << pToState->getIdName() << ";\n";
                 ss << indent << pEdge->getIdName() << " [shape=record, color=red, height=.08, fontsize=11, label=\""
-                   << pEdge->getValue() << "\"]\n\n";
+                   << GraphComponentToString<edge_value_type>::toDotString(pEdge->getValue()) << "\"]\n\n";
             }
         }
 
         ss << "\n}\n";
         return ss.str();
     }
-
-private:
-    edge_id_type getEdgeIdHelper(state_id_type fromStateId, state_id_type toStateId) {
-        typename connection_map_type::iterator it1;
-        if ((it1 = _mapConnect.find(fromStateId)) == _mapConnect.end())
-            std::cerr << "*Warning: no such connect - from_state_id : " << fromStateId << " to_state_id : " << toStateId << std::endl;
-        
-        typename connection_map_inner_map_type::iterator it2;
-        if ((it2 = it1->second.find(toStateId)) == it1->second.end()) 
-            std::cerr << "*Warning: no such connect in inner map - from_state_id : " << fromStateId << " to_state_id : " << toStateId << std::endl;
-
-        return it2->second;
-    }
-
 
     
 };

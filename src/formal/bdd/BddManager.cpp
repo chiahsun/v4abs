@@ -277,6 +277,23 @@ BddNodeHandle BddManager::getGeneralizedCofactor(BddNodeHandle pF, BddNodeHandle
         return pH1;
     return makeBddNode(topDecisionLevel, pH1, pH0);
 }
+    
+BddNodeHandle BddManager::exQuant(BddNodeHandle pNode, int decisionLevel) {
+    if (pNode->getCurDecisionLevel() == decisionLevel)
+        return makeOr(pNode->getPosHandle(), pNode->getNegHandle());
+
+    if (decisionLevel > pNode->getCurDecisionLevel())
+        return pNode;
+
+    BddNodeHandle pF1 = exQuant(pNode->getPosHandle(), decisionLevel);
+    BddNodeHandle pF2 = exQuant(pNode->getNegHandle(), decisionLevel);
+
+    if (pF1 == pF2)
+        return pF1;
+
+    return makeBddNode(pNode->getCurDecisionLevel(), pF1, pF2);
+
+}
 
     
 bool BddManager::isNeg(BddNodeHandle pFst, BddNodeHandle pSnd) {

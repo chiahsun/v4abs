@@ -61,6 +61,7 @@ public:
     BddNodeHandle makeXnor(BddNodeHandle pFst, BddNodeHandle pSnd);
 
     BddNodeHandle getGeneralizedCofactor(BddNodeHandle pF, BddNodeHandle pC);
+    BddNodeHandle exQuant(BddNodeHandle pNode, int decisionLevel);
 
     bool isNeg(BddNodeHandle pFst, BddNodeHandle pSnd);
 private:

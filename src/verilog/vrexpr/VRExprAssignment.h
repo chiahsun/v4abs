@@ -38,6 +38,7 @@ public:
 
     std::string toString() const;
 
+    friend VRExprAssignment makeAssignment(VRExprExpression lhs, VRExprExpression rhs);
 private:
     void initStaticSensitivity();
     void initTerminalExpressions();

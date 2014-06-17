@@ -1,5 +1,16 @@
 #include "ProtocolGraph.h"
 
+EdgePair::EdgePair(PExprBoolExpressionHandle pBoolExpression, PExprUpdateStatementHandle pUpdateStatement)
+    : first(pBoolExpression), second(pUpdateStatement) {}
+
+std::string EdgePair::toString() const {
+    return first->toString() + "|" + second->toString();
+}
+
+std::string EdgePair::toDotString() const {
+    return first->toString_2() + "|" + second->toString_2();
+}
+
 ProtocolGraph::graph_type::state_handle_container_type& ProtocolGraph::getStateHandleContainer() {
     return _graph.getStateHandleContainer();
 }

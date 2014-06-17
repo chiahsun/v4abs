@@ -6,12 +6,28 @@
 #include "nstl/graph/Graph.h"
 #include "PExpr.h"
 
+class EdgePair {
+public:
+    EdgePair(PExprBoolExpressionHandle pBoolExpression, PExprUpdateStatementHandle pUpdateStatement);
+
+    std::string toString() const;
+    std::string toDotString() const;
+
+    PExprBoolExpressionHandle first;
+    PExprUpdateStatementHandle second;
+#if 0
+private:
+    PExprBoolExpressionHandle _pBoolExpression;
+    PExprUpdateStatementHandle _pUpdateStatement;
+#endif
+};
 
 class ProtocolGraph {
 
 public:
     typedef std::string node_type;
-    typedef std::pair<PExprBoolExpressionHandle, PExprUpdateStatementHandle> edge_value_type;
+    //typedef std::pair<PExprBoolExpressionHandle, PExprUpdateStatementHandle> edge_value_type;
+    typedef EdgePair edge_value_type;
 
     typedef Graph<node_type, edge_value_type> graph_type;
     typedef graph_type::state_handle_type state_type;

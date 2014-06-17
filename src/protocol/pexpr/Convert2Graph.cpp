@@ -44,7 +44,8 @@ void Convert2Graph::convert(ProtocolGraph & graph, const PExprIfStatementWithGot
     else
         pUpdateStatement = PExprUpdateStatement::makeHandle(vecAllUpdateStatement);
 
-    graph.addEdge(stateFrom, stateTo, std::make_pair(pBoolExpression, pUpdateStatement));
+    //graph.addEdge(stateFrom, stateTo, std::make_pair(pBoolExpression, pUpdateStatement));
+    graph.addEdge(stateFrom, stateTo, EdgePair(pBoolExpression, pUpdateStatement));
 }
 
 void Convert2Graph::convert(ProtocolGraph & graph, const PExprEdgeStatementHandle & pEdgeStatement, PExprBoolExpressionHandle & pConditional, std::vector<PExprAllUpdateStatementHandle>& vecAllUpdateStatement, ProtocolGraph::state_type stateFrom){
@@ -80,7 +81,8 @@ void Convert2Graph::convert(ProtocolGraph & graph, const PExprEdgeStatementHandl
         else
             pUpdateStatement = PExprUpdateStatement::makeHandle(vecAllUpdateStatement);
 
-        graph.addEdge(stateFrom, stateTo, std::make_pair(pBoolExpression, pUpdateStatement));
+        //graph.addEdge(stateFrom, stateTo, std::make_pair(pBoolExpression, pUpdateStatement));
+        graph.addEdge(stateFrom, stateTo, EdgePair(pBoolExpression, pUpdateStatement));
     }
 #endif
 }

@@ -8,6 +8,7 @@
 #include "protocol/pexpr/ConvertCAst2PExpr.h"
 #include "nstl/for_each/ForEach.h"
 #include "utility/log/Log.h"
+#include "ConvertPExpr2VRExpr.h"
 
 static const bool verbose = false;
 
@@ -35,18 +36,25 @@ VRExprEfsm EfsmExtract::extract(const std::string & topModuleName) {
         LOG(ERROR) << "No such top module name: " << topModuleName << std::endl;
     }
 
-    DEBUG_EXPR(_protocolGraph.getStateHandleContainer().size());
 
     CONST_FOR_EACH(pProtocolState, _protocolGraph.getStateHandleContainer()) {
-        DEBUG_EXPR(pProtocolState->getValue());
         efsm.addState(pProtocolState->getValue());
     }
 
-#if 0
-    CONST_FOR_EACH(pProtocolEdge, _protocolGraph->getEdngeHandleContainer()) {
-        efsm.addEdge(pProtocolEdge->)
+    CONST_FOR_EACH(pProtocolEdge, _protocolGraph.getEdgeHandleContainer()) {
+        PExprBoolExpressionHandle pPExprBoolExpression =
+            pProtocolEdge->getValue().first;
+        PExprUpdateStatementHandle pPExprUpdateStatement =
+            pProtocolEdge->getValue().second;
+
+        VRExprExpression pExpression = ConvertPExpr2VRExpr::convert(pPExprBoolExpression);
+        DEBUG_EXPR(pPExprBoolExpression->toString());
+        DEBUG_EXPR(pPExprUpdateStatement->toString());
+//        efsm.addEdge( pProtocolEdge->getStatePair().first
+//                    , pProtocolEdge->getStatePair().second
+//                    , )
     }
-#endif
+
     return efsm;
 }
     

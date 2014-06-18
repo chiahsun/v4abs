@@ -183,6 +183,11 @@ VRExprUnsignedNumber::Impl::Impl(unsigned int number)
   : _size(32)
   , _unsignedNumber(number)
   { }
+
+VRExprUnsignedNumber::Impl::Impl(std::string numberLiterals)
+  : _size(32)
+  , _unsignedNumber(ConvertUtil::convert<std::string, unsigned int >(numberLiterals))
+  { }
         
 std::string VRExprUnsignedNumber::Impl::toString() const {
     std::stringstream ss;
@@ -196,6 +201,9 @@ unsigned int VRExprUnsignedNumber::Impl::getSize() const
     
 VRExprUnsignedNumber::VRExprUnsignedNumber(unsigned int number)
   { _pImpl = impl_shared_ptr_type(impl_type(number)); }
+    
+VRExprUnsignedNumber::VRExprUnsignedNumber(std::string numberLiterals)
+  { _pImpl = impl_shared_ptr_type(impl_type(numberLiterals)); }
 
 std::string VRExprUnsignedNumber::toString() const
   { return _pImpl->toString(); }

@@ -1,4 +1,5 @@
 #include "EfsmExtract.h"
+#include "test/UnitTest.h"
 
 int main(int argc, char** argv) {
     if (argc != 4) {
@@ -8,6 +9,7 @@ int main(int argc, char** argv) {
 
     EfsmExtract extractFactory(argv[1], argv[2]);
     VRExprEfsm efsm = extractFactory.extract(argv[3]);
+    assertEqual("", efsm.toString(), "Test to string");
     efsm.writeDotFile("efsm_extract1.dot");
 
     return 0;

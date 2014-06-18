@@ -824,10 +824,12 @@ std::string PExprGotoStatement::toString() const
 
 PExprBoolExpression::PExprBoolExpression(const std::string& s)
     : _identifier(s)
+    , _Op(IDENTIFIER)
 {}
 
 PExprBoolExpression::PExprBoolExpression(const std::string& s1, PExprConstantHandle pConstant)
     : _identifier(s1), _pConstant(pConstant)
+    , _Op(CONSTANT)
 {}
 
 PExprBoolExpression::PExprBoolExpression(PExprBoolExpressionHandle pFst, OP_TYPE Op)
@@ -866,7 +868,8 @@ PExprBoolExpression::OP_TYPE PExprBoolExpression::getOp() const
 std::string PExprBoolExpression::toString() const
 {
     std::stringstream ss;
-    if( getConstant().valid() ){
+    if( getConstant().valid() ) {
+        assert(getOp() == CONSTANT);
         ss << "(bool_expression " << _identifier << " == " << getConstant()->toString() << ")";
     }
     else if( getFst().valid() && getSnd().valid() ){
@@ -880,10 +883,12 @@ std::string PExprBoolExpression::toString() const
 
         ss << "(bool_expression " << getFst()->toString() << Operator << getSnd()->toString() << ")";
     }
-    else if( getFst().valid() && !getSnd().valid() ){
+    else if( getFst().valid() && !getSnd().valid() ) {
+        assert(getOp() == LOGICAL_NOT);
         ss << "(bool_expression ! " << getFst()->toString() << ")";
     }
     else{
+        assert(getOp() == IDENTIFIER);
         ss << "(bool_expression " << _identifier << ")";
     }
     return ss.str();

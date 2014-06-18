@@ -111,6 +111,25 @@ public:
 extern char kStateName[];
 extern char kEdgeName[];
 
+template <class _Value>
+class GraphEdge : public GraphComponent<kEdgeName, _Value> {
+public:
+    typedef GraphComponent<kEdgeName, _Value> graph_component_type;
+    typedef typename graph_component_type::id_type id_type;
+    typedef typename graph_component_type::value_type value_type;
+    std::pair<id_type, id_type> _statePair;
+
+    GraphEdge(value_type val, id_type id, id_type fromStateId, id_type toStateId)
+      : graph_component_type(val, id)
+      , _statePair(std::make_pair(fromStateId, toStateId))
+      { }
+
+    std::pair<id_type, id_type> getStatePair() const
+      { return _statePair; }
+
+};
+
+
 template <class _StateValue, class _EdgeValue>
 class Graph {
 public:
@@ -118,7 +137,7 @@ public:
     typedef _EdgeValue edge_value_type;
 
     typedef GraphComponent<kStateName, state_value_type> state_type;
-    typedef GraphComponent<kEdgeName, edge_value_type> edge_type;
+    typedef GraphEdge<edge_value_type> edge_type;
 
     typedef typename state_type::id_type state_id_type;
     typedef typename edge_type::id_type edge_id_type;
@@ -175,7 +194,7 @@ public:
     edge_handle_type addEdge(state_id_type fromStateId, state_id_type toStateId, edge_value_type edgeValue) {
         edge_id_type id = _containerEdge.size();
 
-        edge_type edge(edgeValue, id);
+        edge_type edge(edgeValue, id, fromStateId, toStateId);
         edge_handle_type pEdge = edge_handle_type(edge);
         _containerEdge.push_back(pEdge);
         if ( _mapConnect.find(fromStateId) != _mapConnect.end() 

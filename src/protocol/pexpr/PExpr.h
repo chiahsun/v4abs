@@ -272,13 +272,17 @@ public:
 };
 
 class PExprBoolExpression {
+public:
     enum OP_TYPE {
+        IDENTIFIER,
+        CONSTANT,
         LOGICAL_AND,
         LOGICAL_OR,
         LOGICAL_XOR,
         LOGICAL_EQUAL,
         LOGICAL_NOT
     };
+private:
     std::string _identifier;
     PExprConstantHandle _pConstant;
     PExprBoolExpressionHandle _pFst;

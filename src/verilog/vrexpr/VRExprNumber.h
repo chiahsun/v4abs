@@ -140,6 +140,7 @@ class VRExprUnsignedNumber : public VRExprNumberInterface {
         unsigned int _unsignedNumber;
     public:
         Impl(unsigned int number);
+        Impl(std::string numberLiterals);
         std::string toString() const; 
         unsigned int getSize() const;
         unsigned int getUnsignedNumber() const { return _unsignedNumber; }
@@ -152,6 +153,7 @@ class VRExprUnsignedNumber : public VRExprNumberInterface {
 
 public:
     VRExprUnsignedNumber(unsigned int number); 
+    VRExprUnsignedNumber(std::string numberLiterals); 
 
     std::string toString() const;
        

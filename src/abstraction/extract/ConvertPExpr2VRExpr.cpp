@@ -1,5 +1,143 @@
 #include "ConvertPExpr2VRExpr.h"
 #include "utility/log/Log.h"
+    
+void ConvertPExpr2VRExpr::convert
+  ( PExprUpdateStatementHandle pUpdateStatement
+  , std::vector<VRExprExpression> & vecRead
+  , std::vector<VRExprExpression> & vecWrite
+  , std::vector<VRExprExpression> & vecCheck) {
+
+    std::vector<PExprAllUpdateStatementHandle> vecUpdate = pUpdateStatement->getAllContainer();
+
+    FOR_EACH(pAllUpdateStatement, vecUpdate) 
+      { convert(pAllUpdateStatement, vecRead, vecWrite, vecCheck); }
+
+    std::vector<PExprSpecificUpdateStatementHandle> vecSpecific = pUpdateStatement->getSpecificContainer();
+
+    FOR_EACH(pSpecificUpdateStatement, vecSpecific)
+      { convert(pSpecificUpdateStatement, vecRead, vecWrite, vecCheck); }
+
+}
+    
+void ConvertPExpr2VRExpr::convert
+  ( PExprAllUpdateStatementHandle pAllUpdateStatement
+  , std::vector<VRExprExpression> & vecRead
+  , std::vector<VRExprExpression> & vecWrite
+  , std::vector<VRExprExpression> & vecCheck) {
+    PExprReadOrWriteOrCheckStatementHandle pReadOrWriteOrCheckStatement = pAllUpdateStatement->getRWC();
+    PExprIfStatementWithoutGotoHandle pIfStatmentWithoutGoto = pAllUpdateStatement->getWithoutGoto();
+
+    if (pReadOrWriteOrCheckStatement.valid()) {
+        convert(pReadOrWriteOrCheckStatement, vecRead, vecWrite, vecCheck);
+    } else if (pIfStatmentWithoutGoto.valid()) {
+        convert(pIfStatmentWithoutGoto, vecRead, vecWrite, vecCheck);
+    } else {
+        LOG(ERROR) << "No such branch";
+    }
+}
+    
+void ConvertPExpr2VRExpr::convert
+  ( PExprSpecificUpdateStatementHandle pSpecificUpdateStatement
+  , std::vector<VRExprExpression> & vecRead
+  , std::vector<VRExprExpression> & vecWrite
+  , std::vector<VRExprExpression> & vecCheck) {
+    PExprReadOrWriteOrCheckStatementHandle pReadOrWriteOrCheckStatement = pSpecificUpdateStatement->getRWC();
+    PExprIfStatementWithoutGotoHandle pIfStatmentWithoutGoto = pSpecificUpdateStatement->getWithoutGoto();
+    if (pReadOrWriteOrCheckStatement.valid()) {
+        convert(pReadOrWriteOrCheckStatement, vecRead, vecWrite, vecCheck);
+    } else if (pIfStatmentWithoutGoto.valid()) {
+        convert(pIfStatmentWithoutGoto, vecRead, vecWrite, vecCheck);
+    } else {
+        LOG(ERROR) << "No such branch";
+    }
+}
+    
+    
+void ConvertPExpr2VRExpr::convert
+  ( PExprReadOrWriteOrCheckStatementHandle pReadOrWriteOrCheckStatement
+  , std::vector<VRExprExpression> & vecRead
+  , std::vector<VRExprExpression> & vecWrite
+  , std::vector<VRExprExpression> & vecCheck) {
+    PExprReadStatementHandle pRead = pReadOrWriteOrCheckStatement->getRead();
+    PExprWriteStatementHandle pWrite = pReadOrWriteOrCheckStatement->getWrite();
+    PExprCheckStatementHandle pCheck = pReadOrWriteOrCheckStatement->getCheck();
+
+    if (pRead.valid()) {
+        vecRead.push_back(makeIdentifier(pRead->getName()));
+    } else if (pWrite.valid()) {
+        vecWrite.push_back(makeIdentifier(pWrite->getName()));
+    } else if (pCheck.valid()) {
+        vecCheck.push_back(convert(pCheck));
+    } else {
+        LOG(ERROR) << "No such branch";
+    }
+}
+
+VRExprExpression ConvertPExpr2VRExpr::convert(PExprCheckStatementHandle pCheck) {
+    return convert(pCheck->getBool());
+}
+                      
+    
+void ConvertPExpr2VRExpr::convert
+  ( PExprIfStatementWithGotoHandle pIfStatement
+  , std::vector<VRExprExpression> & vecReadAll
+  , std::vector<VRExprExpression> & vecWriteAll
+  , std::vector<VRExprExpression> & vecCheckAll) {
+    std::vector<VRExprExpression> vecRead, vecWrite, vecCheck;
+
+    VRExprExpression pIf = convert(pIfStatement->getIfStatementPrefix());
+    PExprEndStatementHandle pEnd = pIfStatement->getEndStatement();
+    CONST_FOR_EACH(pSpecificUpdateStatement, pIfStatement->getSpecificContainer()) {
+        convert(pSpecificUpdateStatement, vecRead, vecWrite, vecCheck);
+    }
+
+    appendIf(vecRead, pIf);
+    appendIf(vecWrite, pIf);
+    appendIf(vecCheck, pIf);
+    appendVec(vecReadAll, vecRead);
+    appendVec(vecWriteAll, vecWrite);
+    appendVec(vecCheckAll, vecCheck);
+}
+    
+void ConvertPExpr2VRExpr::convert
+  (PExprIfStatementWithoutGotoHandle pIfStatement
+  , std::vector<VRExprExpression> & vecReadAll
+  , std::vector<VRExprExpression> & vecWriteAll
+  , std::vector<VRExprExpression> & vecCheckAll) {
+
+    VRExprExpression pIf = convert(pIfStatement->getIfStatementPrefix());
+
+    {
+    std::vector<VRExprExpression> vecRead, vecWrite, vecCheck;
+    CONST_FOR_EACH(pIfStatementInner, pIfStatement->getIfStatementWithoutGotoContainer()) {
+        convert(pIfStatementInner, vecRead, vecWrite, vecCheck);
+    }
+    appendIf(vecRead, pIf);
+    appendIf(vecWrite, pIf);
+    appendIf(vecCheck, pIf);
+    appendVec(vecReadAll, vecRead);
+    appendVec(vecWriteAll, vecWrite);
+    appendVec(vecCheckAll, vecCheck);
+  }
+
+    {
+    std::vector<VRExprExpression> vecRead, vecWrite, vecCheck;
+    CONST_FOR_EACH(pReadOrWriteOrCheckStatement, pIfStatement->getRWCContainer()) {
+        convert(pReadOrWriteOrCheckStatement, vecRead, vecWrite, vecCheck);
+    }
+    appendIf(vecRead, pIf);
+    appendIf(vecWrite, pIf);
+    appendIf(vecCheck, pIf);
+    appendVec(vecReadAll, vecRead);
+    appendVec(vecWriteAll, vecWrite);
+    appendVec(vecCheckAll, vecCheck);
+    }
+}
+    
+VRExprExpression ConvertPExpr2VRExpr::convert(PExprIfStatementPrefixHandle pIfStatementPrefix) {
+    return convert(pIfStatementPrefix->getBoolExpressionHandle());
+}
+
 
 VRExprExpression ConvertPExpr2VRExpr::convert(PExprBoolExpressionHandle pBoolExpression) {
     switch(pBoolExpression->getOp()) {
@@ -86,10 +224,13 @@ VRExprExpression ConvertPExpr2VRExpr::convertBinary(PExprBoolExpressionHandle pB
             LOG(ERROR) << "Invalid type";
         case PExprBoolExpression::LOGICAL_AND:
             opType = BINARY_LOGICAL_AND;
+            return makeBinaryExpression(pFst, opType, pSnd);
         case PExprBoolExpression::LOGICAL_OR:
             opType = BINARY_LOGICAL_OR;
+            return makeBinaryExpression(pFst, opType, pSnd);
         case PExprBoolExpression::LOGICAL_XOR:
             opType = BINARY_BITWISE_XOR;
+            return makeBinaryExpression(pFst, opType, pSnd);
         case PExprBoolExpression::LOGICAL_EQUAL:
             opType = BINARY_EQ;
             return makeBinaryExpression(pFst, opType, pSnd);
@@ -137,3 +278,18 @@ VRExprNumber ConvertPExpr2VRExpr::convert(PExprConstantHandle pConstant) {
 
     assert(0);
 }
+
+void ConvertPExpr2VRExpr::appendIf
+  ( std::vector<VRExprExpression> & vecExpr
+  , VRExprExpression pIf) {
+    FOR_EACH(expr, vecExpr) {
+        expr.appendIfByThen(pIf);
+    }
+}
+    
+void ConvertPExpr2VRExpr::appendVec
+  ( std::vector<VRExprExpression> & vec
+  , const std::vector<VRExprExpression> & vecOther) {
+    vec.insert(vec.end(), vecOther.begin(), vecOther.end());
+}
+

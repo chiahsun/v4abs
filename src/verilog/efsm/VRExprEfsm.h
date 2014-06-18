@@ -5,9 +5,42 @@
 #include "verilog/vrexpr/VRExprExpression.h"
 #include "verilog/vrexpr/VRExprAssignment.h"
 
+class VRExprEfsmUpdate {
+    std::vector<VRExprAssignment> _vecAssign;
+    std::vector<VRExprExpression> _vecRead;
+    std::vector<VRExprExpression> _vecWrite;
+    std::vector<VRExprExpression> _vecCheck;
+public:
+    VRExprEfsmUpdate(); 
+    VRExprEfsmUpdate( const std::vector<VRExprAssignment> vecAssign
+                    , const std::vector<VRExprExpression> vecRead
+                    , const std::vector<VRExprExpression> vecWrite
+                    , const std::vector<VRExprExpression> vecCheck); 
+
+    void addAssignment(const VRExprAssignment & assignment);
+    void addRead(const VRExprExpression & read);
+    void addWrite(const VRExprExpression & write);
+    void addCheck(const VRExprExpression & check);
+
+    std::vector<VRExprAssignment>& getAssignmentContainer();
+    std::vector<VRExprExpression>& getReadContainer();
+    std::vector<VRExprExpression>& getWriteContainer();
+    std::vector<VRExprExpression>& getCheckContainer();
+
+    const std::vector<VRExprAssignment>& getAssignmentContainer() const;
+    const std::vector<VRExprExpression>& getReadContainer() const;
+    const std::vector<VRExprExpression>& getWriteContainer() const;
+    const std::vector<VRExprExpression>& getCheckContainer() const;
+
+
+    std::string toString() const;
+    std::string toDotString() const;
+private:
+};
+
 class VRExprEfsm {
 public: 
-    typedef Efsm<std::string, VRExprExpression, std::vector<VRExprAssignment> > efsm_impl_type;
+    typedef Efsm<std::string, VRExprExpression, VRExprEfsmUpdate> efsm_impl_type;
 
     typedef efsm_impl_type::enable_function_type enable_function_type;
     typedef efsm_impl_type::update_function_type update_function_type;

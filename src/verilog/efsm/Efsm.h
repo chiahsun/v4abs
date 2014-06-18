@@ -38,18 +38,14 @@ public:
         std::stringstream ss;
         ss << "\nEnable: " << _pEnableFunction->toString() << "\n"
            << "Update:\n";
-        CONST_FOR_EACH(update, *_pUpdateFunction) {
-            ss << update.toString() << "\n";
-        }
+        ss << _pUpdateFunction->toString() << "\n";
         return ss.str(); 
     }
     
     std::string toDotString() const {
         std::stringstream ss;
         ss << _pEnableFunction->toString() << "\\n |";
-        CONST_FOR_EACH(update, *_pUpdateFunction) {
-            ss << update.toString() << "\\n";
-        }
+        ss << _pUpdateFunction->toString() << "\\n";
         return ss.str(); 
     }
 

@@ -96,7 +96,7 @@ public:
     const std::vector<PExprSpecificUpdateStatementHandle> getSpecificContainer() const;
     std::vector<PExprSpecificUpdateStatementHandle> getSpecificContainer(); 
     std::string toString() const;
-    std::string toString_2() const;
+    std::string toDotString() const;
 private:
     void pushAll(PExprAllUpdateStatementHandle pAllUpdateStatement);
     void pushSpecific(PExprSpecificUpdateStatementHandle pSpecificUpdateStatement);
@@ -114,7 +114,7 @@ public:
     PExprReadOrWriteOrCheckStatementHandle getRWC() const;
     PExprIfStatementWithoutGotoHandle getWithoutGoto() const;
     std::string toString() const;
-    std::string toString_2() const;
+    std::string toDotString() const;
 };
 
 class PExprSpecificUpdateStatement {
@@ -129,7 +129,7 @@ public:
     PExprReadOrWriteOrCheckStatementHandle getRWC() const;
     PExprIfStatementWithoutGotoHandle getWithoutGoto() const;
     std::string toString() const;
-    std::string toString_2() const;
+    std::string toDotString() const;
 };
 
 class PExprStateLabel {
@@ -159,7 +159,7 @@ public:
     PExprCheckStatementHandle getCheck() const;
 
     std::string toString() const;
-    std::string toString_2() const;
+    std::string toDotString() const;
 };
 
 class PExprReadStatement {
@@ -169,7 +169,7 @@ public:
     static PExprReadStatementHandle makeHandle(const std::string& s);
     std::string getName() const;
     std::string toString() const;
-    std::string toString_2() const;
+    std::string toDotString() const;
 };
 
 class PExprWriteStatement {
@@ -179,7 +179,7 @@ public:
     static PExprWriteStatementHandle makeHandle(const std::string& s);
     std::string getName() const;
     std::string toString() const;
-    std::string toString_2() const;
+    std::string toDotString() const;
 };
 
 class PExprCheckStatement {
@@ -189,7 +189,7 @@ public:
     static PExprCheckStatementHandle makeHandle(PExprBoolExpressionHandle pBool);
     PExprBoolExpressionHandle getBool() const;
     std::string toString() const;
-    std::string toString_2() const;
+    std::string toDotString() const;
 };
 
 class PExprEndStatement {
@@ -245,7 +245,7 @@ public:
     unsigned int getRWCSize() const;
     unsigned int getIfSize() const;
     std::string toString() const;
-    std::string toString_2() const;
+    std::string toDotString() const;
 private:
     void pushRWC(PExprReadOrWriteOrCheckStatementHandle pRWC);
     void pushIfStatementWithoutGoto(PExprIfStatementWithoutGotoHandle pIfStatementWithoutGoto);
@@ -259,7 +259,7 @@ public:
     static PExprIfStatementPrefixHandle makeHandle(PExprBoolExpressionHandle pBoolExpression);
     PExprBoolExpressionHandle getBoolExpressionHandle() const;
     std::string toString() const;
-    std::string toString_2() const;
+    std::string toDotString() const;
 };
 
 class PExprGotoStatement {
@@ -310,7 +310,7 @@ public:
     OP_TYPE getOp() const;
 
     std::string toString() const;
-    std::string toString_2() const;
+    std::string toDotString() const;
 private:
     // PEXPR_OP_TYPE
     static PExprBoolExpressionHandle makeBinaryHandle(PExprBoolExpressionHandle pFst, PExprBoolExpressionHandle pSnd, OP_TYPE Op);

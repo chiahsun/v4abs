@@ -11,20 +11,20 @@ SigExpressionHandle ConvertGraphInfo::convert(const PExprBoolExpressionHandle & 
     else if(pBoolExpression->getFst().valid() && pBoolExpression->getSnd().valid()){
         PExprBoolExpressionHandle pFst = pBoolExpression->getFst();
         PExprBoolExpressionHandle pSnd = pBoolExpression->getSnd();
-        if (pBoolExpression->getOp() == 0)
+        if (pBoolExpression->getOp() == PExprBoolExpression::LOGICAL_AND)
             return SigExpression::makeHandle(6, ConvertGraphInfo::convert(pFst, _vecSig, _map), ConvertGraphInfo::convert(pSnd, _vecSig, _map));
-        else if (pBoolExpression->getOp() == 1)
+        else if (pBoolExpression->getOp() == PExprBoolExpression::LOGICAL_OR)
             return SigExpression::makeHandle(5, ConvertGraphInfo::convert(pFst, _vecSig, _map), ConvertGraphInfo::convert(pSnd, _vecSig, _map));
-        else if (pBoolExpression->getOp() == 2)
+        else if (pBoolExpression->getOp() == PExprBoolExpression::LOGICAL_XOR)
             return SigExpression::makeHandle(7, ConvertGraphInfo::convert(pFst, _vecSig, _map), ConvertGraphInfo::convert(pSnd, _vecSig, _map));
-        else if (pBoolExpression->getOp() == 3)
+        else if (pBoolExpression->getOp() == PExprBoolExpression::LOGICAL_EQUAL)
             return SigExpression::makeHandle(4, ConvertGraphInfo::convert(pFst, _vecSig, _map), ConvertGraphInfo::convert(pSnd, _vecSig, _map));
         else 
             assert(0);
     }
     else if(pBoolExpression->getFst().valid() && !pBoolExpression->getSnd().valid()){ 
         PExprBoolExpressionHandle pFst = pBoolExpression->getFst();
-        if( pBoolExpression->getOp() == 4){
+        if( pBoolExpression->getOp() == PExprBoolExpression::LOGICAL_NOT){
             return SigExpression::makeHandle(3, ConvertGraphInfo::convert(pFst, _vecSig, _map));
         }
         else
@@ -39,22 +39,50 @@ SigExpressionHandle ConvertGraphInfo::convert(const PExprBoolExpressionHandle & 
 }
 
 SigExpressionHandle ConvertGraphInfo::convert(const PExprUpdateStatementHandle & pUpdateStatement, std::vector<Signal> & _vecSig, std::map<std::string, std::string> & _map) {
+    SigExpressionHandle sig = SigExpression::makeHandle(8);
     for(int i = 0 ; i < pUpdateStatement->getAllContainer().size() ; ++i) {
         if(pUpdateStatement->getAllContainer()[i]->getRWC().valid()){
+            if(pUpdateStatement->getAllContainer()[i]->getRWC()->getRead().valid()){
+            }
+            else if(pUpdateStatement->getAllContainer()[i]->getRWC()->getWrite().valid()){
+            }
+            else if(pUpdateStatement->getAllContainer()[i]->getRWC()->getCheck().valid()){
+                sig = SigExpression::makeHandle(6, sig, ConvertGraphInfo::convert(pUpdateStatement->getAllContainer()[i]
+                                                                                                        ->getRWC()
+                                                                                                        ->getCheck(), _vecSig,_map));
+            }
+            else
+                assert(0);
         }
         else if(pUpdateStatement->getAllContainer()[i]->getWithoutGoto().valid()){
+            sig = SigExpression::makeHandle(6, sig, ConvertGraphInfo::convert(pUpdateStatement->getAllContainer()[i]
+                                                                                                    ->getWithoutGoto(), _vecSig, _map));
         }
         else
             assert(0);
     }
-    for(int i = 0 ; i < pUpdateStatement->getSpecificContainer().size() ; ++i){
+    for(int i = 0 ; i < pUpdateStatement->getSpecificContainer().size() ; ++i){ 
         if(pUpdateStatement->getSpecificContainer()[i]->getRWC().valid()){
+            if(pUpdateStatement->getSpecificContainer()[i]->getRWC()->getRead().valid()){
+            }
+            else if(pUpdateStatement->getSpecificContainer()[i]->getRWC()->getWrite().valid()){
+            }
+            else if(pUpdateStatement->getSpecificContainer()[i]->getRWC()->getCheck().valid()){
+                sig = SigExpression::makeHandle(6, sig, ConvertGraphInfo::convert(pUpdateStatement->getSpecificContainer()[i]
+                                                                                                        ->getRWC()
+                                                                                                        ->getCheck(), _vecSig, _map));
+            }
+            else
+                assert(0);
         }
         else if(pUpdateStatement->getSpecificContainer()[i]->getWithoutGoto().valid()){
+            sig = SigExpression::makeHandle(6, sig, ConvertGraphInfo::convert(pUpdateStatement->getSpecificContainer()[i]
+                                                                                                    ->getWithoutGoto(), _vecSig, _map));
         }
         else
             assert(0);
     }
+    return sig;
 }
 
 SigExpressionHandle ConvertGraphInfo::convert(const PExprCheckStatementHandle & pCheckStatement, std::vector<Signal> & _vecSig, std::map<std::string, std::string> & _map) {

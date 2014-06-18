@@ -8,7 +8,7 @@ std::string EdgePair::toString() const {
 }
 
 std::string EdgePair::toDotString() const {
-    return first->toString_2() + "|" + second->toString_2();
+    return first->toDotString() + "|" + second->toDotString();
 }
 
 ProtocolGraph::graph_type::state_handle_container_type& ProtocolGraph::getStateHandleContainer() {
@@ -40,6 +40,6 @@ void ProtocolGraph::writeDotFile(const std::string & dotOutputFilename) {
 }
     
 std::ostream & operator << (std::ostream & os, const std::pair<PExprBoolExpressionHandle, PExprUpdateStatementHandle> & rhs) {
-    return os << rhs.first->toString_2() << "|" << rhs.second->toString_2();
+    return os << rhs.first->toDotString() << "|" << rhs.second->toDotString();
 }
 

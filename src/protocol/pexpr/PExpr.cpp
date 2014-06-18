@@ -285,13 +285,13 @@ std::string PExprUpdateStatement::toString() const
     return ss.str();
 }
 
-std::string PExprUpdateStatement::toString_2() const
+std::string PExprUpdateStatement::toDotString() const
 {
     std::stringstream ss;
     for(unsigned int i = 0 ; i < _vecAllUpdateStatement.size() ; ++i)
-        ss << _vecAllUpdateStatement[i]->toString_2();
+        ss << _vecAllUpdateStatement[i]->toDotString();
     for(unsigned int i = 0 ; i < _vecSpecificUpdateStatement.size() ; ++i)
-        ss << _vecSpecificUpdateStatement[i]->toString_2();
+        ss << _vecSpecificUpdateStatement[i]->toDotString();
     return ss.str();
 }
 
@@ -345,13 +345,13 @@ std::string PExprAllUpdateStatement::toString() const
     return ss.str();
 }
 
-std::string PExprAllUpdateStatement::toString_2() const
+std::string PExprAllUpdateStatement::toDotString() const
 {
     std::stringstream ss;
     if(getRWC().valid())
-        ss << getRWC()->toString_2();
+        ss << getRWC()->toDotString();
     else if(getWithoutGoto().valid())
-        ss << getWithoutGoto()->toString_2();
+        ss << getWithoutGoto()->toDotString();
     return ss.str();
 }
 
@@ -395,13 +395,13 @@ std::string PExprSpecificUpdateStatement::toString() const
     return ss.str();
 }
 
-std::string PExprSpecificUpdateStatement::toString_2() const
+std::string PExprSpecificUpdateStatement::toDotString() const
 {
     std::stringstream ss;
     if(getRWC().valid())
-        ss << getRWC()->toString_2();
+        ss << getRWC()->toDotString();
     else if(getWithoutGoto().valid())
-        ss << getWithoutGoto()->toString_2();
+        ss << getWithoutGoto()->toDotString();
     return ss.str();
 }
 
@@ -484,15 +484,15 @@ std::string PExprReadOrWriteOrCheckStatement::toString() const
     return ss.str();
 }
 
-std::string PExprReadOrWriteOrCheckStatement::toString_2() const
+std::string PExprReadOrWriteOrCheckStatement::toDotString() const
 {
     std::stringstream ss;
     if(getRead().valid())
-        ss << getRead()->toString_2();
+        ss << getRead()->toDotString();
     else if(getWrite().valid())
-        ss << getWrite()->toString_2();
+        ss << getWrite()->toDotString();
     else if(getCheck().valid())
-        ss << getCheck()->toString_2();
+        ss << getCheck()->toDotString();
     else
         throw NoSuchBranchException(); 
     return ss.str();
@@ -519,7 +519,7 @@ std::string PExprReadStatement::toString() const
     return ss.str();
 }
 
-std::string PExprReadStatement::toString_2() const
+std::string PExprReadStatement::toDotString() const
 {
     std::stringstream ss;
     ss << "(read (" << _read << ") )";
@@ -547,7 +547,7 @@ std::string PExprWriteStatement::toString() const
     return ss.str();
 }
 
-std::string PExprWriteStatement::toString_2() const
+std::string PExprWriteStatement::toDotString() const
 {
     std::stringstream ss;
     ss << "(write (" << _write << ") )";
@@ -575,10 +575,10 @@ std::string PExprCheckStatement::toString() const
     return ss.str();
 }
 
-std::string PExprCheckStatement::toString_2() const
+std::string PExprCheckStatement::toDotString() const
 {
     std::stringstream ss;
-    ss << "(check (" << getBool()->toString_2() << ") )";
+    ss << "(check (" << getBool()->toDotString() << ") )";
     return ss.str();
 }
 
@@ -749,15 +749,15 @@ std::string PExprIfStatementWithoutGoto::toString() const
     return ss.str();
 }
 
-std::string PExprIfStatementWithoutGoto::toString_2() const
+std::string PExprIfStatementWithoutGoto::toDotString() const
 {
     std::stringstream ss;
-    ss << "(" << getIfStatementPrefix()->toString_2();
+    ss << "(" << getIfStatementPrefix()->toDotString();
     FOR_EACH(pRWC, getRWCContainer()){
-        ss << " " << pRWC->toString_2();
+        ss << " " << pRWC->toDotString();
     }
     FOR_EACH(pIf, getIfStatementWithoutGotoContainer()){
-        ss << " " << pIf->toString_2();
+        ss << " " << pIf->toDotString();
     }
     ss << ")";
     return ss.str();
@@ -794,10 +794,10 @@ std::string PExprIfStatementPrefix::toString() const
     return ss.str();
 }
 
-std::string PExprIfStatementPrefix::toString_2() const
+std::string PExprIfStatementPrefix::toDotString() const
 {
     std::stringstream ss;
-    ss << "if (" << getBoolExpressionHandle()->toString_2() << ")";
+    ss << "if (" << getBoolExpressionHandle()->toDotString() << ")";
     return ss.str();
 }
 
@@ -894,7 +894,7 @@ std::string PExprBoolExpression::toString() const
     return ss.str();
 }
 
-std::string PExprBoolExpression::toString_2() const
+std::string PExprBoolExpression::toDotString() const
 {
     std::stringstream ss;
     if( getConstant().valid() ){
@@ -909,10 +909,10 @@ std::string PExprBoolExpression::toString_2() const
         else if( getOp() == LOGICAL_XOR )
             Operator = " ^ ";
 
-        ss << "(" << getFst()->toString_2() << Operator << getSnd()->toString_2() << ")";
+        ss << "(" << getFst()->toDotString() << Operator << getSnd()->toDotString() << ")";
     }
     else if( getFst().valid() && !getSnd().valid() ){
-        ss << "(! " << getFst()->toString_2() << ")";
+        ss << "(! " << getFst()->toDotString() << ")";
     }
     else{
         ss << "(" << _identifier << ")";
@@ -947,6 +947,8 @@ PExprBoolExpressionHandle PExprBoolExpression::makeBinaryEqualHandle(PExprBoolEx
 }
 
 PExprBoolExpressionHandle PExprBoolExpression::makeUnaryNotHandle(PExprBoolExpressionHandle pFst) {
+    if(pFst->getOp() == LOGICAL_NOT)
+        return pFst->getFst();
     return PExprBoolExpressionHandle(PExprBoolExpression(pFst, LOGICAL_NOT));
 }
 

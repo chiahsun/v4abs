@@ -258,11 +258,39 @@ void test_convert_if_statement_with_goto(){
 }
 
 void test_convert_specific(){
+    Signal sig("!", "y_valid");
+    Signal sig2("\"", "y");
+    Signal sig3("#", "c");
+    sig.addTimeValue(0, "1");
+    sig2.addTimeValue(0, "0");
+    sig3.addTimeValue(0, "0");
+    std::vector<Signal> _vec;
+    std::map<std::string, std::string> _map;
+    _vec.push_back(sig);
+    _vec.push_back(sig2);
+    _vec.push_back(sig3);
+    _map["y_valid"] = "!";
+    _map["y"] = "\"";
+    _map["c"] = "#";
+
     CAstSpecificUpdateStatementParser parser;
     CAstSpecificUpdateStatementHandle pCAstSpecific = parser.parseString("(specific_update_statement (if_statement_without_goto (if_statement_prefix if ( (bool_expression (identifier y_valid)) )) (read_or_write_or_check_statement (write_statement write ( (identifier y) ) ;))))");
 
     PExprSpecificUpdateStatementHandle pSpecificUpdateStatement = ConvertCAst2PExpr::convert(pCAstSpecific);
     assertEqual("(specific_update_statement (if_statement_without_goto (if_statement_prefix (bool_expression y_valid)) (read_or_write_or_check_statement (write_statement y))))", pSpecificUpdateStatement->toString(), "test");
+
+    CAstAllUpdateStatementParser parser_2;
+    CAstAllUpdateStatementHandle pCAstAll = parser_2.parseString("(all_update_statement (if_statement_without_goto (if_statement_prefix if ( (bool_expression (identifier c)) )) (read_or_write_or_check_statement (write_statement write ( (identifier y) ) ;))))");
+
+    PExprAllUpdateStatementHandle pAllUpdateStatement = ConvertCAst2PExpr::convert(pCAstAll);
+
+    std::vector<PExprSpecificUpdateStatementHandle> _vecSpe;
+    std::vector<PExprAllUpdateStatementHandle> _vecAll;
+    _vecSpe.push_back(pSpecificUpdateStatement);
+    _vecAll.push_back(pAllUpdateStatement);
+    PExprUpdateStatementHandle pUpdateStatement = PExprUpdateStatement::makeHandle(_vecAll, _vecSpe);
+    SigExpressionHandle exp = ConvertGraphInfo::convert(pUpdateStatement, _vec, _map);
+    std::cout << exp->calculate() << std::endl;
     UNIT_TEST_FUNCTION_END_FUNCTION_TEST();
 }
 

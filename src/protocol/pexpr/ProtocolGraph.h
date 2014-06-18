@@ -15,11 +15,6 @@ public:
 
     PExprBoolExpressionHandle first;
     PExprUpdateStatementHandle second;
-#if 0
-private:
-    PExprBoolExpressionHandle _pBoolExpression;
-    PExprUpdateStatementHandle _pUpdateStatement;
-#endif
 };
 
 class ProtocolGraph {

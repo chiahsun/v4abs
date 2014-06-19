@@ -71,7 +71,9 @@ std::string VRExprEfsmUpdate::toDotString() const {
     return toString();
 }
 
-VRExprEfsm::VRExprEfsm() { }
+VRExprEfsm::VRExprEfsm(const std::string & moduleName)
+  : _moduleName(moduleName)
+  { }
     
 VRExprEfsm::state_handle_type 
 VRExprEfsm::addState(state_value_type stateValue) 

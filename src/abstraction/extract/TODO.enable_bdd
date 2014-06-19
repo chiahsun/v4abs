@@ -1,0 +1,17 @@
+1. 
+550 [(edge : Edge5) (State2 -> State2) :
+551 Enable: (!reset&&(reset||!in_en))
+552 Update:
+
+2. CTE.c
+
+s2:
+    if (reset)
+        goto s1;
+
+    if (!reset&&in_en){
+        read(yuv_in);
+        goto s3;
+    }
+    if (!reset)
+        goto s2;

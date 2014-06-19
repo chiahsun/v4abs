@@ -19,7 +19,7 @@ EfsmExtract::EfsmExtract( const std::string & verilogAstName
 }
 
 VRExprEfsm EfsmExtract::extract(const std::string & topModuleName) {
-    VRExprEfsm efsm;
+    VRExprEfsm efsm(topModuleName);
 
     bool hasModule = false;
     std::vector<VRExprAssignment> vecAssign;
@@ -41,7 +41,8 @@ VRExprEfsm EfsmExtract::extract(const std::string & topModuleName) {
         efsm.addState(pProtocolState->getValue());
     }
 
-    DEBUG_EXPR(_protocolGraph.toString());
+//    if (verbose)
+        LOG(INFO) << _protocolGraph.toString();
 
     CONST_FOR_EACH(pProtocolEdge, _protocolGraph.getEdgeHandleContainer()) {
         PExprBoolExpressionHandle pPExprBoolExpression =
@@ -50,9 +51,11 @@ VRExprEfsm EfsmExtract::extract(const std::string & topModuleName) {
             pProtocolEdge->getValue().second;
 
         VRExprExpression enableFunction = ConvertPExpr2VRExpr::convert(pPExprBoolExpression);
-        DEBUG_EXPR(pPExprBoolExpression->toString());
-        DEBUG_EXPR(enableFunction.toString());
-        DEBUG_EXPR(pPExprUpdateStatement->toString());
+        if (verbose) {
+            LOG(INFO) << pPExprBoolExpression->toString() << "\n";
+            LOG(INFO) << enableFunction.toString() << "\n";
+            LOG(INFO) << pPExprUpdateStatement->toString() << "\n";
+        }
 
         int fromStateId = pProtocolEdge->getStatePair().first;
         int toStateId = pProtocolEdge->getStatePair().second;
@@ -60,7 +63,8 @@ VRExprEfsm EfsmExtract::extract(const std::string & topModuleName) {
         std::vector<VRExprExpression> vecRead, vecWrite, vecCheck;
         ConvertPExpr2VRExpr::convert(pPExprUpdateStatement, vecRead, vecWrite, vecCheck);
         VRExprEfsmUpdate update(vecAssign, vecRead, vecWrite, vecCheck);
-        DEBUG_EXPR(update.toString());
+        if (verbose) 
+            LOG(INFO) << update.toString();
 
         VRExprEfsm::edge_handle_type pEdge = 
             efsm.addEdge( fromStateId

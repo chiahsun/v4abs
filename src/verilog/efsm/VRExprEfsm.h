@@ -59,11 +59,14 @@ public:
 
     typedef efsm_impl_type::state_id_type state_id_type;
     typedef efsm_impl_type::edge_id_type edge_id_type;
+
+    std::string _moduleName;
+
 private:
     efsm_impl_type _efsm;
 
 public:
-    VRExprEfsm();
+    VRExprEfsm(const std::string & moduleName);
     
     state_handle_type addState(state_value_type stateValue);
 

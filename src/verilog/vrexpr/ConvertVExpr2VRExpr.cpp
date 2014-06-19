@@ -19,6 +19,140 @@ VRExprModule ConvertVExpr2VRExpr::convert(VExprFlatModuleHandle pFlatModule) {
         mod.addInitial(ConvertVExpr2VRExpr::convert(pInitial));
     }
 
+    CONST_FOR_EACH(pParameterDeclaration, pFlatModule->getParameterDeclarationContainer()) {
+        CONST_FOR_EACH(pParaAssignment, pParameterDeclaration->getParaAssignmentHandleContainer()) {
+            VRExprIdentifier identifier = convert(pParaAssignment->getIdentifierHandle());
+            VRExprExpression expr = convert(pParaAssignment->getExpressionHandle());
+            VRExprParameter parameter(identifier, expr);
+            mod.addParameter(parameter);
+        }
+    }
+
+    CONST_FOR_EACH(pIntegerDeclaration, pFlatModule->getIntegerDeclarationContainer()) {
+        CONST_FOR_EACH(pRegisterName, pIntegerDeclaration->getContainer()) {
+            VRExprIdentifier identifier = convert(pRegisterName->getIdentifierHandle());
+            VRExprSignal input = VRExprSignal::makeSignal(identifier);
+            CONST_FOR_EACH(pRange, pRegisterName->getRangeHandleContainer()) {
+                VExprConstantExpressionHandle pFst = pRange->getFst();
+                VExprConstantExpressionHandle pSnd = pRange->getSnd();
+
+                unsigned int pFstNumber = convertToUnsignedNumber(pFst);
+                unsigned int pSndNumber = convertToUnsignedNumber(pSnd);
+                input.addSize(pFstNumber - pSndNumber+1);
+            }
+            mod.addInput(input);
+        }
+    }
+#if 0
+    CONST_FOR_EACH(pInputDeclaration, pFlatModule->getInputDeclarationContainer()) {
+        CONST_FOR_EACH(pInputDecl, pInputDeclaration->getContainer()) {
+            VExprPortDeclarationHandle pPortDeclaration = pInputDecl->getPortDeclarationHandle();
+            VExprIdentifierHandle pIdentifier = pPortDeclaration->getIdentifierHandle();
+            VRExprIdentifier identifier = convert(pIdentifier);
+
+            VExprRangeHandle pRange = pPortDeclaration->getRangeHandle();
+            if (!pRange.valid()) {
+                VRExprSignal input(identifier, 1);
+                mod.addInput(input);
+            } else {
+                VExprConstantExpressionHandle pFst = pRange->getFst();
+                VExprConstantExpressionHandle pSnd = pRange->getSnd();
+
+                unsigned int pFstNumber = convertToUnsignedNumber(pFst);
+                unsigned int pSndNumber = convertToUnsignedNumber(pSnd);
+
+                VRExprSignal input(identifier, pFstNumber - pSndNumber + 1);
+                mod.addInput(input);
+            }
+        }
+    }
+#endif
+#define ADD_IO(func_get_decl_container_name, func_add_name) \
+    CONST_FOR_EACH(pInputDeclaration, pFlatModule->func_get_decl_container_name()) {\
+        CONST_FOR_EACH(pInputDecl, pInputDeclaration->getContainer()) {\
+            VExprPortDeclarationHandle pPortDeclaration = pInputDecl->getPortDeclarationHandle();\
+            VExprIdentifierHandle pIdentifier = pPortDeclaration->getIdentifierHandle();\
+            VRExprIdentifier identifier = convert(pIdentifier);\
+            VExprRangeHandle pRange = pPortDeclaration->getRangeHandle();\
+            if (!pRange.valid()) {\
+                VRExprSignal input(identifier, 1);\
+                mod.func_add_name(input);\
+            } else {\
+                VExprConstantExpressionHandle pFst = pRange->getFst();\
+                VExprConstantExpressionHandle pSnd = pRange->getSnd();\
+                unsigned int pFstNumber = convertToUnsignedNumber(pFst);\
+                unsigned int pSndNumber = convertToUnsignedNumber(pSnd);\
+                VRExprSignal input(identifier, pFstNumber - pSndNumber + 1);\
+                mod.func_add_name(input);\
+            }\
+        }\
+    }
+
+    ADD_IO(getInputDeclarationContainer, addInput);
+    ADD_IO(getOutputDeclarationContainer, addOutput);
+    ADD_IO(getInoutDeclarationContainer, addInout);
+    
+    CONST_FOR_EACH(pNetDeclaration, pFlatModule->getNetDeclarationContainer()) {
+        CONST_FOR_EACH(pNetDecl, pNetDeclaration->getContainer()) {
+            VExprIdentifierHandle pIdentifier = pNetDecl->getIdentifierHandle();
+            VRExprIdentifier identifier = convert(pIdentifier);
+
+            VExprRangeHandle pRange = pNetDecl->getRangeHandle();
+            if (!pRange.valid()) {
+                VRExprSignal input(identifier, 1);
+                mod.addWire(input);
+            } else {
+                VExprConstantExpressionHandle pFst = pRange->getFst();
+                VExprConstantExpressionHandle pSnd = pRange->getSnd();
+
+                unsigned int pFstNumber = convertToUnsignedNumber(pFst);
+                unsigned int pSndNumber = convertToUnsignedNumber(pSnd);
+
+                VRExprSignal input(identifier, pFstNumber - pSndNumber + 1);
+                mod.addWire(input);
+            }
+        }
+    }
+
+
+    CONST_FOR_EACH(pRegDeclaration, pFlatModule->getRegDeclarationContainer()) {
+        CONST_FOR_EACH(pRegDecl, pRegDeclaration->getContainer()) {
+            VExprRegisterNameHandle pRegisterName = 
+                pRegDecl->getRegisterNameHandle();
+            VExprIdentifierHandle pIdentifier =
+                pRegisterName->getIdentifierHandle();
+            VRExprIdentifier identifier = convert(pIdentifier);
+
+            VRExprSignal input = VRExprSignal::makeSignal(identifier);
+            {
+            VExprRangeHandle pRange = pRegDecl->getRangeHandle();
+
+            if (!pRange.valid()) {
+                input.addSize(1);
+            } else {
+                VExprConstantExpressionHandle pFst = pRange->getFst();
+                VExprConstantExpressionHandle pSnd = pRange->getSnd();
+
+                unsigned int pFstNumber = convertToUnsignedNumber(pFst);
+                unsigned int pSndNumber = convertToUnsignedNumber(pSnd);
+
+                input.addSize(pFstNumber - pSndNumber + 1);
+            }
+            }
+
+            CONST_FOR_EACH(pRange, pRegisterName->getRangeHandleContainer()) {
+                VExprConstantExpressionHandle pFst = pRange->getFst();
+                VExprConstantExpressionHandle pSnd = pRange->getSnd();
+
+                unsigned int pFstNumber = convertToUnsignedNumber(pFst);
+                unsigned int pSndNumber = convertToUnsignedNumber(pSnd);
+
+                input.addSize(pFstNumber - pSndNumber + 1);
+            }
+            mod.addReg(input);
+        }
+    }
+
     return mod;
 }
 
@@ -389,4 +523,15 @@ VRExprExpression ConvertVExpr2VRExpr::convert(VExprNegedgeEventHandle pNegedgeEv
 
 std::vector<VRExprAssignment> ConvertVExpr2VRExpr::convert(VExprAlwaysHandle pAlways) {
     return ConvertVExpr2VRExpr::convert(pAlways->getStatementHandle());
+}
+    
+unsigned int ConvertVExpr2VRExpr::convertToUnsignedNumber(VExprConstantExpressionHandle pConstantExpression) {
+    if(!pConstantExpression->getConstantPrimaryHandle().valid()) 
+        LOG(ERROR) << "range not primary " << pConstantExpression->getString(); 
+    if (!pConstantExpression->getConstantPrimaryHandle()->getNumberHandle().valid())
+       LOG(ERROR) << "range not number" << pConstantExpression->getString();
+    if (!pConstantExpression->getConstantPrimaryHandle()->getNumberHandle()->getUnsignedNumberHandle().valid())
+        LOG(ERROR) << "range not unsigned number" << pConstantExpression->getString();
+
+    return pConstantExpression->getConstantPrimaryHandle()->getNumberHandle()->getUnsignedNumberHandle()->getValue();
 }

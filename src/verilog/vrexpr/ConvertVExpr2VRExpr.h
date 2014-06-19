@@ -50,6 +50,7 @@ public:
     static VRExprDecimalNumber convert(VExprDecimalNumberHandle pDecimalNumber);
     static VRExprHexNumber convert(VExprHexNumberHandle pHexNumber);
 
+    static unsigned int convertToUnsignedNumber(VExprConstantExpressionHandle pConstantExpression);
 };
 
 

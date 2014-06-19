@@ -13,7 +13,9 @@ class VRExprAssignment {
     HashTable<VRExprExpression> _hashPosedgeSensitivity;
     HashTable<VRExprExpression> _hashNegedgeSensitivity;
 
-    HashTable<VRExprExpression> _hashTerminals;
+    HashTable<VRExprExpression> _hashRhsTerminals;
+    HashTable<VRExprExpression> _hashLhsTerminals;
+
     std::vector<VRExprExpression> _vecMux;
 
     typedef VRExprTermManager::VRExprTermHandle VRExprTermHandle;
@@ -28,6 +30,10 @@ public:
     VRExprExpression getExprLhs() const;
     VRExprExpression getExprRhs() const;
 
+    const HashTable<VRExprExpression>& getStaticSensitivity() const;
+    const HashTable<VRExprExpression>& getPosedgeSensitivity() const;
+    const HashTable<VRExprExpression>& getNegedgeSensitivity() const;
+
     void addStaticSensitivity(VRExprExpression expr);
     void addPosedgeSensitivity(VRExprExpression expr);
     void addNegedgeSensitivity(VRExprExpression expr);
@@ -35,6 +41,9 @@ public:
     void addStaticSensitivity(VRExprIdentifier identifier);
     void addPosedgeSensitivity(VRExprIdentifier identifier);
     void addNegedgeSensitivity(VRExprIdentifier identifier);
+
+    const HashTable<VRExprExpression> & getRhsTerminalHash() const;
+    const HashTable<VRExprExpression> & getLhsTerminalHash() const;
 
     std::string toString() const;
 

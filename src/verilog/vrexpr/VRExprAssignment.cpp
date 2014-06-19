@@ -72,14 +72,27 @@ std::string VRExprAssignment::toString() const {
         begin = true;
     }
     s += ")\n";
-    s = s + "       + (rhs_terminals ";
+    
     unsigned int pos = 0;
-    CONST_FOR_EACH(terminal, _hashTerminals) {
+    
+    s = s + "       + (lhs_terminals ";
+    pos = 0;
+    CONST_FOR_EACH(terminal, _hashLhsTerminals) {
         if (pos++ != 0)
             s += ", ";
         s += terminal.toString();
     }
     s += ")\n";
+
+    s = s + "       + (rhs_terminals ";
+    pos = 0;
+    CONST_FOR_EACH(terminal, _hashRhsTerminals) {
+        if (pos++ != 0)
+            s += ", ";
+        s += terminal.toString();
+    }
+    s += ")\n";
+    
     
     s = s + "       + (mux_terminals ";
     pos = 0;
@@ -104,7 +117,8 @@ void VRExprAssignment::initStaticSensitivity() {
 }
 
 void VRExprAssignment::initTerminalExpressions() {
-    _hashTerminals = _exprRhs.getTerminalExpressions();
+    _hashRhsTerminals = _exprRhs.getTerminalExpressions();
+    _hashLhsTerminals = _exprLhs.getTerminalExpressions();
 }
 
 void VRExprAssignment::initMuxExpressions() {
@@ -113,7 +127,7 @@ void VRExprAssignment::initMuxExpressions() {
 
 void VRExprAssignment::buildWddNode() {
     // Init term manager terminals
-    CONST_FOR_EACH(terminal, _hashTerminals) {
+    CONST_FOR_EACH(terminal, _hashRhsTerminals) {
         _termManager.addExpr(terminal);
     }
 
@@ -127,3 +141,19 @@ void VRExprAssignment::buildWddNode() {
 VRExprAssignment makeAssignment(VRExprExpression lhs, VRExprExpression rhs) {
     return VRExprAssignment(lhs, rhs);
 }
+    
+const HashTable<VRExprExpression> & VRExprAssignment::getRhsTerminalHash() const
+  { return _hashRhsTerminals; }
+
+const HashTable<VRExprExpression> & VRExprAssignment::getLhsTerminalHash() const
+  { return _hashLhsTerminals; }
+
+const HashTable<VRExprExpression>& VRExprAssignment::getStaticSensitivity() const
+  { return _hashStaticSensitivity; }
+
+const HashTable<VRExprExpression>& VRExprAssignment::getPosedgeSensitivity() const
+  { return _hashPosedgeSensitivity; }
+
+const HashTable<VRExprExpression>& VRExprAssignment::getNegedgeSensitivity() const
+  { return _hashNegedgeSensitivity; }
+

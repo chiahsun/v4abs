@@ -114,6 +114,16 @@ VRExprModule ConvertVExpr2VRExpr::convert(VExprFlatModuleHandle pFlatModule) {
         }
     }
 
+    HashTable<VRExprExpression> hashClockSensitiveTerminals;
+
+    CONST_FOR_EACH(assignment, mod.getAssignmentContainer()) {
+        if ( assignment.getPosedgeSensitivity().size() != 0
+          || assignment.getNegedgeSensitivity().size() != 0) {
+            CONST_FOR_EACH(lhs, assignment.getLhsTerminalHash()) {
+                hashClockSensitiveTerminals.insert(lhs);
+            }
+        }
+    }
 
     CONST_FOR_EACH(pRegDeclaration, pFlatModule->getRegDeclarationContainer()) {
         CONST_FOR_EACH(pRegDecl, pRegDeclaration->getContainer()) {
@@ -124,20 +134,19 @@ VRExprModule ConvertVExpr2VRExpr::convert(VExprFlatModuleHandle pFlatModule) {
             VRExprIdentifier identifier = convert(pIdentifier);
 
             VRExprSignal input = VRExprSignal::makeSignal(identifier);
-            {
-            VExprRangeHandle pRange = pRegDecl->getRangeHandle();
+            
+            VExprRangeHandle pFstRange = pRegDecl->getRangeHandle();
 
-            if (!pRange.valid()) {
+            if (!pFstRange.valid()) {
                 input.addSize(1);
             } else {
-                VExprConstantExpressionHandle pFst = pRange->getFst();
-                VExprConstantExpressionHandle pSnd = pRange->getSnd();
+                VExprConstantExpressionHandle pFst = pFstRange->getFst();
+                VExprConstantExpressionHandle pSnd = pFstRange->getSnd();
 
                 unsigned int pFstNumber = convertToUnsignedNumber(pFst);
                 unsigned int pSndNumber = convertToUnsignedNumber(pSnd);
 
                 input.addSize(pFstNumber - pSndNumber + 1);
-            }
             }
 
             CONST_FOR_EACH(pRange, pRegisterName->getRangeHandleContainer()) {
@@ -149,7 +158,11 @@ VRExprModule ConvertVExpr2VRExpr::convert(VExprFlatModuleHandle pFlatModule) {
 
                 input.addSize(pFstNumber - pSndNumber + 1);
             }
-            mod.addReg(input);
+
+            if (hashClockSensitiveTerminals.find(VRExprExpression(VRExprPrimary(identifier))) != hashClockSensitiveTerminals.end())
+                mod.addReg(input);
+            else
+                mod.addWire(input);
         }
     }
 

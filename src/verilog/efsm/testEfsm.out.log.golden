@@ -1,1 +1,93 @@
+TestFail("[(state State0) : S0]\n" "[(state State1) : S1]\n" "[(edge : Edge0) (State0 -> State1) : \n" "Enable: rst\n" "Update:\n" "  always @ (0)\n" "       + (rhs_terminals 0)\n" "       + (mux_terminals )\n" "       + (rhs_wdd_format 0)\n" "       - reg_a = 0\n" "  always @ (11)\n" "       + (rhs_terminals 11)\n" "       + (mux_terminals )\n" "       + (rhs_wdd_format 11)\n" "       - wa = 11\n" "Read:\n" "Write:\n" "Check:\n" "\n" "]\n" == efsm.toString()) : (testEfsm.cc : 37)
+    Golden: [(state State0) : S0]
+[(state State1) : S1]
+[(edge : Edge0) (State0 -> State1) : 
+Enable: rst
+Update:
+  always @ (0)
+       + (rhs_terminals 0)
+       + (mux_terminals )
+       + (rhs_wdd_format 0)
+       - reg_a = 0
+  always @ (11)
+       + (rhs_terminals 11)
+       + (mux_terminals )
+       + (rhs_wdd_format 11)
+       - wa = 11
+Read:
+Write:
+Check:
+
+]
+
+    Output: [(state State0) : S0]
+[(state State1) : S1]
+[(edge : Edge0) (State0 -> State1) : 
+Enable: rst
+Update:
+  always @ (0)
+       + (lhs_terminals reg_a)
+       + (rhs_terminals 0)
+       + (mux_terminals )
+       + (rhs_wdd_format 0)
+       - reg_a = 0
+  always @ (11)
+       + (lhs_terminals wa)
+       + (rhs_terminals 11)
+       + (mux_terminals )
+       + (rhs_wdd_format 11)
+       - wa = 11
+Read:
+Write:
+Check:
+
+]
+
+    Message: Test to string
+TestFail("[(state State0) : S0]\n" "[(state State1) : S1]\n" "[(edge : Edge0) (State0 -> State1) : \n" "Enable: en\n" "Update:\n" "  always @ (0)\n" "       + (rhs_terminals 0)\n" "       + (mux_terminals )\n" "       + (rhs_wdd_format 0)\n" "       - reg_a = 0\n" "  always @ (11)\n" "       + (rhs_terminals 11)\n" "       + (mux_terminals )\n" "       + (rhs_wdd_format 11)\n" "       - wa = 11\n" "Read:\n" "Write:\n" "Check:\n" "\n" "]\n" == efsm.toString()) : (testEfsm.cc : 65)
+    Golden: [(state State0) : S0]
+[(state State1) : S1]
+[(edge : Edge0) (State0 -> State1) : 
+Enable: en
+Update:
+  always @ (0)
+       + (rhs_terminals 0)
+       + (mux_terminals )
+       + (rhs_wdd_format 0)
+       - reg_a = 0
+  always @ (11)
+       + (rhs_terminals 11)
+       + (mux_terminals )
+       + (rhs_wdd_format 11)
+       - wa = 11
+Read:
+Write:
+Check:
+
+]
+
+    Output: [(state State0) : S0]
+[(state State1) : S1]
+[(edge : Edge0) (State0 -> State1) : 
+Enable: en
+Update:
+  always @ (0)
+       + (lhs_terminals reg_a)
+       + (rhs_terminals 0)
+       + (mux_terminals )
+       + (rhs_wdd_format 0)
+       - reg_a = 0
+  always @ (11)
+       + (lhs_terminals wa)
+       + (rhs_terminals 11)
+       + (mux_terminals )
+       + (rhs_wdd_format 11)
+       - wa = 11
+Read:
+Write:
+Check:
+
+]
+
+    Message: Test to string
 End of test : test_add_edge

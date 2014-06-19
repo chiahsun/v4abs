@@ -10,9 +10,11 @@ public:
     // Normally, they have size 1
     VRExprSignal(VRExprIdentifier identifier, int size);
     VRExprIdentifier getIdentifier() const;
+    const std::vector<int>& getArraySizeContainer() const;
+
     std::string strArrayFormat(int x) const; 
     void addSize(int sz);
-    std::string toString() const; 
+    std::string toString() const;
     // Use with case, this didn't push any size
     static VRExprSignal makeSignal(VRExprIdentifier identifier);
 private:

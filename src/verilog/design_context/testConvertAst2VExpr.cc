@@ -134,7 +134,7 @@ void test_convert_ternary_expression() {
     
     VExprTernaryHandle pTernary = ConvertAst2VExpr::convert(pAstTernaryExpression);
 
-    assertEqual("(1'b1?2'b00:2'b11)", pTernary->getString(), "Test convert ternary expression");
+    assertEqual("(1'b1 ? 2'b00 : 2'b11)", pTernary->getString(), "Test convert ternary expression");
     UNIT_TEST_FUNCTION_END_FUNCTION_TEST();
 }
 
@@ -245,7 +245,7 @@ void test_convert_net_assignment() {
 
     VExprNetAssignmentHandle pNetAssignement =
         ConvertAst2VExpr::convert(pAstNetAssignment);
-    assertEqual("assign debug_B0=B[0]", pNetAssignement->getString(), "Test convert net assignment");
+    assertEqual("assign debug_B0=B[0];\n", pNetAssignement->getString(), "Test convert net assignment");
 
     UNIT_TEST_FUNCTION_END_FUNCTION_TEST();
 }
@@ -267,7 +267,7 @@ void test_convert_continuous_assignment() {
 
     VExprContinuousAssignmentHandle pContinuousAssignment =
         ConvertAst2VExpr::convert(pAstContinuousAssign);
-    assertEqual("assign debug_B0=B[0]", pContinuousAssignment->getString(), "Test convert continuous assignment");
+    assertEqual("assign debug_B0=B[0];\n", pContinuousAssignment->getString(), "Test convert continuous assignment");
 
     UNIT_TEST_FUNCTION_END_FUNCTION_TEST();
 }
@@ -275,7 +275,7 @@ void test_convert_continuous_assignment() {
 void test_convert_register_name() {
     AstRegisterNameParser parser;
     AstRegisterNameHandle pAstRegisterName = parser.parseString("(register_name (identifier (single_identifier (simple_identifier mem_array))) [ (constant_expression (constant_primary (number (unsigned_number 2)))) : (constant_expression (constant_primary (number (unsigned_number 0)))) ])");
-    assertEqual("", pAstRegisterName->toString(), "Test ast register name to string");
+    assertEqual("(register_name (identifier (single_identifier (simple_identifier mem_array))) (zero_or_more_register_name_range))", pAstRegisterName->toString(), "Test ast register name to string");
 
     UNIT_TEST_FUNCTION_END_FUNCTION_TEST();
 }
@@ -361,11 +361,12 @@ void test_convert_conditional_statement() {
     VExprConditionalStatementHandle pConditional =
         ConvertAst2VExpr::convert(pAstConditional);
 
-    assertEqual("if (rst) {\n"
+    assertEqual("if (rst) begin\n"
                 "  A <= 0;\n"
-                "} else {\n"
+                "end\n"
+                "else begin\n"
                 "  A <= 1;\n"
-                "}\n", pConditional->getString(), "Test convert conditional statement");
+                "end\n", pConditional->getString(), "Test convert conditional statement");
 
     UNIT_TEST_FUNCTION_END_FUNCTION_TEST();
 }
@@ -422,7 +423,7 @@ void test_convert_module_instantiation_named() {
     VExprModuleInstantiationHandle pModuleInstantiation =
         ConvertAst2VExpr::convert(pAstModuleInstantiation);
 
-    assertEqual("ADD add1(.rst(rst), .A(A), .B(B), .O(O));\n", pModuleInstantiation->getString(), "Test convert module instantiation named");
+    assertEqual("ADD add1(.clk(clk), .rst(rst), .A(A), .B(B), .O(O));\n", pModuleInstantiation->getString(), "Test convert module instantiation named");
 
     UNIT_TEST_FUNCTION_END_FUNCTION_TEST();
 }
@@ -446,7 +447,7 @@ void test_convert_always() {
     VExprAlwaysHandle pAlways =
         ConvertAst2VExpr::convert(pAstAlwaysConstruct);
 
-    assertEqual("always always @ (*)\n"
+    assertEqual("always @ (*)\n"
                 "  begin\n"
                 "    next_state = state;\n"
                 "    next_reg_i = reg_i;\n"

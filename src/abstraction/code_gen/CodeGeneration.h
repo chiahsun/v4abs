@@ -12,8 +12,11 @@ public:
 
     void writeFile(const std::string & filePrefixName);
     std::string generateHeader() const;
-private:
 
+private:
+    const VRExprEfsm& getEfsm() const;
+
+    void generateTypeAndSize(std::stringstream & ss, int sz) const;
 };
 
 #endif // CODE_GENERATION_H

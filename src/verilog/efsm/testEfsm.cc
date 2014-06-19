@@ -2,7 +2,8 @@
 #include "VRExprEfsm.h"
 
 void test_add_edge() {
-    VRExprEfsm efsm("TOP");
+    VRExprModule module(VRExprIdentifier("TOP"));
+    VRExprEfsm efsm(module);
     VRExprEfsm::state_handle_type pState0 = efsm.addState("S0");
     VRExprEfsm::state_handle_type pState1 = efsm.addState("S1");
     VRExprAssignment assign1 = VRExprAssignment(makeIdentifier("reg_a"), makeUnsignedNumber(0));

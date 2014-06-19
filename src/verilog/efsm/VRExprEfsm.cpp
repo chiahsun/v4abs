@@ -13,6 +13,7 @@ VRExprEfsmUpdate::VRExprEfsmUpdate
   , _vecWrite(vecWrite)
   , _vecCheck(vecCheck)
   { }
+    
 
 void VRExprEfsmUpdate::addAssignment(const VRExprAssignment & assignment)
   { _vecAssign.push_back(assignment); }
@@ -71,9 +72,12 @@ std::string VRExprEfsmUpdate::toDotString() const {
     return toString();
 }
 
-VRExprEfsm::VRExprEfsm(const std::string & moduleName)
-  : _moduleName(moduleName)
+VRExprEfsm::VRExprEfsm(VRExprModule module)
+  : _module(module)
   { }
+
+const VRExprModule& VRExprEfsm::getModule() const
+  { return _module; }
     
 VRExprEfsm::state_handle_type 
 VRExprEfsm::addState(state_value_type stateValue) 

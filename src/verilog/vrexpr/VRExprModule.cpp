@@ -12,6 +12,9 @@ VRExprSignal::VRExprSignal(VRExprIdentifier identifier, int size)
 VRExprIdentifier VRExprSignal::getIdentifier() const 
   { return _identifier; }
 
+const std::vector<int>& VRExprSignal::getArraySizeContainer() const
+  { return _vecArraySize; }
+
 std::string VRExprSignal::strArrayFormat(int x) const {
     std::stringstream ss;
     if (x - 1 != 0) {

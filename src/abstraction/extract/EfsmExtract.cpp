@@ -19,10 +19,10 @@ EfsmExtract::EfsmExtract( const std::string & verilogAstName
 }
 
 VRExprEfsm EfsmExtract::extract(const std::string & topModuleName) {
-    VRExprEfsm efsm(topModuleName);
 
     bool hasModule = false;
     std::vector<VRExprAssignment> vecAssign;
+    unsigned int pos = 0;
     // TODO initial for start node
     CONST_FOR_EACH(module, _vecModule) {
         if (module.getModuleName() == topModuleName) {
@@ -30,11 +30,15 @@ VRExprEfsm EfsmExtract::extract(const std::string & topModuleName) {
             vecAssign = module.getAssignmentContainer();
             break;
         }
+        if (!hasModule)
+            ++pos;
     }
 
     if (!hasModule) {
         LOG(ERROR) << "No such top module name: " << topModuleName << std::endl;
     }
+    
+    VRExprEfsm efsm(_vecModule[pos]);
 
 
     CONST_FOR_EACH(pProtocolState, _protocolGraph.getStateHandleContainer()) {

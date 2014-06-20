@@ -21,7 +21,7 @@
 
 class VRExprExpression;
 class VRExprConcatenation;
-class VRExprMultConcatentation;
+class VRExprMultConcatenation;
 class VRExprIte;
 class VRExprIt;
 class VRExprIe;
@@ -32,6 +32,12 @@ class VRExprSelect {
 public:
     VRExprSelect(const VRExprBitSelect & bitSelect);
     VRExprSelect(const VRExprRangeSelect & rangeSelect);
+       
+    const VRExprBitSelect* getBitSelectHandle() const
+      { return _variant.getFstHandle(); }
+
+    const VRExprRangeSelect* getRangeSelectHandle() const
+      { return _variant.getSndHandle(); }
 
     std::string toString() const;
     HashTable<VRExprExpression> getStaticSensitivity() const;
@@ -54,7 +60,7 @@ class VRExprSelectIdentifier : public VRExprPrimaryInterface {
         Impl(VRExprIdentifier identifier, VRExprSelect select);
         Impl(VRExprIdentifier identifier, std::vector<VRExprSelect> vecSelect);
 
-        VRExprIdentifier getIdenifier() const
+        VRExprIdentifier getIdentifier() const
           { return _identifier; }
         const std::vector<VRExprSelect>& getSelectContainer() const
           { return _vecSelect; }
@@ -67,8 +73,8 @@ class VRExprSelectIdentifier : public VRExprPrimaryInterface {
 public:
     VRExprSelectIdentifier(VRExprIdentifier identifier, VRExprSelect select);
     VRExprSelectIdentifier(VRExprIdentifier identifier, std::vector<VRExprSelect> vecSelect);
-    VRExprIdentifier getIdenifier() const
-      { return _pImpl->getIdenifier(); }
+    VRExprIdentifier getIdentifier() const
+      { return _pImpl->getIdentifier(); }
     const std::vector<VRExprSelect>& getSelectContainer() const
       { return _pImpl->getSelectContainer(); }
     std::string toString() const;
@@ -81,13 +87,13 @@ public:
 
 class VRExprPrimary : public VRExprExpressionInterface {
     struct Impl {
-       Variant5<VRExprIdentifier, VRExprNumber, VRExprSelectIdentifier, VRExprConcatenation, VRExprMultConcatentation, VRExprPrimaryInterface> _variant; 
+       Variant5<VRExprIdentifier, VRExprNumber, VRExprSelectIdentifier, VRExprConcatenation, VRExprMultConcatenation, VRExprPrimaryInterface> _variant; 
     public:
        Impl(VRExprIdentifier identifier);
        Impl(VRExprNumber number);
        Impl(VRExprSelectIdentifier select_identifier);
        Impl(VRExprConcatenation concat);
-       Impl(VRExprMultConcatentation mult_concat);
+       Impl(VRExprMultConcatenation mult_concat);
        std::string toString() const;
 
        const VRExprIdentifier* getIdentifierHandle() const
@@ -98,7 +104,7 @@ class VRExprPrimary : public VRExprExpressionInterface {
          { return _variant.getTrdHandle(); }
        const VRExprConcatenation* getConcatenationHandle() const
          { return _variant.getForthHandle(); }
-       const VRExprMultConcatentation* getMultConcatenationHandle() const
+       const VRExprMultConcatenation* getMultConcatenationHandle() const
          { return _variant.getFifthHandle(); }
     };
 
@@ -110,7 +116,7 @@ public:
     VRExprPrimary(VRExprNumber number);
     VRExprPrimary(VRExprSelectIdentifier select_identifier);
     VRExprPrimary(VRExprConcatenation concat);
-    VRExprPrimary(VRExprMultConcatentation mult_concat);
+    VRExprPrimary(VRExprMultConcatenation mult_concat);
     const VRExprIdentifier* getIdentifierHandle() const
       { return _pImpl->getIdentifierHandle(); }
     const VRExprNumber* getNumberHandle() const
@@ -119,7 +125,7 @@ public:
       { return _pImpl->getSelectIdentifierHandle(); }
     const VRExprConcatenation* getConcatenationHandle() const
       { return _pImpl->getConcatenationHandle(); }
-    const VRExprMultConcatentation* getMultConcatenationHandle() const
+    const VRExprMultConcatenation* getMultConcatenationHandle() const
       { return _pImpl->getMultConcatenationHandle(); }
     std::string toString() const;
     HashTable<VRExprExpression> getStaticSensitivity() const;
@@ -457,7 +463,7 @@ public:
     HashTable<VRExprExpression> getStaticSensitivity() const;
 };
 
-class VRExprMultConcatentation : public VRExprPrimaryInterface {
+class VRExprMultConcatenation : public VRExprPrimaryInterface {
     struct Impl : public VRExprPrimaryInterface {
         VRExprExpression _exprRepeat;
         std::vector<VRExprExpression> _vecExpr;
@@ -474,9 +480,9 @@ class VRExprMultConcatentation : public VRExprPrimaryInterface {
     typedef SharedPtr<impl_type> impl_shared_ptr_type;
     impl_shared_ptr_type _pImpl;
 public:
-    VRExprMultConcatentation(VRExprExpression exprRepeat, VRExprExpression expr);
-    VRExprMultConcatentation(VRExprExpression exprRepeat, VRExprExpression exprFst, VRExprExpression exprSnd);
-    VRExprMultConcatentation(VRExprExpression exprRepeat, std::vector<VRExprExpression> vecExpr);
+    VRExprMultConcatenation(VRExprExpression exprRepeat, VRExprExpression expr);
+    VRExprMultConcatenation(VRExprExpression exprRepeat, VRExprExpression exprFst, VRExprExpression exprSnd);
+    VRExprMultConcatenation(VRExprExpression exprRepeat, std::vector<VRExprExpression> vecExpr);
     VRExprExpression getExprRepeat() const 
       { return _pImpl->getExprRepeat(); }
     const std::vector<VRExprExpression> & getExprContainer() const

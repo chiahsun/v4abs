@@ -225,13 +225,13 @@ VRExprHexNumber ConvertVExpr2VRExpr::convert(VExprHexNumberHandle pHexNumber) {
     return VRExprHexNumber(pHexNumber->getString());
 }
     
-VRExprMultConcatentation ConvertVExpr2VRExpr::convert(VExprMultipleConcatenationHandle pMultipleConcatenation) {
+VRExprMultConcatenation ConvertVExpr2VRExpr::convert(VExprMultipleConcatenationHandle pMultipleConcatenation) {
     VRExprExpression newExprRepeat = ConvertVExpr2VRExpr::convert(pMultipleConcatenation->getExprRepeat());
     std::vector<VRExprExpression> vecNewExpr;
     CONST_FOR_EACH(pExpr, pMultipleConcatenation->getExprContainer()) {
         vecNewExpr.push_back(ConvertVExpr2VRExpr::convert(pExpr));
     }
-    return VRExprMultConcatentation(newExprRepeat, vecNewExpr);
+    return VRExprMultConcatenation(newExprRepeat, vecNewExpr);
 }
     
 VRExprConcatenation ConvertVExpr2VRExpr::convert(VExprConcatenationHandle pConcatenation) {

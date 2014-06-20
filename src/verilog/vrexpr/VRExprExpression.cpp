@@ -83,7 +83,7 @@ std::string VRExprSelectIdentifier::toString() const
 
 HashTable<VRExprExpression> VRExprSelectIdentifier::getStaticSensitivity() const {
     HashTable<VRExprExpression> ht;
-    ht.insert(VRExprExpression(VRExprPrimary(getIdenifier())));
+    ht.insert(VRExprExpression(VRExprPrimary(getIdentifier())));
     CONST_FOR_EACH(select, getSelectContainer()) {
         HashTable<VRExprExpression> htSelect = select.getStaticSensitivity();
         ht.insert(htSelect.begin(), htSelect.end());
@@ -114,7 +114,7 @@ VRExprPrimary::Impl::Impl(VRExprConcatenation concat)
    : _variant(concat)
    { }
        
-VRExprPrimary::Impl::Impl(VRExprMultConcatentation mult_concat)
+VRExprPrimary::Impl::Impl(VRExprMultConcatenation mult_concat)
   : _variant(mult_concat)
   { }
 
@@ -133,7 +133,7 @@ VRExprPrimary::VRExprPrimary(VRExprSelectIdentifier select_identifier)
 VRExprPrimary::VRExprPrimary(VRExprConcatenation concat)
   { _pImpl = impl_shared_ptr_type(impl_type(concat)); }
 
-VRExprPrimary::VRExprPrimary(VRExprMultConcatentation mult_concat)
+VRExprPrimary::VRExprPrimary(VRExprMultConcatenation mult_concat)
   { _pImpl = impl_shared_ptr_type(impl_type(mult_concat)); }
 
 std::string VRExprPrimary::toString() const 
@@ -217,13 +217,13 @@ VRExprPrimary makeConcatenation(std::vector<VRExprExpression> vecExpr)
   { return VRExprPrimary(VRExprConcatenation(vecExpr)); }
 
 VRExprPrimary makeMultConcatenation(VRExprExpression exprRepeat, VRExprExpression expr)
-  { return VRExprPrimary(VRExprMultConcatentation(exprRepeat, expr)); }
+  { return VRExprPrimary(VRExprMultConcatenation(exprRepeat, expr)); }
 
 VRExprPrimary makeMultConcatenation(VRExprExpression exprRepeat, VRExprExpression exprFst, VRExprExpression exprSnd)
-  { return VRExprPrimary(VRExprMultConcatentation(exprRepeat, exprFst, exprSnd)); }
+  { return VRExprPrimary(VRExprMultConcatenation(exprRepeat, exprFst, exprSnd)); }
 
 VRExprPrimary makeMultConcatenation(VRExprExpression exprRepeat, std::vector<VRExprExpression> vecExpr)
-  { return VRExprPrimary(VRExprMultConcatentation(exprRepeat, vecExpr)); }
+  { return VRExprPrimary(VRExprMultConcatenation(exprRepeat, vecExpr)); }
 
 VRExprExpressionImpl::VRExprExpressionImpl(VRExprPrimary primary) 
   : _variant(primary) 
@@ -730,23 +730,23 @@ HashTable<VRExprExpression> VRExprConcatenation::getStaticSensitivity() const {
     return ht;
 }
         
-VRExprMultConcatentation::Impl::Impl(VRExprExpression exprRepeat, VRExprExpression expr) 
+VRExprMultConcatenation::Impl::Impl(VRExprExpression exprRepeat, VRExprExpression expr) 
   : _exprRepeat(exprRepeat) {
       _vecExpr.push_back(expr);
 }
 
-VRExprMultConcatentation::Impl::Impl(VRExprExpression exprRepeat, VRExprExpression exprFst, VRExprExpression exprSnd)
+VRExprMultConcatenation::Impl::Impl(VRExprExpression exprRepeat, VRExprExpression exprFst, VRExprExpression exprSnd)
   : _exprRepeat(exprRepeat) {
       _vecExpr.push_back(exprFst);
       _vecExpr.push_back(exprSnd);
 }
 
-VRExprMultConcatentation::Impl::Impl(VRExprExpression exprRepeat, std::vector<VRExprExpression> vecExpr) 
+VRExprMultConcatenation::Impl::Impl(VRExprExpression exprRepeat, std::vector<VRExprExpression> vecExpr) 
   : _exprRepeat(exprRepeat) 
   , _vecExpr(vecExpr) 
   { }
 
-std::string VRExprMultConcatentation::Impl::toString() const {
+std::string VRExprMultConcatenation::Impl::toString() const {
     std::string s = "{";
     s += _exprRepeat.toString();
     assert(_vecExpr.size() > 0);
@@ -758,19 +758,19 @@ std::string VRExprMultConcatentation::Impl::toString() const {
     return s;
 }
 
-VRExprMultConcatentation::VRExprMultConcatentation(VRExprExpression exprRepeat, VRExprExpression expr)
+VRExprMultConcatenation::VRExprMultConcatenation(VRExprExpression exprRepeat, VRExprExpression expr)
   { _pImpl = impl_shared_ptr_type(impl_type(exprRepeat, expr)); }
 
-VRExprMultConcatentation::VRExprMultConcatentation(VRExprExpression exprRepeat, VRExprExpression exprFst, VRExprExpression exprSnd)
+VRExprMultConcatenation::VRExprMultConcatenation(VRExprExpression exprRepeat, VRExprExpression exprFst, VRExprExpression exprSnd)
   { _pImpl = impl_shared_ptr_type(impl_type(exprRepeat, exprFst, exprSnd)); }
 
- VRExprMultConcatentation::VRExprMultConcatentation(VRExprExpression exprRepeat, std::vector<VRExprExpression> vecExpr)
+ VRExprMultConcatenation::VRExprMultConcatenation(VRExprExpression exprRepeat, std::vector<VRExprExpression> vecExpr)
   { _pImpl = impl_shared_ptr_type(impl_type(exprRepeat, vecExpr)); }
 
-std::string VRExprMultConcatentation::toString() const
+std::string VRExprMultConcatenation::toString() const
   { return _pImpl->toString(); }
     
-HashTable<VRExprExpression> VRExprMultConcatentation::getStaticSensitivity() const {
+HashTable<VRExprExpression> VRExprMultConcatenation::getStaticSensitivity() const {
     HashTable<VRExprExpression> ht = getExprRepeat().getStaticSensitivity();
 
     CONST_FOR_EACH(expr, getExprContainer()) {

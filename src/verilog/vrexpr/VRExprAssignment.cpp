@@ -112,6 +112,12 @@ std::string VRExprAssignment::toString() const {
     return s;
 }
     
+bool VRExprAssignment::operator == (const VRExprAssignment & rhs) const 
+  { return (toString() == rhs.toString()); }
+    
+int VRExprAssignment::hashFunction() const
+  { return HashFunction<std::string>::hashFunction(toString()); }
+    
 void VRExprAssignment::initStaticSensitivity() {
     _hashStaticSensitivity = _exprRhs.getStaticSensitivity();
 }

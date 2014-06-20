@@ -45,7 +45,7 @@ VRExprEfsm EfsmExtract::extract(const std::string & topModuleName) {
         efsm.addState(pProtocolState->getValue());
     }
 
-//    if (verbose)
+    if (verbose)
         LOG(INFO) << _protocolGraph.toString();
 
     CONST_FOR_EACH(pProtocolEdge, _protocolGraph.getEdgeHandleContainer()) {

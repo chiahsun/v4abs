@@ -80,6 +80,12 @@ public:
     std::string toString() const;
     
     void writeDotFile(const std::string & dotOutputFilename);
+    
+    state_handle_container_type& getStateHandleContainer()
+      { return _efsm.getStateHandleContainer(); }
+
+    edge_handle_container_type& getEdgeHandleContainer()
+      { return _efsm.getEdgeHandleContainer(); }
 };
 
 #endif // VREXPR_EFSM_H

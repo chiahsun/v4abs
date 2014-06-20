@@ -33,6 +33,13 @@ public:
       { return _pEnableFunction; }
     update_function_handle_type getUpdateFunctionHandle()
       { return _pUpdateFunction; }
+    
+    const enable_function_handle_type getEnableFunctionHandle() const
+      { return _pEnableFunction; }
+    const update_function_handle_type getUpdateFunctionHandle() const
+      { return _pUpdateFunction; }
+
+
 
     std::string toString() const {
         std::stringstream ss;
@@ -104,6 +111,12 @@ public:
 
     void writeDotFile(const std::string & dotOutputFilename) 
       { return _graph.writeDotFile(dotOutputFilename); }
+
+    state_handle_container_type& getStateHandleContainer()
+      { return _graph.getStateHandleContainer(); }
+
+    edge_handle_container_type& getEdgeHandleContainer()
+      { return _graph.getEdgeHandleContainer(); }
 };
 
 #endif // EFSM_H

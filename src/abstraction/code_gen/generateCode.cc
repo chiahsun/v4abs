@@ -8,7 +8,8 @@ int main(int argc, char** argv) {
     }
 
     CodeGeneration code_gen(argv[1], argv[2], argv[3]);
-    std::cout << code_gen.generateHeader() << std::endl;
+    std::cout << code_gen.generateHeader() << std::endl << std::endl;
+    std::cout << code_gen.generateImplementation() << std::endl;
 
     return 0;
 }

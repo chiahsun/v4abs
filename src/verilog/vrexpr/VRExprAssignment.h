@@ -47,6 +47,9 @@ public:
 
     std::string toString() const;
 
+    bool operator == (const VRExprAssignment & rhs) const;
+    int hashFunction() const;
+
     friend VRExprAssignment makeAssignment(VRExprExpression lhs, VRExprExpression rhs);
 private:
     void initStaticSensitivity();

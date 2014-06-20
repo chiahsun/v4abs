@@ -33,7 +33,7 @@ public:
     static VRExprExpression convert(VExprExpressionHandle pExpression);
     static VRExprPrimary convert(VExprPrimaryHandle pPrimary);
 
-    static VRExprMultConcatentation convert(VExprMultipleConcatenationHandle pMultipleConcatenation);
+    static VRExprMultConcatenation convert(VExprMultipleConcatenationHandle pMultipleConcatenation);
     static VRExprConcatenation convert(VExprConcatenationHandle pConcatenation);
      
     static VRExprSelectIdentifier convert(VExprSelectIdentifierHandle pSelectIdentifier);

@@ -98,11 +98,11 @@ void test_vrexpr_concatenation() {
 
 void test_vrexpr_mult_concatenation() {
     {
-        VRExprMultConcatentation mult_concat = VRExprMultConcatentation(makeUnsignedNumber(3), makeIdentifier("a"));
+        VRExprMultConcatenation mult_concat = VRExprMultConcatenation(makeUnsignedNumber(3), makeIdentifier("a"));
         assertEqual("{3{a}}", mult_concat.toString(), "Test to string");
     }
     {
-        VRExprMultConcatentation mult_concat = VRExprMultConcatentation(makeUnsignedNumber(3), makeIdentifier("a"), makeIdentifier("b"));
+        VRExprMultConcatenation mult_concat = VRExprMultConcatenation(makeUnsignedNumber(3), makeIdentifier("a"), makeIdentifier("b"));
         assertEqual("{3{a,b}}", mult_concat.toString(), "Test to string");
     }
     UNIT_TEST_FUNCTION_END_FUNCTION_TEST();

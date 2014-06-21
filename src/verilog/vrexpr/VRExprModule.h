@@ -49,6 +49,7 @@ class VRExprModule {
     std::vector<VRExprSignal> _vecWire;
     std::vector<VRExprSignal> _vecInteger;
 public:
+    VRExprModule() : _modName(VRExprIdentifier::makeIdentifier("default_name")) { }
     VRExprModule(VRExprIdentifier modName);
 
     VRExprIdentifier getModuleName() const;

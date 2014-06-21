@@ -3,6 +3,7 @@
 
 #include "verilog/efsm/VRExprEfsm.h"
 #include "nstl/hash_map/HashMap.h"
+#include "abstraction/extract/EfsmExtract.h"
 
 class FunctionCall {
     std::string _functionName;
@@ -27,6 +28,7 @@ public:
 class CodeGeneration {
     VRExprEfsm _efsm;
     AssignmentFunctionCallMgr _assignFunctionCallMgr;
+    std::vector<VExprModuleHandle> _vecHierModule;
 public:
     CodeGeneration( const std::string & designName
                   , const std::string & protocolName
@@ -42,6 +44,8 @@ private:
     void generateTypeAndSize(std::stringstream & ss, int sz) const;
 
     void initAssignmentFunctionCallMgr();
+
+    void generateModuleHeader(std::stringstream & ss, VExprModuleHandle pHierModule) const;
 };
 
 #endif // CODE_GENERATION_H

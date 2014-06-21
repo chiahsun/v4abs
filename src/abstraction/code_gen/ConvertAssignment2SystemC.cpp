@@ -200,7 +200,8 @@ std::string ConvertAssignment2SystemC::convert(const VRExprIdentifier & x) {
 
 std::string ConvertAssignment2SystemC::convert(const VRExprNumber & x) {
     std::stringstream ss;
-    ss << "sc_uint<" << x.getSize() << ">(" << x.getUnsignedNumber() << ")";
+//    ss << "sc_uint<" << x.getSize() << ">(" << x.getUnsignedNumber() << ")";
+    ss << x.getUnsignedNumber();
     return ss.str();
 }
 
@@ -266,6 +267,6 @@ std::string ConvertAssignment2SystemC::convert(const VRExprBitSelect & x) {
 }
 
 std::string ConvertAssignment2SystemC::convert(const VRExprRangeSelect & x) {
-    return "range(" + convert(x.getExprFst()) + ", " + convert(x.getExprSnd()) + ")";
+    return ".range(" + convert(x.getExprFst()) + ", " + convert(x.getExprSnd()) + ")";
 }
 

@@ -94,10 +94,10 @@ void EfsmExtract::parseVerilogToVExprFlattenToVRExpr(const std::string & verilog
         assert(0);
     }
 
-    std::vector<VExprModuleHandle> vecModule = ConvertAst2VExpr::convert(pSourceTextAst);
-    VExprFlatten flattenFactory(vecModule);
+    _vecHierModule = ConvertAst2VExpr::convert(pSourceTextAst);
+    VExprFlatten flattenFactory(_vecHierModule);
 
-    CONST_FOR_EACH(pModule, vecModule) {
+    CONST_FOR_EACH(pModule, _vecHierModule) {
         VExprFlatModuleHandle pFlatModule = flattenFactory.flatten(pModule);
         VRExprModule mod = ConvertVExpr2VRExpr::convert(pFlatModule);
         _vecModule.push_back(mod);
@@ -126,3 +126,9 @@ void EfsmExtract::parseProtocolSpecToProtocolGraph(const std::string & protocolA
     if (verbose)
         std::cout << _protocolGraph.toString() << std::endl;
 }
+    
+const std::vector<VExprModuleHandle> & EfsmExtract::getHierModuleHandleContainer() const
+  { return _vecHierModule; }
+
+const std::vector<VRExprModule> & EfsmExtract::getFlatModuleContainer() const
+  { return _vecModule; }

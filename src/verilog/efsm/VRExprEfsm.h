@@ -67,6 +67,7 @@ private:
     VRExprModule _module; 
 
 public:
+    VRExprEfsm() {}
     VRExprEfsm(VRExprModule module);
     
     const VRExprModule& getModule() const;

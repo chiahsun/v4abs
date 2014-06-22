@@ -27,6 +27,13 @@ public:
     std::string convert(const VRExprSelect & x);
     std::string convert(const VRExprBitSelect & x);
     std::string convert(const VRExprRangeSelect & x);
+
+    std::string convertAsIfElse();
+    std::string convertAsIfElse(const VRExprExpression & x);
+    std::string convertAsIfElse(const VRExprIte & x);
+    std::string convertAsIfElse(const VRExprIt & x);
+    std::string convertAsIfElse(const VRExprIe & x);
+
 #if 0
     std::string convert(const VRExpr & x)
     std::string convert(const VRExpr & x)

@@ -7,6 +7,7 @@
 #include <fstream>
 
 const static bool verbose = false;
+const static bool report_output = true;
 // const static bool verbose = true;
 
 int sc_main(int argc, char** argv) {
@@ -82,6 +83,8 @@ int sc_main(int argc, char** argv) {
     if (verbose)
         std::cout << "---------------------------------------\nNot reset and in_en and write rgb_out" << std::endl;
     cte.run(ProtocolEvent_write_rgb_out);
+    if (report_output)
+        std::cout << rgb_out << std::endl;
     if (verbose)
         cte.print();
     
@@ -96,6 +99,8 @@ int sc_main(int argc, char** argv) {
     if (verbose)
         std::cout << "---------------------------------------\nNot reset and in_en and write rgb_out" << std::endl;
     cte.run(ProtocolEvent_write_rgb_out);
+    if (report_output)
+        std::cout << rgb_out << std::endl;
     if (verbose)
         cte.print();
     }

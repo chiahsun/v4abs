@@ -95,7 +95,7 @@ struct CTE {
       { yuv_in = *_pData_yuv_in; }
     void write_rgb_out() { 
         *_pData_rgb_out = rgb_out;
-        std::cout << rgb_out << std::endl; 
+//        std::cout << rgb_out << std::endl; 
     }
     void print() const; 
     void compute_all(); 

@@ -10,8 +10,6 @@ std::string ConvertAssignment2SystemC::convert() {
     std::string rhs = convert(_assignment.getExprRhs());
 
     return lhs + " = " + rhs + ";";
-    // TODO
-    // return "Not done yet";
 }
 
 std::string ConvertAssignment2SystemC::convert(const VRExprExpression & x) {
@@ -200,8 +198,16 @@ std::string ConvertAssignment2SystemC::convert(const VRExprIdentifier & x) {
 
 std::string ConvertAssignment2SystemC::convert(const VRExprNumber & x) {
     std::stringstream ss;
-//    ss << "sc_uint<" << x.getSize() << ">(" << x.getUnsignedNumber() << ")";
-    ss << x.getUnsignedNumber();
+    assert(x.getSize() > 0);
+    if (x.getSize() == 1) {
+        ss << (x.getUnsignedNumber()) ? "true" : "false";
+    } else if (x.getSize() <= 32) {
+        ss << "sc_uint<" << x.getSize() << ">(" << x.getUnsignedNumber() << ")";
+    } else {
+        ss << "sc_biguint<" << x.getSize() << ">(" << x.getUnsignedNumber() << ")";
+    }
+
+//    ss << x.getUnsignedNumber();
     return ss.str();
 }
 
@@ -269,4 +275,58 @@ std::string ConvertAssignment2SystemC::convert(const VRExprBitSelect & x) {
 std::string ConvertAssignment2SystemC::convert(const VRExprRangeSelect & x) {
     return ".range(" + convert(x.getExprFst()) + ", " + convert(x.getExprSnd()) + ")";
 }
+
+std::string ConvertAssignment2SystemC::convertAsIfElse() {
+    return convertAsIfElse(_assignment.getExprRhs());
+}
+    
+std::string ConvertAssignment2SystemC::convertAsIfElse(const VRExprExpression & x) {
+    std::string lhs = convert(_assignment.getExprLhs());
+    if (x.getPrimaryHandle()) {
+        return lhs + " = " + convert(*x.getPrimaryHandle()) + ";";
+    } else if (x.getUnaryExpressionHandle()) {
+        return lhs + " = " + convert(*x.getUnaryExpressionHandle()) + ";";
+    } else if (x.getBinaryExpressionHandle()) {
+        return lhs + " = " + convert(*x.getBinaryExpressionHandle()) + ";";
+    } else if (x.getIteHandle()) {
+        return convertAsIfElse(*x.getIteHandle());
+    } else if (x.getItHandle()) {
+        return convertAsIfElse(*x.getItHandle());
+    } else if (x.getIeHandle()) {
+        return convertAsIfElse(*x.getIeHandle());
+    } else {
+        LOG(ERROR) << "No such branch";
+    }
+    assert(0);
+}
+
+std::string ConvertAssignment2SystemC::convertAsIfElse(const VRExprIte & x) {
+    std::string stringIf = convert(x.getExprIf());
+    std::string stringThen = convertAsIfElse(x.getExprThen());
+    std::string stringElse = convertAsIfElse(x.getExprElse());
+    return "if (" + stringIf + ") {\n"
+         + stringThen + "\n"
+         "} else\n {"
+         + stringElse +
+         "}"; 
+}
+
+std::string ConvertAssignment2SystemC::convertAsIfElse(const VRExprIt & x) {
+    std::string stringIf = convert(x.getExprIf());
+    std::string stringThen = convertAsIfElse(x.getExprThen());
+    return "if (" + stringIf + ") {\n"
+         + stringThen +
+         "}";
+}
+
+std::string ConvertAssignment2SystemC::convertAsIfElse(const VRExprIe & x) {
+    std::string stringIf = convert(x.getExprIf());
+    std::string stringElse = convertAsIfElse(x.getExprElse());
+    return "if (" + stringIf + ") {\n"
+         " // do nothing \n"
+         "} else\n {"
+         + stringElse +
+         "}"; 
+}
+
 

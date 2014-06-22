@@ -471,8 +471,83 @@ std::vector<VRExprAssignment> ConvertVExpr2VRExpr::convert(VExprStatementOrNullH
 
 std::vector<VRExprAssignment> ConvertVExpr2VRExpr::convert(VExprCaseStatementHandle pCaseStatement) {
     // TODO
-    LOG(ERROR) << "Not implemented yet";
-    assert(0);
+    VRExprExpression switchExpr = convert(pCaseStatement->getExpressionHandle());
+
+
+    HashMap<VRExprExpression, VRExprExpression> mapLhsRhs;
+
+    for (int i = pCaseStatement->getConstCaseItemContainer().size()-1; i >= 0; --i) {
+        VExprCaseItemHandle pCaseItem = pCaseStatement->getConstCaseItemContainer()[i];
+        std::vector<VRExprAssignment> vecAssign = convert(pCaseItem->getStatementOrNullHandle());
+
+
+        std::vector<VRExprExpression> vecCaseExpr;
+        CONST_FOR_EACH(pCaseItemExpr, pCaseItem->getExpressionHandleContainer()) {
+            VRExprExpression caseExpr = convert(pCaseItemExpr);
+            vecCaseExpr.push_back(caseExpr);
+        }
+
+        if (vecCaseExpr.size() == 0) {
+            // default case
+            assert(static_cast<unsigned int>(i) == pCaseStatement->getConstCaseItemContainer().size() - 1);
+            for (unsigned int k = 0; k < vecAssign.size(); ++k) {
+                VRExprAssignment curAssign = vecAssign[k];
+                VRExprExpression curLhs = curAssign.getExprLhs();
+                VRExprExpression curRhs = curAssign.getExprRhs();
+                mapLhsRhs.insert(std::make_pair(curLhs, curRhs));
+            }
+        } else {
+        
+            VRExprExpression ifExpr = makeBinaryExpression(switchExpr, BINARY_EQ, vecCaseExpr[0]);
+            for (unsigned int k = 1; k < vecCaseExpr.size(); ++k) {
+                VRExprExpression e = makeBinaryExpression(switchExpr, BINARY_EQ, vecCaseExpr[k]);
+                ifExpr = makeBinaryExpression(ifExpr, BINARY_LOGICAL_AND, e);
+            }
+
+
+            for (unsigned int k = 0; k < vecAssign.size(); ++k) {
+                VRExprAssignment curAssign = vecAssign[k];
+                VRExprExpression curLhs = curAssign.getExprLhs();
+                VRExprExpression curRhs = curAssign.getExprRhs();
+
+                HashMap<VRExprExpression, VRExprExpression>::iterator it;
+                if ((it = mapLhsRhs.find(curLhs)) == mapLhsRhs.end()) {
+                    VRExprExpression nextRhs = VRExprIt(ifExpr, curRhs);
+                    mapLhsRhs.insert(std::make_pair(curLhs, nextRhs));
+                } else {
+                    VRExprExpression nextRhs = VRExprIte(ifExpr, curRhs, it->second);
+                    mapLhsRhs.insert(std::make_pair(curLhs, nextRhs));
+                }
+            }
+        }
+    }
+    
+    std::vector<VRExprAssignment> vecAllNewAssign;
+    CONST_FOR_EACH(pairLhsRhs, mapLhsRhs) {
+        vecAllNewAssign.push_back(VRExprAssignment(pairLhsRhs.first, pairLhsRhs.second));
+    }
+
+    return vecAllNewAssign;
+#if 0
+    CONST_FOR_EACH(pCaseItem, pCaseStatement->getConstCaseItemContainer()) {
+
+        assert(vecCaseExpr.size() > 0);
+
+        std::vector<VRExprAssignment> vecCaseAssign = convert(pCaseItem->getStatementOrNullHandle());
+
+        std::vector<VRExprAssignment> vecNewAssign;
+        CONST_FOR_EACH(assign, vecCaseAssign) {
+            VRExprExpression lhs = assign.getExprLhs();
+            VRExprExpression rhs = assign.getExprRhs();
+            VRExprExpression newRhs = VRExprExpression(VRExprIt(termExpr, rhs));
+            vecNewAssign.push_back(VRExprAssignment(lhs, newRhs));
+        }
+        
+        vecAllNewAssign.insert(vecAllNewAssign.end(), vecNewAssign.begin(), vecNewAssign.end());
+    }
+
+    return vecAllNewAssign;
+#endif
 #if 0
     VRExprExpression exprCaseStatement = ConvertVExpr2VRExpr::convert(pCaseStatement->getExpressionHandle());
 

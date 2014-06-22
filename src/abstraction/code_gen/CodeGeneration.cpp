@@ -5,6 +5,8 @@
 #include "ConvertAssignment2SystemC.h"
 
 static const std::string indent = "    ";
+
+std::string getTypeFromSize(int sz);
     
 FunctionCall::FunctionCall(std::string functionName, std::string functionImpl)
   : _functionName(functionName)
@@ -24,7 +26,7 @@ void AssignmentFunctionCallMgr::addAssignmentAsFunctionCall(const VRExprAssignme
     if (_mapAssignmentFunctionId.find(assignment) != _mapAssignmentFunctionId.end())
         return;
     ConvertAssignment2SystemC converter(assignment);
-    std::string functionImpl = converter.convert();
+    std::string functionImpl = converter.convertAsIfElse();
 
     std::stringstream ss;
     function_call_id id = _vecFunctionCall.size();
@@ -113,7 +115,7 @@ CONST_FOR_EACH(pInputDeclaration, pHierModule->func_get_container_name()) {\
             ss << indent;\
             if (pInputRange.valid()) {\
                 int sz = getConstantExpressionNumber(pInputRange->getFst()) - getConstantExpressionNumber(pInputRange->getSnd()) + 1;\
-                ss << "sc_uint<" << sz << "> "; \
+                ss << getTypeFromSize(sz);\
             } else {\
                 ss << "bool ";\
             }\
@@ -155,11 +157,8 @@ void CodeGeneration::generateModuleHeader(std::stringstream & ss, VExprModuleHan
             VRExprNumber number = expression2VRExprNumber(pExpression);
 
             ss << indent;
-            if (number.getSize() > 1) {
-                ss << "const static sc_uint<" << number.getSize() << "> "; 
-            } else {
-                ss << "bool ";
-            }
+            ss << "const static ";
+            ss << getTypeFromSize(number.getSize());
             ss << pIdentifier->getString() << " = "; 
             ss << number.getUnsignedNumber() << ";\n"; 
         }
@@ -173,7 +172,7 @@ void CodeGeneration::generateModuleHeader(std::stringstream & ss, VExprModuleHan
             ss << indent;
             if (pRange.valid()) {
                 int sz = getConstantExpressionNumber(pRange->getFst()) - getConstantExpressionNumber(pRange->getSnd()) + 1;
-                ss << "sc_uint<" << sz << "> "; 
+                ss << getTypeFromSize(sz);
             } else {
                 ss << "bool ";
             }
@@ -199,7 +198,7 @@ void CodeGeneration::generateModuleHeader(std::stringstream & ss, VExprModuleHan
             ss << indent;
             if (pRange.valid()) {
                 int sz = getConstantExpressionNumber(pRange->getFst()) - getConstantExpressionNumber(pRange->getSnd()) + 1;
-                ss << "sc_uint<" << sz << "> "; 
+                ss << getTypeFromSize(sz);
             } else {
                 ss << "bool ";
             }
@@ -255,11 +254,19 @@ void CodeGeneration::generateModuleHeader(std::stringstream & ss, VExprModuleHan
 
 }
 
-void CodeGeneration::generateTypeAndSize(std::stringstream & ss, int sz) const {
+std::string getTypeFromSize(int sz) {
+    std::stringstream ss;
     if (sz == 1)
         ss << "bool ";
-    else
+    else if (sz <= 32)
         ss << "sc_uint<" << sz << "> ";
+    else
+        ss << "sc_biguint<" << sz << "> ";
+    return ss.str();
+}
+
+void CodeGeneration::generateTypeAndSize(std::stringstream & ss, int sz) const {
+    ss << getTypeFromSize(sz);
 }
     
 std::string CodeGeneration::generateImplementation() const {

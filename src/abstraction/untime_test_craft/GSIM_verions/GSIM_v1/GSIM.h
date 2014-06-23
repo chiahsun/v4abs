@@ -41,11 +41,43 @@ struct calvalue {
     // Function calls
 };
 
-#endif // GSIM_H
 
+
+enum ProtocolEvent {
+    ProtocolEvent_reset
+  , ProtocolEvent_not_reset
+  , ProtocolEvent_not_reset_and_in_en
+};
+
+enum ProtocolState {
+    ProtocolState_s1
+  , ProtocolState_s2
+  , ProtocolState_s3
+};
 
 
 struct GSIM {
+    sc_uint<16>* _pData_b_in;
+    sc_uint<32>* _pData_x_out;
+
+    void register_data_pointer( sc_uint<16>* pData_b_in
+                              , sc_uint<32>* pData_x_out) {
+        _pData_b_in = pData_b_in;
+        _pData_x_out = pData_x_out;
+    }
+    void compute_all();
+    void compute_reset();
+    void compute_not_reset();
+    void compute_not_reset_and_in_en();
+
+    void run(ProtocolEvent e);
+    void read_b_in()
+      { b_in = *_pData_b_in; }
+    void write_x_out()
+      { *_pData_x_out = x_out; }
+
+    ProtocolState _protocolState;
+
 
     // Inputs 
     bool clk;
@@ -234,5 +266,8 @@ struct GSIM {
     void func_number_86();
     void func_number_87();
     void func_number_88();
+
+
 };
 
+#endif // GSIM_H

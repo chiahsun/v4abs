@@ -77,7 +77,7 @@ void literals2SizeAndNumber(const std::string & numberLiterals, const int base, 
     if (strNumber.size() == 0)
         LOG(ERROR) << "string literals with no number specified (" << numberLiterals << ")";
 
-    std::reverse(strSize.begin(), strSize.end());
+//    std::reverse(strSize.begin(), strSize.end());
     std::reverse(strNumber.begin(), strNumber.end());
     size = ConvertUtil::convert<std::string, unsigned int>(strSize);
     unsigned_number = literals2UnsignedNumber(strNumber, base);

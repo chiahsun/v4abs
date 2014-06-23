@@ -3,6 +3,8 @@
 
 #include <systemc.h>
 
+#define DEBUG_EXPR(expr) do { std::cerr << "*Debug: " << #expr << " : " << (expr) << std::endl; } while(0)
+
 struct calvalue {
 
     // Inputs 
@@ -47,12 +49,45 @@ enum ProtocolEvent {
     ProtocolEvent_reset
   , ProtocolEvent_not_reset
   , ProtocolEvent_not_reset_and_in_en
+  , ProtocolEvent_not_reset_and_not_in_en
 };
 
 enum ProtocolState {
-    ProtocolState_s1
+    ProtocolState_s0
+  , ProtocolState_s1
   , ProtocolState_s2
   , ProtocolState_s3
+  , ProtocolState_s4
+  , ProtocolState_s5
+  , ProtocolState_s6
+  , ProtocolState_s7
+  , ProtocolState_s8
+  , ProtocolState_s9
+  , ProtocolState_s10
+  , ProtocolState_s11
+  , ProtocolState_s12
+  , ProtocolState_s13
+  , ProtocolState_s14
+  , ProtocolState_s15
+  , ProtocolState_s16
+  , ProtocolState_s17
+  , ProtocolState_s18
+  , ProtocolState_s19
+  , ProtocolState_s20
+  , ProtocolState_s21
+  , ProtocolState_s22
+  , ProtocolState_s23
+  , ProtocolState_s24
+  , ProtocolState_s25
+  , ProtocolState_s26
+  , ProtocolState_s27
+  , ProtocolState_s28
+  , ProtocolState_s29
+  , ProtocolState_s30
+  , ProtocolState_s31
+  , ProtocolState_s32
+  , ProtocolState_s33
+  , ProtocolState_s34
 };
 
 
@@ -60,21 +95,32 @@ struct GSIM {
     sc_uint<16>* _pData_b_in;
     sc_uint<32>* _pData_x_out;
 
+    unsigned int _cycleCount;
     void register_data_pointer( sc_uint<16>* pData_b_in
                               , sc_uint<32>* pData_x_out) {
         _pData_b_in = pData_b_in;
         _pData_x_out = pData_x_out;
     }
+    void init() {
+        _protocolState = ProtocolState_s0;
+        _cycleCount = 0;
+    }
     void compute_all();
+    void compute_seq();
+    void compute_combinational();
     void compute_reset();
     void compute_not_reset();
+    void compute_not_reset_and_not_in_en();
     void compute_not_reset_and_in_en();
 
     void run(ProtocolEvent e);
     void read_b_in()
       { b_in = *_pData_b_in; }
-    void write_x_out()
-      { *_pData_x_out = x_out; }
+    void write_x_out() {
+        std::cout << "x_out " << x_out << " @ " << _cycleCount << std::endl;
+//        DEBUG_EXPR(x_out);
+        *_pData_x_out = x_out; 
+    }
 
     ProtocolState _protocolState;
 

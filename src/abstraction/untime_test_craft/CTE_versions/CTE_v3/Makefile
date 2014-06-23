@@ -17,7 +17,7 @@ CXX = g++
 CFLAGS = -Wno-long-long  -pedantic -Wall 
 CFLAGS += -I$(SYSTEMC_INCLUDE)
 
-mode = debug
+mode = release
 # CFLAGS = -g -Wall -O0 -pedantic 
 ifeq ($(mode), debug)
     CFLAGS += -O0 -g

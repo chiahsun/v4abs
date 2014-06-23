@@ -7,8 +7,9 @@
 #include <fstream>
 
 const static bool verbose = false;
-const static bool report_output = false;
+// const static bool report_output = false;
 // const static bool verbose = true;
+const static bool report_output = true;
 
 int sc_main(int argc, char** argv) {
     sc_start();

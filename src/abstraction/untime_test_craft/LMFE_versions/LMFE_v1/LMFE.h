@@ -20,7 +20,7 @@ struct sram_8192x8_t13 {
     // Parameters
 
     // Registers
-    sc_uint<8> mem[8];
+    sc_uint<8> mem[8192]; // XXX bug
     sc_uint<8> out_data;
 
     // Wires
@@ -220,7 +220,57 @@ struct sram_control {
     // Function calls
 };
 
+
+enum ProtocolEvent {
+    ProtocolEvent_reset
+  , ProtocolEvent_not_reset_and_in_en
+  , ProtocolEvent_not_reset_and_not_in_en
+};
+
+enum ProtocolState {
+    ProtocolState_s0
+  , ProtocolState_s1
+  , ProtocolState_s2 
+  , ProtocolState_s3
+};
+
 struct LMFE {
+    sc_uint<8>* _pData_Din;
+    sc_uint<8>* _pData_Dout;
+
+    ProtocolState _protocolState;
+    unsigned int _cycleCount;
+
+    void run(ProtocolEvent e);
+
+    void register_data_pointer( sc_uint<8>* pData_Din
+                              , sc_uint<8>* pData_Dout) {
+        _pData_Din = pData_Din;
+        _pData_Dout = pData_Dout;
+    }
+
+    void init() {
+        _protocolState = ProtocolState_s0;
+        _cycleCount = 0;
+    }
+
+    void read_Din() {
+        Din = *_pData_Din;
+    }
+
+    void write_Dout() {
+        *_pData_Dout = Dout;
+        std::cout << Dout << std::endl;
+    }
+
+    void compute_all();
+    void compute_reset();
+    void compute_not_reset_and_in_en();
+    void compute_not_reset_and_not_in_en();
+
+    void compute_lmfe();
+    void compute_lmfe_combinational();
+    void compute_sram();
 
     // Inputs 
     bool clk;

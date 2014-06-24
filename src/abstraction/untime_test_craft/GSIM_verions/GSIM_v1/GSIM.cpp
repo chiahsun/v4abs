@@ -23,128 +23,128 @@ void GSIM::run(ProtocolEvent e) {
             break;
         case ProtocolState_s2:
             if (e == ProtocolEvent_not_reset_and_in_en) {
-                compute_not_reset_and_in_en();
                 read_b_in();
+                compute_not_reset_and_in_en();
                 _protocolState = ProtocolState_s3;
             } else
                 LOG_ERROR("No such branch");
             break;
         case ProtocolState_s3:
             if (e == ProtocolEvent_not_reset_and_in_en) {
-                compute_not_reset_and_in_en();
                 read_b_in();
+                compute_not_reset_and_in_en();
                 _protocolState = ProtocolState_s4;
             } else
                 LOG_ERROR("No such branch");
             break;
         case ProtocolState_s4:
             if (e == ProtocolEvent_not_reset_and_in_en) {
-                compute_not_reset_and_in_en();
                 read_b_in();
+                compute_not_reset_and_in_en();
                 _protocolState = ProtocolState_s5;
             } else
                 LOG_ERROR("No such branch");
             break;
         case ProtocolState_s5:
             if (e == ProtocolEvent_not_reset_and_in_en) {
-                compute_not_reset_and_in_en();
                 read_b_in();
+                compute_not_reset_and_in_en();
                 _protocolState = ProtocolState_s6;
             } else
                 LOG_ERROR("No such branch");
             break;
         case ProtocolState_s6:
             if (e == ProtocolEvent_not_reset_and_in_en) {
-                compute_not_reset_and_in_en();
                 read_b_in();
+                compute_not_reset_and_in_en();
                 _protocolState = ProtocolState_s7;
             } else
                 LOG_ERROR("No such branch");
             break;
         case ProtocolState_s7:
             if (e == ProtocolEvent_not_reset_and_in_en) {
-                compute_not_reset_and_in_en();
                 read_b_in();
+                compute_not_reset_and_in_en();
                 _protocolState = ProtocolState_s8;
             } else
                 LOG_ERROR("No such branch");
             break;
         case ProtocolState_s8:
             if (e == ProtocolEvent_not_reset_and_in_en) {
-                compute_not_reset_and_in_en();
                 read_b_in();
+                compute_not_reset_and_in_en();
                 _protocolState = ProtocolState_s9;
             } else
                 LOG_ERROR("No such branch");
             break;
         case ProtocolState_s9:
             if (e == ProtocolEvent_not_reset_and_in_en) {
-                compute_not_reset_and_in_en();
                 read_b_in();
+                compute_not_reset_and_in_en();
                 _protocolState = ProtocolState_s10;
             } else
                 LOG_ERROR("No such branch");
             break;
         case ProtocolState_s10:
             if (e == ProtocolEvent_not_reset_and_in_en) {
-                compute_not_reset_and_in_en();
                 read_b_in();
+                compute_not_reset_and_in_en();
                 _protocolState = ProtocolState_s11;
             } else
                 LOG_ERROR("No such branch");
             break;
         case ProtocolState_s11:
             if (e == ProtocolEvent_not_reset_and_in_en) {
-                compute_not_reset_and_in_en();
                 read_b_in();
+                compute_not_reset_and_in_en();
                 _protocolState = ProtocolState_s12;
             } else
                 LOG_ERROR("No such branch");
             break;
         case ProtocolState_s12:
             if (e == ProtocolEvent_not_reset_and_in_en) {
-                compute_not_reset_and_in_en();
                 read_b_in();
+                compute_not_reset_and_in_en();
                 _protocolState = ProtocolState_s13;
             } else
                 LOG_ERROR("No such branch");
             break;
         case ProtocolState_s13:
             if (e == ProtocolEvent_not_reset_and_in_en) {
-                compute_not_reset_and_in_en();
                 read_b_in();
+                compute_not_reset_and_in_en();
                 _protocolState = ProtocolState_s14;
             } else
                 LOG_ERROR("No such branch");
             break;
         case ProtocolState_s14:
             if (e == ProtocolEvent_not_reset_and_in_en) {
-                compute_not_reset_and_in_en();
                 read_b_in();
+                compute_not_reset_and_in_en();
                 _protocolState = ProtocolState_s15;
             } else
                 LOG_ERROR("No such branch");
             break;
         case ProtocolState_s15:
             if (e == ProtocolEvent_not_reset_and_in_en) {
-                compute_not_reset_and_in_en();
                 read_b_in();
+                compute_not_reset_and_in_en();
                 _protocolState = ProtocolState_s16;
             } else
                 LOG_ERROR("No such branch");
             break;
         case ProtocolState_s16:
             if (e == ProtocolEvent_not_reset_and_in_en) {
-                compute_not_reset_and_in_en();
                 read_b_in();
+                compute_not_reset_and_in_en();
                 _protocolState = ProtocolState_s17;
             } else
                 LOG_ERROR("No such branch");
             break;
         case ProtocolState_s17:
             if (e == ProtocolEvent_not_reset_and_in_en) {
-                compute_not_reset_and_in_en();
                 read_b_in();
+                compute_not_reset_and_in_en();
                 _protocolState = ProtocolState_s18;
             } else
                 LOG_ERROR("No such branch");
@@ -163,210 +163,152 @@ S18:
                 LOG_ERROR("No such branch");
             break;
         case ProtocolState_s19:
-S19:
             if (e == ProtocolEvent_not_reset_and_not_in_en) {
                 compute_not_reset_and_not_in_en();
                 if (out_valid) {
                     write_x_out();
                     _protocolState = ProtocolState_s20;
-                } else {
-                    goto S19;
                 }
             } else
                 LOG_ERROR("No such branch");
             break;
         case ProtocolState_s20:
-S20:
             if (e == ProtocolEvent_not_reset_and_not_in_en) {
                 compute_not_reset_and_not_in_en();
                 if (out_valid) {
                     write_x_out();
                     _protocolState = ProtocolState_s21;
-                } else {
-                    goto S20;
                 }
             } else
                 LOG_ERROR("No such branch");
             break;
         case ProtocolState_s21:
-S21:
             if (e == ProtocolEvent_not_reset_and_not_in_en) {
                 compute_not_reset_and_not_in_en();
                 if (out_valid) {
                     write_x_out();
                     _protocolState = ProtocolState_s22;
-                } else {
-                    goto S21;
                 }
             } else
                 LOG_ERROR("No such branch");
             break;
         case ProtocolState_s22:
-S22:
             if (e == ProtocolEvent_not_reset_and_not_in_en) {
                 compute_not_reset_and_not_in_en();
                 if (out_valid) {
                     write_x_out();
                     _protocolState = ProtocolState_s23;
-                } else {
-                    goto S22;
                 }
             } else
                 LOG_ERROR("No such branch");
             break;
         case ProtocolState_s23:
-S23:
             if (e == ProtocolEvent_not_reset_and_not_in_en) {
                 compute_not_reset_and_not_in_en();
                 if (out_valid) {
                     write_x_out();
                     _protocolState = ProtocolState_s24;
-                } else {
-                    goto S23;
-                }
+                } 
             } else
                 LOG_ERROR("No such branch");
             break;
         case ProtocolState_s24:
-S24:
             if (e == ProtocolEvent_not_reset_and_not_in_en) {
                 compute_not_reset_and_not_in_en();
                 if (out_valid) {
                     write_x_out();
                     _protocolState = ProtocolState_s25;
-                } else {
-                    goto S24;
                 }
             } else
                 LOG_ERROR("No such branch");
             break;
         case ProtocolState_s25:
-S25:
             if (e == ProtocolEvent_not_reset_and_not_in_en) {
                 compute_not_reset_and_not_in_en();
                 if (out_valid) {
                     write_x_out();
                     _protocolState = ProtocolState_s26;
-                } else {
-                    goto S25;
                 }
             } else
                 LOG_ERROR("No such branch");
             break;
         case ProtocolState_s26:
-S26:
             if (e == ProtocolEvent_not_reset_and_not_in_en) {
                 compute_not_reset_and_not_in_en();
                 if (out_valid) {
                     write_x_out();
                     _protocolState = ProtocolState_s27;
-                } else {
-                    goto S26;
                 }
             } else
                 LOG_ERROR("No such branch");
             break;
         case ProtocolState_s27:
-S27:
             if (e == ProtocolEvent_not_reset_and_not_in_en) {
                 compute_not_reset_and_not_in_en();
                 if (out_valid) {
                     write_x_out();
                     _protocolState = ProtocolState_s28;
-                } else {
-                    goto S27;
                 }
             } else
                 LOG_ERROR("No such branch");
             break;
         case ProtocolState_s28:
-S28:
             if (e == ProtocolEvent_not_reset_and_not_in_en) {
                 compute_not_reset_and_not_in_en();
                 if (out_valid) {
                     write_x_out();
                     _protocolState = ProtocolState_s29;
-                } else {
-                    goto S28;
-                }
+                } 
             } else
                 LOG_ERROR("No such branch");
             break;
         case ProtocolState_s29:
-S29:
             if (e == ProtocolEvent_not_reset_and_not_in_en) {
                 compute_not_reset_and_not_in_en();
                 if (out_valid) {
                     write_x_out();
                     _protocolState = ProtocolState_s30;
-                } else {
-                    goto S29;
                 }
             } else
                 LOG_ERROR("No such branch");
             break;
         case ProtocolState_s30:
-S30:
             if (e == ProtocolEvent_not_reset_and_not_in_en) {
                 compute_not_reset_and_not_in_en();
                 if (out_valid) {
                     write_x_out();
                     _protocolState = ProtocolState_s31;
-                } else {
-                    goto S30;
-                }
+                } 
             } else
                 LOG_ERROR("No such branch");
             break;
         case ProtocolState_s31:
-S31:
             if (e == ProtocolEvent_not_reset_and_not_in_en) {
                 compute_not_reset_and_not_in_en();
                 if (out_valid) {
                     write_x_out();
                     _protocolState = ProtocolState_s32;
-                } else {
-                    goto S31;
                 }
             } else
                 LOG_ERROR("No such branch");
             break;
         case ProtocolState_s32:
-S32:
             if (e == ProtocolEvent_not_reset_and_not_in_en) {
                 compute_not_reset_and_not_in_en();
                 if (out_valid) {
                     write_x_out();
                     _protocolState = ProtocolState_s33;
-                } else {
-                    goto S32;
                 }
             } else
                 LOG_ERROR("No such branch");
             break;
         case ProtocolState_s33:
-S33:
-            if (e == ProtocolEvent_not_reset_and_not_in_en) {
-                compute_not_reset_and_not_in_en();
-                if (out_valid) {
-                    write_x_out();
-                    _protocolState = ProtocolState_s34;
-                } else {
-                    goto S33;
-                }
-            } else
-                LOG_ERROR("No such branch");
-            break;
-        case ProtocolState_s34:
-S34:
             if (e == ProtocolEvent_not_reset_and_not_in_en) {
                 compute_not_reset_and_not_in_en();
                 if (out_valid) {
                     write_x_out();
                     _protocolState = ProtocolState_s1;
-                } else {
-                    goto S34;
-                }
+                } 
             } else
                 LOG_ERROR("No such branch");
             break;
@@ -486,9 +428,9 @@ void GSIM::compute_seq() {
     func_number_59();
 
 }
-
+#if 0
 void GSIM::compute_all() {
-//    compute_combinational();
+    compute_combinational();
     compute_seq();
     compute_combinational();
     ++_cycleCount;
@@ -497,7 +439,7 @@ void GSIM::compute_all() {
         DEBUG_EXPR(_cycleCount);
     }
 }
-#if 0
+#else
 void GSIM::compute_all() {
     // par_0 ~ par_b
     func_number_19();

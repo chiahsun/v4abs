@@ -401,7 +401,8 @@ std::vector<VRExprAssignment> ConvertVExpr2VRExpr::convert(VExprConditionalState
 
     std::vector<VRExprAssignment> vecThen = ConvertVExpr2VRExpr::convert(pConditional->getThen());
     std::vector<VRExprAssignment> vecElse = ConvertVExpr2VRExpr::convert(pConditional->getElse());
-   
+  
+    HashTable<VRExprExpression> hashThen;
     HashTable<VRExprExpression> hashBoth;
     // Unique assignment for each LHS checking
     HashMap<VRExprExpression, VRExprAssignment> mapThenAssign;
@@ -412,7 +413,7 @@ std::vector<VRExprAssignment> ConvertVExpr2VRExpr::convert(VExprConditionalState
                        << "  in " << mapThenAssign.find(thenAssign.getExprLhs())->second.toString() << std::endl;
         }
         mapThenAssign.insert(std::make_pair(thenAssign.getExprLhs(), thenAssign));
-        hashBoth.insert(thenAssign.getExprLhs());
+        hashThen.insert(thenAssign.getExprLhs());
     }
     
     // Unique assignment for each LHS checking
@@ -424,7 +425,8 @@ std::vector<VRExprAssignment> ConvertVExpr2VRExpr::convert(VExprConditionalState
                        << "  in " << mapElseAssign.find(elseAssign.getExprLhs())->second.toString() << std::endl;
         }
         mapElseAssign.insert(std::make_pair(elseAssign.getExprLhs(), elseAssign));
-        hashBoth.insert(elseAssign.getExprLhs());
+        if (hashThen.find(elseAssign.getExprLhs()) != hashThen.end())
+            hashBoth.insert(elseAssign.getExprLhs());
     }
     
     std::vector<VRExprAssignment> vec;
@@ -470,7 +472,6 @@ std::vector<VRExprAssignment> ConvertVExpr2VRExpr::convert(VExprStatementOrNullH
 }
 
 std::vector<VRExprAssignment> ConvertVExpr2VRExpr::convert(VExprCaseStatementHandle pCaseStatement) {
-    // TODO
     VRExprExpression switchExpr = convert(pCaseStatement->getExpressionHandle());
 
 
@@ -528,37 +529,71 @@ std::vector<VRExprAssignment> ConvertVExpr2VRExpr::convert(VExprCaseStatementHan
     }
 
     return vecAllNewAssign;
-#if 0
-    CONST_FOR_EACH(pCaseItem, pCaseStatement->getConstCaseItemContainer()) {
-
-        assert(vecCaseExpr.size() > 0);
-
-        std::vector<VRExprAssignment> vecCaseAssign = convert(pCaseItem->getStatementOrNullHandle());
-
-        std::vector<VRExprAssignment> vecNewAssign;
-        CONST_FOR_EACH(assign, vecCaseAssign) {
-            VRExprExpression lhs = assign.getExprLhs();
-            VRExprExpression rhs = assign.getExprRhs();
-            VRExprExpression newRhs = VRExprExpression(VRExprIt(termExpr, rhs));
-            vecNewAssign.push_back(VRExprAssignment(lhs, newRhs));
-        }
-        
-        vecAllNewAssign.insert(vecAllNewAssign.end(), vecNewAssign.begin(), vecNewAssign.end());
-    }
-
-    return vecAllNewAssign;
-#endif
-#if 0
-    VRExprExpression exprCaseStatement = ConvertVExpr2VRExpr::convert(pCaseStatement->getExpressionHandle());
-
-    CONST_FOR_EACH(pCaseItem, pCaseStatement->getConstCaseItemContainer()) {
-        std::vector<VRExprExpression> vecEq;
-        CONST_FOR_EACH(pExpr, pCaseItem->getExpressionHandleContainer()) {
-            vecEq.push_back(VRExprExpression(VRExprBinaryExpression(exprCaseStatement, BINARY_EQ, ConvertVExpr2VRExpr::convert(pExpr))));
-        }   
-    }
-#endif
 }
+
+std::vector<VRExprAssignment> ConvertVExpr2VRExpr::convert(VExprLoopStatementHandle pLoopStatement) {
+    assert(0);
+#if 0 
+    VExprAssignmentHandle pForInit = pLoopStatement->getForInitHandle();
+    VExprAssignmentHandle pForCond = pLoopStatement->getForCondHnadle();
+    VExprAssignmentHandle pForAssign = pLoopStatement->getForAssignHandle();
+
+    if(!pForInit->getRegLvalueHandle()->getIdentifierHandle().valid()) {
+        LOG(ERROR) << "for_loop init with variable not identifier";
+    }
+
+    VRExprIdentifier initIdentifier = convert(pForInit->getRegLvalueHandle()->getIdentifierHandle());
+    if (!pForInit->getExpressionHandle()->getPrimaryHandle().valid()) {
+        LOG(ERROR) << "for_loop init expression not primary";
+    }
+    if (!pForInit->getExpressionHandle()->getPrimaryHandle()->getNumberHandle().valid()) {
+        LOG(ERROR) << "for_loop init expression not number";
+    }
+    VRExprNumber initNumber = convert(pForInit->getExpressionHandle()->getPrimaryHandle()->getNumberHandle());
+
+    if (!pForCond->getExpressionHandle()->getBinaryHandle().valid()) {
+        LOG(ERROR) << "for_loop cond not binary";
+    }
+    if (!pForCond->getExpressionHandle()->getBinaryHandle().getOpType() == BINARY_NEQ) {
+        LOG(ERROR) << "for_loop cond not binary neq";
+    }
+    if (!pForCond->getExpressionHandle()->getBinaryHandle()->getSnd()->getPrimaryHandle().valid()) {
+        LOG(ERROR) << "for_loop cond binary rhs not primary";
+    }
+    if (!pForCond->getExpressionHandle()->getBinaryHandle()->getSnd()->getPrimaryHandle()->getNumberHandle().valid()) {
+        LOG(ERROR) << "for_loop cond binary rhs not number";
+    }
+    VRExprNumber condNumber = convert(pForCond->getExpressionHandle()->getBinaryHandle()->getSnd()->getPrimaryHandle()->getNumberHandle());
+   
+    // XXX: no futher checking for lhs, only check rhs type
+    if (!pForAssign->getExpressionHandle()->getBinaryHandle().valid()) {
+        LOG(ERROR) << "for_loop assign rhs not binary";
+    }
+    if (!pForAssign->getExpressionHandle()->getBinaryHandle()->getOpType() == BINARY_PLUS) {
+        LOG(ERROR) << "for_loop assign rhs not binary plus";
+    }
+    if (!pForAssign->getExpressionHandle()->getBinaryHandle()->getSnd()->getPrimaryHandle().valid()) {
+        LOG(ERROR) << "for_loop assign rhs rhs not primary";
+    }
+    if (!pForAssign->getExpressionHandle()->getBinaryHandle()->getSnd()->getPrimaryHandle().getNumberHandle().valid()) {
+        LOG(ERROR) << "for_loop assign rhs rhs not number";
+    }
+
+    VRExprNumber addNumber = convert(pForAssign->getExpressionHandle()->getBinaryHandle()->getSnd()->getPrimaryHandle()->getNumberHandle());
+
+    HashMap<VRExprIdentifier, VRExprNumber> mapIdentifierNumber;
+
+    std::vector<VRExprAssignment> vecAllAssign;
+    for ( unsigned int i = initNumber.getUnsignedNumber()
+        ; i < condNumber.getUnsignedNumber(); i += addNumber.getUnsignedNumber()) {
+        if (pLoopStatement->getStatementHandle()->)
+        std::vector<VRExprAssignment> vecAssign = convert()
+    }
+#endif
+    // TODO
+//    VRExprIdentifier 
+}
+
     
 std::vector<VRExprAssignment> ConvertVExpr2VRExpr::convert(VExprProceduralContinuousAssignmentHandle pProceduralAssignemnt) {
     std::vector<VRExprAssignment> vecAssign;

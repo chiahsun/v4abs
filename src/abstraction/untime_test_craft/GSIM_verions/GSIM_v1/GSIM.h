@@ -87,7 +87,6 @@ enum ProtocolState {
   , ProtocolState_s31
   , ProtocolState_s32
   , ProtocolState_s33
-  , ProtocolState_s34
 };
 
 

@@ -21,6 +21,8 @@ public:
     static std::vector<VRExprAssignment> convert(VExprSeqBlockHandle pSeqBlock);
     static std::vector<VRExprAssignment> convert(VExprConditionalStatementHandle pConditional);
     static std::vector<VRExprAssignment> convert(VExprCaseStatementHandle pCaseStatement);
+    static std::vector<VRExprAssignment> convert(VExprCaseStatementHandle pCaseStatement, const HashMap<VRExprIdentifier, VRExprNumber> mapIdentifierNumber);
+    static std::vector<VRExprAssignment> convert(VExprLoopStatementHandle pLoopStatement);
     static std::vector<VRExprAssignment> convert(VExprProceduralContinuousAssignmentHandle pProceduralAssignemnt);
     static VRExprAssignment convert(VExprRegAssignmentHandle pRegAssignment);
     static std::vector<VRExprAssignment> convert(VExprEventStatementHandle pEventStatement);

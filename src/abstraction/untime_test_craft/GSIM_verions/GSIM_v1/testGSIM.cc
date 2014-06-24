@@ -7,6 +7,7 @@
 
 const static bool verbose = false;
 const static bool report_output = true;
+// const static bool report_output = false;
 
 int sc_main(int argc, char** argv) {
     sc_start();

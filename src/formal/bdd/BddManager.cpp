@@ -36,6 +36,9 @@ void BddManager::addBddNode(BddNodeHandle pBddNode) {
 }
     
 BddNodeHandle BddManager::makeBddNode(int curDecisionLevel) {
+    if (!(curDecisionLevel > 0)) {
+        LOG(ERROR) << "curDecisionLevel : " << curDecisionLevel;
+    }
     assert(curDecisionLevel > 0);
     BddNodeHandle pBddNode = BddNode::makeBddNode(curDecisionLevel);
     
@@ -43,6 +46,9 @@ BddNodeHandle BddManager::makeBddNode(int curDecisionLevel) {
 }
     
 BddNodeHandle BddManager::makeBddNode(int curDecisionLevel, BddNodeHandle pPos, BddNodeHandle pNeg) {
+    if (!(curDecisionLevel > 0)) {
+        LOG(ERROR) << "curDecisionLevel : " << curDecisionLevel;
+    }
     assert(curDecisionLevel > 0);
     BddNodeHandle pBddNode = BddNode::makeBddNode(curDecisionLevel, pPos, pNeg);
 
@@ -167,7 +173,7 @@ BddManager::hash_type::iterator BddManager::try_find(BddNodeHandle pBddNode) {
     return _hashBddNode.end();
 }
 
-bool BddNodeAndPairCompareFunctor::operator () (const BddNodeAndPair & x, const BddNodeAndPair & y)
+bool BddNodeAndPairCompareFunctor::operator () (const BddNodeAndPair & x, const BddNodeAndPair & y) const
 {
     if (x.first->isLess(y.first)) return true;
     if (y.first->isLess(x.first)) return false;

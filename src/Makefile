@@ -1,4 +1,4 @@
-CODE_DIRS = nstl test utility exception formal protocol verilog 
+CODE_DIRS = nstl utility exception formal via protocol verilog abstraction 
 
 all:
 	@for DIR in $(CODE_DIRS); \

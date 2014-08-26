@@ -22,7 +22,7 @@
 #include <map>
 
 struct BddNodeAndPairCompareFunctor {
-    bool operator () (const BddNodeAndPair & x, const BddNodeAndPair & y);
+    bool operator () (const BddNodeAndPair & x, const BddNodeAndPair & y) const;
 };
 
 

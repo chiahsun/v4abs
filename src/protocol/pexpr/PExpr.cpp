@@ -870,7 +870,8 @@ std::string PExprBoolExpression::toString() const
     std::stringstream ss;
     if( getConstant().valid() ) {
         assert(getOp() == CONSTANT);
-        ss << "(bool_expression " << _identifier << " == " << getConstant()->toString() << ")";
+//        ss << "(bool_expression " << _identifier << " == " << getConstant()->toString() << ")";
+        ss << "(" << _identifier << " == " << getConstant()->toString() << ")";
     }
     else if( getFst().valid() && getSnd().valid() ){
         std::string Operator;
@@ -881,15 +882,18 @@ std::string PExprBoolExpression::toString() const
         else if( getOp() == LOGICAL_XOR )
             Operator = " ^ ";
 
-        ss << "(bool_expression " << getFst()->toString() << Operator << getSnd()->toString() << ")";
+//        ss << "(bool_expression " << getFst()->toString() << Operator << getSnd()->toString() << ")";
+        ss << "(" << getFst()->toString() << Operator << getSnd()->toString() << ")";
     }
     else if( getFst().valid() && !getSnd().valid() ) {
         assert(getOp() == LOGICAL_NOT);
-        ss << "(bool_expression ! " << getFst()->toString() << ")";
+//        ss << "(bool_expression ! " << getFst()->toString() << ")";
+        ss << "(! " << getFst()->toString() << ")";
     }
     else{
         assert(getOp() == IDENTIFIER);
-        ss << "(bool_expression " << _identifier << ")";
+//        ss << "(bool_expression " << _identifier << ")";
+        ss << "(" << _identifier << ")";
     }
     return ss.str();
 }

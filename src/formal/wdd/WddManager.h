@@ -6,6 +6,7 @@
 
 #include "formal/bdd/BddManager.h"
 #include "nstl/for_each/ForEach.h"
+#include "utility/log/Log.h"
 
 template <class _TermHandle>
 class WddNode;
@@ -106,6 +107,43 @@ public:
         return s += ")";
            
     }
+   
+    // TODO case by case simplification of ITE 
+    std::string toPureString(const WddManager<_TermHandle>& wddManager) const {
+        if (getTermHandle().valid()) { 
+            if (getBddNodeHandle()->getPosHandle()->getBool())
+                return _pTerm->toString();
+            else
+                return "!(" + _pTerm->toString() + ")";
+        }
+
+        int curLevelId = getBddNodeHandle()->getCurDecisionLevel();
+        if (curLevelId == 0) {
+            if (getBddNodeHandle()->getBool())
+                return "true";
+            else
+                return "false";
+        }
+        term_handle_type pTerm = wddManager.getTermHandleFromId(curLevelId);
+        std::string curLevelName = pTerm->toString(); 
+//        assert(0);
+//        return "";
+        WddNodeHandle pPos = getPosHandle(wddManager);
+        WddNodeHandle pNeg = getNegHandle(wddManager);
+        std::string s = "(" + curLevelName + " ? ";
+        if (pPos.valid())
+            s += pPos->toPureString(wddManager);
+        else
+            s += "false";
+        s += " : ";
+        if (pNeg.valid())
+            s +=  pNeg->toPureString(wddManager);
+        else
+            s += "false";
+        return s += ")";
+           
+    }
+
 
     void writeDotFile(const std::string & filename) const {
         return _pBddNode->writeDotFile(filename);
@@ -169,6 +207,7 @@ public:
         
         if ((it = _mapTermId.find(pTerm)) == _mapTermId.end()) {
             int id = _mapTermId.size() + 1;
+            assert(id > 0);
             _mapTermId.insert(std::make_pair(pTerm, id));
             _mapIdTerm.insert(std::make_pair(id, pTerm));
             BddNodeHandle pBddNode = _bddManager.makeBddNode(id);
@@ -186,9 +225,16 @@ public:
 
 
     WddNodeHandle findTerm(const term_handle_type & pTerm) {
-        assert(_mapTermId.find(pTerm) != _mapTermId.end());
+        typename TermIdMap::const_iterator it;
+        it = _mapTermId.find(pTerm);
+        assert(it != _mapTermId.end());
 
-        int id = _mapTermId[pTerm];
+        int id = it->second;
+        if (!(id > 0)) {
+            LOG(ERROR) << pTerm->toString();
+            LOG(ERROR) << id;
+        }
+        assert(id > 0);
         WddNode<term_handle_type> wddNode(_bddManager.makeBddNode(id), pTerm);
         return WddNodeHandle(wddNode);
     }

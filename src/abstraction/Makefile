@@ -1,4 +1,4 @@
-CODE_DIRS = 
+CODE_DIRS = extract code_gen 
 
 all:
 	@for DIR in $(CODE_DIRS); \

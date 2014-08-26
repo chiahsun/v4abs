@@ -1,0 +1,854 @@
+.:../../../src/verilog/antlr_vsyntax/SourceTextInit:../../../ext_libs/antlr-4.0-complete.jar:
+../../../src/verilog/vast/parseSourceText/javaParseSourceText.sh CTE.v &> CTE.v.ast
+.:../../../src/protocol/antlr_psyntax/SourceTextInit:../../../ext_libs/antlr-4.0-complete.jar:
+../../../src/protocol/past/parseSourceText/javaParseSourceText.sh CTE.c &> CTE.c.ast
+./extractDesign.out CTE.v.ast CTE.c.ast CTE
+module CTE();
+input:
+ clk 
+ reset 
+ op_mode 
+ in_en 
+[7:0] yuv_in 
+[23:0] rgb_in 
+output:
+ busy 
+ out_valid 
+[23:0] rgb_out 
+[7:0] yuv_out 
+inout:
+parameter:
+yuv_to_rgb_inst0.S_U = 4'b0000
+yuv_to_rgb_inst0.S_Y1 = 4'b0001
+yuv_to_rgb_inst0.S_V = 4'b0010
+yuv_to_rgb_inst0.S_BUSY1 = 4'b0011
+yuv_to_rgb_inst0.S_Y2 = 4'b0100
+yuv_to_rgb_inst0.S_BUSY2 = 4'b0101
+integer:
+reg:
+[3:0] yuv_to_rgb_inst0.state 
+[7:0] yuv_to_rgb_inst0.reg_U 
+[7:0] yuv_to_rgb_inst0.reg_Y1 
+[7:0] yuv_to_rgb_inst0.reg_V 
+[7:0] yuv_to_rgb_inst0.reg_Y2 
+wire:
+ yuv_to_rgb_busy 
+ yuv_to_rgb_out_valid 
+[7:0] yuv_to_rgb_inst0.reg_U_next 
+[7:0] yuv_to_rgb_inst0.reg_Y1_next 
+[7:0] yuv_to_rgb_inst0.reg_V_next 
+[7:0] yuv_to_rgb_inst0.reg_Y2_next 
+[15:0] yuv_to_rgb_inst0.R_ext 
+[15:0] yuv_to_rgb_inst0.G_ext 
+[15:0] yuv_to_rgb_inst0.B_ext 
+[15:0] yuv_to_rgb_inst0.U_ext 
+[15:0] yuv_to_rgb_inst0.Y_ext 
+[15:0] yuv_to_rgb_inst0.V_ext 
+[7:0] yuv_to_rgb_inst0.R_out 
+[7:0] yuv_to_rgb_inst0.G_out 
+[7:0] yuv_to_rgb_inst0.B_out 
+[3:0] yuv_to_rgb_inst0.state_next 
+always @ (yuv_to_rgb_inst0.S_U or yuv_to_rgb_inst0.S_V or yuv_to_rgb_inst0.S_BUSY1 or yuv_to_rgb_inst0.S_BUSY2 or yuv_to_rgb_inst0.S_Y1 or yuv_to_rgb_inst0.S_Y2 or yuv_to_rgb_inst0.state)
+       + (lhs_terminals yuv_to_rgb_inst0.state_next)
+       + (rhs_terminals yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.S_V, yuv_to_rgb_inst0.S_BUSY1, yuv_to_rgb_inst0.S_BUSY2, yuv_to_rgb_inst0.S_Y1, yuv_to_rgb_inst0.S_Y2, yuv_to_rgb_inst0.state)
+       + (mux_terminals (yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), (yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), (yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), (yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), (yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), (yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2))
+       + (rhs_wdd_format ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_to_rgb_inst0.S_Y1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_to_rgb_inst0.S_V, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_to_rgb_inst0.S_BUSY1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), yuv_to_rgb_inst0.S_Y2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_to_rgb_inst0.S_BUSY2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2), yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.state)))))))
+       - yuv_to_rgb_inst0.state_next = ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_to_rgb_inst0.S_Y1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_to_rgb_inst0.S_V, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_to_rgb_inst0.S_BUSY1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), yuv_to_rgb_inst0.S_Y2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_to_rgb_inst0.S_BUSY2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2), yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.state))))))
+always @ (posedge clk) @ (in_en or 8'b0 or yuv_to_rgb_inst0.reg_U_next or reset)
+       + (lhs_terminals yuv_to_rgb_inst0.reg_U)
+       + (rhs_terminals 8'b0, yuv_to_rgb_inst0.reg_U_next)
+       + (mux_terminals (reset||!in_en))
+       + (rhs_wdd_format ite(in_en, ite(reset, 8'b0, yuv_to_rgb_inst0.reg_U_next), 8'b0))
+       - yuv_to_rgb_inst0.reg_U = ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_U_next)
+always @ (posedge clk) @ (in_en or yuv_to_rgb_inst0.reg_V_next or 8'b0 or reset)
+       + (lhs_terminals yuv_to_rgb_inst0.reg_V)
+       + (rhs_terminals yuv_to_rgb_inst0.reg_V_next, 8'b0)
+       + (mux_terminals (reset||!in_en))
+       + (rhs_wdd_format ite(in_en, ite(reset, 8'b0, yuv_to_rgb_inst0.reg_V_next), 8'b0))
+       - yuv_to_rgb_inst0.reg_V = ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_V_next)
+always @ (posedge clk) @ (in_en or yuv_to_rgb_inst0.reg_Y1_next or 8'b0 or reset)
+       + (lhs_terminals yuv_to_rgb_inst0.reg_Y1)
+       + (rhs_terminals yuv_to_rgb_inst0.reg_Y1_next, 8'b0)
+       + (mux_terminals (reset||!in_en))
+       + (rhs_wdd_format ite(in_en, ite(reset, 8'b0, yuv_to_rgb_inst0.reg_Y1_next), 8'b0))
+       - yuv_to_rgb_inst0.reg_Y1 = ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_Y1_next)
+always @ (posedge clk) @ (in_en or yuv_to_rgb_inst0.reg_Y2_next or 8'b0 or reset)
+       + (lhs_terminals yuv_to_rgb_inst0.reg_Y2)
+       + (rhs_terminals yuv_to_rgb_inst0.reg_Y2_next, 8'b0)
+       + (mux_terminals (reset||!in_en))
+       + (rhs_wdd_format ite(in_en, ite(reset, 8'b0, yuv_to_rgb_inst0.reg_Y2_next), 8'b0))
+       - yuv_to_rgb_inst0.reg_Y2 = ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_Y2_next)
+always @ (posedge clk) @ (in_en or yuv_to_rgb_inst0.S_U or yuv_to_rgb_inst0.state_next or reset)
+       + (lhs_terminals yuv_to_rgb_inst0.state)
+       + (rhs_terminals yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.state_next)
+       + (mux_terminals (reset||!in_en))
+       + (rhs_wdd_format ite(in_en, ite(reset, yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.state_next), yuv_to_rgb_inst0.S_U))
+       - yuv_to_rgb_inst0.state = ite((reset||!in_en), yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.state_next)
+always @ (op_mode or 1'b1 or yuv_to_rgb_busy)
+       + (lhs_terminals busy)
+       + (rhs_terminals 1'b1, yuv_to_rgb_busy)
+       + (mux_terminals !op_mode)
+       + (rhs_wdd_format ite(op_mode, 1'b1, yuv_to_rgb_busy))
+       - busy = ite(!op_mode, yuv_to_rgb_busy, 1'b1)
+always @ (op_mode or 1'b0 or yuv_to_rgb_out_valid)
+       + (lhs_terminals out_valid)
+       + (rhs_terminals 1'b0, yuv_to_rgb_out_valid)
+       + (mux_terminals !op_mode)
+       + (rhs_wdd_format ite(op_mode, 1'b0, yuv_to_rgb_out_valid))
+       - out_valid = ite(!op_mode, yuv_to_rgb_out_valid, 1'b0)
+always @ (8'b0)
+       + (lhs_terminals yuv_out)
+       + (rhs_terminals 8'b0)
+       + (mux_terminals )
+       + (rhs_wdd_format 8'b0)
+       - yuv_out = 8'b0
+always @ (yuv_to_rgb_inst0.S_BUSY1 or yuv_to_rgb_inst0.S_BUSY2 or yuv_to_rgb_inst0.state)
+       + (lhs_terminals yuv_to_rgb_busy)
+       + (rhs_terminals ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2)))
+       + (mux_terminals )
+       + (rhs_wdd_format ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2)))
+       - yuv_to_rgb_busy = ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2))
+always @ (yuv_to_rgb_inst0.S_BUSY1 or yuv_to_rgb_inst0.S_BUSY2 or yuv_to_rgb_inst0.state)
+       + (lhs_terminals yuv_to_rgb_out_valid)
+       + (rhs_terminals ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2)))
+       + (mux_terminals )
+       + (rhs_wdd_format ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2)))
+       - yuv_to_rgb_out_valid = ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2))
+always @ (yuv_to_rgb_inst0.S_U or yuv_to_rgb_inst0.reg_U or yuv_in or yuv_to_rgb_inst0.state)
+       + (lhs_terminals yuv_to_rgb_inst0.reg_U_next)
+       + (rhs_terminals yuv_to_rgb_inst0.reg_U, yuv_in)
+       + (mux_terminals (yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U))
+       + (rhs_wdd_format ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_in, yuv_to_rgb_inst0.reg_U))
+       - yuv_to_rgb_inst0.reg_U_next = ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_in, yuv_to_rgb_inst0.reg_U)
+always @ (yuv_to_rgb_inst0.reg_Y1 or yuv_to_rgb_inst0.S_Y1 or yuv_in or yuv_to_rgb_inst0.state)
+       + (lhs_terminals yuv_to_rgb_inst0.reg_Y1_next)
+       + (rhs_terminals yuv_to_rgb_inst0.reg_Y1, yuv_in)
+       + (mux_terminals (yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1))
+       + (rhs_wdd_format ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_in, yuv_to_rgb_inst0.reg_Y1))
+       - yuv_to_rgb_inst0.reg_Y1_next = ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_in, yuv_to_rgb_inst0.reg_Y1)
+always @ (yuv_to_rgb_inst0.S_V or yuv_to_rgb_inst0.reg_V or yuv_in or yuv_to_rgb_inst0.state)
+       + (lhs_terminals yuv_to_rgb_inst0.reg_V_next)
+       + (rhs_terminals yuv_to_rgb_inst0.reg_V, yuv_in)
+       + (mux_terminals (yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V))
+       + (rhs_wdd_format ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_in, yuv_to_rgb_inst0.reg_V))
+       - yuv_to_rgb_inst0.reg_V_next = ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_in, yuv_to_rgb_inst0.reg_V)
+always @ (yuv_to_rgb_inst0.reg_Y2 or yuv_to_rgb_inst0.S_Y2 or yuv_in or yuv_to_rgb_inst0.state)
+       + (lhs_terminals yuv_to_rgb_inst0.reg_Y2_next)
+       + (rhs_terminals yuv_to_rgb_inst0.reg_Y2, yuv_in)
+       + (mux_terminals (yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2))
+       + (rhs_wdd_format ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_in, yuv_to_rgb_inst0.reg_Y2))
+       - yuv_to_rgb_inst0.reg_Y2_next = ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_in, yuv_to_rgb_inst0.reg_Y2)
+always @ (yuv_to_rgb_inst0.reg_U or 7 or 8)
+       + (lhs_terminals yuv_to_rgb_inst0.U_ext)
+       + (rhs_terminals {{8{yuv_to_rgb_inst0.reg_U[7]}},yuv_to_rgb_inst0.reg_U})
+       + (mux_terminals )
+       + (rhs_wdd_format {{8{yuv_to_rgb_inst0.reg_U[7]}},yuv_to_rgb_inst0.reg_U})
+       - yuv_to_rgb_inst0.U_ext = {{8{yuv_to_rgb_inst0.reg_U[7]}},yuv_to_rgb_inst0.reg_U}
+always @ (yuv_to_rgb_inst0.S_BUSY1 or yuv_to_rgb_inst0.reg_Y1 or yuv_to_rgb_inst0.reg_Y2 or yuv_to_rgb_inst0.state or 8'b0)
+       + (lhs_terminals yuv_to_rgb_inst0.Y_ext)
+       + (rhs_terminals {8'b0,yuv_to_rgb_inst0.reg_Y2}, {8'b0,yuv_to_rgb_inst0.reg_Y1})
+       + (mux_terminals (yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1))
+       + (rhs_wdd_format ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), {8'b0,yuv_to_rgb_inst0.reg_Y1}, {8'b0,yuv_to_rgb_inst0.reg_Y2}))
+       - yuv_to_rgb_inst0.Y_ext = ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), {8'b0,yuv_to_rgb_inst0.reg_Y1}, {8'b0,yuv_to_rgb_inst0.reg_Y2})
+always @ (yuv_to_rgb_inst0.reg_V or 7 or 8)
+       + (lhs_terminals yuv_to_rgb_inst0.V_ext)
+       + (rhs_terminals {{8{yuv_to_rgb_inst0.reg_V[7]}},yuv_to_rgb_inst0.reg_V})
+       + (mux_terminals )
+       + (rhs_wdd_format {{8{yuv_to_rgb_inst0.reg_V[7]}},yuv_to_rgb_inst0.reg_V})
+       - yuv_to_rgb_inst0.V_ext = {{8{yuv_to_rgb_inst0.reg_V[7]}},yuv_to_rgb_inst0.reg_V}
+always @ (16'b1101 or yuv_to_rgb_inst0.V_ext or yuv_to_rgb_inst0.Y_ext or 16'b1000)
+       + (lhs_terminals yuv_to_rgb_inst0.R_ext)
+       + (rhs_terminals ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b1101*yuv_to_rgb_inst0.V_ext)))
+       + (mux_terminals )
+       + (rhs_wdd_format ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b1101*yuv_to_rgb_inst0.V_ext)))
+       - yuv_to_rgb_inst0.R_ext = ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b1101*yuv_to_rgb_inst0.V_ext))
+always @ (16'hfffa or yuv_to_rgb_inst0.U_ext or yuv_to_rgb_inst0.V_ext or 16'hfffe or yuv_to_rgb_inst0.Y_ext or 16'b1000)
+       + (lhs_terminals yuv_to_rgb_inst0.G_ext)
+       + (rhs_terminals (((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'hfffe*yuv_to_rgb_inst0.U_ext))+(16'hfffa*yuv_to_rgb_inst0.V_ext)))
+       + (mux_terminals )
+       + (rhs_wdd_format (((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'hfffe*yuv_to_rgb_inst0.U_ext))+(16'hfffa*yuv_to_rgb_inst0.V_ext)))
+       - yuv_to_rgb_inst0.G_ext = (((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'hfffe*yuv_to_rgb_inst0.U_ext))+(16'hfffa*yuv_to_rgb_inst0.V_ext))
+always @ (16'b10000 or yuv_to_rgb_inst0.U_ext or yuv_to_rgb_inst0.Y_ext or 16'b1000)
+       + (lhs_terminals yuv_to_rgb_inst0.B_ext)
+       + (rhs_terminals ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b10000*yuv_to_rgb_inst0.U_ext)))
+       + (mux_terminals )
+       + (rhs_wdd_format ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b10000*yuv_to_rgb_inst0.U_ext)))
+       - yuv_to_rgb_inst0.B_ext = ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b10000*yuv_to_rgb_inst0.U_ext))
+always @ (11 or 4'b0 or 10 or 14 or 15 or 2 or 3 or 8'd1 or 8'b0 or 8'd255 or yuv_to_rgb_inst0.R_ext)
+       + (lhs_terminals yuv_to_rgb_inst0.R_out)
+       + (rhs_terminals (yuv_to_rgb_inst0.R_ext[10:3]+8'd1), yuv_to_rgb_inst0.R_ext[10:3], 8'b0, 8'd255)
+       + (mux_terminals yuv_to_rgb_inst0.R_ext[15], (yuv_to_rgb_inst0.R_ext[14:11]!=4'b0), yuv_to_rgb_inst0.R_ext[2], (yuv_to_rgb_inst0.R_ext[10:3]=8'd255))
+       + (rhs_wdd_format ite(yuv_to_rgb_inst0.R_ext[15], 8'b0, ite((yuv_to_rgb_inst0.R_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.R_ext[2], ite((yuv_to_rgb_inst0.R_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.R_ext[10:3]+8'd1)), yuv_to_rgb_inst0.R_ext[10:3]))))
+       - yuv_to_rgb_inst0.R_out = ite(yuv_to_rgb_inst0.R_ext[15], 8'b0, ite((yuv_to_rgb_inst0.R_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.R_ext[2], ite((yuv_to_rgb_inst0.R_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.R_ext[10:3]+8'd1)), yuv_to_rgb_inst0.R_ext[10:3])))
+always @ (11 or 4'b0 or 14 or 15 or 2 or 3 or yuv_to_rgb_inst0.G_ext or 8'd1 or 8'b0 or 8'd255 or 10)
+       + (lhs_terminals yuv_to_rgb_inst0.G_out)
+       + (rhs_terminals (yuv_to_rgb_inst0.G_ext[10:3]+8'd1), 8'b0, 8'd255, yuv_to_rgb_inst0.G_ext[10:3])
+       + (mux_terminals yuv_to_rgb_inst0.G_ext[15], (yuv_to_rgb_inst0.G_ext[14:11]!=4'b0), yuv_to_rgb_inst0.G_ext[2], (yuv_to_rgb_inst0.G_ext[10:3]=8'd255))
+       + (rhs_wdd_format ite(yuv_to_rgb_inst0.G_ext[15], 8'b0, ite((yuv_to_rgb_inst0.G_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.G_ext[2], ite((yuv_to_rgb_inst0.G_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.G_ext[10:3]+8'd1)), yuv_to_rgb_inst0.G_ext[10:3]))))
+       - yuv_to_rgb_inst0.G_out = ite(yuv_to_rgb_inst0.G_ext[15], 8'b0, ite((yuv_to_rgb_inst0.G_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.G_ext[2], ite((yuv_to_rgb_inst0.G_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.G_ext[10:3]+8'd1)), yuv_to_rgb_inst0.G_ext[10:3])))
+always @ (11 or 4'b0 or 14 or 15 or yuv_to_rgb_inst0.B_ext or 2 or 3 or 8'd1 or 8'b0 or 8'd255 or 10)
+       + (lhs_terminals yuv_to_rgb_inst0.B_out)
+       + (rhs_terminals (yuv_to_rgb_inst0.B_ext[10:3]+8'd1), yuv_to_rgb_inst0.B_ext[10:3], 8'b0, 8'd255)
+       + (mux_terminals yuv_to_rgb_inst0.B_ext[15], (yuv_to_rgb_inst0.B_ext[14:11]!=4'b0), yuv_to_rgb_inst0.B_ext[2], (yuv_to_rgb_inst0.B_ext[10:3]=8'd255))
+       + (rhs_wdd_format ite(yuv_to_rgb_inst0.B_ext[15], 8'b0, ite((yuv_to_rgb_inst0.B_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.B_ext[2], ite((yuv_to_rgb_inst0.B_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.B_ext[10:3]+8'd1)), yuv_to_rgb_inst0.B_ext[10:3]))))
+       - yuv_to_rgb_inst0.B_out = ite(yuv_to_rgb_inst0.B_ext[15], 8'b0, ite((yuv_to_rgb_inst0.B_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.B_ext[2], ite((yuv_to_rgb_inst0.B_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.B_ext[10:3]+8'd1)), yuv_to_rgb_inst0.B_ext[10:3])))
+always @ (yuv_to_rgb_inst0.G_out or yuv_to_rgb_inst0.R_out or yuv_to_rgb_inst0.B_out)
+       + (lhs_terminals rgb_out)
+       + (rhs_terminals {yuv_to_rgb_inst0.R_out,yuv_to_rgb_inst0.G_out,yuv_to_rgb_inst0.B_out})
+       + (mux_terminals )
+       + (rhs_wdd_format {yuv_to_rgb_inst0.R_out,yuv_to_rgb_inst0.G_out,yuv_to_rgb_inst0.B_out})
+       - rgb_out = {yuv_to_rgb_inst0.R_out,yuv_to_rgb_inst0.G_out,yuv_to_rgb_inst0.B_out}
+endmodule
+
+module YUV_TO_RGB();
+input:
+ clk 
+ reset 
+ in_en 
+[7:0] yuv_in 
+output:
+ busy 
+ out_valid 
+[23:0] rgb_out 
+inout:
+parameter:
+S_U = 4'b0000
+S_Y1 = 4'b0001
+S_V = 4'b0010
+S_BUSY1 = 4'b0011
+S_Y2 = 4'b0100
+S_BUSY2 = 4'b0101
+integer:
+reg:
+[3:0] state 
+[7:0] reg_U 
+[7:0] reg_Y1 
+[7:0] reg_V 
+[7:0] reg_Y2 
+wire:
+[7:0] reg_U_next 
+[7:0] reg_Y1_next 
+[7:0] reg_V_next 
+[7:0] reg_Y2_next 
+[15:0] R_ext 
+[15:0] G_ext 
+[15:0] B_ext 
+[15:0] U_ext 
+[15:0] Y_ext 
+[15:0] V_ext 
+[7:0] R_out 
+[7:0] G_out 
+[7:0] B_out 
+[3:0] state_next 
+always @ (state or S_Y1 or S_Y2 or S_U or S_V or S_BUSY1 or S_BUSY2)
+       + (lhs_terminals state_next)
+       + (rhs_terminals state, S_Y1, S_Y2, S_U, S_V, S_BUSY1, S_BUSY2)
+       + (mux_terminals (state=S_U), (state=S_Y1), (state=S_V), (state=S_BUSY1), (state=S_Y2), (state=S_BUSY2))
+       + (rhs_wdd_format ite((state=S_U), S_Y1, ite((state=S_Y1), S_V, ite((state=S_V), S_BUSY1, ite((state=S_BUSY1), S_Y2, ite((state=S_Y2), S_BUSY2, ite((state=S_BUSY2), S_U, state)))))))
+       - state_next = ite((state=S_U), S_Y1, ite((state=S_Y1), S_V, ite((state=S_V), S_BUSY1, ite((state=S_BUSY1), S_Y2, ite((state=S_Y2), S_BUSY2, ite((state=S_BUSY2), S_U, state))))))
+always @ (posedge clk) @ (state_next or in_en or S_U or reset)
+       + (lhs_terminals state)
+       + (rhs_terminals state_next, S_U)
+       + (mux_terminals (reset||!in_en))
+       + (rhs_wdd_format ite(in_en, ite(reset, S_U, state_next), S_U))
+       - state = ite((reset||!in_en), S_U, state_next)
+always @ (posedge clk) @ (reg_Y1_next or in_en or 8'b0 or reset)
+       + (lhs_terminals reg_Y1)
+       + (rhs_terminals 8'b0, reg_Y1_next)
+       + (mux_terminals (reset||!in_en))
+       + (rhs_wdd_format ite(in_en, ite(reset, 8'b0, reg_Y1_next), 8'b0))
+       - reg_Y1 = ite((reset||!in_en), 8'b0, reg_Y1_next)
+always @ (posedge clk) @ (in_en or 8'b0 or reg_Y2_next or reset)
+       + (lhs_terminals reg_Y2)
+       + (rhs_terminals 8'b0, reg_Y2_next)
+       + (mux_terminals (reset||!in_en))
+       + (rhs_wdd_format ite(in_en, ite(reset, 8'b0, reg_Y2_next), 8'b0))
+       - reg_Y2 = ite((reset||!in_en), 8'b0, reg_Y2_next)
+always @ (posedge clk) @ (in_en or reg_U_next or 8'b0 or reset)
+       + (lhs_terminals reg_U)
+       + (rhs_terminals reg_U_next, 8'b0)
+       + (mux_terminals (reset||!in_en))
+       + (rhs_wdd_format ite(in_en, ite(reset, 8'b0, reg_U_next), 8'b0))
+       - reg_U = ite((reset||!in_en), 8'b0, reg_U_next)
+always @ (posedge clk) @ (in_en or reg_V_next or 8'b0 or reset)
+       + (lhs_terminals reg_V)
+       + (rhs_terminals reg_V_next, 8'b0)
+       + (mux_terminals (reset||!in_en))
+       + (rhs_wdd_format ite(in_en, ite(reset, 8'b0, reg_V_next), 8'b0))
+       - reg_V = ite((reset||!in_en), 8'b0, reg_V_next)
+always @ (state or S_BUSY1 or S_BUSY2)
+       + (lhs_terminals busy)
+       + (rhs_terminals ((state=S_BUSY1)||(state=S_BUSY2)))
+       + (mux_terminals )
+       + (rhs_wdd_format ((state=S_BUSY1)||(state=S_BUSY2)))
+       - busy = ((state=S_BUSY1)||(state=S_BUSY2))
+always @ (state or S_BUSY1 or S_BUSY2)
+       + (lhs_terminals out_valid)
+       + (rhs_terminals ((state=S_BUSY1)||(state=S_BUSY2)))
+       + (mux_terminals )
+       + (rhs_wdd_format ((state=S_BUSY1)||(state=S_BUSY2)))
+       - out_valid = ((state=S_BUSY1)||(state=S_BUSY2))
+always @ (state or S_U or yuv_in or reg_U)
+       + (lhs_terminals reg_U_next)
+       + (rhs_terminals yuv_in, reg_U)
+       + (mux_terminals (state=S_U))
+       + (rhs_wdd_format ite((state=S_U), yuv_in, reg_U))
+       - reg_U_next = ite((state=S_U), yuv_in, reg_U)
+always @ (state or reg_Y1 or S_Y1 or yuv_in)
+       + (lhs_terminals reg_Y1_next)
+       + (rhs_terminals reg_Y1, yuv_in)
+       + (mux_terminals (state=S_Y1))
+       + (rhs_wdd_format ite((state=S_Y1), yuv_in, reg_Y1))
+       - reg_Y1_next = ite((state=S_Y1), yuv_in, reg_Y1)
+always @ (state or S_V or yuv_in or reg_V)
+       + (lhs_terminals reg_V_next)
+       + (rhs_terminals yuv_in, reg_V)
+       + (mux_terminals (state=S_V))
+       + (rhs_wdd_format ite((state=S_V), yuv_in, reg_V))
+       - reg_V_next = ite((state=S_V), yuv_in, reg_V)
+always @ (state or reg_Y2 or S_Y2 or yuv_in)
+       + (lhs_terminals reg_Y2_next)
+       + (rhs_terminals reg_Y2, yuv_in)
+       + (mux_terminals (state=S_Y2))
+       + (rhs_wdd_format ite((state=S_Y2), yuv_in, reg_Y2))
+       - reg_Y2_next = ite((state=S_Y2), yuv_in, reg_Y2)
+always @ (7 or 8 or reg_U)
+       + (lhs_terminals U_ext)
+       + (rhs_terminals {{8{reg_U[7]}},reg_U})
+       + (mux_terminals )
+       + (rhs_wdd_format {{8{reg_U[7]}},reg_U})
+       - U_ext = {{8{reg_U[7]}},reg_U}
+always @ (state or reg_Y1 or reg_Y2 or S_BUSY1 or 8'b0)
+       + (lhs_terminals Y_ext)
+       + (rhs_terminals {8'b0,reg_Y2}, {8'b0,reg_Y1})
+       + (mux_terminals (state=S_BUSY1))
+       + (rhs_wdd_format ite((state=S_BUSY1), {8'b0,reg_Y1}, {8'b0,reg_Y2}))
+       - Y_ext = ite((state=S_BUSY1), {8'b0,reg_Y1}, {8'b0,reg_Y2})
+always @ (7 or 8 or reg_V)
+       + (lhs_terminals V_ext)
+       + (rhs_terminals {{8{reg_V[7]}},reg_V})
+       + (mux_terminals )
+       + (rhs_wdd_format {{8{reg_V[7]}},reg_V})
+       - V_ext = {{8{reg_V[7]}},reg_V}
+always @ (16'b1101 or V_ext or Y_ext or 16'b1000)
+       + (lhs_terminals R_ext)
+       + (rhs_terminals ((16'b1000*Y_ext)+(16'b1101*V_ext)))
+       + (mux_terminals )
+       + (rhs_wdd_format ((16'b1000*Y_ext)+(16'b1101*V_ext)))
+       - R_ext = ((16'b1000*Y_ext)+(16'b1101*V_ext))
+always @ (16'hfffa or 16'hfffe or U_ext or V_ext or Y_ext or 16'b1000)
+       + (lhs_terminals G_ext)
+       + (rhs_terminals (((16'b1000*Y_ext)+(16'hfffe*U_ext))+(16'hfffa*V_ext)))
+       + (mux_terminals )
+       + (rhs_wdd_format (((16'b1000*Y_ext)+(16'hfffe*U_ext))+(16'hfffa*V_ext)))
+       - G_ext = (((16'b1000*Y_ext)+(16'hfffe*U_ext))+(16'hfffa*V_ext))
+always @ (16'b10000 or U_ext or Y_ext or 16'b1000)
+       + (lhs_terminals B_ext)
+       + (rhs_terminals ((16'b1000*Y_ext)+(16'b10000*U_ext)))
+       + (mux_terminals )
+       + (rhs_wdd_format ((16'b1000*Y_ext)+(16'b10000*U_ext)))
+       - B_ext = ((16'b1000*Y_ext)+(16'b10000*U_ext))
+always @ (11 or 4'b0 or 14 or 15 or 2 or 3 or R_ext or 8'd1 or 8'b0 or 8'd255 or 10)
+       + (lhs_terminals R_out)
+       + (rhs_terminals (R_ext[10:3]+8'd1), 8'b0, 8'd255, R_ext[10:3])
+       + (mux_terminals R_ext[15], (R_ext[14:11]!=4'b0), R_ext[2], (R_ext[10:3]=8'd255))
+       + (rhs_wdd_format ite(R_ext[15], 8'b0, ite((R_ext[14:11]!=4'b0), 8'd255, ite(R_ext[2], ite((R_ext[10:3]=8'd255), 8'd255, (R_ext[10:3]+8'd1)), R_ext[10:3]))))
+       - R_out = ite(R_ext[15], 8'b0, ite((R_ext[14:11]!=4'b0), 8'd255, ite(R_ext[2], ite((R_ext[10:3]=8'd255), 8'd255, (R_ext[10:3]+8'd1)), R_ext[10:3])))
+always @ (11 or 4'b0 or 14 or 15 or G_ext or 2 or 3 or 8'd1 or 8'b0 or 8'd255 or 10)
+       + (lhs_terminals G_out)
+       + (rhs_terminals G_ext[10:3], 8'b0, 8'd255, (G_ext[10:3]+8'd1))
+       + (mux_terminals G_ext[15], (G_ext[14:11]!=4'b0), G_ext[2], (G_ext[10:3]=8'd255))
+       + (rhs_wdd_format ite(G_ext[15], 8'b0, ite((G_ext[14:11]!=4'b0), 8'd255, ite(G_ext[2], ite((G_ext[10:3]=8'd255), 8'd255, (G_ext[10:3]+8'd1)), G_ext[10:3]))))
+       - G_out = ite(G_ext[15], 8'b0, ite((G_ext[14:11]!=4'b0), 8'd255, ite(G_ext[2], ite((G_ext[10:3]=8'd255), 8'd255, (G_ext[10:3]+8'd1)), G_ext[10:3])))
+always @ (11 or 4'b0 or 14 or B_ext or 15 or 2 or 3 or 8'd1 or 8'b0 or 8'd255 or 10)
+       + (lhs_terminals B_out)
+       + (rhs_terminals (B_ext[10:3]+8'd1), 8'b0, 8'd255, B_ext[10:3])
+       + (mux_terminals B_ext[15], (B_ext[14:11]!=4'b0), B_ext[2], (B_ext[10:3]=8'd255))
+       + (rhs_wdd_format ite(B_ext[15], 8'b0, ite((B_ext[14:11]!=4'b0), 8'd255, ite(B_ext[2], ite((B_ext[10:3]=8'd255), 8'd255, (B_ext[10:3]+8'd1)), B_ext[10:3]))))
+       - B_out = ite(B_ext[15], 8'b0, ite((B_ext[14:11]!=4'b0), 8'd255, ite(B_ext[2], ite((B_ext[10:3]=8'd255), 8'd255, (B_ext[10:3]+8'd1)), B_ext[10:3])))
+always @ (R_out or B_out or G_out)
+       + (lhs_terminals rgb_out)
+       + (rhs_terminals {R_out,G_out,B_out})
+       + (mux_terminals )
+       + (rhs_wdd_format {R_out,G_out,B_out})
+       - rgb_out = {R_out,G_out,B_out}
+endmodule
+
+module CTE();
+input:
+ clk 
+ reset 
+ op_mode 
+ in_en 
+[7:0] yuv_in 
+[23:0] rgb_in 
+output:
+ busy 
+ out_valid 
+[23:0] rgb_out 
+[7:0] yuv_out 
+inout:
+parameter:
+yuv_to_rgb_inst0.S_U = 4'b0000
+yuv_to_rgb_inst0.S_Y1 = 4'b0001
+yuv_to_rgb_inst0.S_V = 4'b0010
+yuv_to_rgb_inst0.S_BUSY1 = 4'b0011
+yuv_to_rgb_inst0.S_Y2 = 4'b0100
+yuv_to_rgb_inst0.S_BUSY2 = 4'b0101
+integer:
+reg:
+[3:0] yuv_to_rgb_inst0.state 
+[7:0] yuv_to_rgb_inst0.reg_U 
+[7:0] yuv_to_rgb_inst0.reg_Y1 
+[7:0] yuv_to_rgb_inst0.reg_V 
+[7:0] yuv_to_rgb_inst0.reg_Y2 
+wire:
+ yuv_to_rgb_busy 
+ yuv_to_rgb_out_valid 
+[7:0] yuv_to_rgb_inst0.reg_U_next 
+[7:0] yuv_to_rgb_inst0.reg_Y1_next 
+[7:0] yuv_to_rgb_inst0.reg_V_next 
+[7:0] yuv_to_rgb_inst0.reg_Y2_next 
+[15:0] yuv_to_rgb_inst0.R_ext 
+[15:0] yuv_to_rgb_inst0.G_ext 
+[15:0] yuv_to_rgb_inst0.B_ext 
+[15:0] yuv_to_rgb_inst0.U_ext 
+[15:0] yuv_to_rgb_inst0.Y_ext 
+[15:0] yuv_to_rgb_inst0.V_ext 
+[7:0] yuv_to_rgb_inst0.R_out 
+[7:0] yuv_to_rgb_inst0.G_out 
+[7:0] yuv_to_rgb_inst0.B_out 
+[3:0] yuv_to_rgb_inst0.state_next 
+always @ (yuv_to_rgb_inst0.S_U or yuv_to_rgb_inst0.S_V or yuv_to_rgb_inst0.S_BUSY1 or yuv_to_rgb_inst0.S_BUSY2 or yuv_to_rgb_inst0.S_Y1 or yuv_to_rgb_inst0.S_Y2 or yuv_to_rgb_inst0.state)
+       + (lhs_terminals yuv_to_rgb_inst0.state_next)
+       + (rhs_terminals yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.S_V, yuv_to_rgb_inst0.S_BUSY1, yuv_to_rgb_inst0.S_BUSY2, yuv_to_rgb_inst0.S_Y1, yuv_to_rgb_inst0.S_Y2, yuv_to_rgb_inst0.state)
+       + (mux_terminals (yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), (yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), (yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), (yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), (yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), (yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2))
+       + (rhs_wdd_format ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_to_rgb_inst0.S_Y1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_to_rgb_inst0.S_V, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_to_rgb_inst0.S_BUSY1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), yuv_to_rgb_inst0.S_Y2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_to_rgb_inst0.S_BUSY2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2), yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.state)))))))
+       - yuv_to_rgb_inst0.state_next = ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_to_rgb_inst0.S_Y1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_to_rgb_inst0.S_V, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_to_rgb_inst0.S_BUSY1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), yuv_to_rgb_inst0.S_Y2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_to_rgb_inst0.S_BUSY2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2), yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.state))))))
+always @ (posedge clk) @ (in_en or 8'b0 or yuv_to_rgb_inst0.reg_U_next or reset)
+       + (lhs_terminals yuv_to_rgb_inst0.reg_U)
+       + (rhs_terminals 8'b0, yuv_to_rgb_inst0.reg_U_next)
+       + (mux_terminals (reset||!in_en))
+       + (rhs_wdd_format ite(in_en, ite(reset, 8'b0, yuv_to_rgb_inst0.reg_U_next), 8'b0))
+       - yuv_to_rgb_inst0.reg_U = ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_U_next)
+always @ (posedge clk) @ (in_en or yuv_to_rgb_inst0.reg_V_next or 8'b0 or reset)
+       + (lhs_terminals yuv_to_rgb_inst0.reg_V)
+       + (rhs_terminals yuv_to_rgb_inst0.reg_V_next, 8'b0)
+       + (mux_terminals (reset||!in_en))
+       + (rhs_wdd_format ite(in_en, ite(reset, 8'b0, yuv_to_rgb_inst0.reg_V_next), 8'b0))
+       - yuv_to_rgb_inst0.reg_V = ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_V_next)
+always @ (posedge clk) @ (in_en or yuv_to_rgb_inst0.reg_Y1_next or 8'b0 or reset)
+       + (lhs_terminals yuv_to_rgb_inst0.reg_Y1)
+       + (rhs_terminals yuv_to_rgb_inst0.reg_Y1_next, 8'b0)
+       + (mux_terminals (reset||!in_en))
+       + (rhs_wdd_format ite(in_en, ite(reset, 8'b0, yuv_to_rgb_inst0.reg_Y1_next), 8'b0))
+       - yuv_to_rgb_inst0.reg_Y1 = ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_Y1_next)
+always @ (posedge clk) @ (in_en or yuv_to_rgb_inst0.reg_Y2_next or 8'b0 or reset)
+       + (lhs_terminals yuv_to_rgb_inst0.reg_Y2)
+       + (rhs_terminals yuv_to_rgb_inst0.reg_Y2_next, 8'b0)
+       + (mux_terminals (reset||!in_en))
+       + (rhs_wdd_format ite(in_en, ite(reset, 8'b0, yuv_to_rgb_inst0.reg_Y2_next), 8'b0))
+       - yuv_to_rgb_inst0.reg_Y2 = ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_Y2_next)
+always @ (posedge clk) @ (in_en or yuv_to_rgb_inst0.S_U or yuv_to_rgb_inst0.state_next or reset)
+       + (lhs_terminals yuv_to_rgb_inst0.state)
+       + (rhs_terminals yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.state_next)
+       + (mux_terminals (reset||!in_en))
+       + (rhs_wdd_format ite(in_en, ite(reset, yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.state_next), yuv_to_rgb_inst0.S_U))
+       - yuv_to_rgb_inst0.state = ite((reset||!in_en), yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.state_next)
+always @ (op_mode or 1'b1 or yuv_to_rgb_busy)
+       + (lhs_terminals busy)
+       + (rhs_terminals 1'b1, yuv_to_rgb_busy)
+       + (mux_terminals !op_mode)
+       + (rhs_wdd_format ite(op_mode, 1'b1, yuv_to_rgb_busy))
+       - busy = ite(!op_mode, yuv_to_rgb_busy, 1'b1)
+always @ (op_mode or 1'b0 or yuv_to_rgb_out_valid)
+       + (lhs_terminals out_valid)
+       + (rhs_terminals 1'b0, yuv_to_rgb_out_valid)
+       + (mux_terminals !op_mode)
+       + (rhs_wdd_format ite(op_mode, 1'b0, yuv_to_rgb_out_valid))
+       - out_valid = ite(!op_mode, yuv_to_rgb_out_valid, 1'b0)
+always @ (8'b0)
+       + (lhs_terminals yuv_out)
+       + (rhs_terminals 8'b0)
+       + (mux_terminals )
+       + (rhs_wdd_format 8'b0)
+       - yuv_out = 8'b0
+always @ (yuv_to_rgb_inst0.S_BUSY1 or yuv_to_rgb_inst0.S_BUSY2 or yuv_to_rgb_inst0.state)
+       + (lhs_terminals yuv_to_rgb_busy)
+       + (rhs_terminals ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2)))
+       + (mux_terminals )
+       + (rhs_wdd_format ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2)))
+       - yuv_to_rgb_busy = ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2))
+always @ (yuv_to_rgb_inst0.S_BUSY1 or yuv_to_rgb_inst0.S_BUSY2 or yuv_to_rgb_inst0.state)
+       + (lhs_terminals yuv_to_rgb_out_valid)
+       + (rhs_terminals ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2)))
+       + (mux_terminals )
+       + (rhs_wdd_format ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2)))
+       - yuv_to_rgb_out_valid = ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2))
+always @ (yuv_to_rgb_inst0.S_U or yuv_to_rgb_inst0.reg_U or yuv_in or yuv_to_rgb_inst0.state)
+       + (lhs_terminals yuv_to_rgb_inst0.reg_U_next)
+       + (rhs_terminals yuv_to_rgb_inst0.reg_U, yuv_in)
+       + (mux_terminals (yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U))
+       + (rhs_wdd_format ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_in, yuv_to_rgb_inst0.reg_U))
+       - yuv_to_rgb_inst0.reg_U_next = ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_in, yuv_to_rgb_inst0.reg_U)
+always @ (yuv_to_rgb_inst0.reg_Y1 or yuv_to_rgb_inst0.S_Y1 or yuv_in or yuv_to_rgb_inst0.state)
+       + (lhs_terminals yuv_to_rgb_inst0.reg_Y1_next)
+       + (rhs_terminals yuv_to_rgb_inst0.reg_Y1, yuv_in)
+       + (mux_terminals (yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1))
+       + (rhs_wdd_format ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_in, yuv_to_rgb_inst0.reg_Y1))
+       - yuv_to_rgb_inst0.reg_Y1_next = ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_in, yuv_to_rgb_inst0.reg_Y1)
+always @ (yuv_to_rgb_inst0.S_V or yuv_to_rgb_inst0.reg_V or yuv_in or yuv_to_rgb_inst0.state)
+       + (lhs_terminals yuv_to_rgb_inst0.reg_V_next)
+       + (rhs_terminals yuv_to_rgb_inst0.reg_V, yuv_in)
+       + (mux_terminals (yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V))
+       + (rhs_wdd_format ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_in, yuv_to_rgb_inst0.reg_V))
+       - yuv_to_rgb_inst0.reg_V_next = ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_in, yuv_to_rgb_inst0.reg_V)
+always @ (yuv_to_rgb_inst0.reg_Y2 or yuv_to_rgb_inst0.S_Y2 or yuv_in or yuv_to_rgb_inst0.state)
+       + (lhs_terminals yuv_to_rgb_inst0.reg_Y2_next)
+       + (rhs_terminals yuv_to_rgb_inst0.reg_Y2, yuv_in)
+       + (mux_terminals (yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2))
+       + (rhs_wdd_format ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_in, yuv_to_rgb_inst0.reg_Y2))
+       - yuv_to_rgb_inst0.reg_Y2_next = ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_in, yuv_to_rgb_inst0.reg_Y2)
+always @ (yuv_to_rgb_inst0.reg_U or 7 or 8)
+       + (lhs_terminals yuv_to_rgb_inst0.U_ext)
+       + (rhs_terminals {{8{yuv_to_rgb_inst0.reg_U[7]}},yuv_to_rgb_inst0.reg_U})
+       + (mux_terminals )
+       + (rhs_wdd_format {{8{yuv_to_rgb_inst0.reg_U[7]}},yuv_to_rgb_inst0.reg_U})
+       - yuv_to_rgb_inst0.U_ext = {{8{yuv_to_rgb_inst0.reg_U[7]}},yuv_to_rgb_inst0.reg_U}
+always @ (yuv_to_rgb_inst0.S_BUSY1 or yuv_to_rgb_inst0.reg_Y1 or yuv_to_rgb_inst0.reg_Y2 or yuv_to_rgb_inst0.state or 8'b0)
+       + (lhs_terminals yuv_to_rgb_inst0.Y_ext)
+       + (rhs_terminals {8'b0,yuv_to_rgb_inst0.reg_Y2}, {8'b0,yuv_to_rgb_inst0.reg_Y1})
+       + (mux_terminals (yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1))
+       + (rhs_wdd_format ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), {8'b0,yuv_to_rgb_inst0.reg_Y1}, {8'b0,yuv_to_rgb_inst0.reg_Y2}))
+       - yuv_to_rgb_inst0.Y_ext = ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), {8'b0,yuv_to_rgb_inst0.reg_Y1}, {8'b0,yuv_to_rgb_inst0.reg_Y2})
+always @ (yuv_to_rgb_inst0.reg_V or 7 or 8)
+       + (lhs_terminals yuv_to_rgb_inst0.V_ext)
+       + (rhs_terminals {{8{yuv_to_rgb_inst0.reg_V[7]}},yuv_to_rgb_inst0.reg_V})
+       + (mux_terminals )
+       + (rhs_wdd_format {{8{yuv_to_rgb_inst0.reg_V[7]}},yuv_to_rgb_inst0.reg_V})
+       - yuv_to_rgb_inst0.V_ext = {{8{yuv_to_rgb_inst0.reg_V[7]}},yuv_to_rgb_inst0.reg_V}
+always @ (16'b1101 or yuv_to_rgb_inst0.V_ext or yuv_to_rgb_inst0.Y_ext or 16'b1000)
+       + (lhs_terminals yuv_to_rgb_inst0.R_ext)
+       + (rhs_terminals ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b1101*yuv_to_rgb_inst0.V_ext)))
+       + (mux_terminals )
+       + (rhs_wdd_format ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b1101*yuv_to_rgb_inst0.V_ext)))
+       - yuv_to_rgb_inst0.R_ext = ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b1101*yuv_to_rgb_inst0.V_ext))
+always @ (16'hfffa or yuv_to_rgb_inst0.U_ext or yuv_to_rgb_inst0.V_ext or 16'hfffe or yuv_to_rgb_inst0.Y_ext or 16'b1000)
+       + (lhs_terminals yuv_to_rgb_inst0.G_ext)
+       + (rhs_terminals (((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'hfffe*yuv_to_rgb_inst0.U_ext))+(16'hfffa*yuv_to_rgb_inst0.V_ext)))
+       + (mux_terminals )
+       + (rhs_wdd_format (((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'hfffe*yuv_to_rgb_inst0.U_ext))+(16'hfffa*yuv_to_rgb_inst0.V_ext)))
+       - yuv_to_rgb_inst0.G_ext = (((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'hfffe*yuv_to_rgb_inst0.U_ext))+(16'hfffa*yuv_to_rgb_inst0.V_ext))
+always @ (16'b10000 or yuv_to_rgb_inst0.U_ext or yuv_to_rgb_inst0.Y_ext or 16'b1000)
+       + (lhs_terminals yuv_to_rgb_inst0.B_ext)
+       + (rhs_terminals ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b10000*yuv_to_rgb_inst0.U_ext)))
+       + (mux_terminals )
+       + (rhs_wdd_format ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b10000*yuv_to_rgb_inst0.U_ext)))
+       - yuv_to_rgb_inst0.B_ext = ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b10000*yuv_to_rgb_inst0.U_ext))
+always @ (11 or 4'b0 or 10 or 14 or 15 or 2 or 3 or 8'd1 or 8'b0 or 8'd255 or yuv_to_rgb_inst0.R_ext)
+       + (lhs_terminals yuv_to_rgb_inst0.R_out)
+       + (rhs_terminals (yuv_to_rgb_inst0.R_ext[10:3]+8'd1), yuv_to_rgb_inst0.R_ext[10:3], 8'b0, 8'd255)
+       + (mux_terminals yuv_to_rgb_inst0.R_ext[15], (yuv_to_rgb_inst0.R_ext[14:11]!=4'b0), yuv_to_rgb_inst0.R_ext[2], (yuv_to_rgb_inst0.R_ext[10:3]=8'd255))
+       + (rhs_wdd_format ite(yuv_to_rgb_inst0.R_ext[15], 8'b0, ite((yuv_to_rgb_inst0.R_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.R_ext[2], ite((yuv_to_rgb_inst0.R_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.R_ext[10:3]+8'd1)), yuv_to_rgb_inst0.R_ext[10:3]))))
+       - yuv_to_rgb_inst0.R_out = ite(yuv_to_rgb_inst0.R_ext[15], 8'b0, ite((yuv_to_rgb_inst0.R_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.R_ext[2], ite((yuv_to_rgb_inst0.R_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.R_ext[10:3]+8'd1)), yuv_to_rgb_inst0.R_ext[10:3])))
+always @ (11 or 4'b0 or 14 or 15 or 2 or 3 or yuv_to_rgb_inst0.G_ext or 8'd1 or 8'b0 or 8'd255 or 10)
+       + (lhs_terminals yuv_to_rgb_inst0.G_out)
+       + (rhs_terminals (yuv_to_rgb_inst0.G_ext[10:3]+8'd1), 8'b0, 8'd255, yuv_to_rgb_inst0.G_ext[10:3])
+       + (mux_terminals yuv_to_rgb_inst0.G_ext[15], (yuv_to_rgb_inst0.G_ext[14:11]!=4'b0), yuv_to_rgb_inst0.G_ext[2], (yuv_to_rgb_inst0.G_ext[10:3]=8'd255))
+       + (rhs_wdd_format ite(yuv_to_rgb_inst0.G_ext[15], 8'b0, ite((yuv_to_rgb_inst0.G_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.G_ext[2], ite((yuv_to_rgb_inst0.G_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.G_ext[10:3]+8'd1)), yuv_to_rgb_inst0.G_ext[10:3]))))
+       - yuv_to_rgb_inst0.G_out = ite(yuv_to_rgb_inst0.G_ext[15], 8'b0, ite((yuv_to_rgb_inst0.G_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.G_ext[2], ite((yuv_to_rgb_inst0.G_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.G_ext[10:3]+8'd1)), yuv_to_rgb_inst0.G_ext[10:3])))
+always @ (11 or 4'b0 or 14 or 15 or yuv_to_rgb_inst0.B_ext or 2 or 3 or 8'd1 or 8'b0 or 8'd255 or 10)
+       + (lhs_terminals yuv_to_rgb_inst0.B_out)
+       + (rhs_terminals (yuv_to_rgb_inst0.B_ext[10:3]+8'd1), yuv_to_rgb_inst0.B_ext[10:3], 8'b0, 8'd255)
+       + (mux_terminals yuv_to_rgb_inst0.B_ext[15], (yuv_to_rgb_inst0.B_ext[14:11]!=4'b0), yuv_to_rgb_inst0.B_ext[2], (yuv_to_rgb_inst0.B_ext[10:3]=8'd255))
+       + (rhs_wdd_format ite(yuv_to_rgb_inst0.B_ext[15], 8'b0, ite((yuv_to_rgb_inst0.B_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.B_ext[2], ite((yuv_to_rgb_inst0.B_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.B_ext[10:3]+8'd1)), yuv_to_rgb_inst0.B_ext[10:3]))))
+       - yuv_to_rgb_inst0.B_out = ite(yuv_to_rgb_inst0.B_ext[15], 8'b0, ite((yuv_to_rgb_inst0.B_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.B_ext[2], ite((yuv_to_rgb_inst0.B_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.B_ext[10:3]+8'd1)), yuv_to_rgb_inst0.B_ext[10:3])))
+always @ (yuv_to_rgb_inst0.G_out or yuv_to_rgb_inst0.R_out or yuv_to_rgb_inst0.B_out)
+       + (lhs_terminals rgb_out)
+       + (rhs_terminals {yuv_to_rgb_inst0.R_out,yuv_to_rgb_inst0.G_out,yuv_to_rgb_inst0.B_out})
+       + (mux_terminals )
+       + (rhs_wdd_format {yuv_to_rgb_inst0.R_out,yuv_to_rgb_inst0.G_out,yuv_to_rgb_inst0.B_out})
+       - rgb_out = {yuv_to_rgb_inst0.R_out,yuv_to_rgb_inst0.G_out,yuv_to_rgb_inst0.B_out}
+endmodule
+
+module YUV_TO_RGB();
+input:
+ clk 
+ reset 
+ in_en 
+[7:0] yuv_in 
+output:
+ busy 
+ out_valid 
+[23:0] rgb_out 
+inout:
+parameter:
+S_U = 4'b0000
+S_Y1 = 4'b0001
+S_V = 4'b0010
+S_BUSY1 = 4'b0011
+S_Y2 = 4'b0100
+S_BUSY2 = 4'b0101
+integer:
+reg:
+[3:0] state 
+[7:0] reg_U 
+[7:0] reg_Y1 
+[7:0] reg_V 
+[7:0] reg_Y2 
+wire:
+[7:0] reg_U_next 
+[7:0] reg_Y1_next 
+[7:0] reg_V_next 
+[7:0] reg_Y2_next 
+[15:0] R_ext 
+[15:0] G_ext 
+[15:0] B_ext 
+[15:0] U_ext 
+[15:0] Y_ext 
+[15:0] V_ext 
+[7:0] R_out 
+[7:0] G_out 
+[7:0] B_out 
+[3:0] state_next 
+always @ (state or S_Y1 or S_Y2 or S_U or S_V or S_BUSY1 or S_BUSY2)
+       + (lhs_terminals state_next)
+       + (rhs_terminals state, S_Y1, S_Y2, S_U, S_V, S_BUSY1, S_BUSY2)
+       + (mux_terminals (state=S_U), (state=S_Y1), (state=S_V), (state=S_BUSY1), (state=S_Y2), (state=S_BUSY2))
+       + (rhs_wdd_format ite((state=S_U), S_Y1, ite((state=S_Y1), S_V, ite((state=S_V), S_BUSY1, ite((state=S_BUSY1), S_Y2, ite((state=S_Y2), S_BUSY2, ite((state=S_BUSY2), S_U, state)))))))
+       - state_next = ite((state=S_U), S_Y1, ite((state=S_Y1), S_V, ite((state=S_V), S_BUSY1, ite((state=S_BUSY1), S_Y2, ite((state=S_Y2), S_BUSY2, ite((state=S_BUSY2), S_U, state))))))
+always @ (posedge clk) @ (state_next or in_en or S_U or reset)
+       + (lhs_terminals state)
+       + (rhs_terminals state_next, S_U)
+       + (mux_terminals (reset||!in_en))
+       + (rhs_wdd_format ite(in_en, ite(reset, S_U, state_next), S_U))
+       - state = ite((reset||!in_en), S_U, state_next)
+always @ (posedge clk) @ (reg_Y1_next or in_en or 8'b0 or reset)
+       + (lhs_terminals reg_Y1)
+       + (rhs_terminals 8'b0, reg_Y1_next)
+       + (mux_terminals (reset||!in_en))
+       + (rhs_wdd_format ite(in_en, ite(reset, 8'b0, reg_Y1_next), 8'b0))
+       - reg_Y1 = ite((reset||!in_en), 8'b0, reg_Y1_next)
+always @ (posedge clk) @ (in_en or 8'b0 or reg_Y2_next or reset)
+       + (lhs_terminals reg_Y2)
+       + (rhs_terminals 8'b0, reg_Y2_next)
+       + (mux_terminals (reset||!in_en))
+       + (rhs_wdd_format ite(in_en, ite(reset, 8'b0, reg_Y2_next), 8'b0))
+       - reg_Y2 = ite((reset||!in_en), 8'b0, reg_Y2_next)
+always @ (posedge clk) @ (in_en or reg_U_next or 8'b0 or reset)
+       + (lhs_terminals reg_U)
+       + (rhs_terminals reg_U_next, 8'b0)
+       + (mux_terminals (reset||!in_en))
+       + (rhs_wdd_format ite(in_en, ite(reset, 8'b0, reg_U_next), 8'b0))
+       - reg_U = ite((reset||!in_en), 8'b0, reg_U_next)
+always @ (posedge clk) @ (in_en or reg_V_next or 8'b0 or reset)
+       + (lhs_terminals reg_V)
+       + (rhs_terminals reg_V_next, 8'b0)
+       + (mux_terminals (reset||!in_en))
+       + (rhs_wdd_format ite(in_en, ite(reset, 8'b0, reg_V_next), 8'b0))
+       - reg_V = ite((reset||!in_en), 8'b0, reg_V_next)
+always @ (state or S_BUSY1 or S_BUSY2)
+       + (lhs_terminals busy)
+       + (rhs_terminals ((state=S_BUSY1)||(state=S_BUSY2)))
+       + (mux_terminals )
+       + (rhs_wdd_format ((state=S_BUSY1)||(state=S_BUSY2)))
+       - busy = ((state=S_BUSY1)||(state=S_BUSY2))
+always @ (state or S_BUSY1 or S_BUSY2)
+       + (lhs_terminals out_valid)
+       + (rhs_terminals ((state=S_BUSY1)||(state=S_BUSY2)))
+       + (mux_terminals )
+       + (rhs_wdd_format ((state=S_BUSY1)||(state=S_BUSY2)))
+       - out_valid = ((state=S_BUSY1)||(state=S_BUSY2))
+always @ (state or S_U or yuv_in or reg_U)
+       + (lhs_terminals reg_U_next)
+       + (rhs_terminals yuv_in, reg_U)
+       + (mux_terminals (state=S_U))
+       + (rhs_wdd_format ite((state=S_U), yuv_in, reg_U))
+       - reg_U_next = ite((state=S_U), yuv_in, reg_U)
+always @ (state or reg_Y1 or S_Y1 or yuv_in)
+       + (lhs_terminals reg_Y1_next)
+       + (rhs_terminals reg_Y1, yuv_in)
+       + (mux_terminals (state=S_Y1))
+       + (rhs_wdd_format ite((state=S_Y1), yuv_in, reg_Y1))
+       - reg_Y1_next = ite((state=S_Y1), yuv_in, reg_Y1)
+always @ (state or S_V or yuv_in or reg_V)
+       + (lhs_terminals reg_V_next)
+       + (rhs_terminals yuv_in, reg_V)
+       + (mux_terminals (state=S_V))
+       + (rhs_wdd_format ite((state=S_V), yuv_in, reg_V))
+       - reg_V_next = ite((state=S_V), yuv_in, reg_V)
+always @ (state or reg_Y2 or S_Y2 or yuv_in)
+       + (lhs_terminals reg_Y2_next)
+       + (rhs_terminals reg_Y2, yuv_in)
+       + (mux_terminals (state=S_Y2))
+       + (rhs_wdd_format ite((state=S_Y2), yuv_in, reg_Y2))
+       - reg_Y2_next = ite((state=S_Y2), yuv_in, reg_Y2)
+always @ (7 or 8 or reg_U)
+       + (lhs_terminals U_ext)
+       + (rhs_terminals {{8{reg_U[7]}},reg_U})
+       + (mux_terminals )
+       + (rhs_wdd_format {{8{reg_U[7]}},reg_U})
+       - U_ext = {{8{reg_U[7]}},reg_U}
+always @ (state or reg_Y1 or reg_Y2 or S_BUSY1 or 8'b0)
+       + (lhs_terminals Y_ext)
+       + (rhs_terminals {8'b0,reg_Y2}, {8'b0,reg_Y1})
+       + (mux_terminals (state=S_BUSY1))
+       + (rhs_wdd_format ite((state=S_BUSY1), {8'b0,reg_Y1}, {8'b0,reg_Y2}))
+       - Y_ext = ite((state=S_BUSY1), {8'b0,reg_Y1}, {8'b0,reg_Y2})
+always @ (7 or 8 or reg_V)
+       + (lhs_terminals V_ext)
+       + (rhs_terminals {{8{reg_V[7]}},reg_V})
+       + (mux_terminals )
+       + (rhs_wdd_format {{8{reg_V[7]}},reg_V})
+       - V_ext = {{8{reg_V[7]}},reg_V}
+always @ (16'b1101 or V_ext or Y_ext or 16'b1000)
+       + (lhs_terminals R_ext)
+       + (rhs_terminals ((16'b1000*Y_ext)+(16'b1101*V_ext)))
+       + (mux_terminals )
+       + (rhs_wdd_format ((16'b1000*Y_ext)+(16'b1101*V_ext)))
+       - R_ext = ((16'b1000*Y_ext)+(16'b1101*V_ext))
+always @ (16'hfffa or 16'hfffe or U_ext or V_ext or Y_ext or 16'b1000)
+       + (lhs_terminals G_ext)
+       + (rhs_terminals (((16'b1000*Y_ext)+(16'hfffe*U_ext))+(16'hfffa*V_ext)))
+       + (mux_terminals )
+       + (rhs_wdd_format (((16'b1000*Y_ext)+(16'hfffe*U_ext))+(16'hfffa*V_ext)))
+       - G_ext = (((16'b1000*Y_ext)+(16'hfffe*U_ext))+(16'hfffa*V_ext))
+always @ (16'b10000 or U_ext or Y_ext or 16'b1000)
+       + (lhs_terminals B_ext)
+       + (rhs_terminals ((16'b1000*Y_ext)+(16'b10000*U_ext)))
+       + (mux_terminals )
+       + (rhs_wdd_format ((16'b1000*Y_ext)+(16'b10000*U_ext)))
+       - B_ext = ((16'b1000*Y_ext)+(16'b10000*U_ext))
+always @ (11 or 4'b0 or 14 or 15 or 2 or 3 or R_ext or 8'd1 or 8'b0 or 8'd255 or 10)
+       + (lhs_terminals R_out)
+       + (rhs_terminals (R_ext[10:3]+8'd1), 8'b0, 8'd255, R_ext[10:3])
+       + (mux_terminals R_ext[15], (R_ext[14:11]!=4'b0), R_ext[2], (R_ext[10:3]=8'd255))
+       + (rhs_wdd_format ite(R_ext[15], 8'b0, ite((R_ext[14:11]!=4'b0), 8'd255, ite(R_ext[2], ite((R_ext[10:3]=8'd255), 8'd255, (R_ext[10:3]+8'd1)), R_ext[10:3]))))
+       - R_out = ite(R_ext[15], 8'b0, ite((R_ext[14:11]!=4'b0), 8'd255, ite(R_ext[2], ite((R_ext[10:3]=8'd255), 8'd255, (R_ext[10:3]+8'd1)), R_ext[10:3])))
+always @ (11 or 4'b0 or 14 or 15 or G_ext or 2 or 3 or 8'd1 or 8'b0 or 8'd255 or 10)
+       + (lhs_terminals G_out)
+       + (rhs_terminals G_ext[10:3], 8'b0, 8'd255, (G_ext[10:3]+8'd1))
+       + (mux_terminals G_ext[15], (G_ext[14:11]!=4'b0), G_ext[2], (G_ext[10:3]=8'd255))
+       + (rhs_wdd_format ite(G_ext[15], 8'b0, ite((G_ext[14:11]!=4'b0), 8'd255, ite(G_ext[2], ite((G_ext[10:3]=8'd255), 8'd255, (G_ext[10:3]+8'd1)), G_ext[10:3]))))
+       - G_out = ite(G_ext[15], 8'b0, ite((G_ext[14:11]!=4'b0), 8'd255, ite(G_ext[2], ite((G_ext[10:3]=8'd255), 8'd255, (G_ext[10:3]+8'd1)), G_ext[10:3])))
+always @ (11 or 4'b0 or 14 or B_ext or 15 or 2 or 3 or 8'd1 or 8'b0 or 8'd255 or 10)
+       + (lhs_terminals B_out)
+       + (rhs_terminals (B_ext[10:3]+8'd1), 8'b0, 8'd255, B_ext[10:3])
+       + (mux_terminals B_ext[15], (B_ext[14:11]!=4'b0), B_ext[2], (B_ext[10:3]=8'd255))
+       + (rhs_wdd_format ite(B_ext[15], 8'b0, ite((B_ext[14:11]!=4'b0), 8'd255, ite(B_ext[2], ite((B_ext[10:3]=8'd255), 8'd255, (B_ext[10:3]+8'd1)), B_ext[10:3]))))
+       - B_out = ite(B_ext[15], 8'b0, ite((B_ext[14:11]!=4'b0), 8'd255, ite(B_ext[2], ite((B_ext[10:3]=8'd255), 8'd255, (B_ext[10:3]+8'd1)), B_ext[10:3])))
+always @ (R_out or B_out or G_out)
+       + (lhs_terminals rgb_out)
+       + (rhs_terminals {R_out,G_out,B_out})
+       + (mux_terminals )
+       + (rhs_wdd_format {R_out,G_out,B_out})
+       - rgb_out = {R_out,G_out,B_out}
+endmodule
+
+[(state State0) : s0]
+[(state State1) : s1]
+[(state State2) : s2]
+[(state State3) : s3]
+[(state State4) : assert(0)]
+[(state State5) : s4]
+[(state State6) : s5]
+[(state State7) : s7]
+[(state State8) : s8]
+[(state State9) : s10]
+[(edge : Edge1) (State0 -> State0) : (! (reset))|]
+[(edge : Edge0) (State0 -> State1) : (reset)|]
+[(edge : Edge2) (State1 -> State1) : (reset)|]
+[(edge : Edge3) (State1 -> State2) : (! (reset))|]
+[(edge : Edge5) (State2 -> State2) : ((! (reset)) && (! ((! (reset)) && (in_en))))|]
+[(edge : Edge4) (State2 -> State3) : ((! (reset)) && (in_en))|(specific_update_statement (read_or_write_or_check_statement (read_statement yuv_in)))]
+[(edge : Edge6) (State2 -> State4) : ((! ((! (reset)) && (in_en))) && (reset))|]
+[(edge : Edge8) (State3 -> State4) : (! ((! (reset)) && (in_en)))|]
+[(edge : Edge7) (State3 -> State5) : ((! (reset)) && (in_en))|(specific_update_statement (read_or_write_or_check_statement (read_statement yuv_in)))]
+[(edge : Edge10) (State5 -> State4) : (! ((! (reset)) && (in_en)))|]
+[(edge : Edge9) (State5 -> State6) : ((! (reset)) && (in_en))|(specific_update_statement (read_or_write_or_check_statement (read_statement yuv_in)))]
+[(edge : Edge12) (State6 -> State6) : (busy)|]
+[(edge : Edge11) (State6 -> State7) : (! (busy))|(specific_update_statement (read_or_write_or_check_statement (check_statement (out_valid))))(specific_update_statement (read_or_write_or_check_statement (write_statement rgb_out)))]
+[(edge : Edge14) (State7 -> State4) : (! ((! (reset)) && (in_en)))|]
+[(edge : Edge13) (State7 -> State8) : ((! (reset)) && (in_en))|(specific_update_statement (read_or_write_or_check_statement (read_statement yuv_in)))]
+[(edge : Edge16) (State8 -> State8) : (busy)|]
+[(edge : Edge15) (State8 -> State9) : (! (busy))|(specific_update_statement (read_or_write_or_check_statement (check_statement (out_valid))))(specific_update_statement (read_or_write_or_check_statement (write_statement rgb_out)))]
+[(edge : Edge18) (State9 -> State1) : ((reset) && (! ((! (reset)) && (in_en))))|]
+[(edge : Edge19) (State9 -> State2) : ((in_en) && ((! ((! (reset)) && (in_en))) && (! (reset))))|]
+[(edge : Edge17) (State9 -> State3) : ((! (reset)) && (in_en))|(specific_update_statement (read_or_write_or_check_statement (read_statement yuv_in)))]
+[(edge : Edge20) (State9 -> State4) : (((! ((! (reset)) && (in_en))) && (! (reset))) && (! (in_en)))|]
+
+LOG(INFO) : state id : 0      (extractDesign.cc : 28)
+LOG(INFO) : s0      (extractDesign.cc : 29)
+LOG(INFO) : state id : 1      (extractDesign.cc : 28)
+LOG(INFO) : s1      (extractDesign.cc : 29)
+LOG(INFO) : state id : 2      (extractDesign.cc : 28)
+LOG(INFO) : s2      (extractDesign.cc : 29)
+LOG(INFO) : state id : 3      (extractDesign.cc : 28)
+LOG(INFO) : s3      (extractDesign.cc : 29)
+LOG(INFO) : state id : 4      (extractDesign.cc : 28)
+LOG(INFO) : assert(0)      (extractDesign.cc : 29)
+LOG(INFO) : state id : 5      (extractDesign.cc : 28)
+LOG(INFO) : s4      (extractDesign.cc : 29)
+LOG(INFO) : state id : 6      (extractDesign.cc : 28)
+LOG(INFO) : s5      (extractDesign.cc : 29)
+LOG(INFO) : state id : 7      (extractDesign.cc : 28)
+LOG(INFO) : s7      (extractDesign.cc : 29)
+LOG(INFO) : state id : 8      (extractDesign.cc : 28)
+LOG(INFO) : s8      (extractDesign.cc : 29)
+LOG(INFO) : state id : 9      (extractDesign.cc : 28)
+LOG(INFO) : s10      (extractDesign.cc : 29)
+LOG(INFO) : from state id : 0 | to state id : 1 | this edge id : 0      (extractDesign.cc : 43)
+LOG(INFO) : (reset)      (extractDesign.cc : 44)
+LOG(INFO) : reset      (extractDesign.cc : 45)
+LOG(INFO) :       (extractDesign.cc : 46)
+LOG(INFO) : from state id : 0 | to state id : 0 | this edge id : 1      (extractDesign.cc : 43)
+LOG(INFO) : (! (reset))      (extractDesign.cc : 44)
+LOG(INFO) : not reset      (extractDesign.cc : 45)
+LOG(INFO) :       (extractDesign.cc : 46)
+LOG(INFO) : from state id : 1 | to state id : 1 | this edge id : 2      (extractDesign.cc : 43)
+LOG(INFO) : (reset)      (extractDesign.cc : 44)
+LOG(INFO) : reset      (extractDesign.cc : 45)
+LOG(INFO) :       (extractDesign.cc : 46)
+LOG(INFO) : from state id : 1 | to state id : 2 | this edge id : 3      (extractDesign.cc : 43)
+LOG(INFO) : (! (reset))      (extractDesign.cc : 44)
+LOG(INFO) : not reset      (extractDesign.cc : 45)
+LOG(INFO) :       (extractDesign.cc : 46)
+LOG(INFO) : from state id : 2 | to state id : 3 | this edge id : 4      (extractDesign.cc : 43)
+LOG(INFO) : ((! (reset)) && (in_en))      (extractDesign.cc : 44)
+LOG(INFO) : ite(in_en, not reset, FALSE)      (extractDesign.cc : 45)
+LOG(INFO) : (specific_update_statement (read_or_write_or_check_statement (read_statement yuv_in)))      (extractDesign.cc : 46)
+LOG(INFO) : from state id : 2 | to state id : 2 | this edge id : 5      (extractDesign.cc : 43)
+LOG(INFO) : ((! (reset)) && (! ((! (reset)) && (in_en))))      (extractDesign.cc : 44)
+LOG(INFO) : ite(in_en, FALSE, not reset)      (extractDesign.cc : 45)
+LOG(INFO) :       (extractDesign.cc : 46)
+LOG(INFO) : from state id : 2 | to state id : 4 | this edge id : 6      (extractDesign.cc : 43)
+LOG(INFO) : ((! ((! (reset)) && (in_en))) && (reset))      (extractDesign.cc : 44)
+LOG(INFO) : reset      (extractDesign.cc : 45)
+LOG(INFO) :       (extractDesign.cc : 46)
+LOG(INFO) : from state id : 3 | to state id : 5 | this edge id : 7      (extractDesign.cc : 43)
+LOG(INFO) : ((! (reset)) && (in_en))      (extractDesign.cc : 44)
+LOG(INFO) : ite(in_en, not reset, FALSE)      (extractDesign.cc : 45)
+LOG(INFO) : (specific_update_statement (read_or_write_or_check_statement (read_statement yuv_in)))      (extractDesign.cc : 46)
+LOG(INFO) : from state id : 3 | to state id : 4 | this edge id : 8      (extractDesign.cc : 43)
+LOG(INFO) : (! ((! (reset)) && (in_en)))      (extractDesign.cc : 44)
+LOG(INFO) : ite(in_en, reset, TRUE)      (extractDesign.cc : 45)
+LOG(INFO) :       (extractDesign.cc : 46)
+LOG(INFO) : from state id : 5 | to state id : 6 | this edge id : 9      (extractDesign.cc : 43)
+LOG(INFO) : ((! (reset)) && (in_en))      (extractDesign.cc : 44)
+LOG(INFO) : ite(in_en, not reset, FALSE)      (extractDesign.cc : 45)
+LOG(INFO) : (specific_update_statement (read_or_write_or_check_statement (read_statement yuv_in)))      (extractDesign.cc : 46)
+LOG(INFO) : from state id : 5 | to state id : 4 | this edge id : 10      (extractDesign.cc : 43)
+LOG(INFO) : (! ((! (reset)) && (in_en)))      (extractDesign.cc : 44)
+LOG(INFO) : ite(in_en, reset, TRUE)      (extractDesign.cc : 45)
+LOG(INFO) :       (extractDesign.cc : 46)
+LOG(INFO) : from state id : 6 | to state id : 7 | this edge id : 11      (extractDesign.cc : 43)
+LOG(INFO) : (! (busy))      (extractDesign.cc : 44)
+LOG(INFO) : not in_en      (extractDesign.cc : 45)
+LOG(INFO) : (specific_update_statement (read_or_write_or_check_statement (check_statement (out_valid))))(specific_update_statement (read_or_write_or_check_statement (write_statement rgb_out)))      (extractDesign.cc : 46)
+LOG(INFO) : from state id : 6 | to state id : 6 | this edge id : 12      (extractDesign.cc : 43)
+LOG(INFO) : (busy)      (extractDesign.cc : 44)
+LOG(INFO) : busy      (extractDesign.cc : 45)
+LOG(INFO) :       (extractDesign.cc : 46)
+LOG(ERROR) : curDecisionLevel : 0      (BddManager.cpp : 40)
+Assertion failed: (0), function try_abort, file ../../../src/utility/log/Log.h, line 41.
+./readDesignProtocol: line 39: 75018 Abort trap: 6           ./extractDesign.out CTE.v.ast CTE.c.ast CTE

@@ -96,11 +96,12 @@ private:
         return os;
     } */
 };
-
+/*
 struct log_msg_set_handler {
    void set(log_msg_t & msg, bool is_assert) { 
    }
 };
+*/
 
 #define LOG_HANDLER_SET_ABORT(log_level, abort) do { LOG_STREAM_INSTANCE(log_level).set_abort(abort); } while(0)
 #define LOG_HANDLER_SET_VERBOSE(log_level, verbose) do { LOG_STREAM_INSTANCE(log_level).set_verbose(verbose); } while(0)

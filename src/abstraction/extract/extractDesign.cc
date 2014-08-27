@@ -32,6 +32,7 @@ int main(int argc, char** argv) {
 
     WddManager<TermHandle> wddManager;
 
+    std::map<std::string, int> mapExpressionId;
     CONST_FOR_EACH(pEdge, protocolGraph.getEdgeHandleContainer()) {
          unsigned int fromStateId = pEdge->getStatePair().first;
          unsigned int toStateId = pEdge->getStatePair().second;
@@ -45,8 +46,17 @@ int main(int argc, char** argv) {
          LOG(INFO) << pWddNode->toString(wddManager);
          LOG(INFO) << pWddNode->toPureString(wddManager);
          LOG(INFO) << pUpdateStatement->toString();
+
+         std::string pureStatement = pWddNode->toPureString(wddManager);
+         if (mapExpressionId.find(pureStatement) == mapExpressionId.end()) {
+             mapExpressionId.insert(std::make_pair(pureStatement, mapExpressionId.size()));
+         }
     }
 
+    CONST_FOR_EACH (expressionIdPair, mapExpressionId) {
+        std::cout << "ProtocolEvent" << expressionIdPair.second
+             << " // " << expressionIdPair.first << std::endl;
+    }
 
 //    assertEqual("", efsm.toString(), "Test to string");
 //    efsm.writeDotFile("efsm_extract1.dot");

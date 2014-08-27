@@ -3,8 +3,11 @@
 #include "nstl/for_each/ForEach.h"
 #include "utility/log/Log.h"
 #include "ConvertAssignment2SystemC.h"
+#include "utility/convert/ConvertUtil.h"
+#include "abstraction/extract/WddHelper.h"
 
 static const std::string indent = "    ";
+static const bool verbose = false;
 
 std::string getTypeFromSize(int sz);
     
@@ -48,6 +51,10 @@ CodeGeneration::CodeGeneration
   {
     EfsmExtract extractFactory(designName, protocolName);
     _efsm = extractFactory.extract(topModuleName);
+    
+    _protocolGraph = extractFactory.getProtocolGraph();
+
+
     _vecHierModule = extractFactory.getHierModuleHandleContainer();
     initAssignmentFunctionCallMgr();
 }
@@ -57,6 +64,7 @@ const VRExprEfsm& CodeGeneration::getEfsm() const
 
 void CodeGeneration::writeFile(const std::string & filePrefixName) {
     // TODO
+    (void)(filePrefixName);
 }
 #if 0
 #define WRITE_IO(io_type_comment, func_get_container) ss << "\n    // " #io_type_comment " \n";\
@@ -67,7 +75,7 @@ void CodeGeneration::writeFile(const std::string & filePrefixName) {
         generateTypeAndSize(ss, sz);\
         ss << input.getIdentifier().toString() << ";\n"; }
 #endif
-std::string CodeGeneration::generateHeader() const {
+std::string CodeGeneration::generateHeader() {
     std::stringstream ss;
     std::string topModuleName = _efsm.getModule().getModuleName().toString();
 
@@ -80,7 +88,68 @@ std::string CodeGeneration::generateHeader() const {
 
     for (int i = _vecHierModule.size()-1; i >= 0; --i)
         generateModuleHeader(ss, _vecHierModule[i]);
+  
+    // Generate protocol state 
+    ss << "enum ProtocolState {\n";
+    
+    unsigned int pos = 0;
+    FOR_EACH(pState, _protocolGraph.getStateHandleContainer()) {
+        if (pos == 0)
+            ss << "    ";
+        else 
+            ss << "  , ";
+        //LOG(INFO) << "state id : " << pos++;
+        //LOG(INFO) << pState->getValue();
+        std::string protocolStateName = "ProtocolState_s" + ConvertUtil::convert<unsigned int, std::string>(pos);
+        ss << protocolStateName << " // " << pState->getValue() << "\n";
+        _protocolGraphInfo._mapStateIdAndName.insert(std::make_pair(pos, protocolStateName));
+        _protocolGraphInfo._mapStateIdAndComment.insert(std::make_pair(pos, pState->getValue()));
+        ++pos;
+
+}
+    ss << "};\n\n";
+    pos = 0;
    
+    // Generate protocol event 
+    WddManager<TermHandle> wddManager;
+
+    CONST_FOR_EACH(pEdge, _protocolGraph.getEdgeHandleContainer()) {
+        unsigned int fromStateId = pEdge->getStatePair().first;
+        unsigned int toStateId = pEdge->getStatePair().second;
+        EdgePair edge = pEdge->getValue();
+        PExprBoolExpressionHandle pBoolExpression = edge.first;
+        PExprUpdateStatementHandle pUpdateStatement = edge.second;
+
+        WddManager<TermHandle>::WddNodeHandle pWddNode = makeWddHandleFromPExprBoolExpression(wddManager, pBoolExpression);
+        unsigned int edgeId = pos++;
+        if (verbose) {
+            LOG(INFO) << "from state id : " << fromStateId << " | to state id : " << toStateId << " | this edge id : ";
+            LOG(INFO) << pBoolExpression->toString();
+            LOG(INFO) << pWddNode->toString(wddManager);
+            LOG(INFO) << pWddNode->toPureString(wddManager);
+            LOG(INFO) << pUpdateStatement->toString();
+        }
+        std::string pureStatement = pWddNode->toPureString(wddManager);
+        std::map<std::string, int>::iterator itExressionIdPair;
+        if ((itExressionIdPair = _protocolGraphInfo._mapExpressionAndExpressionId.find(pureStatement)) == _protocolGraphInfo._mapExpressionAndExpressionId.end()) {
+            unsigned int expressionId = _protocolGraphInfo._mapExpressionAndExpressionId.size();
+            itExressionIdPair = _protocolGraphInfo._mapExpressionAndExpressionId.insert(std::make_pair(pureStatement, expressionId)).first;
+            _protocolGraphInfo._mapExpressionIdAndExpression.insert(std::make_pair(expressionId, pureStatement));
+        }
+        _protocolGraphInfo._mapEdgeIdToExpressionId.insert(std::make_pair(edgeId, itExressionIdPair->second));
+    }
+
+    ss << "enum ProtocolEvent {\n";
+    pos = 0;
+    CONST_FOR_EACH (expressionIdPair, _protocolGraphInfo._mapExpressionAndExpressionId) {
+        if (pos++ == 0)
+            ss << "    ";
+        else 
+            ss << "  , ";
+        ss << "ProtocolEvent" << expressionIdPair.second
+            << " // " << expressionIdPair.first << "\n";
+    }
+    ss << "};\n\n";
        
     ss << "#endif // " << strHeaderGuard << "\n\n";
 
@@ -269,13 +338,53 @@ void CodeGeneration::generateTypeAndSize(std::stringstream & ss, int sz) const {
     ss << getTypeFromSize(sz);
 }
     
-std::string CodeGeneration::generateImplementation() const {
+std::string CodeGeneration::generateImplementation() {
     std::stringstream ss;
     std::string topModuleName = _efsm.getModule().getModuleName().toString();
 
     std::string strHeaderGuard = topModuleName + "_H"; 
     
     ss << "#include \"" << topModuleName << ".h\"\n\n";
+
+    ss << "void " << topModuleName << "::run(ProtocolEvent e) {\n\n";
+    ss << "    switch(_protocolState) {\n";
+    std::map<int, std::string> mapFromStateFunctionCall;
+    unsigned int edgeId = 0;
+    CONST_FOR_EACH(pEdge, _protocolGraph.getEdgeHandleContainer()) {
+        unsigned int fromStateId = pEdge->getStatePair().first;
+        unsigned int toStateId = pEdge->getStatePair().second;
+        EdgePair edge = pEdge->getValue();
+        PExprBoolExpressionHandle pBoolExpression = edge.first;
+        PExprUpdateStatementHandle pUpdateStatement = edge.second;
+
+        if (mapFromStateFunctionCall.find(fromStateId) == mapFromStateFunctionCall.end()) {
+            mapFromStateFunctionCall.insert(std::make_pair(fromStateId, ""));
+        }
+        std::stringstream ssEdge;
+        unsigned int expressionId = _protocolGraphInfo._mapEdgeIdToExpressionId[edgeId];
+        std::string expression = _protocolGraphInfo._mapExpressionIdAndExpression[expressionId];
+        ssEdge << "            if (e == " << "ProtocolEvent" << expressionId << "/*" << expression << "*/" << ") {\n";
+        std::string toStateComment = _protocolGraphInfo._mapStateIdAndComment[toStateId];
+        ssEdge << "                " << "_protocolState = " << _protocolGraphInfo._mapStateIdAndName[toStateId] << "/*" << toStateComment << "*/" << ";\n";
+        ssEdge << "                // TODO\n";
+        ssEdge << "                break;\n"
+           << "            };\n";
+
+        mapFromStateFunctionCall[fromStateId] += ssEdge.str();
+        ++edgeId;
+    }
+    
+    unsigned int stateId = 0;
+    CONST_FOR_EACH(pState, _protocolGraph.getStateHandleContainer()) {
+        std::string stateComment = _protocolGraphInfo._mapStateIdAndComment[stateId];
+        ss << "        case ProtocolState_s" << stateId << "/*" << stateComment <<"*/" << ":\n";
+        ss << "S" << stateId << ":\n";
+        ss << mapFromStateFunctionCall[stateId];
+        ss << "            LOG_ERROR(\"No Such branch\");\n"
+           << "            break;\n";
+        ++stateId;
+    }
+    ss << "}";
 #if 0 
     ss << "\n" << "// Parameters\n";
     CONST_FOR_EACH(parameter, pHierModule->getParameterContainer()) {

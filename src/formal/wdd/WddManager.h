@@ -130,18 +130,30 @@ public:
 //        return "";
         WddNodeHandle pPos = getPosHandle(wddManager);
         WddNodeHandle pNeg = getNegHandle(wddManager);
+        std::string posString = pPos->toPureString(wddManager);
+        std::string negString = pNeg->toPureString(wddManager);
+
+        // ite(a, 1, b) = a + b
+        // ite(a, 0, b) = !ab
+        if (posString == "true") {
+            return "(" + curLevelName + "||" + negString + ")";
+        } else if (posString == "false") {
+            return "(!" + curLevelName + "&&" + negString + ")";
+        }
+
+        // ite(a, b, 0) = ab
+        // ite(a, b, 1) = !a + b
+        if (negString == "true") {
+            return "(!" + curLevelName + "||" + posString + ")";
+        } else if (negString == "false") {
+            return "(" + curLevelName + "&&" + posString + ")";
+        }
+        
         std::string s = "(" + curLevelName + " ? ";
-        if (pPos.valid())
-            s += pPos->toPureString(wddManager);
-        else
-            s += "false";
+        s += posString; 
         s += " : ";
-        if (pNeg.valid())
-            s +=  pNeg->toPureString(wddManager);
-        else
-            s += "false";
+        s += negString; 
         return s += ")";
-           
     }
 
 
@@ -234,6 +246,7 @@ public:
             LOG(ERROR) << pTerm->toString();
             LOG(ERROR) << id;
         }
+
         assert(id > 0);
         WddNode<term_handle_type> wddNode(_bddManager.makeBddNode(id), pTerm);
         return WddNodeHandle(wddNode);

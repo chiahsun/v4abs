@@ -3,6 +3,7 @@
 
 #include "formal/wdd/Term.h"
 #include "formal/wdd/WddManager.h"
+#include "utility/log/Log.h"
 
 WddManager<TermHandle>::WddNodeHandle makeWddHandleFromPExprBoolExpression(WddManager<TermHandle> & wddManager, PExprBoolExpressionHandle pBoolExpression) {
     if (pBoolExpression->getOp() == PExprBoolExpression::IDENTIFIER) {

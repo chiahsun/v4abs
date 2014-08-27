@@ -10,5 +10,6 @@ std::string Term::toString() const {
 }
     
 bool Term::operator < (const Term & rhs) const {
-    return strcmp(_name.c_str(), rhs._name.c_str());
+    return _name < rhs._name;
+//    return strcmp(_name.c_str(), rhs._name.c_str());
 }

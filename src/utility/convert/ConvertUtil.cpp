@@ -13,6 +13,14 @@ std::string ConvertUtil::convert<int, std::string>(const int & x) {
 }
 
 template <>
+std::string ConvertUtil::convert<unsigned int, std::string>(const unsigned int & x) {
+    std::stringstream ss;
+    ss << x;
+    return ss.str();
+}
+
+
+template <>
 unsigned int ConvertUtil::convert<std::string, unsigned int>(const std::string & x) {
     std::stringstream ss;
     ss << x;

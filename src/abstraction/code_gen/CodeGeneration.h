@@ -25,18 +25,29 @@ public:
     const std::vector<FunctionCall>& getFunctionCallContainer() const;
 };
 
+class ProtocolGraphInfo {
+public:
+    std::map<int, std::string> _mapStateIdAndName;
+    std::map<int, std::string> _mapStateIdAndComment;
+    std::map<int, int> _mapEdgeIdToExpressionId;
+    std::map<std::string,int> _mapExpressionAndExpressionId;
+    std::map<int, std::string> _mapExpressionIdAndExpression;
+};
+
 class CodeGeneration {
     VRExprEfsm _efsm;
     AssignmentFunctionCallMgr _assignFunctionCallMgr;
     std::vector<VExprModuleHandle> _vecHierModule;
+    ProtocolGraph _protocolGraph;
+    ProtocolGraphInfo _protocolGraphInfo;
 public:
     CodeGeneration( const std::string & designName
                   , const std::string & protocolName
                   , const std::string & topModuleName);
 
     void writeFile(const std::string & filePrefixName);
-    std::string generateHeader() const;
-    std::string generateImplementation() const;
+    std::string generateHeader();
+    std::string generateImplementation();
 
 private:
     const VRExprEfsm& getEfsm() const;

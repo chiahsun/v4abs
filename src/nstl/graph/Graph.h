@@ -4,12 +4,17 @@
 #include <cassert>
 #include <map>
 #include <vector>
+#include <queue>
 #include <sstream>
 #include <iostream>
 #include <fstream>
 
 #include "nstl/for_each/ForEach.h"
 #include "nstl/shared_ptr/SharedPtr.h"
+#include "nstl/hash/HashTable.h"
+#include "utility/log/Log.h"
+
+static const bool verbose = false;
 
 template <class T>
 struct GraphComponentToString {
@@ -70,7 +75,7 @@ class GraphComponent {
 public:
     typedef _Value value_type;
     typedef size_t id_type;
-    value_type value;
+    value_type value; // Use value intensionally for modification
 private:
     id_type _id;
 public:
@@ -79,6 +84,21 @@ public:
       : value(val)
       , _id(id)
       { }
+    GraphComponent(const GraphComponent & rhs) {
+        copy(rhs);
+    }
+
+    void copy(const GraphComponent & rhs) {
+        value = rhs.value;
+        _id = rhs._id;
+    }
+
+    GraphComponent & operator = (const GraphComponent & rhs) {
+        if (this != &rhs) {
+            copy(rhs);
+        }
+        return *this;
+    }
 
     const value_type & getValue() const { return value; }
 
@@ -215,12 +235,25 @@ public:
 
     state_handle_container_type& getStateHandleContainer() { return _containerStateHandle; }
     edge_handle_container_type& getEdgeHandleContainer() { return _containerEdge; }
+    
+    const std::map<state_id_type, edge_id_type> & getConnectionMap(state_id_type FromId) const {
+        typename connection_map_type::const_iterator it = _mapConnect.find(FromId);
+        if(it != _mapConnect.end()) {
+            return it->second;
+        } else {
+            return std::map<state_id_type, edge_id_type>();
+//            std::cerr << "*Warning: " << "no such connection in this graph." << std::endl;
+        }
+        assert(0);
+    }
 
     std::map<state_id_type, edge_id_type>& getConnectionMap(state_id_type FromId) {
-        if(_mapConnect.find(FromId) != _mapConnect.end())
+        if(_mapConnect.find(FromId) != _mapConnect.end()) {
             return _mapConnect[FromId];
-        else
-            std::cerr << "*Warning: " << "no such connection in this graph." << std::endl;
+        } else {
+            return std::map<state_id_type, edge_id_type>();
+//            std::cerr << "*Warning: " << "no such connection in this graph." << std::endl;
+        }
         assert(0);
     }
 
@@ -328,8 +361,71 @@ private:
         return ss.str();
     }
 
+public:
+    /**
+     * Implement Kahn's algorithm
+     * http://en.wikipedia.org/wiki/Topological_sorting
+     *
+     * 1. Use a map to store an outer inward edge hash for each state
+     */
+    std::vector<state_handle_type> topologicalSort() const {
+        std::vector<state_handle_type> vecTopologicalOrderStateHandle;
+
+        std::vector<HashTable<int> > vecStateInwardEdges;
+        for (unsigned int i = 0; i < getStateHandleContainer().size(); ++i)
+            vecStateInwardEdges.push_back(HashTable<int>());
+        FOR_EACH(pEdge, getEdgeHandleContainer()) {
+            int edgeId = pEdge->getId();
+            int stateFromId = pEdge->getStatePair().first;
+            int stateToId = pEdge->getStatePair().second;
+            if (verbose)
+                LOG(INFO) << "Add edge from : " << stateFromId << " to : " << stateToId << " with edge id : " << edgeId; 
+            vecStateInwardEdges[stateToId].insert(edgeId);
+        }
+
+        std::queue<int> queueProcessingStates;
+        for (unsigned int i = 0; i < vecStateInwardEdges.size(); ++i) {
+            if (vecStateInwardEdges[i].size() == 0)
+                queueProcessingStates.push(i);
+        }
+        if (queueProcessingStates.size() == 0) {
+            LOG(ERROR) << "no init nodes, all pointed by others";
+        }
+
+        while (!queueProcessingStates.empty()) {
+            int curStateId = queueProcessingStates.front();
+            queueProcessingStates.pop();
+            vecTopologicalOrderStateHandle.push_back(getStateHandleContainer()[curStateId]);
+           
+            if (verbose) 
+                LOG(INFO) << "Processing state from id " << curStateId;
+
+            CONST_FOR_EACH(pr, getConnectionMap(curStateId)) {
+                int toStateId = pr.first;
+                int edgeId = pr.second;
+                if (verbose)
+                    LOG(INFO) << "Processing state to id " << toStateId << " with edge id " << edgeId;
+                vecStateInwardEdges[toStateId].erase(edgeId);
+                if (vecStateInwardEdges[toStateId].size() == 0) {
+                    queueProcessingStates.push(toStateId);
+                    if (verbose)
+                        LOG(INFO) << "Push next processing node " << toStateId;
+                }
+            }
+        }
+
+        for (unsigned int i = 0; i < vecStateInwardEdges.size(); ++i) {
+            if (vecStateInwardEdges[i].size() != 0)
+                LOG(ERROR) << "Graph hash as least one cycle";
+        }
+
+
+        return vecTopologicalOrderStateHandle;
+    }
     
 };
+
+
 
 
 #endif // GRAPH_H

@@ -34,12 +34,31 @@ public:
     std::map<int, std::string> _mapExpressionIdAndExpression;
 };
 
+class AssignmentInfo {
+public:
+    std::vector<VRExprAssignment> _vecNegedgeAssign;
+    std::vector<VRExprAssignment> _vecPosedgeAssign;
+    std::vector<VRExprAssignment> _vecCombAssign;
+    AssignmentInfo(); 
+    AssignmentInfo( const std::vector<VRExprAssignment> & vecNeg
+                  , const std::vector<VRExprAssignment> & vecPos
+                  , const std::vector<VRExprAssignment> & vecComb);
+    std::string toString() const;
+};
+
+class SimpifiedAssignmentInfo {
+public:
+    std::map<int, AssignmentInfo> _mapEdgeIdAndAssignmentInfo;
+    SimpifiedAssignmentInfo(const AssignmentInfo & assignmentInfo, const ProtocolGraphInfo & protocolGraphInfo);
+};
+
 class CodeGeneration {
     VRExprEfsm _efsm;
     AssignmentFunctionCallMgr _assignFunctionCallMgr;
     std::vector<VExprModuleHandle> _vecHierModule;
     ProtocolGraph _protocolGraph;
     ProtocolGraphInfo _protocolGraphInfo;
+    AssignmentInfo _assignmentInfo;
 public:
     CodeGeneration( const std::string & designName
                   , const std::string & protocolName
@@ -49,7 +68,8 @@ public:
     std::string generateHeader();
     std::string generateImplementation();
     
-    void processAssignment(const std::vector<VRExprAssignment> & vecAssign); 
+    AssignmentInfo processAssignment(const std::vector<VRExprAssignment> & vecAssign); 
+    ProtocolGraphInfo processProtocolGraphInfo(); 
 
 private:
     const VRExprEfsm& getEfsm() const;
@@ -59,6 +79,10 @@ private:
     void initAssignmentFunctionCallMgr();
 
     void generateModuleHeader(std::stringstream & ss, VExprModuleHandle pHierModule) const;
+
+
+    void generateProtocolState(std::stringstream & ss);
+    void generateProtocolEvent(std::stringstream & ss);
 };
 
 #endif // CODE_GENERATION_H

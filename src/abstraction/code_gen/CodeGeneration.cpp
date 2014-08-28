@@ -44,8 +44,41 @@ void AssignmentFunctionCallMgr::addAssignmentAsFunctionCall(const VRExprAssignme
     
 const std::vector<FunctionCall>& AssignmentFunctionCallMgr::getFunctionCallContainer() const 
   { return _vecFunctionCall; }
+    
+AssignmentInfo::AssignmentInfo() { }
+AssignmentInfo::AssignmentInfo( 
+    const std::vector<VRExprAssignment> & vecNeg
+  , const std::vector<VRExprAssignment> & vecPos
+  , const std::vector<VRExprAssignment> & vecComb)
+  : _vecNegedgeAssign(vecNeg)
+  , _vecPosedgeAssign(vecPos)
+  , _vecCombAssign(vecComb)
+  { }
 
-void CodeGeneration::processAssignment(const std::vector<VRExprAssignment> & vecAssign) {
+std::string AssignmentInfo::toString() const {
+    std::stringstream ss;
+    CONST_FOR_EACH(assign, _vecNegedgeAssign) {
+        ss << "neg assignment: " << assign.toString() << std::endl;
+    }
+    CONST_FOR_EACH(assign, _vecPosedgeAssign) {
+        ss << "pos assignment: " << assign.toString() << std::endl;
+    }
+    CONST_FOR_EACH(assign, _vecCombAssign) {
+        ss << "comb assignment: " << assign.toString() << std::endl;
+    }
+    return ss.str();
+}
+    
+SimpifiedAssignmentInfo::SimpifiedAssignmentInfo(const AssignmentInfo & assignmentInfo, const ProtocolGraphInfo & protocolGraphInfo) {
+#if 0
+    CONST_FOR_EACH(edgeIdAndExpressionIdPair, protocolGraphInfo._mapEdgeIdToExpressionId) {
+
+    }
+#endif
+}
+
+
+AssignmentInfo CodeGeneration::processAssignment(const std::vector<VRExprAssignment> & vecAssign) {
     Graph<VRExprExpression, int/*dummy*/> graphCombinational;
 
     std::map<VRExprExpression, VRExprAssignment> mapExpressionAndAssignment;
@@ -100,21 +133,7 @@ void CodeGeneration::processAssignment(const std::vector<VRExprAssignment> & vec
         }
     }
 
-    CONST_FOR_EACH(assign, vecNegedgeSequencial) {  
-        LOG(INFO) << "neg assignment : " << assign.toString();
-    }
-    CONST_FOR_EACH(assign, vecCombinational) {  
-        LOG(INFO) << "comb assignment : " << assign.toString();
-    }
-    CONST_FOR_EACH(assign, vecPosedgeSequencial) {  
-        LOG(INFO) << "pos assignment" << assign.toString();
-    }
-#if 0
-    CONST_FOR_EACH(pState, vecCombinationalTopologicalOrder) {
-        LOG(INFO) << pState->getValue().toString();
-    }
-#endif
-
+    return AssignmentInfo(vecNegedgeSequencial, vecPosedgeSequencial, vecCombinational);
 }
 
 CodeGeneration::CodeGeneration
@@ -124,9 +143,10 @@ CodeGeneration::CodeGeneration
   {
     EfsmExtract extractFactory(designName, protocolName);
     _efsm = extractFactory.extract(topModuleName);
-    processAssignment(extractFactory.getAssignmentContainer(topModuleName));
+    _assignmentInfo = processAssignment(extractFactory.getAssignmentContainer(topModuleName));
+    LOG(INFO) << _assignmentInfo.toString();
     _protocolGraph = extractFactory.getProtocolGraph();
-
+    _protocolGraphInfo = processProtocolGraphInfo(); 
 
     _vecHierModule = extractFactory.getHierModuleHandleContainer();
     initAssignmentFunctionCallMgr();
@@ -148,6 +168,91 @@ void CodeGeneration::writeFile(const std::string & filePrefixName) {
         generateTypeAndSize(ss, sz);\
         ss << input.getIdentifier().toString() << ";\n"; }
 #endif
+
+ProtocolGraphInfo CodeGeneration::processProtocolGraphInfo() {
+    ProtocolGraphInfo protocolGraphInfo;
+    unsigned int pos = 0;
+    FOR_EACH(pState, _protocolGraph.getStateHandleContainer()) {
+        std::string protocolStateName = "ProtocolState_s" + ConvertUtil::convert<unsigned int, std::string>(pos);
+        std::string protocolStateComment = pState->getValue();
+        protocolGraphInfo._mapStateIdAndName.insert(std::make_pair(pos, protocolStateName));
+        protocolGraphInfo._mapStateIdAndComment.insert(std::make_pair(pos, pState->getValue()));
+        ++pos;
+
+}
+    
+
+    WddManager<TermHandle> wddManager;
+
+    pos = 0;
+    // Use wdd to simplify expression
+    CONST_FOR_EACH(pEdge, _protocolGraph.getEdgeHandleContainer()) {
+        VRExprTermManager termManager;
+        unsigned int fromStateId = pEdge->getStatePair().first;
+        unsigned int toStateId = pEdge->getStatePair().second;
+        EdgePair edge = pEdge->getValue();
+        PExprBoolExpressionHandle pBoolExpression = edge.first;
+        VRExprExpression expr = makeVRExprExpressionFromPExprBoolExpression(pBoolExpression);
+        PExprUpdateStatementHandle pUpdateStatement = edge.second;
+
+        WddManager<TermHandle>::WddNodeHandle pWddNode = makeWddHandleFromPExprBoolExpression(wddManager, pBoolExpression);
+        VRExprTermManager::WddNodeHandle pTerm = expr.buildWddNodeMux(termManager); 
+        unsigned int edgeId = pos++;
+//        if (verbose) {
+        if (true) {
+            LOG(INFO) << "from state id : " << fromStateId << " | to state id : " << toStateId << " | this edge id : ";
+            LOG(INFO) << pBoolExpression->toString();
+            LOG(INFO) << pWddNode->toString(wddManager);
+            LOG(INFO) << pWddNode->toPureString(wddManager);
+            LOG(INFO) << pUpdateStatement->toString();
+            LOG(INFO) << expr.toString();
+            LOG(INFO) << pTerm->toPureString(termManager.getWddManager()); 
+        }
+        std::string pureStatement = pWddNode->toPureString(wddManager);
+        std::map<std::string, int>::iterator itExressionIdPair;
+        if ((itExressionIdPair = protocolGraphInfo._mapExpressionAndExpressionId.find(pureStatement)) == protocolGraphInfo._mapExpressionAndExpressionId.end()) {
+            unsigned int expressionId = protocolGraphInfo._mapExpressionAndExpressionId.size();
+            itExressionIdPair = protocolGraphInfo._mapExpressionAndExpressionId.insert(std::make_pair(pureStatement, expressionId)).first;
+            protocolGraphInfo._mapExpressionIdAndExpression.insert(std::make_pair(expressionId, pureStatement));
+        }
+        protocolGraphInfo._mapEdgeIdToExpressionId.insert(std::make_pair(edgeId, itExressionIdPair->second));
+    }
+
+    return protocolGraphInfo;
+}
+    
+void CodeGeneration::generateProtocolState(std::stringstream & ss) {
+    ss << "enum ProtocolState {\n";
+    
+    unsigned int pos = 0;
+    FOR_EACH(pState, _protocolGraph.getStateHandleContainer()) {
+        if (pos == 0)
+            ss << "    ";
+        else 
+            ss << "  , ";
+        assert(_protocolGraphInfo._mapStateIdAndName.find(pos) != _protocolGraphInfo._mapStateIdAndName.end());
+        assert(_protocolGraphInfo._mapStateIdAndComment.find(pos) != _protocolGraphInfo._mapStateIdAndComment.end());
+        ss << _protocolGraphInfo._mapStateIdAndName[pos]
+           << " // " << _protocolGraphInfo._mapStateIdAndComment[pos] << std::endl;
+        ++pos;
+    }
+    ss << "};\n\n";
+}
+    
+void CodeGeneration::generateProtocolEvent(std::stringstream & ss) {
+    ss << "enum ProtocolEvent {\n";
+    unsigned int pos = 0;
+    CONST_FOR_EACH (expressionIdPair, _protocolGraphInfo._mapExpressionAndExpressionId) {
+        if (pos++ == 0)
+            ss << "    ";
+        else 
+            ss << "  , ";
+        ss << "ProtocolEvent" << expressionIdPair.second
+            << " // " << expressionIdPair.first << "\n";
+    }
+    ss << "};\n\n";
+}
+
 std::string CodeGeneration::generateHeader() {
     std::stringstream ss;
     std::string topModuleName = _efsm.getModule().getModuleName().toString();
@@ -162,68 +267,11 @@ std::string CodeGeneration::generateHeader() {
     for (int i = _vecHierModule.size()-1; i >= 0; --i)
         generateModuleHeader(ss, _vecHierModule[i]);
   
-    // Generate protocol state 
-    ss << "enum ProtocolState {\n";
-    
+    generateProtocolState(ss);
     unsigned int pos = 0;
-    FOR_EACH(pState, _protocolGraph.getStateHandleContainer()) {
-        if (pos == 0)
-            ss << "    ";
-        else 
-            ss << "  , ";
-        //LOG(INFO) << "state id : " << pos++;
-        //LOG(INFO) << pState->getValue();
-        std::string protocolStateName = "ProtocolState_s" + ConvertUtil::convert<unsigned int, std::string>(pos);
-        ss << protocolStateName << " // " << pState->getValue() << "\n";
-        _protocolGraphInfo._mapStateIdAndName.insert(std::make_pair(pos, protocolStateName));
-        _protocolGraphInfo._mapStateIdAndComment.insert(std::make_pair(pos, pState->getValue()));
-        ++pos;
-
-}
-    ss << "};\n\n";
-    pos = 0;
    
-    // Generate protocol event 
-    WddManager<TermHandle> wddManager;
 
-    CONST_FOR_EACH(pEdge, _protocolGraph.getEdgeHandleContainer()) {
-        unsigned int fromStateId = pEdge->getStatePair().first;
-        unsigned int toStateId = pEdge->getStatePair().second;
-        EdgePair edge = pEdge->getValue();
-        PExprBoolExpressionHandle pBoolExpression = edge.first;
-        PExprUpdateStatementHandle pUpdateStatement = edge.second;
-
-        WddManager<TermHandle>::WddNodeHandle pWddNode = makeWddHandleFromPExprBoolExpression(wddManager, pBoolExpression);
-        unsigned int edgeId = pos++;
-        if (verbose) {
-            LOG(INFO) << "from state id : " << fromStateId << " | to state id : " << toStateId << " | this edge id : ";
-            LOG(INFO) << pBoolExpression->toString();
-            LOG(INFO) << pWddNode->toString(wddManager);
-            LOG(INFO) << pWddNode->toPureString(wddManager);
-            LOG(INFO) << pUpdateStatement->toString();
-        }
-        std::string pureStatement = pWddNode->toPureString(wddManager);
-        std::map<std::string, int>::iterator itExressionIdPair;
-        if ((itExressionIdPair = _protocolGraphInfo._mapExpressionAndExpressionId.find(pureStatement)) == _protocolGraphInfo._mapExpressionAndExpressionId.end()) {
-            unsigned int expressionId = _protocolGraphInfo._mapExpressionAndExpressionId.size();
-            itExressionIdPair = _protocolGraphInfo._mapExpressionAndExpressionId.insert(std::make_pair(pureStatement, expressionId)).first;
-            _protocolGraphInfo._mapExpressionIdAndExpression.insert(std::make_pair(expressionId, pureStatement));
-        }
-        _protocolGraphInfo._mapEdgeIdToExpressionId.insert(std::make_pair(edgeId, itExressionIdPair->second));
-    }
-
-    ss << "enum ProtocolEvent {\n";
-    pos = 0;
-    CONST_FOR_EACH (expressionIdPair, _protocolGraphInfo._mapExpressionAndExpressionId) {
-        if (pos++ == 0)
-            ss << "    ";
-        else 
-            ss << "  , ";
-        ss << "ProtocolEvent" << expressionIdPair.second
-            << " // " << expressionIdPair.first << "\n";
-    }
-    ss << "};\n\n";
-       
+    generateProtocolEvent(ss); 
     ss << "#endif // " << strHeaderGuard << "\n\n";
 
     return ss.str();

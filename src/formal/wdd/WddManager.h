@@ -8,6 +8,7 @@
 #include "nstl/for_each/ForEach.h"
 #include "utility/log/Log.h"
 
+
 template <class _TermHandle>
 class WddNode;
 
@@ -42,6 +43,17 @@ public:
         BddNodeHandle pBddNode = _pBddNode->getPosHandle();
         return makeWddNodeHandle(wddManager, pBddNode);
     }
+    
+    WddNodeHandle getNegHandle(const WddManager<_TermHandle> & wddManager) const {
+        if (isTerm()) {
+            std::cerr << "Already a term" << std::endl;
+            assert(0);
+        }
+
+        BddNodeHandle pBddNode = _pBddNode->getNegHandle();
+        return makeWddNodeHandle(wddManager, pBddNode);
+
+    }
 
     static WddNodeHandle makeWddNodeHandle(const WddManager<_TermHandle> & wddManager, BddNodeHandle pBddNode) {
         if (pBddNode->isTerminal())
@@ -59,16 +71,6 @@ public:
         }
     }
 
-    WddNodeHandle getNegHandle(const WddManager<_TermHandle> & wddManager) const {
-        if (isTerm()) {
-            std::cerr << "Already a term" << std::endl;
-            assert(0);
-        }
-
-        BddNodeHandle pBddNode = _pBddNode->getNegHandle();
-        return makeWddNodeHandle(wddManager, pBddNode);
-
-    }
 
     BddNodeHandle getBddNodeHandle() const { return _pBddNode; }
     term_handle_type getTermHandle() const { return _pTerm; }
@@ -266,6 +268,54 @@ public:
         assert(0);
     }
 #endif
+
+//    WddNodeHandle makeWddNode(const WddManager & oriManager, WddNodeHandle pOriNode) {
+    WddNodeHandle makeWddNode(WddManager & oriManager, WddNodeHandle pOriNode) {
+        static const bool verbose_make_bdd_node_change_manager = false;
+        if (verbose_make_bdd_node_change_manager) 
+            LOG(INFO) << "ori : " << pOriNode->toPureString(oriManager);
+
+        if (pOriNode->isTerm()) {
+            WddNodeHandle pTerminalWddNode = makeWddNode(pOriNode->getTermHandle());
+            if (verbose_make_bdd_node_change_manager) {
+                LOG(INFO) << "terminal : " << pTerminalWddNode->toPureString(*this);
+                LOG(INFO) << "terminal bdd : " << pTerminalWddNode->getBddNodeHandle()->toString();
+            }
+            return pTerminalWddNode;
+        }
+        
+        BddNodeHandle pOriBddNode = pOriNode->getBddNodeHandle();
+        if (pOriBddNode->isTerminal())
+            return WddNode<term_handle_type>::makeWddNodeHandle(*this, pOriBddNode); 
+
+        if (verbose_make_bdd_node_change_manager) 
+            LOG(INFO) << "ori bdd : " << pOriBddNode->toString();
+
+        WddNodeHandle pPosWddNode = makeWddNode(oriManager, pOriNode->getPosHandle(oriManager));
+        WddNodeHandle pNegWddNode = makeWddNode(oriManager, pOriNode->getNegHandle(oriManager));
+                                               
+        if (verbose_make_bdd_node_change_manager) {
+            LOG(INFO) << "ori pos : " << pOriNode->getPosHandle(oriManager)->toPureString(oriManager);
+            LOG(INFO) << "ori pos bdd : " << pOriNode->getPosHandle(oriManager)->getBddNodeHandle()->toString();
+            LOG(INFO) << "ori neg : " << pOriNode->getNegHandle(oriManager)->toPureString(oriManager);
+            LOG(INFO) << "ori neg bdd : " << pOriNode->getNegHandle(oriManager)->getBddNodeHandle()->toString();
+
+            LOG(INFO) << "cur pos : " << pPosWddNode->toPureString(*this);
+            LOG(INFO) << "cur pos bdd : " << pPosWddNode->getBddNodeHandle()->toString();
+            LOG(INFO) << "cur neg : " << pNegWddNode->toPureString(*this);
+            LOG(INFO) << "cur neg bdd : " << pNegWddNode->getBddNodeHandle()->toString();
+        }
+        
+        int oriCurLevelId = pOriBddNode->getCurDecisionLevel();
+        term_handle_type pOriCurTerm = oriManager.getTermHandleFromId(oriCurLevelId);
+        WddNodeHandle pCurWddNode = makeWddNode(pOriCurTerm);
+        if (verbose_make_bdd_node_change_manager) {
+            LOG(INFO) << "cur level : " << pCurWddNode->toPureString(*this);
+            LOG(INFO) << "cur level bdd : " << pCurWddNode->getBddNodeHandle()->toString();
+        }
+
+        return ite(pCurWddNode, pPosWddNode, pNegWddNode);
+    }
 
     WddNodeHandle makeWddNode(const term_handle_type & pTerm) {
         return addTerm(pTerm);

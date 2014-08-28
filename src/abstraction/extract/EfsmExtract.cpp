@@ -17,6 +17,14 @@ EfsmExtract::EfsmExtract( const std::string & verilogAstName
     parseVerilogToVExprFlattenToVRExpr(verilogAstName);
     parseProtocolSpecToProtocolGraph(protocolAstName);
 }
+    
+std::vector<VRExprAssignment> EfsmExtract::getAssignmentContainer(const std::string & topModuleName) const {
+    std::map<std::string, std::vector<VRExprAssignment> >::const_iterator it = _mapModuleAndAssignment.find(topModuleName);
+    if (it == _mapModuleAndAssignment.end()) {
+        LOG(ERROR) << "Please extract topModuleName first";
+    }
+    return it->second; 
+}
 
 VRExprEfsm EfsmExtract::extract(const std::string & topModuleName) {
 
@@ -28,6 +36,7 @@ VRExprEfsm EfsmExtract::extract(const std::string & topModuleName) {
         if (module.getModuleName() == topModuleName) {
             hasModule = true;
             vecAssign = module.getAssignmentContainer();
+            _mapModuleAndAssignment.insert(std::make_pair(topModuleName, vecAssign));
             break;
         }
         if (!hasModule)

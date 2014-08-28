@@ -14,7 +14,6 @@
 #include "nstl/hash/HashTable.h"
 #include "utility/log/Log.h"
 
-static const bool verbose = false;
 
 template <class T>
 struct GraphComponentToString {
@@ -84,6 +83,7 @@ public:
       : value(val)
       , _id(id)
       { }
+    /*
     GraphComponent(const GraphComponent & rhs) {
         copy(rhs);
     }
@@ -99,6 +99,7 @@ public:
         }
         return *this;
     }
+    */
 
     const value_type & getValue() const { return value; }
 
@@ -206,6 +207,7 @@ public:
             state_handle_type pState = state_handle_type(state_type(stateValue, id));
             _containerStateHandle.push_back(pState);
             _mapStateId.insert(std::make_pair(pState, pState->getId()));
+            _mapConnect.insert(std::make_pair(id, std::map<state_id_type, edge_id_type>()));
         }
 
         return _containerStateHandle[id];
@@ -236,23 +238,21 @@ public:
     state_handle_container_type& getStateHandleContainer() { return _containerStateHandle; }
     edge_handle_container_type& getEdgeHandleContainer() { return _containerEdge; }
     
-    const std::map<state_id_type, edge_id_type> & getConnectionMap(state_id_type FromId) const {
-        typename connection_map_type::const_iterator it = _mapConnect.find(FromId);
+    const std::map<state_id_type, edge_id_type> & getConnectionMap(state_id_type fromId) const {
+        typename connection_map_type::const_iterator it = _mapConnect.find(fromId);
         if(it != _mapConnect.end()) {
             return it->second;
         } else {
-            return std::map<state_id_type, edge_id_type>();
-//            std::cerr << "*Warning: " << "no such connection in this graph." << std::endl;
+            std::cerr << "*Warning: " << "no such connection in this graph." << std::endl;
         }
         assert(0);
     }
 
-    std::map<state_id_type, edge_id_type>& getConnectionMap(state_id_type FromId) {
-        if(_mapConnect.find(FromId) != _mapConnect.end()) {
-            return _mapConnect[FromId];
+    std::map<state_id_type, edge_id_type>& getConnectionMap(state_id_type fromId) {
+        if(_mapConnect.find(fromId) != _mapConnect.end()) {
+            return _mapConnect[fromId];
         } else {
-            return std::map<state_id_type, edge_id_type>();
-//            std::cerr << "*Warning: " << "no such connection in this graph." << std::endl;
+            std::cerr << "*Warning: " << "no such connection in this graph." << std::endl;
         }
         assert(0);
     }
@@ -369,6 +369,8 @@ public:
      * 1. Use a map to store an outer inward edge hash for each state
      */
     std::vector<state_handle_type> topologicalSort() const {
+        const bool verbose = false;
+
         std::vector<state_handle_type> vecTopologicalOrderStateHandle;
 
         std::vector<HashTable<int> > vecStateInwardEdges;

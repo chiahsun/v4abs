@@ -5,10 +5,11 @@
 #include "ConvertAssignment2SystemC.h"
 #include "utility/convert/ConvertUtil.h"
 #include "abstraction/extract/WddHelper.h"
+#include "nstl/graph/Graph.h"
 
 static const std::string indent = "    ";
 static const bool verbose = false;
-
+static const bool verbose_assignment_graph = false;
 std::string getTypeFromSize(int sz);
     
 FunctionCall::FunctionCall(std::string functionName, std::string functionImpl)
@@ -44,6 +45,78 @@ void AssignmentFunctionCallMgr::addAssignmentAsFunctionCall(const VRExprAssignme
 const std::vector<FunctionCall>& AssignmentFunctionCallMgr::getFunctionCallContainer() const 
   { return _vecFunctionCall; }
 
+void CodeGeneration::processAssignment(const std::vector<VRExprAssignment> & vecAssign) {
+    Graph<VRExprExpression, int/*dummy*/> graphCombinational;
+
+    std::map<VRExprExpression, VRExprAssignment> mapExpressionAndAssignment;
+
+    CONST_FOR_EACH(assign, vecAssign) {
+        mapExpressionAndAssignment.insert(std::make_pair(assign.getExprLhs(), assign));
+    }
+    std::vector<VRExprAssignment> vecPosedgeSequencial;
+    std::vector<VRExprAssignment> vecNegedgeSequencial;
+    HashTable<VRExprExpression> hashCombinational;
+
+    CONST_FOR_EACH(assign, vecAssign) {
+        VRExprExpression exprLhs = assign.getExprLhs();
+        if ( assign.getPosedgeSensitivity().size() != 0) {
+            vecPosedgeSequencial.push_back(assign);
+        } else if ( assign.getNegedgeSensitivity().size() != 0) {
+            vecNegedgeSequencial.push_back(assign);
+        } else {
+            Graph<VRExprExpression, int>::state_handle_type pStateLhs = graphCombinational.addState(exprLhs);
+            hashCombinational.insert(exprLhs);
+
+            HashTable<VRExprExpression> hashRhs = assign.getStaticSensitivity();
+            CONST_FOR_EACH(rhs, hashRhs) {
+                Graph<VRExprExpression, int>::state_handle_type pStateRhs = graphCombinational.addState(rhs);
+                graphCombinational.addEdge(pStateRhs, pStateLhs, 0/*dummy*/);
+                if (verbose_assignment_graph)
+                    LOG(INFO) << "Add edge rhs: " << pStateRhs->getValue().toString() << " lhs: " << pStateLhs->getValue().toString(); 
+            }
+        }
+    }
+
+#if 0
+    CONST_FOR_EACH(posSeq, vecPosedgeSequencial)
+        LOG(INFO) << "pos sequential : " << posSeq.toString();
+    CONST_FOR_EACH(negSeq, vecNegedgeSequencial)
+        LOG(INFO) << "neg sequential : " << negSeq.toString();
+    CONST_FOR_EACH(comb, hashCombinational)
+        LOG(INFO) << "combinational : " << comb.toString();
+#endif
+
+//    std::cout << graphCombinational.toString();
+    std::vector<Graph<VRExprExpression, int>::state_handle_type> vecCombinationalTopologicalOrder = graphCombinational.topologicalSort();
+    std::vector<VRExprAssignment> vecCombinational;
+    CONST_FOR_EACH(pState, vecCombinationalTopologicalOrder) {
+        VRExprExpression expr = pState->getValue();
+        std::map<VRExprExpression, VRExprAssignment>::const_iterator it; 
+        if ((it = mapExpressionAndAssignment.find(expr)) == mapExpressionAndAssignment.end()) {
+//            LOG(INFO) << "No such assignment for expr : " << expr.toString();
+        } else {
+            if (hashCombinational.find(expr) != hashCombinational.end())
+                vecCombinational.push_back(it->second);
+        }
+    }
+
+    CONST_FOR_EACH(assign, vecNegedgeSequencial) {  
+        LOG(INFO) << "neg assignment : " << assign.toString();
+    }
+    CONST_FOR_EACH(assign, vecCombinational) {  
+        LOG(INFO) << "comb assignment : " << assign.toString();
+    }
+    CONST_FOR_EACH(assign, vecPosedgeSequencial) {  
+        LOG(INFO) << "pos assignment" << assign.toString();
+    }
+#if 0
+    CONST_FOR_EACH(pState, vecCombinationalTopologicalOrder) {
+        LOG(INFO) << pState->getValue().toString();
+    }
+#endif
+
+}
+
 CodeGeneration::CodeGeneration
   ( const std::string & designName
   , const std::string & protocolName
@@ -51,7 +124,7 @@ CodeGeneration::CodeGeneration
   {
     EfsmExtract extractFactory(designName, protocolName);
     _efsm = extractFactory.extract(topModuleName);
-    
+    processAssignment(extractFactory.getAssignmentContainer(topModuleName));
     _protocolGraph = extractFactory.getProtocolGraph();
 
 

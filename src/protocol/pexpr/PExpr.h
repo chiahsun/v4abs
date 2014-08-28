@@ -12,7 +12,7 @@ public:
     PExpr() {}
     virtual ~PExpr() {}
     std::string toString() const;
-    friend std::ostream & operator << (std::ostream & os, const PExpr & rhs) { assert(0); }
+    friend std::ostream & operator << (std::ostream & os, const PExpr & rhs);
 };
 
 class PExprSourceText {

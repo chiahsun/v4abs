@@ -10,6 +10,7 @@
 class EfsmExtract {
     std::vector<VExprModuleHandle> _vecHierModule;
     std::vector<VRExprModule> _vecModule;
+    std::map<std::string, std::vector<VRExprAssignment> > _mapModuleAndAssignment;
     ProtocolGraph _protocolGraph;
 public:
     EfsmExtract( const std::string & verilogAstName
@@ -22,6 +23,7 @@ public:
     const std::vector<VRExprModule> & getFlatModuleContainer() const;
     
     ProtocolGraph getProtocolGraph() const;
+    std::vector<VRExprAssignment> getAssignmentContainer(const std::string & topModuleName) const;
 
 private:
     void parseVerilogToVExprFlattenToVRExpr(const std::string & verilogAstName);

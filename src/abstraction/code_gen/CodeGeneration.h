@@ -48,6 +48,8 @@ public:
     void writeFile(const std::string & filePrefixName);
     std::string generateHeader();
     std::string generateImplementation();
+    
+    void processAssignment(const std::vector<VRExprAssignment> & vecAssign); 
 
 private:
     const VRExprEfsm& getEfsm() const;

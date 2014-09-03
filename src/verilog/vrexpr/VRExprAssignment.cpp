@@ -15,6 +15,12 @@ VRExprAssignment::VRExprAssignment(VRExprExpression lhs, VRExprExpression rhs)
     initMuxExpressions();
     buildWddNode();
 }
+    
+VRExprTermManager& VRExprAssignment::getTermManager() 
+  { return _termManager; }
+
+VRExprAssignment::WddNodeHandle VRExprAssignment::getWddNodeHandle() const
+  { return _wddNode; }
 
 VRExprExpression VRExprAssignment::getExprLhs() const
   { return _exprLhs; }

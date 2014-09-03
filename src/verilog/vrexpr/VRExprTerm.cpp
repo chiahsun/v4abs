@@ -1,6 +1,13 @@
 #include "VRExprTerm.h"
 #include "VRExprExpression.h"
-    
+
+template <class T>
+void swap(T & x, T & y) {
+    T tmp = x;
+    x = y;
+    y = tmp;
+}
+
 VRExprTerm::VRExprTerm(VRExprExpression expr)
   : _pExpr(VRExprExpressionHandle(VRExprExpression(expr)))
   { }
@@ -55,4 +62,61 @@ VRExprTermManager::WddNodeHandle VRExprTermManager::ite(VRExprExpression eIf, VR
     
 bool VRExprTerm::operator < (const VRExprTerm & rhs) const { 
     return (*_pExpr) < (*rhs._pExpr); 
+}
+    
+VRExprExpression VRExprTermManager::toVRExprExpression(WddNodeHandle pWddNode) {
+    if (pWddNode->getTermHandle().valid()) {
+        if (pWddNode->getBddNodeHandle()->getPosHandle()->getBool())
+            return makeIdentifier(pWddNode->getTermHandle()->toString());
+        else
+            return makeUnaryExpression(UNARY_NOT, makeIdentifier(pWddNode->getTermHandle()->toString()));
+    }
+
+    int curLevelId = pWddNode->getBddNodeHandle()->getCurDecisionLevel();
+    if (curLevelId == 0) {
+        if (pWddNode->getBddNodeHandle()->getBool())
+            return makeIdentifier("true");
+        else
+            return makeIdentifier("false");
+    }
+
+    VRExprTermManager::WddNodeHandle pCur = _wddManager.makeWddNode(_wddManager.getTermHandleFromId(curLevelId));
+    std::string curLevelName = pCur->toString(_wddManager);
+    VRExprExpression curExpr = toVRExprExpression(pCur);
+    VRExprExpression negatedCurExpr = makeUnaryExpression(UNARY_NOT, toVRExprPrimary(pCur));
+    if (!pCur->getBddNodeHandle()->getPosHandle()->getBool())
+        swap(curExpr, negatedCurExpr);
+
+    WddNodeHandle pPos = pWddNode->getPosHandle(_wddManager);
+    WddNodeHandle pNeg = pWddNode->getNegHandle(_wddManager);
+
+    VRExprExpression posExpr = toVRExprExpression(pPos);
+    VRExprExpression negExpr = toVRExprExpression(pNeg);
+
+    std::string posString = posExpr.toString();
+    std::string negString = negExpr.toString();
+
+    // ite(a, 1, b) = a + b
+    // ite(a, 0, b) = !ab
+    if (posString == "true") {
+        return makeBinaryExpression(curExpr, BINARY_LOGICAL_OR, negExpr);
+    } else if (posString == "false") {
+        return makeBinaryExpression(negatedCurExpr, BINARY_LOGICAL_AND, negExpr);
+    }
+
+    // ite(a, b, 0) = ab
+    // ite(a, b, 1) = !a + b
+    if (negString == "true") {
+        return makeBinaryExpression(negatedCurExpr, BINARY_LOGICAL_OR, posExpr);
+    } else if (negString == "false") {
+        return makeBinaryExpression(curExpr, BINARY_LOGICAL_AND, posExpr);
+    }
+
+    return VRExprIte(curExpr, posExpr, negExpr);
+
+}
+    
+VRExprPrimary VRExprTermManager::toVRExprPrimary(WddNodeHandle pWddNode) {
+    assert(pWddNode->getTermHandle().valid());
+    return makeIdentifier(pWddNode->getTermHandle()->toString());
 }

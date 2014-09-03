@@ -30,8 +30,9 @@ public:
     std::map<int, std::string> _mapStateIdAndName;
     std::map<int, std::string> _mapStateIdAndComment;
     std::map<int, int> _mapEdgeIdToExpressionId;
-    std::map<std::string,int> _mapExpressionAndExpressionId;
-    std::map<int, std::string> _mapExpressionIdAndExpression;
+    std::map<std::string,int> _mapPureStatementAndExpressionId;
+    std::map<int, std::string> _mapExpressionIdAndPureStatement;
+    std::map<int, VRExprExpression> _mapExpressionIdAndSimplifiedExpression;
 };
 
 class AssignmentInfo {
@@ -44,11 +45,31 @@ public:
                   , const std::vector<VRExprAssignment> & vecPos
                   , const std::vector<VRExprAssignment> & vecComb);
     std::string toString() const;
+
+    std::vector<VRExprAssignment>& getVecNegedgeAssign() 
+      { return _vecNegedgeAssign; }
+    std::vector<VRExprAssignment>& getVecPosedgeAssign() 
+      { return _vecPosedgeAssign; }
+    std::vector<VRExprAssignment>& getVecCombAssign() 
+      { return _vecCombAssign; }
+    const std::vector<VRExprAssignment>& getVecNegedgeAssign() const
+      { return _vecNegedgeAssign; }
+    const std::vector<VRExprAssignment>& getVecPosedgeAssign() const
+      { return _vecPosedgeAssign; }
+    const std::vector<VRExprAssignment>& getVecCombAssign() const
+      { return _vecCombAssign; }
 };
+#if 0
+class AssignmentInfoInWdd {
+public:
+    std::vector<VRExprTermManager, VRExprTermManager>
+};
+#endif
 
 class SimpifiedAssignmentInfo {
 public:
-    std::map<int, AssignmentInfo> _mapEdgeIdAndAssignmentInfo;
+    std::map<int, AssignmentInfo> _mapExpressionIdAndAssignmentInfo;
+    SimpifiedAssignmentInfo() {}
     SimpifiedAssignmentInfo(const AssignmentInfo & assignmentInfo, const ProtocolGraphInfo & protocolGraphInfo);
 };
 
@@ -59,6 +80,7 @@ class CodeGeneration {
     ProtocolGraph _protocolGraph;
     ProtocolGraphInfo _protocolGraphInfo;
     AssignmentInfo _assignmentInfo;
+    SimpifiedAssignmentInfo _simplifiedAssignmentInfo;
 public:
     CodeGeneration( const std::string & designName
                   , const std::string & protocolName

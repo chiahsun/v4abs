@@ -239,6 +239,7 @@ public:
 
 
     WddNodeHandle findTerm(const term_handle_type & pTerm) {
+        assert(pTerm.valid());
         typename TermIdMap::const_iterator it;
         it = _mapTermId.find(pTerm);
         assert(it != _mapTermId.end());

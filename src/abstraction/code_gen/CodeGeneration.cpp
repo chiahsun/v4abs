@@ -10,6 +10,7 @@
 static const std::string indent = "    ";
 static const bool verbose = false;
 static const bool verbose_assignment_graph = false;
+static const bool verbose_simplify_edge_expression = true;
 std::string getTypeFromSize(int sz);
     
 FunctionCall::FunctionCall(std::string functionName, std::string functionImpl)
@@ -70,11 +71,46 @@ std::string AssignmentInfo::toString() const {
 }
     
 SimpifiedAssignmentInfo::SimpifiedAssignmentInfo(const AssignmentInfo & assignmentInfo, const ProtocolGraphInfo & protocolGraphInfo) {
-#if 0
-    CONST_FOR_EACH(edgeIdAndExpressionIdPair, protocolGraphInfo._mapEdgeIdToExpressionId) {
+    // We make a copy to ensure passing argument can be const 
+    std::vector<VRExprAssignment> vecOldPosedgeAssign = assignmentInfo.getVecPosedgeAssign();
+    std::vector<VRExprAssignment> vecOldNegedgeAssign = assignmentInfo.getVecNegedgeAssign();
+    std::vector<VRExprAssignment> vecOldCombAssign = assignmentInfo.getVecCombAssign();
+     
+    CONST_FOR_EACH(expressionIdAndSimplifiedExpressionPair, protocolGraphInfo._mapExpressionIdAndSimplifiedExpression) {
+        int expressionId = expressionIdAndSimplifiedExpressionPair.first;
+        VRExprExpression exprEnable = expressionIdAndSimplifiedExpressionPair.second;
 
+        LOG(INFO) << "enable: " << exprEnable.toString();
+        std::vector<VRExprAssignment> vecNegedgeAssign;
+        std::vector<VRExprAssignment> vecPosedgeAssign;
+        std::vector<VRExprAssignment> vecCombAssign;
+        FOR_EACH(negAssign, vecOldNegedgeAssign) {
+            VRExprTermManager::WddNodeHandle pRhsWddNode = negAssign.getWddNodeHandle();
+            VRExprTermManager::WddNodeHandle pEnableWddNode = exprEnable.buildWddNodeMux(negAssign.getTermManager());
+            VRExprTermManager::WddNodeHandle pNewRhsWddNode = negAssign.getTermManager().getWddManager().makeBasicBlockCofactor(pRhsWddNode, pEnableWddNode);
+            VRExprExpression newExprRhs = negAssign.getTermManager().toVRExprExpression(pNewRhsWddNode) ;
+            vecNegedgeAssign.push_back(VRExprAssignment(negAssign.getExprLhs(), newExprRhs));
+        }
+        FOR_EACH(posAssign, vecOldPosedgeAssign) {
+            // XXX: we cannot use the following, since wdd manipulation would change the termManager which embeded in original term manager of assignment
+//            VRExprTermManager termManager = posAssign.getTermManager(); // XXX fail, remove get term manager
+            VRExprTermManager::WddNodeHandle pRhsWddNode = posAssign.getWddNodeHandle();
+             VRExprTermManager::WddNodeHandle pEnableWddNode = exprEnable.buildWddNodeMux(posAssign.getTermManager()); // recover
+            VRExprTermManager::WddNodeHandle pNewRhsWddNode = posAssign.getTermManager().getWddManager().makeBasicBlockCofactor(pRhsWddNode, pEnableWddNode);
+            VRExprExpression newExprRhs = posAssign.getTermManager().toVRExprExpression(pNewRhsWddNode) ;
+            vecNegedgeAssign.push_back(VRExprAssignment(posAssign.getExprLhs(), newExprRhs));
+        }
+        FOR_EACH(combAssign, vecOldCombAssign) {
+            VRExprTermManager::WddNodeHandle pRhsWddNode = combAssign.getWddNodeHandle();
+            VRExprTermManager::WddNodeHandle pEnableWddNode = exprEnable.buildWddNodeMux(combAssign.getTermManager());
+            VRExprTermManager::WddNodeHandle pNewRhsWddNode = combAssign.getTermManager().getWddManager().makeBasicBlockCofactor(pRhsWddNode, pEnableWddNode);
+            VRExprExpression newExprRhs = combAssign.getTermManager().toVRExprExpression(pNewRhsWddNode) ;
+            vecNegedgeAssign.push_back(VRExprAssignment(combAssign.getExprLhs(), newExprRhs));
+
+            LOG(INFO) << "comb pre : " << combAssign.getExprRhs().toString();
+            LOG(INFO) << "comb pos : " << newExprRhs.toString();
+        }
     }
-#endif
 }
 
 
@@ -147,7 +183,7 @@ CodeGeneration::CodeGeneration
     LOG(INFO) << _assignmentInfo.toString();
     _protocolGraph = extractFactory.getProtocolGraph();
     _protocolGraphInfo = processProtocolGraphInfo(); 
-
+    _simplifiedAssignmentInfo = SimpifiedAssignmentInfo(_assignmentInfo, _protocolGraphInfo);
     _vecHierModule = extractFactory.getHierModuleHandleContainer();
     initAssignmentFunctionCallMgr();
 }
@@ -187,33 +223,35 @@ ProtocolGraphInfo CodeGeneration::processProtocolGraphInfo() {
     pos = 0;
     // Use wdd to simplify expression
     CONST_FOR_EACH(pEdge, _protocolGraph.getEdgeHandleContainer()) {
-        VRExprTermManager termManager;
         unsigned int fromStateId = pEdge->getStatePair().first;
         unsigned int toStateId = pEdge->getStatePair().second;
+
         EdgePair edge = pEdge->getValue();
         PExprBoolExpressionHandle pBoolExpression = edge.first;
         VRExprExpression expr = makeVRExprExpressionFromPExprBoolExpression(pBoolExpression);
         PExprUpdateStatementHandle pUpdateStatement = edge.second;
 
-        WddManager<TermHandle>::WddNodeHandle pWddNode = makeWddHandleFromPExprBoolExpression(wddManager, pBoolExpression);
-        VRExprTermManager::WddNodeHandle pTerm = expr.buildWddNodeMux(termManager); 
+        VRExprTermManager termManager;
+        VRExprTermManager::WddNodeHandle pTerm = expr.buildWddNodeMux(termManager);
+        VRExprExpression simplifiedExpr = termManager.toVRExprExpression(pTerm);
         unsigned int edgeId = pos++;
-//        if (verbose) {
-        if (true) {
+        if (verbose_simplify_edge_expression) {
             LOG(INFO) << "from state id : " << fromStateId << " | to state id : " << toStateId << " | this edge id : ";
             LOG(INFO) << pBoolExpression->toString();
-            LOG(INFO) << pWddNode->toString(wddManager);
-            LOG(INFO) << pWddNode->toPureString(wddManager);
             LOG(INFO) << pUpdateStatement->toString();
             LOG(INFO) << expr.toString();
-            LOG(INFO) << pTerm->toPureString(termManager.getWddManager()); 
+            LOG(INFO) << pTerm->toPureString(termManager.getWddManager());
+            LOG(INFO) << simplifiedExpr.toString();
         }
-        std::string pureStatement = pWddNode->toPureString(wddManager);
+
+        std::string pureStatement = pTerm->toPureString(termManager.getWddManager());
+
         std::map<std::string, int>::iterator itExressionIdPair;
-        if ((itExressionIdPair = protocolGraphInfo._mapExpressionAndExpressionId.find(pureStatement)) == protocolGraphInfo._mapExpressionAndExpressionId.end()) {
-            unsigned int expressionId = protocolGraphInfo._mapExpressionAndExpressionId.size();
-            itExressionIdPair = protocolGraphInfo._mapExpressionAndExpressionId.insert(std::make_pair(pureStatement, expressionId)).first;
-            protocolGraphInfo._mapExpressionIdAndExpression.insert(std::make_pair(expressionId, pureStatement));
+        if ((itExressionIdPair = protocolGraphInfo._mapPureStatementAndExpressionId.find(pureStatement)) == protocolGraphInfo._mapPureStatementAndExpressionId.end()) {
+            unsigned int expressionId = protocolGraphInfo._mapPureStatementAndExpressionId.size();
+            itExressionIdPair = protocolGraphInfo._mapPureStatementAndExpressionId.insert(std::make_pair(pureStatement, expressionId)).first;
+            protocolGraphInfo._mapExpressionIdAndPureStatement.insert(std::make_pair(expressionId, pureStatement));
+            protocolGraphInfo._mapExpressionIdAndSimplifiedExpression.insert(std::make_pair(expressionId, simplifiedExpr));
         }
         protocolGraphInfo._mapEdgeIdToExpressionId.insert(std::make_pair(edgeId, itExressionIdPair->second));
     }
@@ -242,7 +280,7 @@ void CodeGeneration::generateProtocolState(std::stringstream & ss) {
 void CodeGeneration::generateProtocolEvent(std::stringstream & ss) {
     ss << "enum ProtocolEvent {\n";
     unsigned int pos = 0;
-    CONST_FOR_EACH (expressionIdPair, _protocolGraphInfo._mapExpressionAndExpressionId) {
+    CONST_FOR_EACH (expressionIdPair, _protocolGraphInfo._mapPureStatementAndExpressionId) {
         if (pos++ == 0)
             ss << "    ";
         else 
@@ -483,7 +521,7 @@ std::string CodeGeneration::generateImplementation() {
         }
         std::stringstream ssEdge;
         unsigned int expressionId = _protocolGraphInfo._mapEdgeIdToExpressionId[edgeId];
-        std::string expression = _protocolGraphInfo._mapExpressionIdAndExpression[expressionId];
+        std::string expression = _protocolGraphInfo._mapExpressionIdAndPureStatement[expressionId];
         ssEdge << "            if (e == " << "ProtocolEvent" << expressionId << "/*" << expression << "*/" << ") {\n";
         std::string toStateComment = _protocolGraphInfo._mapStateIdAndComment[toStateId];
         ssEdge << "                " << "_protocolState = " << _protocolGraphInfo._mapStateIdAndName[toStateId] << "/*" << toStateComment << "*/" << ";\n";

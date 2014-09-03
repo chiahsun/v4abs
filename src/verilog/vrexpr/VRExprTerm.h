@@ -13,8 +13,9 @@ class VRExprTermManager {
 public:
     typedef SharedPtrE<VRExprTerm> VRExprTermHandle;
     typedef WddManager<VRExprTermHandle>::WddNodeHandle WddNodeHandle;
+    typedef WddManager<VRExprTermHandle> WddManager;
 private:
-    WddManager<VRExprTermHandle> _wddManager;
+    WddManager _wddManager;
 public:
     VRExprTermManager();
     WddNodeHandle addExpr(VRExprExpression expr);
@@ -32,12 +33,18 @@ public:
     WddNodeHandle makeBasicBlockIfElse(WddNodeHandle pIf, WddNodeHandle pElse);
     WddNodeHandle makeBasicBlockIfThenElse(WddNodeHandle pIf, WddNodeHandle pThen, WddNodeHandle pElse);
 
-    const WddManager<VRExprTermHandle> & getWddManager() const
+    const WddManager & getWddManager() const
+      { return _wddManager; }
+    WddManager & getWddManager() 
       { return _wddManager; }
 
     std::string stringOfNode(const WddNodeHandle & pNode) const {
         return _wddManager.stringOfNode(pNode);
     }
+
+    VRExprExpression toVRExprExpression(WddNodeHandle pWddNode);
+private:
+    VRExprPrimary toVRExprPrimary(WddNodeHandle pWddNode);
 };
 
 class VRExprTerm : public WddTermInterface {

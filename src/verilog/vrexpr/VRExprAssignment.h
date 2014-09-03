@@ -34,6 +34,9 @@ public:
     const HashTable<VRExprExpression>& getPosedgeSensitivity() const;
     const HashTable<VRExprExpression>& getNegedgeSensitivity() const;
 
+    VRExprTermManager& getTermManager();
+    WddNodeHandle getWddNodeHandle() const;
+
     void addStaticSensitivity(VRExprExpression expr);
     void addPosedgeSensitivity(VRExprExpression expr);
     void addNegedgeSensitivity(VRExprExpression expr);

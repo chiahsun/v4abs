@@ -99,7 +99,7 @@ SimpifiedAssignmentInfo::SimpifiedAssignmentInfo(const AssignmentInfo & assignme
              VRExprTermManager::WddNodeHandle pEnableWddNode = exprEnable.buildWddNodeMux(posAssign.getTermManager()); // recover
             VRExprTermManager::WddNodeHandle pNewRhsWddNode = posAssign.getTermManager().getWddManager().makeBasicBlockCofactor(pRhsWddNode, pEnableWddNode);
             VRExprExpression newExprRhs = posAssign.getTermManager().toVRExprExpression(pNewRhsWddNode) ;
-            vecNegedgeAssign.push_back(VRExprAssignment(posAssign.getExprLhs(), newExprRhs));
+            vecPosedgeAssign.push_back(VRExprAssignment(posAssign.getExprLhs(), newExprRhs));
             if (verbose_simplify_update_function) {
                 LOG(INFO) << "pos_seq pre  : " << posAssign.getExprRhs().toString();
                 LOG(INFO) << "pos_seq post : " << newExprRhs.toString();
@@ -110,7 +110,7 @@ SimpifiedAssignmentInfo::SimpifiedAssignmentInfo(const AssignmentInfo & assignme
             VRExprTermManager::WddNodeHandle pEnableWddNode = exprEnable.buildWddNodeMux(combAssign.getTermManager());
             VRExprTermManager::WddNodeHandle pNewRhsWddNode = combAssign.getTermManager().getWddManager().makeBasicBlockCofactor(pRhsWddNode, pEnableWddNode);
             VRExprExpression newExprRhs = combAssign.getTermManager().toVRExprExpression(pNewRhsWddNode) ;
-            vecNegedgeAssign.push_back(VRExprAssignment(combAssign.getExprLhs(), newExprRhs));
+            vecCombAssign.push_back(VRExprAssignment(combAssign.getExprLhs(), newExprRhs));
 
             if (verbose_simplify_update_function) {
                 LOG(INFO) << "comb pre  : " << combAssign.getExprRhs().toString();
@@ -572,13 +572,41 @@ std::string CodeGeneration::generateImplementation() {
         ss << "(" << pNumber->getUnsignedNumber() << ");\n";
     }
 #endif
-    
+    ss << "\n" << "// Simplified function calls\n";
+    for (unsigned int i = 0; i < _simplifiedAssignmentInfo._mapExpressionIdAndSimplifiedAssignmentInfo.size(); ++i) {
+        std::map<int, AssignmentInfo>::const_iterator it = _simplifiedAssignmentInfo._mapExpressionIdAndSimplifiedAssignmentInfo.find(i);
+        assert(it != _simplifiedAssignmentInfo._mapExpressionIdAndSimplifiedAssignmentInfo.end());
+
+        std::string functionNamePrefix = "void func_exp_" + ConvertUtil::convert<int, std::string>(i);
+        ss << functionNamePrefix << "() {\n";    
+        ss << "// Sequential part (negedge)\n";
+        CONST_FOR_EACH(negAssign, it->second._vecNegedgeAssign) {
+            ConvertAssignment2SystemC converter(negAssign);
+            std::string functionImpl = converter.convertAsIfElse();
+            ss << functionImpl << std::endl;
+        }
+        ss << "// Combinational part\n";
+        CONST_FOR_EACH(combAssign, it->second._vecCombAssign) {
+            ConvertAssignment2SystemC converter(combAssign);
+            std::string functionImpl = converter.convertAsIfElse();
+            ss << functionImpl << std::endl;
+        }
+        ss << "// Sequential part (posedge)\n";
+        CONST_FOR_EACH(posAssign, it->second._vecPosedgeAssign) {
+            ConvertAssignment2SystemC converter(posAssign);
+            std::string functionImpl = converter.convertAsIfElse();
+            ss << functionImpl << std::endl;
+        }
+        ss << "}\n\n";
+    }
+#if 0
     ss << "\n" << "// Function calls\n";
     CONST_FOR_EACH(functionCall, _assignFunctionCallMgr.getFunctionCallContainer()) {
         ss << "void " << topModuleName << "::" << functionCall.getFunctionName() << "() {\n";
         ss << indent << functionCall.getFunctionImpl();
         ss << "\n}\n\n";
     }
+#endif
 
     return ss.str();
 }

@@ -153,541 +153,7 @@ comb assignment: always @ (yuv_to_rgb_inst0.G_out or yuv_to_rgb_inst0.R_out or y
        + (mux_terminals )
        + (rhs_wdd_format {yuv_to_rgb_inst0.R_out,yuv_to_rgb_inst0.G_out,yuv_to_rgb_inst0.B_out})
        - rgb_out = {yuv_to_rgb_inst0.R_out,yuv_to_rgb_inst0.G_out,yuv_to_rgb_inst0.B_out}
-      (CodeGeneration.cpp : 185)
-LOG(INFO) : from state id : 0 | to state id : 1 | this edge id :       (CodeGeneration.cpp : 241)
-LOG(INFO) : (bool_expression reset)      (CodeGeneration.cpp : 242)
-LOG(INFO) :       (CodeGeneration.cpp : 243)
-LOG(INFO) : reset      (CodeGeneration.cpp : 244)
-LOG(INFO) : reset      (CodeGeneration.cpp : 245)
-LOG(INFO) : reset      (CodeGeneration.cpp : 246)
-LOG(INFO) : from state id : 0 | to state id : 0 | this edge id :       (CodeGeneration.cpp : 241)
-LOG(INFO) : (bool_expression ! (bool_expression reset))      (CodeGeneration.cpp : 242)
-LOG(INFO) :       (CodeGeneration.cpp : 243)
-LOG(INFO) : !reset      (CodeGeneration.cpp : 244)
-LOG(INFO) : !(reset)      (CodeGeneration.cpp : 245)
-LOG(INFO) : !reset      (CodeGeneration.cpp : 246)
-LOG(INFO) : from state id : 1 | to state id : 1 | this edge id :       (CodeGeneration.cpp : 241)
-LOG(INFO) : (bool_expression reset)      (CodeGeneration.cpp : 242)
-LOG(INFO) :       (CodeGeneration.cpp : 243)
-LOG(INFO) : reset      (CodeGeneration.cpp : 244)
-LOG(INFO) : reset      (CodeGeneration.cpp : 245)
-LOG(INFO) : reset      (CodeGeneration.cpp : 246)
-LOG(INFO) : from state id : 1 | to state id : 2 | this edge id :       (CodeGeneration.cpp : 241)
-LOG(INFO) : (bool_expression ! (bool_expression reset))      (CodeGeneration.cpp : 242)
-LOG(INFO) :       (CodeGeneration.cpp : 243)
-LOG(INFO) : !reset      (CodeGeneration.cpp : 244)
-LOG(INFO) : !(reset)      (CodeGeneration.cpp : 245)
-LOG(INFO) : !reset      (CodeGeneration.cpp : 246)
-LOG(INFO) : from state id : 2 | to state id : 3 | this edge id :       (CodeGeneration.cpp : 241)
-LOG(INFO) : (bool_expression (bool_expression ! (bool_expression reset)) && (bool_expression in_en))      (CodeGeneration.cpp : 242)
-LOG(INFO) : (specific_update_statement (read_or_write_or_check_statement (read_statement yuv_in)))      (CodeGeneration.cpp : 243)
-LOG(INFO) : (!reset&&in_en)      (CodeGeneration.cpp : 244)
-LOG(INFO) : (in_en&&!(reset))      (CodeGeneration.cpp : 245)
-LOG(INFO) : (in_en&&!reset)      (CodeGeneration.cpp : 246)
-LOG(INFO) : from state id : 2 | to state id : 2 | this edge id :       (CodeGeneration.cpp : 241)
-LOG(INFO) : (bool_expression (bool_expression ! (bool_expression reset)) && (bool_expression ! (bool_expression (bool_expression ! (bool_expression reset)) && (bool_expression in_en))))      (CodeGeneration.cpp : 242)
-LOG(INFO) :       (CodeGeneration.cpp : 243)
-LOG(INFO) : (!reset&&(reset||!in_en))      (CodeGeneration.cpp : 244)
-LOG(INFO) : (!in_en&&!(reset))      (CodeGeneration.cpp : 245)
-LOG(INFO) : (!in_en&&!reset)      (CodeGeneration.cpp : 246)
-LOG(INFO) : from state id : 2 | to state id : 4 | this edge id :       (CodeGeneration.cpp : 241)
-LOG(INFO) : (bool_expression (bool_expression ! (bool_expression (bool_expression ! (bool_expression reset)) && (bool_expression in_en))) && (bool_expression reset))      (CodeGeneration.cpp : 242)
-LOG(INFO) :       (CodeGeneration.cpp : 243)
-LOG(INFO) : ((reset||!in_en)&&reset)      (CodeGeneration.cpp : 244)
-LOG(INFO) : reset      (CodeGeneration.cpp : 245)
-LOG(INFO) : reset      (CodeGeneration.cpp : 246)
-LOG(INFO) : from state id : 3 | to state id : 5 | this edge id :       (CodeGeneration.cpp : 241)
-LOG(INFO) : (bool_expression (bool_expression ! (bool_expression reset)) && (bool_expression in_en))      (CodeGeneration.cpp : 242)
-LOG(INFO) : (specific_update_statement (read_or_write_or_check_statement (read_statement yuv_in)))      (CodeGeneration.cpp : 243)
-LOG(INFO) : (!reset&&in_en)      (CodeGeneration.cpp : 244)
-LOG(INFO) : (in_en&&!(reset))      (CodeGeneration.cpp : 245)
-LOG(INFO) : (in_en&&!reset)      (CodeGeneration.cpp : 246)
-LOG(INFO) : from state id : 3 | to state id : 4 | this edge id :       (CodeGeneration.cpp : 241)
-LOG(INFO) : (bool_expression ! (bool_expression (bool_expression ! (bool_expression reset)) && (bool_expression in_en)))      (CodeGeneration.cpp : 242)
-LOG(INFO) :       (CodeGeneration.cpp : 243)
-LOG(INFO) : (reset||!in_en)      (CodeGeneration.cpp : 244)
-LOG(INFO) : (!in_en||reset)      (CodeGeneration.cpp : 245)
-LOG(INFO) : (!in_en||reset)      (CodeGeneration.cpp : 246)
-LOG(INFO) : from state id : 5 | to state id : 6 | this edge id :       (CodeGeneration.cpp : 241)
-LOG(INFO) : (bool_expression (bool_expression ! (bool_expression reset)) && (bool_expression in_en))      (CodeGeneration.cpp : 242)
-LOG(INFO) : (specific_update_statement (read_or_write_or_check_statement (read_statement yuv_in)))      (CodeGeneration.cpp : 243)
-LOG(INFO) : (!reset&&in_en)      (CodeGeneration.cpp : 244)
-LOG(INFO) : (in_en&&!(reset))      (CodeGeneration.cpp : 245)
-LOG(INFO) : (in_en&&!reset)      (CodeGeneration.cpp : 246)
-LOG(INFO) : from state id : 5 | to state id : 4 | this edge id :       (CodeGeneration.cpp : 241)
-LOG(INFO) : (bool_expression ! (bool_expression (bool_expression ! (bool_expression reset)) && (bool_expression in_en)))      (CodeGeneration.cpp : 242)
-LOG(INFO) :       (CodeGeneration.cpp : 243)
-LOG(INFO) : (reset||!in_en)      (CodeGeneration.cpp : 244)
-LOG(INFO) : (!in_en||reset)      (CodeGeneration.cpp : 245)
-LOG(INFO) : (!in_en||reset)      (CodeGeneration.cpp : 246)
-LOG(INFO) : from state id : 6 | to state id : 7 | this edge id :       (CodeGeneration.cpp : 241)
-LOG(INFO) : (bool_expression ! (bool_expression busy))      (CodeGeneration.cpp : 242)
-LOG(INFO) : (specific_update_statement (read_or_write_or_check_statement (check_statement (bool_expression out_valid))))(specific_update_statement (read_or_write_or_check_statement (write_statement rgb_out)))      (CodeGeneration.cpp : 243)
-LOG(INFO) : !busy      (CodeGeneration.cpp : 244)
-LOG(INFO) : !(busy)      (CodeGeneration.cpp : 245)
-LOG(INFO) : !busy      (CodeGeneration.cpp : 246)
-LOG(INFO) : from state id : 6 | to state id : 6 | this edge id :       (CodeGeneration.cpp : 241)
-LOG(INFO) : (bool_expression busy)      (CodeGeneration.cpp : 242)
-LOG(INFO) :       (CodeGeneration.cpp : 243)
-LOG(INFO) : busy      (CodeGeneration.cpp : 244)
-LOG(INFO) : busy      (CodeGeneration.cpp : 245)
-LOG(INFO) : busy      (CodeGeneration.cpp : 246)
-LOG(INFO) : from state id : 7 | to state id : 8 | this edge id :       (CodeGeneration.cpp : 241)
-LOG(INFO) : (bool_expression (bool_expression ! (bool_expression reset)) && (bool_expression in_en))      (CodeGeneration.cpp : 242)
-LOG(INFO) : (specific_update_statement (read_or_write_or_check_statement (read_statement yuv_in)))      (CodeGeneration.cpp : 243)
-LOG(INFO) : (!reset&&in_en)      (CodeGeneration.cpp : 244)
-LOG(INFO) : (in_en&&!(reset))      (CodeGeneration.cpp : 245)
-LOG(INFO) : (in_en&&!reset)      (CodeGeneration.cpp : 246)
-LOG(INFO) : from state id : 7 | to state id : 4 | this edge id :       (CodeGeneration.cpp : 241)
-LOG(INFO) : (bool_expression ! (bool_expression (bool_expression ! (bool_expression reset)) && (bool_expression in_en)))      (CodeGeneration.cpp : 242)
-LOG(INFO) :       (CodeGeneration.cpp : 243)
-LOG(INFO) : (reset||!in_en)      (CodeGeneration.cpp : 244)
-LOG(INFO) : (!in_en||reset)      (CodeGeneration.cpp : 245)
-LOG(INFO) : (!in_en||reset)      (CodeGeneration.cpp : 246)
-LOG(INFO) : from state id : 8 | to state id : 9 | this edge id :       (CodeGeneration.cpp : 241)
-LOG(INFO) : (bool_expression ! (bool_expression busy))      (CodeGeneration.cpp : 242)
-LOG(INFO) : (specific_update_statement (read_or_write_or_check_statement (check_statement (bool_expression out_valid))))(specific_update_statement (read_or_write_or_check_statement (write_statement rgb_out)))      (CodeGeneration.cpp : 243)
-LOG(INFO) : !busy      (CodeGeneration.cpp : 244)
-LOG(INFO) : !(busy)      (CodeGeneration.cpp : 245)
-LOG(INFO) : !busy      (CodeGeneration.cpp : 246)
-LOG(INFO) : from state id : 8 | to state id : 8 | this edge id :       (CodeGeneration.cpp : 241)
-LOG(INFO) : (bool_expression busy)      (CodeGeneration.cpp : 242)
-LOG(INFO) :       (CodeGeneration.cpp : 243)
-LOG(INFO) : busy      (CodeGeneration.cpp : 244)
-LOG(INFO) : busy      (CodeGeneration.cpp : 245)
-LOG(INFO) : busy      (CodeGeneration.cpp : 246)
-LOG(INFO) : from state id : 9 | to state id : 3 | this edge id :       (CodeGeneration.cpp : 241)
-LOG(INFO) : (bool_expression (bool_expression ! (bool_expression reset)) && (bool_expression in_en))      (CodeGeneration.cpp : 242)
-LOG(INFO) : (specific_update_statement (read_or_write_or_check_statement (read_statement yuv_in)))      (CodeGeneration.cpp : 243)
-LOG(INFO) : (!reset&&in_en)      (CodeGeneration.cpp : 244)
-LOG(INFO) : (in_en&&!(reset))      (CodeGeneration.cpp : 245)
-LOG(INFO) : (in_en&&!reset)      (CodeGeneration.cpp : 246)
-LOG(INFO) : from state id : 9 | to state id : 1 | this edge id :       (CodeGeneration.cpp : 241)
-LOG(INFO) : (bool_expression (bool_expression reset) && (bool_expression ! (bool_expression (bool_expression ! (bool_expression reset)) && (bool_expression in_en))))      (CodeGeneration.cpp : 242)
-LOG(INFO) :       (CodeGeneration.cpp : 243)
-LOG(INFO) : (reset&&(reset||!in_en))      (CodeGeneration.cpp : 244)
-LOG(INFO) : reset      (CodeGeneration.cpp : 245)
-LOG(INFO) : reset      (CodeGeneration.cpp : 246)
-LOG(INFO) : from state id : 9 | to state id : 2 | this edge id :       (CodeGeneration.cpp : 241)
-LOG(INFO) : (bool_expression (bool_expression in_en) && (bool_expression (bool_expression ! (bool_expression (bool_expression ! (bool_expression reset)) && (bool_expression in_en))) && (bool_expression ! (bool_expression reset))))      (CodeGeneration.cpp : 242)
-LOG(INFO) :       (CodeGeneration.cpp : 243)
-LOG(INFO) : (in_en&&((reset||!in_en)&&!reset))      (CodeGeneration.cpp : 244)
-LOG(INFO) : false      (CodeGeneration.cpp : 245)
-LOG(INFO) : false      (CodeGeneration.cpp : 246)
-LOG(INFO) : from state id : 9 | to state id : 4 | this edge id :       (CodeGeneration.cpp : 241)
-LOG(INFO) : (bool_expression (bool_expression (bool_expression ! (bool_expression (bool_expression ! (bool_expression reset)) && (bool_expression in_en))) && (bool_expression ! (bool_expression reset))) && (bool_expression ! (bool_expression in_en)))      (CodeGeneration.cpp : 242)
-LOG(INFO) :       (CodeGeneration.cpp : 243)
-LOG(INFO) : (((reset||!in_en)&&!reset)&&!in_en)      (CodeGeneration.cpp : 244)
-LOG(INFO) : (!in_en&&!(reset))      (CodeGeneration.cpp : 245)
-LOG(INFO) : (!in_en&&!reset)      (CodeGeneration.cpp : 246)
-LOG(INFO) : enable: reset      (CodeGeneration.cpp : 83)
-LOG(INFO) : pos_seq pre : ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_U_next)      (CodeGeneration.cpp : 102)
-LOG(INFO) : pos_seq post 8'b0      (CodeGeneration.cpp : 103)
-LOG(INFO) : pos_seq pre : ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_V_next)      (CodeGeneration.cpp : 102)
-LOG(INFO) : pos_seq post 8'b0      (CodeGeneration.cpp : 103)
-LOG(INFO) : pos_seq pre : ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_Y1_next)      (CodeGeneration.cpp : 102)
-LOG(INFO) : pos_seq post 8'b0      (CodeGeneration.cpp : 103)
-LOG(INFO) : pos_seq pre : ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_Y2_next)      (CodeGeneration.cpp : 102)
-LOG(INFO) : pos_seq post 8'b0      (CodeGeneration.cpp : 103)
-LOG(INFO) : pos_seq pre : ite((reset||!in_en), yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.state_next)      (CodeGeneration.cpp : 102)
-LOG(INFO) : pos_seq post yuv_to_rgb_inst0.S_U      (CodeGeneration.cpp : 103)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_to_rgb_inst0.S_Y1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_to_rgb_inst0.S_V, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_to_rgb_inst0.S_BUSY1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), yuv_to_rgb_inst0.S_Y2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_to_rgb_inst0.S_BUSY2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2), yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.state))))))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_to_rgb_inst0.S_Y1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_to_rgb_inst0.S_V, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_to_rgb_inst0.S_BUSY1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), yuv_to_rgb_inst0.S_Y2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_to_rgb_inst0.S_BUSY2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2), yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.state))))))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : 8'b0      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : 8'b0      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_in, yuv_to_rgb_inst0.reg_U)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_in, yuv_to_rgb_inst0.reg_U)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_in, yuv_to_rgb_inst0.reg_Y1)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_in, yuv_to_rgb_inst0.reg_Y1)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_in, yuv_to_rgb_inst0.reg_V)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_in, yuv_to_rgb_inst0.reg_V)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_in, yuv_to_rgb_inst0.reg_Y2)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_in, yuv_to_rgb_inst0.reg_Y2)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), {8'b0,yuv_to_rgb_inst0.reg_Y1}, {8'b0,yuv_to_rgb_inst0.reg_Y2})      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), {8'b0,yuv_to_rgb_inst0.reg_Y1}, {8'b0,yuv_to_rgb_inst0.reg_Y2})      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : {{8{yuv_to_rgb_inst0.reg_U[7]}},yuv_to_rgb_inst0.reg_U}      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : {{8{yuv_to_rgb_inst0.reg_U[7]}},yuv_to_rgb_inst0.reg_U}      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : {{8{yuv_to_rgb_inst0.reg_V[7]}},yuv_to_rgb_inst0.reg_V}      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : {{8{yuv_to_rgb_inst0.reg_V[7]}},yuv_to_rgb_inst0.reg_V}      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite(!op_mode, yuv_to_rgb_busy, 1'b1)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite(op_mode, 1'b1, yuv_to_rgb_busy)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite(!op_mode, yuv_to_rgb_out_valid, 1'b0)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite(op_mode, 1'b0, yuv_to_rgb_out_valid)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b10000*yuv_to_rgb_inst0.U_ext))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b10000*yuv_to_rgb_inst0.U_ext))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b1101*yuv_to_rgb_inst0.V_ext))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b1101*yuv_to_rgb_inst0.V_ext))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : (((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'hfffe*yuv_to_rgb_inst0.U_ext))+(16'hfffa*yuv_to_rgb_inst0.V_ext))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : (((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'hfffe*yuv_to_rgb_inst0.U_ext))+(16'hfffa*yuv_to_rgb_inst0.V_ext))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite(yuv_to_rgb_inst0.B_ext[15], 8'b0, ite((yuv_to_rgb_inst0.B_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.B_ext[2], ite((yuv_to_rgb_inst0.B_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.B_ext[10:3]+8'd1)), yuv_to_rgb_inst0.B_ext[10:3])))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite(yuv_to_rgb_inst0.B_ext[15], 8'b0, ite((yuv_to_rgb_inst0.B_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.B_ext[2], ite((yuv_to_rgb_inst0.B_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.B_ext[10:3]+8'd1)), yuv_to_rgb_inst0.B_ext[10:3])))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite(yuv_to_rgb_inst0.R_ext[15], 8'b0, ite((yuv_to_rgb_inst0.R_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.R_ext[2], ite((yuv_to_rgb_inst0.R_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.R_ext[10:3]+8'd1)), yuv_to_rgb_inst0.R_ext[10:3])))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite(yuv_to_rgb_inst0.R_ext[15], 8'b0, ite((yuv_to_rgb_inst0.R_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.R_ext[2], ite((yuv_to_rgb_inst0.R_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.R_ext[10:3]+8'd1)), yuv_to_rgb_inst0.R_ext[10:3])))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite(yuv_to_rgb_inst0.G_ext[15], 8'b0, ite((yuv_to_rgb_inst0.G_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.G_ext[2], ite((yuv_to_rgb_inst0.G_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.G_ext[10:3]+8'd1)), yuv_to_rgb_inst0.G_ext[10:3])))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite(yuv_to_rgb_inst0.G_ext[15], 8'b0, ite((yuv_to_rgb_inst0.G_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.G_ext[2], ite((yuv_to_rgb_inst0.G_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.G_ext[10:3]+8'd1)), yuv_to_rgb_inst0.G_ext[10:3])))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : {yuv_to_rgb_inst0.R_out,yuv_to_rgb_inst0.G_out,yuv_to_rgb_inst0.B_out}      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : {yuv_to_rgb_inst0.R_out,yuv_to_rgb_inst0.G_out,yuv_to_rgb_inst0.B_out}      (CodeGeneration.cpp : 113)
-LOG(INFO) : enable: !reset      (CodeGeneration.cpp : 83)
-LOG(INFO) : pos_seq pre : ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_U_next)      (CodeGeneration.cpp : 102)
-LOG(INFO) : pos_seq post ite(in_en, yuv_to_rgb_inst0.reg_U_next, 8'b0)      (CodeGeneration.cpp : 103)
-LOG(INFO) : pos_seq pre : ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_V_next)      (CodeGeneration.cpp : 102)
-LOG(INFO) : pos_seq post ite(in_en, yuv_to_rgb_inst0.reg_V_next, 8'b0)      (CodeGeneration.cpp : 103)
-LOG(INFO) : pos_seq pre : ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_Y1_next)      (CodeGeneration.cpp : 102)
-LOG(INFO) : pos_seq post ite(in_en, yuv_to_rgb_inst0.reg_Y1_next, 8'b0)      (CodeGeneration.cpp : 103)
-LOG(INFO) : pos_seq pre : ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_Y2_next)      (CodeGeneration.cpp : 102)
-LOG(INFO) : pos_seq post ite(in_en, yuv_to_rgb_inst0.reg_Y2_next, 8'b0)      (CodeGeneration.cpp : 103)
-LOG(INFO) : pos_seq pre : ite((reset||!in_en), yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.state_next)      (CodeGeneration.cpp : 102)
-LOG(INFO) : pos_seq post ite(in_en, yuv_to_rgb_inst0.state_next, yuv_to_rgb_inst0.S_U)      (CodeGeneration.cpp : 103)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_to_rgb_inst0.S_Y1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_to_rgb_inst0.S_V, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_to_rgb_inst0.S_BUSY1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), yuv_to_rgb_inst0.S_Y2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_to_rgb_inst0.S_BUSY2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2), yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.state))))))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_to_rgb_inst0.S_Y1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_to_rgb_inst0.S_V, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_to_rgb_inst0.S_BUSY1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), yuv_to_rgb_inst0.S_Y2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_to_rgb_inst0.S_BUSY2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2), yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.state))))))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : 8'b0      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : 8'b0      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_in, yuv_to_rgb_inst0.reg_U)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_in, yuv_to_rgb_inst0.reg_U)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_in, yuv_to_rgb_inst0.reg_Y1)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_in, yuv_to_rgb_inst0.reg_Y1)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_in, yuv_to_rgb_inst0.reg_V)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_in, yuv_to_rgb_inst0.reg_V)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_in, yuv_to_rgb_inst0.reg_Y2)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_in, yuv_to_rgb_inst0.reg_Y2)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), {8'b0,yuv_to_rgb_inst0.reg_Y1}, {8'b0,yuv_to_rgb_inst0.reg_Y2})      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), {8'b0,yuv_to_rgb_inst0.reg_Y1}, {8'b0,yuv_to_rgb_inst0.reg_Y2})      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : {{8{yuv_to_rgb_inst0.reg_U[7]}},yuv_to_rgb_inst0.reg_U}      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : {{8{yuv_to_rgb_inst0.reg_U[7]}},yuv_to_rgb_inst0.reg_U}      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : {{8{yuv_to_rgb_inst0.reg_V[7]}},yuv_to_rgb_inst0.reg_V}      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : {{8{yuv_to_rgb_inst0.reg_V[7]}},yuv_to_rgb_inst0.reg_V}      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite(!op_mode, yuv_to_rgb_busy, 1'b1)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite(op_mode, 1'b1, yuv_to_rgb_busy)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite(!op_mode, yuv_to_rgb_out_valid, 1'b0)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite(op_mode, 1'b0, yuv_to_rgb_out_valid)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b10000*yuv_to_rgb_inst0.U_ext))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b10000*yuv_to_rgb_inst0.U_ext))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b1101*yuv_to_rgb_inst0.V_ext))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b1101*yuv_to_rgb_inst0.V_ext))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : (((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'hfffe*yuv_to_rgb_inst0.U_ext))+(16'hfffa*yuv_to_rgb_inst0.V_ext))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : (((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'hfffe*yuv_to_rgb_inst0.U_ext))+(16'hfffa*yuv_to_rgb_inst0.V_ext))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite(yuv_to_rgb_inst0.B_ext[15], 8'b0, ite((yuv_to_rgb_inst0.B_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.B_ext[2], ite((yuv_to_rgb_inst0.B_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.B_ext[10:3]+8'd1)), yuv_to_rgb_inst0.B_ext[10:3])))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite(yuv_to_rgb_inst0.B_ext[15], 8'b0, ite((yuv_to_rgb_inst0.B_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.B_ext[2], ite((yuv_to_rgb_inst0.B_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.B_ext[10:3]+8'd1)), yuv_to_rgb_inst0.B_ext[10:3])))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite(yuv_to_rgb_inst0.R_ext[15], 8'b0, ite((yuv_to_rgb_inst0.R_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.R_ext[2], ite((yuv_to_rgb_inst0.R_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.R_ext[10:3]+8'd1)), yuv_to_rgb_inst0.R_ext[10:3])))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite(yuv_to_rgb_inst0.R_ext[15], 8'b0, ite((yuv_to_rgb_inst0.R_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.R_ext[2], ite((yuv_to_rgb_inst0.R_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.R_ext[10:3]+8'd1)), yuv_to_rgb_inst0.R_ext[10:3])))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite(yuv_to_rgb_inst0.G_ext[15], 8'b0, ite((yuv_to_rgb_inst0.G_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.G_ext[2], ite((yuv_to_rgb_inst0.G_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.G_ext[10:3]+8'd1)), yuv_to_rgb_inst0.G_ext[10:3])))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite(yuv_to_rgb_inst0.G_ext[15], 8'b0, ite((yuv_to_rgb_inst0.G_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.G_ext[2], ite((yuv_to_rgb_inst0.G_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.G_ext[10:3]+8'd1)), yuv_to_rgb_inst0.G_ext[10:3])))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : {yuv_to_rgb_inst0.R_out,yuv_to_rgb_inst0.G_out,yuv_to_rgb_inst0.B_out}      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : {yuv_to_rgb_inst0.R_out,yuv_to_rgb_inst0.G_out,yuv_to_rgb_inst0.B_out}      (CodeGeneration.cpp : 113)
-LOG(INFO) : enable: (in_en&&!reset)      (CodeGeneration.cpp : 83)
-LOG(INFO) : pos_seq pre : ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_U_next)      (CodeGeneration.cpp : 102)
-LOG(INFO) : pos_seq post yuv_to_rgb_inst0.reg_U_next      (CodeGeneration.cpp : 103)
-LOG(INFO) : pos_seq pre : ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_V_next)      (CodeGeneration.cpp : 102)
-LOG(INFO) : pos_seq post yuv_to_rgb_inst0.reg_V_next      (CodeGeneration.cpp : 103)
-LOG(INFO) : pos_seq pre : ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_Y1_next)      (CodeGeneration.cpp : 102)
-LOG(INFO) : pos_seq post yuv_to_rgb_inst0.reg_Y1_next      (CodeGeneration.cpp : 103)
-LOG(INFO) : pos_seq pre : ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_Y2_next)      (CodeGeneration.cpp : 102)
-LOG(INFO) : pos_seq post yuv_to_rgb_inst0.reg_Y2_next      (CodeGeneration.cpp : 103)
-LOG(INFO) : pos_seq pre : ite((reset||!in_en), yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.state_next)      (CodeGeneration.cpp : 102)
-LOG(INFO) : pos_seq post yuv_to_rgb_inst0.state_next      (CodeGeneration.cpp : 103)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_to_rgb_inst0.S_Y1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_to_rgb_inst0.S_V, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_to_rgb_inst0.S_BUSY1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), yuv_to_rgb_inst0.S_Y2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_to_rgb_inst0.S_BUSY2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2), yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.state))))))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_to_rgb_inst0.S_Y1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_to_rgb_inst0.S_V, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_to_rgb_inst0.S_BUSY1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), yuv_to_rgb_inst0.S_Y2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_to_rgb_inst0.S_BUSY2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2), yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.state))))))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : 8'b0      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : 8'b0      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_in, yuv_to_rgb_inst0.reg_U)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_in, yuv_to_rgb_inst0.reg_U)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_in, yuv_to_rgb_inst0.reg_Y1)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_in, yuv_to_rgb_inst0.reg_Y1)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_in, yuv_to_rgb_inst0.reg_V)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_in, yuv_to_rgb_inst0.reg_V)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_in, yuv_to_rgb_inst0.reg_Y2)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_in, yuv_to_rgb_inst0.reg_Y2)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), {8'b0,yuv_to_rgb_inst0.reg_Y1}, {8'b0,yuv_to_rgb_inst0.reg_Y2})      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), {8'b0,yuv_to_rgb_inst0.reg_Y1}, {8'b0,yuv_to_rgb_inst0.reg_Y2})      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : {{8{yuv_to_rgb_inst0.reg_U[7]}},yuv_to_rgb_inst0.reg_U}      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : {{8{yuv_to_rgb_inst0.reg_U[7]}},yuv_to_rgb_inst0.reg_U}      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : {{8{yuv_to_rgb_inst0.reg_V[7]}},yuv_to_rgb_inst0.reg_V}      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : {{8{yuv_to_rgb_inst0.reg_V[7]}},yuv_to_rgb_inst0.reg_V}      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite(!op_mode, yuv_to_rgb_busy, 1'b1)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite(op_mode, 1'b1, yuv_to_rgb_busy)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite(!op_mode, yuv_to_rgb_out_valid, 1'b0)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite(op_mode, 1'b0, yuv_to_rgb_out_valid)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b10000*yuv_to_rgb_inst0.U_ext))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b10000*yuv_to_rgb_inst0.U_ext))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b1101*yuv_to_rgb_inst0.V_ext))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b1101*yuv_to_rgb_inst0.V_ext))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : (((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'hfffe*yuv_to_rgb_inst0.U_ext))+(16'hfffa*yuv_to_rgb_inst0.V_ext))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : (((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'hfffe*yuv_to_rgb_inst0.U_ext))+(16'hfffa*yuv_to_rgb_inst0.V_ext))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite(yuv_to_rgb_inst0.B_ext[15], 8'b0, ite((yuv_to_rgb_inst0.B_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.B_ext[2], ite((yuv_to_rgb_inst0.B_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.B_ext[10:3]+8'd1)), yuv_to_rgb_inst0.B_ext[10:3])))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite(yuv_to_rgb_inst0.B_ext[15], 8'b0, ite((yuv_to_rgb_inst0.B_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.B_ext[2], ite((yuv_to_rgb_inst0.B_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.B_ext[10:3]+8'd1)), yuv_to_rgb_inst0.B_ext[10:3])))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite(yuv_to_rgb_inst0.R_ext[15], 8'b0, ite((yuv_to_rgb_inst0.R_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.R_ext[2], ite((yuv_to_rgb_inst0.R_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.R_ext[10:3]+8'd1)), yuv_to_rgb_inst0.R_ext[10:3])))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite(yuv_to_rgb_inst0.R_ext[15], 8'b0, ite((yuv_to_rgb_inst0.R_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.R_ext[2], ite((yuv_to_rgb_inst0.R_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.R_ext[10:3]+8'd1)), yuv_to_rgb_inst0.R_ext[10:3])))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite(yuv_to_rgb_inst0.G_ext[15], 8'b0, ite((yuv_to_rgb_inst0.G_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.G_ext[2], ite((yuv_to_rgb_inst0.G_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.G_ext[10:3]+8'd1)), yuv_to_rgb_inst0.G_ext[10:3])))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite(yuv_to_rgb_inst0.G_ext[15], 8'b0, ite((yuv_to_rgb_inst0.G_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.G_ext[2], ite((yuv_to_rgb_inst0.G_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.G_ext[10:3]+8'd1)), yuv_to_rgb_inst0.G_ext[10:3])))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : {yuv_to_rgb_inst0.R_out,yuv_to_rgb_inst0.G_out,yuv_to_rgb_inst0.B_out}      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : {yuv_to_rgb_inst0.R_out,yuv_to_rgb_inst0.G_out,yuv_to_rgb_inst0.B_out}      (CodeGeneration.cpp : 113)
-LOG(INFO) : enable: (!in_en&&!reset)      (CodeGeneration.cpp : 83)
-LOG(INFO) : pos_seq pre : ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_U_next)      (CodeGeneration.cpp : 102)
-LOG(INFO) : pos_seq post 8'b0      (CodeGeneration.cpp : 103)
-LOG(INFO) : pos_seq pre : ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_V_next)      (CodeGeneration.cpp : 102)
-LOG(INFO) : pos_seq post 8'b0      (CodeGeneration.cpp : 103)
-LOG(INFO) : pos_seq pre : ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_Y1_next)      (CodeGeneration.cpp : 102)
-LOG(INFO) : pos_seq post 8'b0      (CodeGeneration.cpp : 103)
-LOG(INFO) : pos_seq pre : ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_Y2_next)      (CodeGeneration.cpp : 102)
-LOG(INFO) : pos_seq post 8'b0      (CodeGeneration.cpp : 103)
-LOG(INFO) : pos_seq pre : ite((reset||!in_en), yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.state_next)      (CodeGeneration.cpp : 102)
-LOG(INFO) : pos_seq post yuv_to_rgb_inst0.S_U      (CodeGeneration.cpp : 103)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_to_rgb_inst0.S_Y1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_to_rgb_inst0.S_V, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_to_rgb_inst0.S_BUSY1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), yuv_to_rgb_inst0.S_Y2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_to_rgb_inst0.S_BUSY2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2), yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.state))))))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_to_rgb_inst0.S_Y1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_to_rgb_inst0.S_V, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_to_rgb_inst0.S_BUSY1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), yuv_to_rgb_inst0.S_Y2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_to_rgb_inst0.S_BUSY2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2), yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.state))))))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : 8'b0      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : 8'b0      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_in, yuv_to_rgb_inst0.reg_U)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_in, yuv_to_rgb_inst0.reg_U)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_in, yuv_to_rgb_inst0.reg_Y1)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_in, yuv_to_rgb_inst0.reg_Y1)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_in, yuv_to_rgb_inst0.reg_V)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_in, yuv_to_rgb_inst0.reg_V)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_in, yuv_to_rgb_inst0.reg_Y2)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_in, yuv_to_rgb_inst0.reg_Y2)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), {8'b0,yuv_to_rgb_inst0.reg_Y1}, {8'b0,yuv_to_rgb_inst0.reg_Y2})      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), {8'b0,yuv_to_rgb_inst0.reg_Y1}, {8'b0,yuv_to_rgb_inst0.reg_Y2})      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : {{8{yuv_to_rgb_inst0.reg_U[7]}},yuv_to_rgb_inst0.reg_U}      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : {{8{yuv_to_rgb_inst0.reg_U[7]}},yuv_to_rgb_inst0.reg_U}      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : {{8{yuv_to_rgb_inst0.reg_V[7]}},yuv_to_rgb_inst0.reg_V}      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : {{8{yuv_to_rgb_inst0.reg_V[7]}},yuv_to_rgb_inst0.reg_V}      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite(!op_mode, yuv_to_rgb_busy, 1'b1)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite(op_mode, 1'b1, yuv_to_rgb_busy)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite(!op_mode, yuv_to_rgb_out_valid, 1'b0)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite(op_mode, 1'b0, yuv_to_rgb_out_valid)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b10000*yuv_to_rgb_inst0.U_ext))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b10000*yuv_to_rgb_inst0.U_ext))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b1101*yuv_to_rgb_inst0.V_ext))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b1101*yuv_to_rgb_inst0.V_ext))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : (((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'hfffe*yuv_to_rgb_inst0.U_ext))+(16'hfffa*yuv_to_rgb_inst0.V_ext))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : (((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'hfffe*yuv_to_rgb_inst0.U_ext))+(16'hfffa*yuv_to_rgb_inst0.V_ext))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite(yuv_to_rgb_inst0.B_ext[15], 8'b0, ite((yuv_to_rgb_inst0.B_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.B_ext[2], ite((yuv_to_rgb_inst0.B_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.B_ext[10:3]+8'd1)), yuv_to_rgb_inst0.B_ext[10:3])))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite(yuv_to_rgb_inst0.B_ext[15], 8'b0, ite((yuv_to_rgb_inst0.B_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.B_ext[2], ite((yuv_to_rgb_inst0.B_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.B_ext[10:3]+8'd1)), yuv_to_rgb_inst0.B_ext[10:3])))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite(yuv_to_rgb_inst0.R_ext[15], 8'b0, ite((yuv_to_rgb_inst0.R_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.R_ext[2], ite((yuv_to_rgb_inst0.R_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.R_ext[10:3]+8'd1)), yuv_to_rgb_inst0.R_ext[10:3])))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite(yuv_to_rgb_inst0.R_ext[15], 8'b0, ite((yuv_to_rgb_inst0.R_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.R_ext[2], ite((yuv_to_rgb_inst0.R_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.R_ext[10:3]+8'd1)), yuv_to_rgb_inst0.R_ext[10:3])))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite(yuv_to_rgb_inst0.G_ext[15], 8'b0, ite((yuv_to_rgb_inst0.G_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.G_ext[2], ite((yuv_to_rgb_inst0.G_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.G_ext[10:3]+8'd1)), yuv_to_rgb_inst0.G_ext[10:3])))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite(yuv_to_rgb_inst0.G_ext[15], 8'b0, ite((yuv_to_rgb_inst0.G_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.G_ext[2], ite((yuv_to_rgb_inst0.G_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.G_ext[10:3]+8'd1)), yuv_to_rgb_inst0.G_ext[10:3])))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : {yuv_to_rgb_inst0.R_out,yuv_to_rgb_inst0.G_out,yuv_to_rgb_inst0.B_out}      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : {yuv_to_rgb_inst0.R_out,yuv_to_rgb_inst0.G_out,yuv_to_rgb_inst0.B_out}      (CodeGeneration.cpp : 113)
-LOG(INFO) : enable: (!in_en||reset)      (CodeGeneration.cpp : 83)
-LOG(INFO) : pos_seq pre : ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_U_next)      (CodeGeneration.cpp : 102)
-LOG(INFO) : pos_seq post 8'b0      (CodeGeneration.cpp : 103)
-LOG(INFO) : pos_seq pre : ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_V_next)      (CodeGeneration.cpp : 102)
-LOG(INFO) : pos_seq post 8'b0      (CodeGeneration.cpp : 103)
-LOG(INFO) : pos_seq pre : ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_Y1_next)      (CodeGeneration.cpp : 102)
-LOG(INFO) : pos_seq post 8'b0      (CodeGeneration.cpp : 103)
-LOG(INFO) : pos_seq pre : ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_Y2_next)      (CodeGeneration.cpp : 102)
-LOG(INFO) : pos_seq post 8'b0      (CodeGeneration.cpp : 103)
-LOG(INFO) : pos_seq pre : ite((reset||!in_en), yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.state_next)      (CodeGeneration.cpp : 102)
-LOG(INFO) : pos_seq post yuv_to_rgb_inst0.S_U      (CodeGeneration.cpp : 103)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_to_rgb_inst0.S_Y1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_to_rgb_inst0.S_V, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_to_rgb_inst0.S_BUSY1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), yuv_to_rgb_inst0.S_Y2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_to_rgb_inst0.S_BUSY2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2), yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.state))))))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_to_rgb_inst0.S_Y1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_to_rgb_inst0.S_V, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_to_rgb_inst0.S_BUSY1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), yuv_to_rgb_inst0.S_Y2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_to_rgb_inst0.S_BUSY2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2), yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.state))))))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : 8'b0      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : 8'b0      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_in, yuv_to_rgb_inst0.reg_U)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_in, yuv_to_rgb_inst0.reg_U)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_in, yuv_to_rgb_inst0.reg_Y1)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_in, yuv_to_rgb_inst0.reg_Y1)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_in, yuv_to_rgb_inst0.reg_V)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_in, yuv_to_rgb_inst0.reg_V)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_in, yuv_to_rgb_inst0.reg_Y2)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_in, yuv_to_rgb_inst0.reg_Y2)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), {8'b0,yuv_to_rgb_inst0.reg_Y1}, {8'b0,yuv_to_rgb_inst0.reg_Y2})      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), {8'b0,yuv_to_rgb_inst0.reg_Y1}, {8'b0,yuv_to_rgb_inst0.reg_Y2})      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : {{8{yuv_to_rgb_inst0.reg_U[7]}},yuv_to_rgb_inst0.reg_U}      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : {{8{yuv_to_rgb_inst0.reg_U[7]}},yuv_to_rgb_inst0.reg_U}      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : {{8{yuv_to_rgb_inst0.reg_V[7]}},yuv_to_rgb_inst0.reg_V}      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : {{8{yuv_to_rgb_inst0.reg_V[7]}},yuv_to_rgb_inst0.reg_V}      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite(!op_mode, yuv_to_rgb_busy, 1'b1)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite(op_mode, 1'b1, yuv_to_rgb_busy)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite(!op_mode, yuv_to_rgb_out_valid, 1'b0)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite(op_mode, 1'b0, yuv_to_rgb_out_valid)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b10000*yuv_to_rgb_inst0.U_ext))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b10000*yuv_to_rgb_inst0.U_ext))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b1101*yuv_to_rgb_inst0.V_ext))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b1101*yuv_to_rgb_inst0.V_ext))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : (((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'hfffe*yuv_to_rgb_inst0.U_ext))+(16'hfffa*yuv_to_rgb_inst0.V_ext))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : (((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'hfffe*yuv_to_rgb_inst0.U_ext))+(16'hfffa*yuv_to_rgb_inst0.V_ext))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite(yuv_to_rgb_inst0.B_ext[15], 8'b0, ite((yuv_to_rgb_inst0.B_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.B_ext[2], ite((yuv_to_rgb_inst0.B_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.B_ext[10:3]+8'd1)), yuv_to_rgb_inst0.B_ext[10:3])))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite(yuv_to_rgb_inst0.B_ext[15], 8'b0, ite((yuv_to_rgb_inst0.B_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.B_ext[2], ite((yuv_to_rgb_inst0.B_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.B_ext[10:3]+8'd1)), yuv_to_rgb_inst0.B_ext[10:3])))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite(yuv_to_rgb_inst0.R_ext[15], 8'b0, ite((yuv_to_rgb_inst0.R_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.R_ext[2], ite((yuv_to_rgb_inst0.R_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.R_ext[10:3]+8'd1)), yuv_to_rgb_inst0.R_ext[10:3])))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite(yuv_to_rgb_inst0.R_ext[15], 8'b0, ite((yuv_to_rgb_inst0.R_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.R_ext[2], ite((yuv_to_rgb_inst0.R_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.R_ext[10:3]+8'd1)), yuv_to_rgb_inst0.R_ext[10:3])))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite(yuv_to_rgb_inst0.G_ext[15], 8'b0, ite((yuv_to_rgb_inst0.G_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.G_ext[2], ite((yuv_to_rgb_inst0.G_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.G_ext[10:3]+8'd1)), yuv_to_rgb_inst0.G_ext[10:3])))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite(yuv_to_rgb_inst0.G_ext[15], 8'b0, ite((yuv_to_rgb_inst0.G_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.G_ext[2], ite((yuv_to_rgb_inst0.G_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.G_ext[10:3]+8'd1)), yuv_to_rgb_inst0.G_ext[10:3])))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : {yuv_to_rgb_inst0.R_out,yuv_to_rgb_inst0.G_out,yuv_to_rgb_inst0.B_out}      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : {yuv_to_rgb_inst0.R_out,yuv_to_rgb_inst0.G_out,yuv_to_rgb_inst0.B_out}      (CodeGeneration.cpp : 113)
-LOG(INFO) : enable: !busy      (CodeGeneration.cpp : 83)
-LOG(INFO) : pos_seq pre : ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_U_next)      (CodeGeneration.cpp : 102)
-LOG(INFO) : pos_seq post ite(in_en, ite(reset, 8'b0, yuv_to_rgb_inst0.reg_U_next), 8'b0)      (CodeGeneration.cpp : 103)
-LOG(INFO) : pos_seq pre : ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_V_next)      (CodeGeneration.cpp : 102)
-LOG(INFO) : pos_seq post ite(in_en, ite(reset, 8'b0, yuv_to_rgb_inst0.reg_V_next), 8'b0)      (CodeGeneration.cpp : 103)
-LOG(INFO) : pos_seq pre : ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_Y1_next)      (CodeGeneration.cpp : 102)
-LOG(INFO) : pos_seq post ite(in_en, ite(reset, 8'b0, yuv_to_rgb_inst0.reg_Y1_next), 8'b0)      (CodeGeneration.cpp : 103)
-LOG(INFO) : pos_seq pre : ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_Y2_next)      (CodeGeneration.cpp : 102)
-LOG(INFO) : pos_seq post ite(in_en, ite(reset, 8'b0, yuv_to_rgb_inst0.reg_Y2_next), 8'b0)      (CodeGeneration.cpp : 103)
-LOG(INFO) : pos_seq pre : ite((reset||!in_en), yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.state_next)      (CodeGeneration.cpp : 102)
-LOG(INFO) : pos_seq post ite(in_en, ite(reset, yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.state_next), yuv_to_rgb_inst0.S_U)      (CodeGeneration.cpp : 103)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_to_rgb_inst0.S_Y1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_to_rgb_inst0.S_V, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_to_rgb_inst0.S_BUSY1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), yuv_to_rgb_inst0.S_Y2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_to_rgb_inst0.S_BUSY2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2), yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.state))))))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_to_rgb_inst0.S_Y1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_to_rgb_inst0.S_V, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_to_rgb_inst0.S_BUSY1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), yuv_to_rgb_inst0.S_Y2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_to_rgb_inst0.S_BUSY2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2), yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.state))))))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : 8'b0      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : 8'b0      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_in, yuv_to_rgb_inst0.reg_U)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_in, yuv_to_rgb_inst0.reg_U)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_in, yuv_to_rgb_inst0.reg_Y1)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_in, yuv_to_rgb_inst0.reg_Y1)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_in, yuv_to_rgb_inst0.reg_V)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_in, yuv_to_rgb_inst0.reg_V)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_in, yuv_to_rgb_inst0.reg_Y2)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_in, yuv_to_rgb_inst0.reg_Y2)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), {8'b0,yuv_to_rgb_inst0.reg_Y1}, {8'b0,yuv_to_rgb_inst0.reg_Y2})      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), {8'b0,yuv_to_rgb_inst0.reg_Y1}, {8'b0,yuv_to_rgb_inst0.reg_Y2})      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : {{8{yuv_to_rgb_inst0.reg_U[7]}},yuv_to_rgb_inst0.reg_U}      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : {{8{yuv_to_rgb_inst0.reg_U[7]}},yuv_to_rgb_inst0.reg_U}      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : {{8{yuv_to_rgb_inst0.reg_V[7]}},yuv_to_rgb_inst0.reg_V}      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : {{8{yuv_to_rgb_inst0.reg_V[7]}},yuv_to_rgb_inst0.reg_V}      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite(!op_mode, yuv_to_rgb_busy, 1'b1)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite(op_mode, 1'b1, yuv_to_rgb_busy)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite(!op_mode, yuv_to_rgb_out_valid, 1'b0)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite(op_mode, 1'b0, yuv_to_rgb_out_valid)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b10000*yuv_to_rgb_inst0.U_ext))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b10000*yuv_to_rgb_inst0.U_ext))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b1101*yuv_to_rgb_inst0.V_ext))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b1101*yuv_to_rgb_inst0.V_ext))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : (((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'hfffe*yuv_to_rgb_inst0.U_ext))+(16'hfffa*yuv_to_rgb_inst0.V_ext))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : (((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'hfffe*yuv_to_rgb_inst0.U_ext))+(16'hfffa*yuv_to_rgb_inst0.V_ext))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite(yuv_to_rgb_inst0.B_ext[15], 8'b0, ite((yuv_to_rgb_inst0.B_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.B_ext[2], ite((yuv_to_rgb_inst0.B_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.B_ext[10:3]+8'd1)), yuv_to_rgb_inst0.B_ext[10:3])))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite(yuv_to_rgb_inst0.B_ext[15], 8'b0, ite((yuv_to_rgb_inst0.B_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.B_ext[2], ite((yuv_to_rgb_inst0.B_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.B_ext[10:3]+8'd1)), yuv_to_rgb_inst0.B_ext[10:3])))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite(yuv_to_rgb_inst0.R_ext[15], 8'b0, ite((yuv_to_rgb_inst0.R_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.R_ext[2], ite((yuv_to_rgb_inst0.R_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.R_ext[10:3]+8'd1)), yuv_to_rgb_inst0.R_ext[10:3])))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite(yuv_to_rgb_inst0.R_ext[15], 8'b0, ite((yuv_to_rgb_inst0.R_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.R_ext[2], ite((yuv_to_rgb_inst0.R_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.R_ext[10:3]+8'd1)), yuv_to_rgb_inst0.R_ext[10:3])))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite(yuv_to_rgb_inst0.G_ext[15], 8'b0, ite((yuv_to_rgb_inst0.G_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.G_ext[2], ite((yuv_to_rgb_inst0.G_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.G_ext[10:3]+8'd1)), yuv_to_rgb_inst0.G_ext[10:3])))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite(yuv_to_rgb_inst0.G_ext[15], 8'b0, ite((yuv_to_rgb_inst0.G_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.G_ext[2], ite((yuv_to_rgb_inst0.G_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.G_ext[10:3]+8'd1)), yuv_to_rgb_inst0.G_ext[10:3])))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : {yuv_to_rgb_inst0.R_out,yuv_to_rgb_inst0.G_out,yuv_to_rgb_inst0.B_out}      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : {yuv_to_rgb_inst0.R_out,yuv_to_rgb_inst0.G_out,yuv_to_rgb_inst0.B_out}      (CodeGeneration.cpp : 113)
-LOG(INFO) : enable: busy      (CodeGeneration.cpp : 83)
-LOG(INFO) : pos_seq pre : ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_U_next)      (CodeGeneration.cpp : 102)
-LOG(INFO) : pos_seq post ite(in_en, ite(reset, 8'b0, yuv_to_rgb_inst0.reg_U_next), 8'b0)      (CodeGeneration.cpp : 103)
-LOG(INFO) : pos_seq pre : ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_V_next)      (CodeGeneration.cpp : 102)
-LOG(INFO) : pos_seq post ite(in_en, ite(reset, 8'b0, yuv_to_rgb_inst0.reg_V_next), 8'b0)      (CodeGeneration.cpp : 103)
-LOG(INFO) : pos_seq pre : ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_Y1_next)      (CodeGeneration.cpp : 102)
-LOG(INFO) : pos_seq post ite(in_en, ite(reset, 8'b0, yuv_to_rgb_inst0.reg_Y1_next), 8'b0)      (CodeGeneration.cpp : 103)
-LOG(INFO) : pos_seq pre : ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_Y2_next)      (CodeGeneration.cpp : 102)
-LOG(INFO) : pos_seq post ite(in_en, ite(reset, 8'b0, yuv_to_rgb_inst0.reg_Y2_next), 8'b0)      (CodeGeneration.cpp : 103)
-LOG(INFO) : pos_seq pre : ite((reset||!in_en), yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.state_next)      (CodeGeneration.cpp : 102)
-LOG(INFO) : pos_seq post ite(in_en, ite(reset, yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.state_next), yuv_to_rgb_inst0.S_U)      (CodeGeneration.cpp : 103)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_to_rgb_inst0.S_Y1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_to_rgb_inst0.S_V, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_to_rgb_inst0.S_BUSY1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), yuv_to_rgb_inst0.S_Y2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_to_rgb_inst0.S_BUSY2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2), yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.state))))))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_to_rgb_inst0.S_Y1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_to_rgb_inst0.S_V, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_to_rgb_inst0.S_BUSY1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), yuv_to_rgb_inst0.S_Y2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_to_rgb_inst0.S_BUSY2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2), yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.state))))))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : 8'b0      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : 8'b0      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_in, yuv_to_rgb_inst0.reg_U)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_in, yuv_to_rgb_inst0.reg_U)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_in, yuv_to_rgb_inst0.reg_Y1)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_in, yuv_to_rgb_inst0.reg_Y1)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_in, yuv_to_rgb_inst0.reg_V)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_in, yuv_to_rgb_inst0.reg_V)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_in, yuv_to_rgb_inst0.reg_Y2)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_in, yuv_to_rgb_inst0.reg_Y2)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), {8'b0,yuv_to_rgb_inst0.reg_Y1}, {8'b0,yuv_to_rgb_inst0.reg_Y2})      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), {8'b0,yuv_to_rgb_inst0.reg_Y1}, {8'b0,yuv_to_rgb_inst0.reg_Y2})      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : {{8{yuv_to_rgb_inst0.reg_U[7]}},yuv_to_rgb_inst0.reg_U}      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : {{8{yuv_to_rgb_inst0.reg_U[7]}},yuv_to_rgb_inst0.reg_U}      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : {{8{yuv_to_rgb_inst0.reg_V[7]}},yuv_to_rgb_inst0.reg_V}      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : {{8{yuv_to_rgb_inst0.reg_V[7]}},yuv_to_rgb_inst0.reg_V}      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite(!op_mode, yuv_to_rgb_busy, 1'b1)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite(op_mode, 1'b1, yuv_to_rgb_busy)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite(!op_mode, yuv_to_rgb_out_valid, 1'b0)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite(op_mode, 1'b0, yuv_to_rgb_out_valid)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b10000*yuv_to_rgb_inst0.U_ext))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b10000*yuv_to_rgb_inst0.U_ext))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b1101*yuv_to_rgb_inst0.V_ext))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b1101*yuv_to_rgb_inst0.V_ext))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : (((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'hfffe*yuv_to_rgb_inst0.U_ext))+(16'hfffa*yuv_to_rgb_inst0.V_ext))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : (((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'hfffe*yuv_to_rgb_inst0.U_ext))+(16'hfffa*yuv_to_rgb_inst0.V_ext))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite(yuv_to_rgb_inst0.B_ext[15], 8'b0, ite((yuv_to_rgb_inst0.B_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.B_ext[2], ite((yuv_to_rgb_inst0.B_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.B_ext[10:3]+8'd1)), yuv_to_rgb_inst0.B_ext[10:3])))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite(yuv_to_rgb_inst0.B_ext[15], 8'b0, ite((yuv_to_rgb_inst0.B_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.B_ext[2], ite((yuv_to_rgb_inst0.B_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.B_ext[10:3]+8'd1)), yuv_to_rgb_inst0.B_ext[10:3])))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite(yuv_to_rgb_inst0.R_ext[15], 8'b0, ite((yuv_to_rgb_inst0.R_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.R_ext[2], ite((yuv_to_rgb_inst0.R_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.R_ext[10:3]+8'd1)), yuv_to_rgb_inst0.R_ext[10:3])))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite(yuv_to_rgb_inst0.R_ext[15], 8'b0, ite((yuv_to_rgb_inst0.R_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.R_ext[2], ite((yuv_to_rgb_inst0.R_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.R_ext[10:3]+8'd1)), yuv_to_rgb_inst0.R_ext[10:3])))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite(yuv_to_rgb_inst0.G_ext[15], 8'b0, ite((yuv_to_rgb_inst0.G_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.G_ext[2], ite((yuv_to_rgb_inst0.G_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.G_ext[10:3]+8'd1)), yuv_to_rgb_inst0.G_ext[10:3])))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite(yuv_to_rgb_inst0.G_ext[15], 8'b0, ite((yuv_to_rgb_inst0.G_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.G_ext[2], ite((yuv_to_rgb_inst0.G_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.G_ext[10:3]+8'd1)), yuv_to_rgb_inst0.G_ext[10:3])))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : {yuv_to_rgb_inst0.R_out,yuv_to_rgb_inst0.G_out,yuv_to_rgb_inst0.B_out}      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : {yuv_to_rgb_inst0.R_out,yuv_to_rgb_inst0.G_out,yuv_to_rgb_inst0.B_out}      (CodeGeneration.cpp : 113)
-LOG(INFO) : enable: false      (CodeGeneration.cpp : 83)
-LOG(INFO) : pos_seq pre : ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_U_next)      (CodeGeneration.cpp : 102)
-LOG(INFO) : pos_seq post ite(in_en, ite(reset, 8'b0, yuv_to_rgb_inst0.reg_U_next), 8'b0)      (CodeGeneration.cpp : 103)
-LOG(INFO) : pos_seq pre : ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_V_next)      (CodeGeneration.cpp : 102)
-LOG(INFO) : pos_seq post ite(in_en, ite(reset, 8'b0, yuv_to_rgb_inst0.reg_V_next), 8'b0)      (CodeGeneration.cpp : 103)
-LOG(INFO) : pos_seq pre : ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_Y1_next)      (CodeGeneration.cpp : 102)
-LOG(INFO) : pos_seq post ite(in_en, ite(reset, 8'b0, yuv_to_rgb_inst0.reg_Y1_next), 8'b0)      (CodeGeneration.cpp : 103)
-LOG(INFO) : pos_seq pre : ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_Y2_next)      (CodeGeneration.cpp : 102)
-LOG(INFO) : pos_seq post ite(in_en, ite(reset, 8'b0, yuv_to_rgb_inst0.reg_Y2_next), 8'b0)      (CodeGeneration.cpp : 103)
-LOG(INFO) : pos_seq pre : ite((reset||!in_en), yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.state_next)      (CodeGeneration.cpp : 102)
-LOG(INFO) : pos_seq post ite(in_en, ite(reset, yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.state_next), yuv_to_rgb_inst0.S_U)      (CodeGeneration.cpp : 103)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_to_rgb_inst0.S_Y1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_to_rgb_inst0.S_V, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_to_rgb_inst0.S_BUSY1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), yuv_to_rgb_inst0.S_Y2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_to_rgb_inst0.S_BUSY2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2), yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.state))))))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_to_rgb_inst0.S_Y1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_to_rgb_inst0.S_V, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_to_rgb_inst0.S_BUSY1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), yuv_to_rgb_inst0.S_Y2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_to_rgb_inst0.S_BUSY2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2), yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.state))))))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : 8'b0      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : 8'b0      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_in, yuv_to_rgb_inst0.reg_U)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_in, yuv_to_rgb_inst0.reg_U)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_in, yuv_to_rgb_inst0.reg_Y1)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_in, yuv_to_rgb_inst0.reg_Y1)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_in, yuv_to_rgb_inst0.reg_V)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_in, yuv_to_rgb_inst0.reg_V)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_in, yuv_to_rgb_inst0.reg_Y2)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_in, yuv_to_rgb_inst0.reg_Y2)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), {8'b0,yuv_to_rgb_inst0.reg_Y1}, {8'b0,yuv_to_rgb_inst0.reg_Y2})      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), {8'b0,yuv_to_rgb_inst0.reg_Y1}, {8'b0,yuv_to_rgb_inst0.reg_Y2})      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : {{8{yuv_to_rgb_inst0.reg_U[7]}},yuv_to_rgb_inst0.reg_U}      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : {{8{yuv_to_rgb_inst0.reg_U[7]}},yuv_to_rgb_inst0.reg_U}      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : {{8{yuv_to_rgb_inst0.reg_V[7]}},yuv_to_rgb_inst0.reg_V}      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : {{8{yuv_to_rgb_inst0.reg_V[7]}},yuv_to_rgb_inst0.reg_V}      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite(!op_mode, yuv_to_rgb_busy, 1'b1)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite(op_mode, 1'b1, yuv_to_rgb_busy)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite(!op_mode, yuv_to_rgb_out_valid, 1'b0)      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite(op_mode, 1'b0, yuv_to_rgb_out_valid)      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b10000*yuv_to_rgb_inst0.U_ext))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b10000*yuv_to_rgb_inst0.U_ext))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b1101*yuv_to_rgb_inst0.V_ext))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b1101*yuv_to_rgb_inst0.V_ext))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : (((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'hfffe*yuv_to_rgb_inst0.U_ext))+(16'hfffa*yuv_to_rgb_inst0.V_ext))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : (((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'hfffe*yuv_to_rgb_inst0.U_ext))+(16'hfffa*yuv_to_rgb_inst0.V_ext))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite(yuv_to_rgb_inst0.B_ext[15], 8'b0, ite((yuv_to_rgb_inst0.B_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.B_ext[2], ite((yuv_to_rgb_inst0.B_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.B_ext[10:3]+8'd1)), yuv_to_rgb_inst0.B_ext[10:3])))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite(yuv_to_rgb_inst0.B_ext[15], 8'b0, ite((yuv_to_rgb_inst0.B_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.B_ext[2], ite((yuv_to_rgb_inst0.B_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.B_ext[10:3]+8'd1)), yuv_to_rgb_inst0.B_ext[10:3])))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite(yuv_to_rgb_inst0.R_ext[15], 8'b0, ite((yuv_to_rgb_inst0.R_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.R_ext[2], ite((yuv_to_rgb_inst0.R_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.R_ext[10:3]+8'd1)), yuv_to_rgb_inst0.R_ext[10:3])))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite(yuv_to_rgb_inst0.R_ext[15], 8'b0, ite((yuv_to_rgb_inst0.R_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.R_ext[2], ite((yuv_to_rgb_inst0.R_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.R_ext[10:3]+8'd1)), yuv_to_rgb_inst0.R_ext[10:3])))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : ite(yuv_to_rgb_inst0.G_ext[15], 8'b0, ite((yuv_to_rgb_inst0.G_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.G_ext[2], ite((yuv_to_rgb_inst0.G_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.G_ext[10:3]+8'd1)), yuv_to_rgb_inst0.G_ext[10:3])))      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : ite(yuv_to_rgb_inst0.G_ext[15], 8'b0, ite((yuv_to_rgb_inst0.G_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.G_ext[2], ite((yuv_to_rgb_inst0.G_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.G_ext[10:3]+8'd1)), yuv_to_rgb_inst0.G_ext[10:3])))      (CodeGeneration.cpp : 113)
-LOG(INFO) : comb pre  : {yuv_to_rgb_inst0.R_out,yuv_to_rgb_inst0.G_out,yuv_to_rgb_inst0.B_out}      (CodeGeneration.cpp : 112)
-LOG(INFO) : comb post : {yuv_to_rgb_inst0.R_out,yuv_to_rgb_inst0.G_out,yuv_to_rgb_inst0.B_out}      (CodeGeneration.cpp : 113)
+      (CodeGeneration.cpp : 194)
 #ifndef CTE_H
 #define CTE_H
 
@@ -982,195 +448,958 @@ S9:
             LOG_ERROR("No Such branch");
             break;
 }
-// Function calls
-void CTE::func_number_0() {
-    if ((yuv_to_rgb_inst0.state == yuv_to_rgb_inst0.S_U)) {
+// Simplified function calls
+void func_exp_0() {
+// Sequential part (negedge)
+// Combinational part
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U)) {
 yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_Y1;
 } else
- {if ((yuv_to_rgb_inst0.state == yuv_to_rgb_inst0.S_Y1)) {
+ {if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1)) {
 yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_V;
 } else
- {if ((yuv_to_rgb_inst0.state == yuv_to_rgb_inst0.S_V)) {
+ {if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V)) {
 yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_BUSY1;
 } else
- {if ((yuv_to_rgb_inst0.state == yuv_to_rgb_inst0.S_BUSY1)) {
+ {if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)) {
 yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_Y2;
 } else
- {if ((yuv_to_rgb_inst0.state == yuv_to_rgb_inst0.S_Y2)) {
+ {if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2)) {
 yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_BUSY2;
 } else
- {if ((yuv_to_rgb_inst0.state == yuv_to_rgb_inst0.S_BUSY2)) {
+ {if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2)) {
 yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_U;
 } else
  {yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.state;}}}}}}
-}
-
-void CTE::func_number_1() {
-    if ((reset || (!in_en))) {
-yuv_to_rgb_inst0.reg_U = sc_uint<8>(0);
-} else
- {yuv_to_rgb_inst0.reg_U = yuv_to_rgb_inst0.reg_U_next;}
-}
-
-void CTE::func_number_2() {
-    if ((reset || (!in_en))) {
-yuv_to_rgb_inst0.reg_V = sc_uint<8>(0);
-} else
- {yuv_to_rgb_inst0.reg_V = yuv_to_rgb_inst0.reg_V_next;}
-}
-
-void CTE::func_number_3() {
-    if ((reset || (!in_en))) {
-yuv_to_rgb_inst0.reg_Y1 = sc_uint<8>(0);
-} else
- {yuv_to_rgb_inst0.reg_Y1 = yuv_to_rgb_inst0.reg_Y1_next;}
-}
-
-void CTE::func_number_4() {
-    if ((reset || (!in_en))) {
-yuv_to_rgb_inst0.reg_Y2 = sc_uint<8>(0);
-} else
- {yuv_to_rgb_inst0.reg_Y2 = yuv_to_rgb_inst0.reg_Y2_next;}
-}
-
-void CTE::func_number_5() {
-    if ((reset || (!in_en))) {
-yuv_to_rgb_inst0.state = yuv_to_rgb_inst0.S_U;
-} else
- {yuv_to_rgb_inst0.state = yuv_to_rgb_inst0.state_next;}
-}
-
-void CTE::func_number_6() {
-    if ((!op_mode)) {
-busy = yuv_to_rgb_busy;
-} else
- {busy = 1;}
-}
-
-void CTE::func_number_7() {
-    if ((!op_mode)) {
-out_valid = yuv_to_rgb_out_valid;
-} else
- {out_valid = 0;}
-}
-
-void CTE::func_number_8() {
-    yuv_out = sc_uint<8>(0);
-}
-
-void CTE::func_number_9() {
-    yuv_to_rgb_busy = ((yuv_to_rgb_inst0.state == yuv_to_rgb_inst0.S_BUSY1) || (yuv_to_rgb_inst0.state == yuv_to_rgb_inst0.S_BUSY2));
-}
-
-void CTE::func_number_10() {
-    yuv_to_rgb_out_valid = ((yuv_to_rgb_inst0.state == yuv_to_rgb_inst0.S_BUSY1) || (yuv_to_rgb_inst0.state == yuv_to_rgb_inst0.S_BUSY2));
-}
-
-void CTE::func_number_11() {
-    if ((yuv_to_rgb_inst0.state == yuv_to_rgb_inst0.S_U)) {
+yuv_to_rgb_busy = ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2));
+yuv_to_rgb_out_valid = ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2));
+yuv_out = 8'b0;
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U)) {
 yuv_to_rgb_inst0.reg_U_next = yuv_in;
 } else
  {yuv_to_rgb_inst0.reg_U_next = yuv_to_rgb_inst0.reg_U;}
-}
-
-void CTE::func_number_12() {
-    if ((yuv_to_rgb_inst0.state == yuv_to_rgb_inst0.S_Y1)) {
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1)) {
 yuv_to_rgb_inst0.reg_Y1_next = yuv_in;
 } else
  {yuv_to_rgb_inst0.reg_Y1_next = yuv_to_rgb_inst0.reg_Y1;}
-}
-
-void CTE::func_number_13() {
-    if ((yuv_to_rgb_inst0.state == yuv_to_rgb_inst0.S_V)) {
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V)) {
 yuv_to_rgb_inst0.reg_V_next = yuv_in;
 } else
  {yuv_to_rgb_inst0.reg_V_next = yuv_to_rgb_inst0.reg_V;}
-}
-
-void CTE::func_number_14() {
-    if ((yuv_to_rgb_inst0.state == yuv_to_rgb_inst0.S_Y2)) {
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2)) {
 yuv_to_rgb_inst0.reg_Y2_next = yuv_in;
 } else
  {yuv_to_rgb_inst0.reg_Y2_next = yuv_to_rgb_inst0.reg_Y2;}
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)) {
+yuv_to_rgb_inst0.Y_ext = {8'b0,yuv_to_rgb_inst0.reg_Y1};
+} else
+ {yuv_to_rgb_inst0.Y_ext = {8'b0,yuv_to_rgb_inst0.reg_Y2};}
+yuv_to_rgb_inst0.U_ext = {{8{yuv_to_rgb_inst0.reg_U[7]}},yuv_to_rgb_inst0.reg_U};
+yuv_to_rgb_inst0.V_ext = {{8{yuv_to_rgb_inst0.reg_V[7]}},yuv_to_rgb_inst0.reg_V};
+if (op_mode) {
+busy = 1'b1;
+} else
+ {busy = yuv_to_rgb_busy;}
+if (op_mode) {
+out_valid = 1'b0;
+} else
+ {out_valid = yuv_to_rgb_out_valid;}
+yuv_to_rgb_inst0.B_ext = ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b10000*yuv_to_rgb_inst0.U_ext));
+yuv_to_rgb_inst0.R_ext = ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b1101*yuv_to_rgb_inst0.V_ext));
+yuv_to_rgb_inst0.G_ext = (((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'hfffe*yuv_to_rgb_inst0.U_ext))+(16'hfffa*yuv_to_rgb_inst0.V_ext));
+if (yuv_to_rgb_inst0.B_ext[15]) {
+yuv_to_rgb_inst0.B_out = 8'b0;
+} else
+ {if ((yuv_to_rgb_inst0.B_ext[14:11]!=4'b0)) {
+yuv_to_rgb_inst0.B_out = 8'd255;
+} else
+ {if (yuv_to_rgb_inst0.B_ext[2]) {
+if ((yuv_to_rgb_inst0.B_ext[10:3]=8'd255)) {
+yuv_to_rgb_inst0.B_out = 8'd255;
+} else
+ {yuv_to_rgb_inst0.B_out = (yuv_to_rgb_inst0.B_ext[10:3]+8'd1);}
+} else
+ {yuv_to_rgb_inst0.B_out = yuv_to_rgb_inst0.B_ext[10:3];}}}
+if (yuv_to_rgb_inst0.R_ext[15]) {
+yuv_to_rgb_inst0.R_out = 8'b0;
+} else
+ {if ((yuv_to_rgb_inst0.R_ext[14:11]!=4'b0)) {
+yuv_to_rgb_inst0.R_out = 8'd255;
+} else
+ {if (yuv_to_rgb_inst0.R_ext[2]) {
+if ((yuv_to_rgb_inst0.R_ext[10:3]=8'd255)) {
+yuv_to_rgb_inst0.R_out = 8'd255;
+} else
+ {yuv_to_rgb_inst0.R_out = (yuv_to_rgb_inst0.R_ext[10:3]+8'd1);}
+} else
+ {yuv_to_rgb_inst0.R_out = yuv_to_rgb_inst0.R_ext[10:3];}}}
+if (yuv_to_rgb_inst0.G_ext[15]) {
+yuv_to_rgb_inst0.G_out = 8'b0;
+} else
+ {if ((yuv_to_rgb_inst0.G_ext[14:11]!=4'b0)) {
+yuv_to_rgb_inst0.G_out = 8'd255;
+} else
+ {if (yuv_to_rgb_inst0.G_ext[2]) {
+if ((yuv_to_rgb_inst0.G_ext[10:3]=8'd255)) {
+yuv_to_rgb_inst0.G_out = 8'd255;
+} else
+ {yuv_to_rgb_inst0.G_out = (yuv_to_rgb_inst0.G_ext[10:3]+8'd1);}
+} else
+ {yuv_to_rgb_inst0.G_out = yuv_to_rgb_inst0.G_ext[10:3];}}}
+rgb_out = {yuv_to_rgb_inst0.R_out,yuv_to_rgb_inst0.G_out,yuv_to_rgb_inst0.B_out};
+// Sequential part (posedge)
+yuv_to_rgb_inst0.reg_U = 8'b0;
+yuv_to_rgb_inst0.reg_V = 8'b0;
+yuv_to_rgb_inst0.reg_Y1 = 8'b0;
+yuv_to_rgb_inst0.reg_Y2 = 8'b0;
+yuv_to_rgb_inst0.state = yuv_to_rgb_inst0.S_U;
 }
 
-void CTE::func_number_15() {
-    yuv_to_rgb_inst0.U_ext = (((yuv_to_rgb_inst0.reg_U[sc_uint<32>(7)]), (yuv_to_rgb_inst0.reg_U[sc_uint<32>(7)]), (yuv_to_rgb_inst0.reg_U[sc_uint<32>(7)]), (yuv_to_rgb_inst0.reg_U[sc_uint<32>(7)]), (yuv_to_rgb_inst0.reg_U[sc_uint<32>(7)]), (yuv_to_rgb_inst0.reg_U[sc_uint<32>(7)]), (yuv_to_rgb_inst0.reg_U[sc_uint<32>(7)]), (yuv_to_rgb_inst0.reg_U[sc_uint<32>(7)])), yuv_to_rgb_inst0.reg_U);
+void func_exp_1() {
+// Sequential part (negedge)
+// Combinational part
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U)) {
+yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_Y1;
+} else
+ {if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1)) {
+yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_V;
+} else
+ {if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V)) {
+yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_BUSY1;
+} else
+ {if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)) {
+yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_Y2;
+} else
+ {if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2)) {
+yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_BUSY2;
+} else
+ {if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2)) {
+yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_U;
+} else
+ {yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.state;}}}}}}
+yuv_to_rgb_busy = ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2));
+yuv_to_rgb_out_valid = ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2));
+yuv_out = 8'b0;
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U)) {
+yuv_to_rgb_inst0.reg_U_next = yuv_in;
+} else
+ {yuv_to_rgb_inst0.reg_U_next = yuv_to_rgb_inst0.reg_U;}
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1)) {
+yuv_to_rgb_inst0.reg_Y1_next = yuv_in;
+} else
+ {yuv_to_rgb_inst0.reg_Y1_next = yuv_to_rgb_inst0.reg_Y1;}
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V)) {
+yuv_to_rgb_inst0.reg_V_next = yuv_in;
+} else
+ {yuv_to_rgb_inst0.reg_V_next = yuv_to_rgb_inst0.reg_V;}
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2)) {
+yuv_to_rgb_inst0.reg_Y2_next = yuv_in;
+} else
+ {yuv_to_rgb_inst0.reg_Y2_next = yuv_to_rgb_inst0.reg_Y2;}
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)) {
+yuv_to_rgb_inst0.Y_ext = {8'b0,yuv_to_rgb_inst0.reg_Y1};
+} else
+ {yuv_to_rgb_inst0.Y_ext = {8'b0,yuv_to_rgb_inst0.reg_Y2};}
+yuv_to_rgb_inst0.U_ext = {{8{yuv_to_rgb_inst0.reg_U[7]}},yuv_to_rgb_inst0.reg_U};
+yuv_to_rgb_inst0.V_ext = {{8{yuv_to_rgb_inst0.reg_V[7]}},yuv_to_rgb_inst0.reg_V};
+if (op_mode) {
+busy = 1'b1;
+} else
+ {busy = yuv_to_rgb_busy;}
+if (op_mode) {
+out_valid = 1'b0;
+} else
+ {out_valid = yuv_to_rgb_out_valid;}
+yuv_to_rgb_inst0.B_ext = ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b10000*yuv_to_rgb_inst0.U_ext));
+yuv_to_rgb_inst0.R_ext = ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b1101*yuv_to_rgb_inst0.V_ext));
+yuv_to_rgb_inst0.G_ext = (((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'hfffe*yuv_to_rgb_inst0.U_ext))+(16'hfffa*yuv_to_rgb_inst0.V_ext));
+if (yuv_to_rgb_inst0.B_ext[15]) {
+yuv_to_rgb_inst0.B_out = 8'b0;
+} else
+ {if ((yuv_to_rgb_inst0.B_ext[14:11]!=4'b0)) {
+yuv_to_rgb_inst0.B_out = 8'd255;
+} else
+ {if (yuv_to_rgb_inst0.B_ext[2]) {
+if ((yuv_to_rgb_inst0.B_ext[10:3]=8'd255)) {
+yuv_to_rgb_inst0.B_out = 8'd255;
+} else
+ {yuv_to_rgb_inst0.B_out = (yuv_to_rgb_inst0.B_ext[10:3]+8'd1);}
+} else
+ {yuv_to_rgb_inst0.B_out = yuv_to_rgb_inst0.B_ext[10:3];}}}
+if (yuv_to_rgb_inst0.R_ext[15]) {
+yuv_to_rgb_inst0.R_out = 8'b0;
+} else
+ {if ((yuv_to_rgb_inst0.R_ext[14:11]!=4'b0)) {
+yuv_to_rgb_inst0.R_out = 8'd255;
+} else
+ {if (yuv_to_rgb_inst0.R_ext[2]) {
+if ((yuv_to_rgb_inst0.R_ext[10:3]=8'd255)) {
+yuv_to_rgb_inst0.R_out = 8'd255;
+} else
+ {yuv_to_rgb_inst0.R_out = (yuv_to_rgb_inst0.R_ext[10:3]+8'd1);}
+} else
+ {yuv_to_rgb_inst0.R_out = yuv_to_rgb_inst0.R_ext[10:3];}}}
+if (yuv_to_rgb_inst0.G_ext[15]) {
+yuv_to_rgb_inst0.G_out = 8'b0;
+} else
+ {if ((yuv_to_rgb_inst0.G_ext[14:11]!=4'b0)) {
+yuv_to_rgb_inst0.G_out = 8'd255;
+} else
+ {if (yuv_to_rgb_inst0.G_ext[2]) {
+if ((yuv_to_rgb_inst0.G_ext[10:3]=8'd255)) {
+yuv_to_rgb_inst0.G_out = 8'd255;
+} else
+ {yuv_to_rgb_inst0.G_out = (yuv_to_rgb_inst0.G_ext[10:3]+8'd1);}
+} else
+ {yuv_to_rgb_inst0.G_out = yuv_to_rgb_inst0.G_ext[10:3];}}}
+rgb_out = {yuv_to_rgb_inst0.R_out,yuv_to_rgb_inst0.G_out,yuv_to_rgb_inst0.B_out};
+// Sequential part (posedge)
+if (in_en) {
+yuv_to_rgb_inst0.reg_U = yuv_to_rgb_inst0.reg_U_next;
+} else
+ {yuv_to_rgb_inst0.reg_U = 8'b0;}
+if (in_en) {
+yuv_to_rgb_inst0.reg_V = yuv_to_rgb_inst0.reg_V_next;
+} else
+ {yuv_to_rgb_inst0.reg_V = 8'b0;}
+if (in_en) {
+yuv_to_rgb_inst0.reg_Y1 = yuv_to_rgb_inst0.reg_Y1_next;
+} else
+ {yuv_to_rgb_inst0.reg_Y1 = 8'b0;}
+if (in_en) {
+yuv_to_rgb_inst0.reg_Y2 = yuv_to_rgb_inst0.reg_Y2_next;
+} else
+ {yuv_to_rgb_inst0.reg_Y2 = 8'b0;}
+if (in_en) {
+yuv_to_rgb_inst0.state = yuv_to_rgb_inst0.state_next;
+} else
+ {yuv_to_rgb_inst0.state = yuv_to_rgb_inst0.S_U;}
 }
 
-void CTE::func_number_16() {
-    if ((yuv_to_rgb_inst0.state == yuv_to_rgb_inst0.S_BUSY1)) {
-yuv_to_rgb_inst0.Y_ext = (sc_uint<8>(0), yuv_to_rgb_inst0.reg_Y1);
+void func_exp_2() {
+// Sequential part (negedge)
+// Combinational part
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U)) {
+yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_Y1;
 } else
- {yuv_to_rgb_inst0.Y_ext = (sc_uint<8>(0), yuv_to_rgb_inst0.reg_Y2);}
+ {if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1)) {
+yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_V;
+} else
+ {if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V)) {
+yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_BUSY1;
+} else
+ {if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)) {
+yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_Y2;
+} else
+ {if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2)) {
+yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_BUSY2;
+} else
+ {if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2)) {
+yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_U;
+} else
+ {yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.state;}}}}}}
+yuv_to_rgb_busy = ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2));
+yuv_to_rgb_out_valid = ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2));
+yuv_out = 8'b0;
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U)) {
+yuv_to_rgb_inst0.reg_U_next = yuv_in;
+} else
+ {yuv_to_rgb_inst0.reg_U_next = yuv_to_rgb_inst0.reg_U;}
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1)) {
+yuv_to_rgb_inst0.reg_Y1_next = yuv_in;
+} else
+ {yuv_to_rgb_inst0.reg_Y1_next = yuv_to_rgb_inst0.reg_Y1;}
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V)) {
+yuv_to_rgb_inst0.reg_V_next = yuv_in;
+} else
+ {yuv_to_rgb_inst0.reg_V_next = yuv_to_rgb_inst0.reg_V;}
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2)) {
+yuv_to_rgb_inst0.reg_Y2_next = yuv_in;
+} else
+ {yuv_to_rgb_inst0.reg_Y2_next = yuv_to_rgb_inst0.reg_Y2;}
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)) {
+yuv_to_rgb_inst0.Y_ext = {8'b0,yuv_to_rgb_inst0.reg_Y1};
+} else
+ {yuv_to_rgb_inst0.Y_ext = {8'b0,yuv_to_rgb_inst0.reg_Y2};}
+yuv_to_rgb_inst0.U_ext = {{8{yuv_to_rgb_inst0.reg_U[7]}},yuv_to_rgb_inst0.reg_U};
+yuv_to_rgb_inst0.V_ext = {{8{yuv_to_rgb_inst0.reg_V[7]}},yuv_to_rgb_inst0.reg_V};
+if (op_mode) {
+busy = 1'b1;
+} else
+ {busy = yuv_to_rgb_busy;}
+if (op_mode) {
+out_valid = 1'b0;
+} else
+ {out_valid = yuv_to_rgb_out_valid;}
+yuv_to_rgb_inst0.B_ext = ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b10000*yuv_to_rgb_inst0.U_ext));
+yuv_to_rgb_inst0.R_ext = ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b1101*yuv_to_rgb_inst0.V_ext));
+yuv_to_rgb_inst0.G_ext = (((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'hfffe*yuv_to_rgb_inst0.U_ext))+(16'hfffa*yuv_to_rgb_inst0.V_ext));
+if (yuv_to_rgb_inst0.B_ext[15]) {
+yuv_to_rgb_inst0.B_out = 8'b0;
+} else
+ {if ((yuv_to_rgb_inst0.B_ext[14:11]!=4'b0)) {
+yuv_to_rgb_inst0.B_out = 8'd255;
+} else
+ {if (yuv_to_rgb_inst0.B_ext[2]) {
+if ((yuv_to_rgb_inst0.B_ext[10:3]=8'd255)) {
+yuv_to_rgb_inst0.B_out = 8'd255;
+} else
+ {yuv_to_rgb_inst0.B_out = (yuv_to_rgb_inst0.B_ext[10:3]+8'd1);}
+} else
+ {yuv_to_rgb_inst0.B_out = yuv_to_rgb_inst0.B_ext[10:3];}}}
+if (yuv_to_rgb_inst0.R_ext[15]) {
+yuv_to_rgb_inst0.R_out = 8'b0;
+} else
+ {if ((yuv_to_rgb_inst0.R_ext[14:11]!=4'b0)) {
+yuv_to_rgb_inst0.R_out = 8'd255;
+} else
+ {if (yuv_to_rgb_inst0.R_ext[2]) {
+if ((yuv_to_rgb_inst0.R_ext[10:3]=8'd255)) {
+yuv_to_rgb_inst0.R_out = 8'd255;
+} else
+ {yuv_to_rgb_inst0.R_out = (yuv_to_rgb_inst0.R_ext[10:3]+8'd1);}
+} else
+ {yuv_to_rgb_inst0.R_out = yuv_to_rgb_inst0.R_ext[10:3];}}}
+if (yuv_to_rgb_inst0.G_ext[15]) {
+yuv_to_rgb_inst0.G_out = 8'b0;
+} else
+ {if ((yuv_to_rgb_inst0.G_ext[14:11]!=4'b0)) {
+yuv_to_rgb_inst0.G_out = 8'd255;
+} else
+ {if (yuv_to_rgb_inst0.G_ext[2]) {
+if ((yuv_to_rgb_inst0.G_ext[10:3]=8'd255)) {
+yuv_to_rgb_inst0.G_out = 8'd255;
+} else
+ {yuv_to_rgb_inst0.G_out = (yuv_to_rgb_inst0.G_ext[10:3]+8'd1);}
+} else
+ {yuv_to_rgb_inst0.G_out = yuv_to_rgb_inst0.G_ext[10:3];}}}
+rgb_out = {yuv_to_rgb_inst0.R_out,yuv_to_rgb_inst0.G_out,yuv_to_rgb_inst0.B_out};
+// Sequential part (posedge)
+yuv_to_rgb_inst0.reg_U = yuv_to_rgb_inst0.reg_U_next;
+yuv_to_rgb_inst0.reg_V = yuv_to_rgb_inst0.reg_V_next;
+yuv_to_rgb_inst0.reg_Y1 = yuv_to_rgb_inst0.reg_Y1_next;
+yuv_to_rgb_inst0.reg_Y2 = yuv_to_rgb_inst0.reg_Y2_next;
+yuv_to_rgb_inst0.state = yuv_to_rgb_inst0.state_next;
 }
 
-void CTE::func_number_17() {
-    yuv_to_rgb_inst0.V_ext = (((yuv_to_rgb_inst0.reg_V[sc_uint<32>(7)]), (yuv_to_rgb_inst0.reg_V[sc_uint<32>(7)]), (yuv_to_rgb_inst0.reg_V[sc_uint<32>(7)]), (yuv_to_rgb_inst0.reg_V[sc_uint<32>(7)]), (yuv_to_rgb_inst0.reg_V[sc_uint<32>(7)]), (yuv_to_rgb_inst0.reg_V[sc_uint<32>(7)]), (yuv_to_rgb_inst0.reg_V[sc_uint<32>(7)]), (yuv_to_rgb_inst0.reg_V[sc_uint<32>(7)])), yuv_to_rgb_inst0.reg_V);
+void func_exp_3() {
+// Sequential part (negedge)
+// Combinational part
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U)) {
+yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_Y1;
+} else
+ {if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1)) {
+yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_V;
+} else
+ {if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V)) {
+yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_BUSY1;
+} else
+ {if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)) {
+yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_Y2;
+} else
+ {if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2)) {
+yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_BUSY2;
+} else
+ {if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2)) {
+yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_U;
+} else
+ {yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.state;}}}}}}
+yuv_to_rgb_busy = ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2));
+yuv_to_rgb_out_valid = ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2));
+yuv_out = 8'b0;
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U)) {
+yuv_to_rgb_inst0.reg_U_next = yuv_in;
+} else
+ {yuv_to_rgb_inst0.reg_U_next = yuv_to_rgb_inst0.reg_U;}
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1)) {
+yuv_to_rgb_inst0.reg_Y1_next = yuv_in;
+} else
+ {yuv_to_rgb_inst0.reg_Y1_next = yuv_to_rgb_inst0.reg_Y1;}
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V)) {
+yuv_to_rgb_inst0.reg_V_next = yuv_in;
+} else
+ {yuv_to_rgb_inst0.reg_V_next = yuv_to_rgb_inst0.reg_V;}
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2)) {
+yuv_to_rgb_inst0.reg_Y2_next = yuv_in;
+} else
+ {yuv_to_rgb_inst0.reg_Y2_next = yuv_to_rgb_inst0.reg_Y2;}
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)) {
+yuv_to_rgb_inst0.Y_ext = {8'b0,yuv_to_rgb_inst0.reg_Y1};
+} else
+ {yuv_to_rgb_inst0.Y_ext = {8'b0,yuv_to_rgb_inst0.reg_Y2};}
+yuv_to_rgb_inst0.U_ext = {{8{yuv_to_rgb_inst0.reg_U[7]}},yuv_to_rgb_inst0.reg_U};
+yuv_to_rgb_inst0.V_ext = {{8{yuv_to_rgb_inst0.reg_V[7]}},yuv_to_rgb_inst0.reg_V};
+if (op_mode) {
+busy = 1'b1;
+} else
+ {busy = yuv_to_rgb_busy;}
+if (op_mode) {
+out_valid = 1'b0;
+} else
+ {out_valid = yuv_to_rgb_out_valid;}
+yuv_to_rgb_inst0.B_ext = ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b10000*yuv_to_rgb_inst0.U_ext));
+yuv_to_rgb_inst0.R_ext = ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b1101*yuv_to_rgb_inst0.V_ext));
+yuv_to_rgb_inst0.G_ext = (((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'hfffe*yuv_to_rgb_inst0.U_ext))+(16'hfffa*yuv_to_rgb_inst0.V_ext));
+if (yuv_to_rgb_inst0.B_ext[15]) {
+yuv_to_rgb_inst0.B_out = 8'b0;
+} else
+ {if ((yuv_to_rgb_inst0.B_ext[14:11]!=4'b0)) {
+yuv_to_rgb_inst0.B_out = 8'd255;
+} else
+ {if (yuv_to_rgb_inst0.B_ext[2]) {
+if ((yuv_to_rgb_inst0.B_ext[10:3]=8'd255)) {
+yuv_to_rgb_inst0.B_out = 8'd255;
+} else
+ {yuv_to_rgb_inst0.B_out = (yuv_to_rgb_inst0.B_ext[10:3]+8'd1);}
+} else
+ {yuv_to_rgb_inst0.B_out = yuv_to_rgb_inst0.B_ext[10:3];}}}
+if (yuv_to_rgb_inst0.R_ext[15]) {
+yuv_to_rgb_inst0.R_out = 8'b0;
+} else
+ {if ((yuv_to_rgb_inst0.R_ext[14:11]!=4'b0)) {
+yuv_to_rgb_inst0.R_out = 8'd255;
+} else
+ {if (yuv_to_rgb_inst0.R_ext[2]) {
+if ((yuv_to_rgb_inst0.R_ext[10:3]=8'd255)) {
+yuv_to_rgb_inst0.R_out = 8'd255;
+} else
+ {yuv_to_rgb_inst0.R_out = (yuv_to_rgb_inst0.R_ext[10:3]+8'd1);}
+} else
+ {yuv_to_rgb_inst0.R_out = yuv_to_rgb_inst0.R_ext[10:3];}}}
+if (yuv_to_rgb_inst0.G_ext[15]) {
+yuv_to_rgb_inst0.G_out = 8'b0;
+} else
+ {if ((yuv_to_rgb_inst0.G_ext[14:11]!=4'b0)) {
+yuv_to_rgb_inst0.G_out = 8'd255;
+} else
+ {if (yuv_to_rgb_inst0.G_ext[2]) {
+if ((yuv_to_rgb_inst0.G_ext[10:3]=8'd255)) {
+yuv_to_rgb_inst0.G_out = 8'd255;
+} else
+ {yuv_to_rgb_inst0.G_out = (yuv_to_rgb_inst0.G_ext[10:3]+8'd1);}
+} else
+ {yuv_to_rgb_inst0.G_out = yuv_to_rgb_inst0.G_ext[10:3];}}}
+rgb_out = {yuv_to_rgb_inst0.R_out,yuv_to_rgb_inst0.G_out,yuv_to_rgb_inst0.B_out};
+// Sequential part (posedge)
+yuv_to_rgb_inst0.reg_U = 8'b0;
+yuv_to_rgb_inst0.reg_V = 8'b0;
+yuv_to_rgb_inst0.reg_Y1 = 8'b0;
+yuv_to_rgb_inst0.reg_Y2 = 8'b0;
+yuv_to_rgb_inst0.state = yuv_to_rgb_inst0.S_U;
 }
 
-void CTE::func_number_18() {
-    yuv_to_rgb_inst0.R_ext = ((sc_uint<16>(8) * yuv_to_rgb_inst0.Y_ext) + (sc_uint<16>(13) * yuv_to_rgb_inst0.V_ext));
+void func_exp_4() {
+// Sequential part (negedge)
+// Combinational part
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U)) {
+yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_Y1;
+} else
+ {if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1)) {
+yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_V;
+} else
+ {if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V)) {
+yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_BUSY1;
+} else
+ {if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)) {
+yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_Y2;
+} else
+ {if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2)) {
+yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_BUSY2;
+} else
+ {if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2)) {
+yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_U;
+} else
+ {yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.state;}}}}}}
+yuv_to_rgb_busy = ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2));
+yuv_to_rgb_out_valid = ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2));
+yuv_out = 8'b0;
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U)) {
+yuv_to_rgb_inst0.reg_U_next = yuv_in;
+} else
+ {yuv_to_rgb_inst0.reg_U_next = yuv_to_rgb_inst0.reg_U;}
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1)) {
+yuv_to_rgb_inst0.reg_Y1_next = yuv_in;
+} else
+ {yuv_to_rgb_inst0.reg_Y1_next = yuv_to_rgb_inst0.reg_Y1;}
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V)) {
+yuv_to_rgb_inst0.reg_V_next = yuv_in;
+} else
+ {yuv_to_rgb_inst0.reg_V_next = yuv_to_rgb_inst0.reg_V;}
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2)) {
+yuv_to_rgb_inst0.reg_Y2_next = yuv_in;
+} else
+ {yuv_to_rgb_inst0.reg_Y2_next = yuv_to_rgb_inst0.reg_Y2;}
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)) {
+yuv_to_rgb_inst0.Y_ext = {8'b0,yuv_to_rgb_inst0.reg_Y1};
+} else
+ {yuv_to_rgb_inst0.Y_ext = {8'b0,yuv_to_rgb_inst0.reg_Y2};}
+yuv_to_rgb_inst0.U_ext = {{8{yuv_to_rgb_inst0.reg_U[7]}},yuv_to_rgb_inst0.reg_U};
+yuv_to_rgb_inst0.V_ext = {{8{yuv_to_rgb_inst0.reg_V[7]}},yuv_to_rgb_inst0.reg_V};
+if (op_mode) {
+busy = 1'b1;
+} else
+ {busy = yuv_to_rgb_busy;}
+if (op_mode) {
+out_valid = 1'b0;
+} else
+ {out_valid = yuv_to_rgb_out_valid;}
+yuv_to_rgb_inst0.B_ext = ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b10000*yuv_to_rgb_inst0.U_ext));
+yuv_to_rgb_inst0.R_ext = ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b1101*yuv_to_rgb_inst0.V_ext));
+yuv_to_rgb_inst0.G_ext = (((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'hfffe*yuv_to_rgb_inst0.U_ext))+(16'hfffa*yuv_to_rgb_inst0.V_ext));
+if (yuv_to_rgb_inst0.B_ext[15]) {
+yuv_to_rgb_inst0.B_out = 8'b0;
+} else
+ {if ((yuv_to_rgb_inst0.B_ext[14:11]!=4'b0)) {
+yuv_to_rgb_inst0.B_out = 8'd255;
+} else
+ {if (yuv_to_rgb_inst0.B_ext[2]) {
+if ((yuv_to_rgb_inst0.B_ext[10:3]=8'd255)) {
+yuv_to_rgb_inst0.B_out = 8'd255;
+} else
+ {yuv_to_rgb_inst0.B_out = (yuv_to_rgb_inst0.B_ext[10:3]+8'd1);}
+} else
+ {yuv_to_rgb_inst0.B_out = yuv_to_rgb_inst0.B_ext[10:3];}}}
+if (yuv_to_rgb_inst0.R_ext[15]) {
+yuv_to_rgb_inst0.R_out = 8'b0;
+} else
+ {if ((yuv_to_rgb_inst0.R_ext[14:11]!=4'b0)) {
+yuv_to_rgb_inst0.R_out = 8'd255;
+} else
+ {if (yuv_to_rgb_inst0.R_ext[2]) {
+if ((yuv_to_rgb_inst0.R_ext[10:3]=8'd255)) {
+yuv_to_rgb_inst0.R_out = 8'd255;
+} else
+ {yuv_to_rgb_inst0.R_out = (yuv_to_rgb_inst0.R_ext[10:3]+8'd1);}
+} else
+ {yuv_to_rgb_inst0.R_out = yuv_to_rgb_inst0.R_ext[10:3];}}}
+if (yuv_to_rgb_inst0.G_ext[15]) {
+yuv_to_rgb_inst0.G_out = 8'b0;
+} else
+ {if ((yuv_to_rgb_inst0.G_ext[14:11]!=4'b0)) {
+yuv_to_rgb_inst0.G_out = 8'd255;
+} else
+ {if (yuv_to_rgb_inst0.G_ext[2]) {
+if ((yuv_to_rgb_inst0.G_ext[10:3]=8'd255)) {
+yuv_to_rgb_inst0.G_out = 8'd255;
+} else
+ {yuv_to_rgb_inst0.G_out = (yuv_to_rgb_inst0.G_ext[10:3]+8'd1);}
+} else
+ {yuv_to_rgb_inst0.G_out = yuv_to_rgb_inst0.G_ext[10:3];}}}
+rgb_out = {yuv_to_rgb_inst0.R_out,yuv_to_rgb_inst0.G_out,yuv_to_rgb_inst0.B_out};
+// Sequential part (posedge)
+yuv_to_rgb_inst0.reg_U = 8'b0;
+yuv_to_rgb_inst0.reg_V = 8'b0;
+yuv_to_rgb_inst0.reg_Y1 = 8'b0;
+yuv_to_rgb_inst0.reg_Y2 = 8'b0;
+yuv_to_rgb_inst0.state = yuv_to_rgb_inst0.S_U;
 }
 
-void CTE::func_number_19() {
-    yuv_to_rgb_inst0.G_ext = (((sc_uint<16>(8) * yuv_to_rgb_inst0.Y_ext) + (sc_uint<16>(65534) * yuv_to_rgb_inst0.U_ext)) + (sc_uint<16>(65530) * yuv_to_rgb_inst0.V_ext));
+void func_exp_5() {
+// Sequential part (negedge)
+// Combinational part
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U)) {
+yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_Y1;
+} else
+ {if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1)) {
+yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_V;
+} else
+ {if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V)) {
+yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_BUSY1;
+} else
+ {if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)) {
+yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_Y2;
+} else
+ {if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2)) {
+yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_BUSY2;
+} else
+ {if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2)) {
+yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_U;
+} else
+ {yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.state;}}}}}}
+yuv_to_rgb_busy = ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2));
+yuv_to_rgb_out_valid = ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2));
+yuv_out = 8'b0;
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U)) {
+yuv_to_rgb_inst0.reg_U_next = yuv_in;
+} else
+ {yuv_to_rgb_inst0.reg_U_next = yuv_to_rgb_inst0.reg_U;}
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1)) {
+yuv_to_rgb_inst0.reg_Y1_next = yuv_in;
+} else
+ {yuv_to_rgb_inst0.reg_Y1_next = yuv_to_rgb_inst0.reg_Y1;}
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V)) {
+yuv_to_rgb_inst0.reg_V_next = yuv_in;
+} else
+ {yuv_to_rgb_inst0.reg_V_next = yuv_to_rgb_inst0.reg_V;}
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2)) {
+yuv_to_rgb_inst0.reg_Y2_next = yuv_in;
+} else
+ {yuv_to_rgb_inst0.reg_Y2_next = yuv_to_rgb_inst0.reg_Y2;}
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)) {
+yuv_to_rgb_inst0.Y_ext = {8'b0,yuv_to_rgb_inst0.reg_Y1};
+} else
+ {yuv_to_rgb_inst0.Y_ext = {8'b0,yuv_to_rgb_inst0.reg_Y2};}
+yuv_to_rgb_inst0.U_ext = {{8{yuv_to_rgb_inst0.reg_U[7]}},yuv_to_rgb_inst0.reg_U};
+yuv_to_rgb_inst0.V_ext = {{8{yuv_to_rgb_inst0.reg_V[7]}},yuv_to_rgb_inst0.reg_V};
+if (op_mode) {
+busy = 1'b1;
+} else
+ {busy = yuv_to_rgb_busy;}
+if (op_mode) {
+out_valid = 1'b0;
+} else
+ {out_valid = yuv_to_rgb_out_valid;}
+yuv_to_rgb_inst0.B_ext = ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b10000*yuv_to_rgb_inst0.U_ext));
+yuv_to_rgb_inst0.R_ext = ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b1101*yuv_to_rgb_inst0.V_ext));
+yuv_to_rgb_inst0.G_ext = (((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'hfffe*yuv_to_rgb_inst0.U_ext))+(16'hfffa*yuv_to_rgb_inst0.V_ext));
+if (yuv_to_rgb_inst0.B_ext[15]) {
+yuv_to_rgb_inst0.B_out = 8'b0;
+} else
+ {if ((yuv_to_rgb_inst0.B_ext[14:11]!=4'b0)) {
+yuv_to_rgb_inst0.B_out = 8'd255;
+} else
+ {if (yuv_to_rgb_inst0.B_ext[2]) {
+if ((yuv_to_rgb_inst0.B_ext[10:3]=8'd255)) {
+yuv_to_rgb_inst0.B_out = 8'd255;
+} else
+ {yuv_to_rgb_inst0.B_out = (yuv_to_rgb_inst0.B_ext[10:3]+8'd1);}
+} else
+ {yuv_to_rgb_inst0.B_out = yuv_to_rgb_inst0.B_ext[10:3];}}}
+if (yuv_to_rgb_inst0.R_ext[15]) {
+yuv_to_rgb_inst0.R_out = 8'b0;
+} else
+ {if ((yuv_to_rgb_inst0.R_ext[14:11]!=4'b0)) {
+yuv_to_rgb_inst0.R_out = 8'd255;
+} else
+ {if (yuv_to_rgb_inst0.R_ext[2]) {
+if ((yuv_to_rgb_inst0.R_ext[10:3]=8'd255)) {
+yuv_to_rgb_inst0.R_out = 8'd255;
+} else
+ {yuv_to_rgb_inst0.R_out = (yuv_to_rgb_inst0.R_ext[10:3]+8'd1);}
+} else
+ {yuv_to_rgb_inst0.R_out = yuv_to_rgb_inst0.R_ext[10:3];}}}
+if (yuv_to_rgb_inst0.G_ext[15]) {
+yuv_to_rgb_inst0.G_out = 8'b0;
+} else
+ {if ((yuv_to_rgb_inst0.G_ext[14:11]!=4'b0)) {
+yuv_to_rgb_inst0.G_out = 8'd255;
+} else
+ {if (yuv_to_rgb_inst0.G_ext[2]) {
+if ((yuv_to_rgb_inst0.G_ext[10:3]=8'd255)) {
+yuv_to_rgb_inst0.G_out = 8'd255;
+} else
+ {yuv_to_rgb_inst0.G_out = (yuv_to_rgb_inst0.G_ext[10:3]+8'd1);}
+} else
+ {yuv_to_rgb_inst0.G_out = yuv_to_rgb_inst0.G_ext[10:3];}}}
+rgb_out = {yuv_to_rgb_inst0.R_out,yuv_to_rgb_inst0.G_out,yuv_to_rgb_inst0.B_out};
+// Sequential part (posedge)
+if (in_en) {
+if (reset) {
+yuv_to_rgb_inst0.reg_U = 8'b0;
+} else
+ {yuv_to_rgb_inst0.reg_U = yuv_to_rgb_inst0.reg_U_next;}
+} else
+ {yuv_to_rgb_inst0.reg_U = 8'b0;}
+if (in_en) {
+if (reset) {
+yuv_to_rgb_inst0.reg_V = 8'b0;
+} else
+ {yuv_to_rgb_inst0.reg_V = yuv_to_rgb_inst0.reg_V_next;}
+} else
+ {yuv_to_rgb_inst0.reg_V = 8'b0;}
+if (in_en) {
+if (reset) {
+yuv_to_rgb_inst0.reg_Y1 = 8'b0;
+} else
+ {yuv_to_rgb_inst0.reg_Y1 = yuv_to_rgb_inst0.reg_Y1_next;}
+} else
+ {yuv_to_rgb_inst0.reg_Y1 = 8'b0;}
+if (in_en) {
+if (reset) {
+yuv_to_rgb_inst0.reg_Y2 = 8'b0;
+} else
+ {yuv_to_rgb_inst0.reg_Y2 = yuv_to_rgb_inst0.reg_Y2_next;}
+} else
+ {yuv_to_rgb_inst0.reg_Y2 = 8'b0;}
+if (in_en) {
+if (reset) {
+yuv_to_rgb_inst0.state = yuv_to_rgb_inst0.S_U;
+} else
+ {yuv_to_rgb_inst0.state = yuv_to_rgb_inst0.state_next;}
+} else
+ {yuv_to_rgb_inst0.state = yuv_to_rgb_inst0.S_U;}
 }
 
-void CTE::func_number_20() {
-    yuv_to_rgb_inst0.B_ext = ((sc_uint<16>(8) * yuv_to_rgb_inst0.Y_ext) + (sc_uint<16>(16) * yuv_to_rgb_inst0.U_ext));
+void func_exp_6() {
+// Sequential part (negedge)
+// Combinational part
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U)) {
+yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_Y1;
+} else
+ {if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1)) {
+yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_V;
+} else
+ {if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V)) {
+yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_BUSY1;
+} else
+ {if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)) {
+yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_Y2;
+} else
+ {if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2)) {
+yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_BUSY2;
+} else
+ {if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2)) {
+yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_U;
+} else
+ {yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.state;}}}}}}
+yuv_to_rgb_busy = ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2));
+yuv_to_rgb_out_valid = ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2));
+yuv_out = 8'b0;
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U)) {
+yuv_to_rgb_inst0.reg_U_next = yuv_in;
+} else
+ {yuv_to_rgb_inst0.reg_U_next = yuv_to_rgb_inst0.reg_U;}
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1)) {
+yuv_to_rgb_inst0.reg_Y1_next = yuv_in;
+} else
+ {yuv_to_rgb_inst0.reg_Y1_next = yuv_to_rgb_inst0.reg_Y1;}
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V)) {
+yuv_to_rgb_inst0.reg_V_next = yuv_in;
+} else
+ {yuv_to_rgb_inst0.reg_V_next = yuv_to_rgb_inst0.reg_V;}
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2)) {
+yuv_to_rgb_inst0.reg_Y2_next = yuv_in;
+} else
+ {yuv_to_rgb_inst0.reg_Y2_next = yuv_to_rgb_inst0.reg_Y2;}
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)) {
+yuv_to_rgb_inst0.Y_ext = {8'b0,yuv_to_rgb_inst0.reg_Y1};
+} else
+ {yuv_to_rgb_inst0.Y_ext = {8'b0,yuv_to_rgb_inst0.reg_Y2};}
+yuv_to_rgb_inst0.U_ext = {{8{yuv_to_rgb_inst0.reg_U[7]}},yuv_to_rgb_inst0.reg_U};
+yuv_to_rgb_inst0.V_ext = {{8{yuv_to_rgb_inst0.reg_V[7]}},yuv_to_rgb_inst0.reg_V};
+if (op_mode) {
+busy = 1'b1;
+} else
+ {busy = yuv_to_rgb_busy;}
+if (op_mode) {
+out_valid = 1'b0;
+} else
+ {out_valid = yuv_to_rgb_out_valid;}
+yuv_to_rgb_inst0.B_ext = ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b10000*yuv_to_rgb_inst0.U_ext));
+yuv_to_rgb_inst0.R_ext = ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b1101*yuv_to_rgb_inst0.V_ext));
+yuv_to_rgb_inst0.G_ext = (((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'hfffe*yuv_to_rgb_inst0.U_ext))+(16'hfffa*yuv_to_rgb_inst0.V_ext));
+if (yuv_to_rgb_inst0.B_ext[15]) {
+yuv_to_rgb_inst0.B_out = 8'b0;
+} else
+ {if ((yuv_to_rgb_inst0.B_ext[14:11]!=4'b0)) {
+yuv_to_rgb_inst0.B_out = 8'd255;
+} else
+ {if (yuv_to_rgb_inst0.B_ext[2]) {
+if ((yuv_to_rgb_inst0.B_ext[10:3]=8'd255)) {
+yuv_to_rgb_inst0.B_out = 8'd255;
+} else
+ {yuv_to_rgb_inst0.B_out = (yuv_to_rgb_inst0.B_ext[10:3]+8'd1);}
+} else
+ {yuv_to_rgb_inst0.B_out = yuv_to_rgb_inst0.B_ext[10:3];}}}
+if (yuv_to_rgb_inst0.R_ext[15]) {
+yuv_to_rgb_inst0.R_out = 8'b0;
+} else
+ {if ((yuv_to_rgb_inst0.R_ext[14:11]!=4'b0)) {
+yuv_to_rgb_inst0.R_out = 8'd255;
+} else
+ {if (yuv_to_rgb_inst0.R_ext[2]) {
+if ((yuv_to_rgb_inst0.R_ext[10:3]=8'd255)) {
+yuv_to_rgb_inst0.R_out = 8'd255;
+} else
+ {yuv_to_rgb_inst0.R_out = (yuv_to_rgb_inst0.R_ext[10:3]+8'd1);}
+} else
+ {yuv_to_rgb_inst0.R_out = yuv_to_rgb_inst0.R_ext[10:3];}}}
+if (yuv_to_rgb_inst0.G_ext[15]) {
+yuv_to_rgb_inst0.G_out = 8'b0;
+} else
+ {if ((yuv_to_rgb_inst0.G_ext[14:11]!=4'b0)) {
+yuv_to_rgb_inst0.G_out = 8'd255;
+} else
+ {if (yuv_to_rgb_inst0.G_ext[2]) {
+if ((yuv_to_rgb_inst0.G_ext[10:3]=8'd255)) {
+yuv_to_rgb_inst0.G_out = 8'd255;
+} else
+ {yuv_to_rgb_inst0.G_out = (yuv_to_rgb_inst0.G_ext[10:3]+8'd1);}
+} else
+ {yuv_to_rgb_inst0.G_out = yuv_to_rgb_inst0.G_ext[10:3];}}}
+rgb_out = {yuv_to_rgb_inst0.R_out,yuv_to_rgb_inst0.G_out,yuv_to_rgb_inst0.B_out};
+// Sequential part (posedge)
+if (in_en) {
+if (reset) {
+yuv_to_rgb_inst0.reg_U = 8'b0;
+} else
+ {yuv_to_rgb_inst0.reg_U = yuv_to_rgb_inst0.reg_U_next;}
+} else
+ {yuv_to_rgb_inst0.reg_U = 8'b0;}
+if (in_en) {
+if (reset) {
+yuv_to_rgb_inst0.reg_V = 8'b0;
+} else
+ {yuv_to_rgb_inst0.reg_V = yuv_to_rgb_inst0.reg_V_next;}
+} else
+ {yuv_to_rgb_inst0.reg_V = 8'b0;}
+if (in_en) {
+if (reset) {
+yuv_to_rgb_inst0.reg_Y1 = 8'b0;
+} else
+ {yuv_to_rgb_inst0.reg_Y1 = yuv_to_rgb_inst0.reg_Y1_next;}
+} else
+ {yuv_to_rgb_inst0.reg_Y1 = 8'b0;}
+if (in_en) {
+if (reset) {
+yuv_to_rgb_inst0.reg_Y2 = 8'b0;
+} else
+ {yuv_to_rgb_inst0.reg_Y2 = yuv_to_rgb_inst0.reg_Y2_next;}
+} else
+ {yuv_to_rgb_inst0.reg_Y2 = 8'b0;}
+if (in_en) {
+if (reset) {
+yuv_to_rgb_inst0.state = yuv_to_rgb_inst0.S_U;
+} else
+ {yuv_to_rgb_inst0.state = yuv_to_rgb_inst0.state_next;}
+} else
+ {yuv_to_rgb_inst0.state = yuv_to_rgb_inst0.S_U;}
 }
 
-void CTE::func_number_21() {
-    if (yuv_to_rgb_inst0.R_ext[sc_uint<32>(15)]) {
-yuv_to_rgb_inst0.R_out = sc_uint<8>(0);
+void func_exp_7() {
+// Sequential part (negedge)
+// Combinational part
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U)) {
+yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_Y1;
 } else
- {if ((yuv_to_rgb_inst0.R_ext.range(sc_uint<32>(14), sc_uint<32>(11)) != sc_uint<4>(0))) {
-yuv_to_rgb_inst0.R_out = sc_uint<8>(255);
+ {if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1)) {
+yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_V;
 } else
- {if (yuv_to_rgb_inst0.R_ext[sc_uint<32>(2)]) {
-if ((yuv_to_rgb_inst0.R_ext.range(sc_uint<32>(10), sc_uint<32>(3)) == sc_uint<8>(255))) {
-yuv_to_rgb_inst0.R_out = sc_uint<8>(255);
+ {if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V)) {
+yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_BUSY1;
 } else
- {yuv_to_rgb_inst0.R_out = (yuv_to_rgb_inst0.R_ext.range(sc_uint<32>(10), sc_uint<32>(3)) + sc_uint<8>(1));}
+ {if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)) {
+yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_Y2;
 } else
- {yuv_to_rgb_inst0.R_out = yuv_to_rgb_inst0.R_ext.range(sc_uint<32>(10), sc_uint<32>(3));}}}
-}
-
-void CTE::func_number_22() {
-    if (yuv_to_rgb_inst0.G_ext[sc_uint<32>(15)]) {
-yuv_to_rgb_inst0.G_out = sc_uint<8>(0);
+ {if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2)) {
+yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_BUSY2;
 } else
- {if ((yuv_to_rgb_inst0.G_ext.range(sc_uint<32>(14), sc_uint<32>(11)) != sc_uint<4>(0))) {
-yuv_to_rgb_inst0.G_out = sc_uint<8>(255);
+ {if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2)) {
+yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.S_U;
 } else
- {if (yuv_to_rgb_inst0.G_ext[sc_uint<32>(2)]) {
-if ((yuv_to_rgb_inst0.G_ext.range(sc_uint<32>(10), sc_uint<32>(3)) == sc_uint<8>(255))) {
-yuv_to_rgb_inst0.G_out = sc_uint<8>(255);
+ {yuv_to_rgb_inst0.state_next = yuv_to_rgb_inst0.state;}}}}}}
+yuv_to_rgb_busy = ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2));
+yuv_to_rgb_out_valid = ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2));
+yuv_out = 8'b0;
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U)) {
+yuv_to_rgb_inst0.reg_U_next = yuv_in;
 } else
- {yuv_to_rgb_inst0.G_out = (yuv_to_rgb_inst0.G_ext.range(sc_uint<32>(10), sc_uint<32>(3)) + sc_uint<8>(1));}
+ {yuv_to_rgb_inst0.reg_U_next = yuv_to_rgb_inst0.reg_U;}
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1)) {
+yuv_to_rgb_inst0.reg_Y1_next = yuv_in;
 } else
- {yuv_to_rgb_inst0.G_out = yuv_to_rgb_inst0.G_ext.range(sc_uint<32>(10), sc_uint<32>(3));}}}
-}
-
-void CTE::func_number_23() {
-    if (yuv_to_rgb_inst0.B_ext[sc_uint<32>(15)]) {
-yuv_to_rgb_inst0.B_out = sc_uint<8>(0);
+ {yuv_to_rgb_inst0.reg_Y1_next = yuv_to_rgb_inst0.reg_Y1;}
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V)) {
+yuv_to_rgb_inst0.reg_V_next = yuv_in;
 } else
- {if ((yuv_to_rgb_inst0.B_ext.range(sc_uint<32>(14), sc_uint<32>(11)) != sc_uint<4>(0))) {
-yuv_to_rgb_inst0.B_out = sc_uint<8>(255);
+ {yuv_to_rgb_inst0.reg_V_next = yuv_to_rgb_inst0.reg_V;}
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2)) {
+yuv_to_rgb_inst0.reg_Y2_next = yuv_in;
 } else
- {if (yuv_to_rgb_inst0.B_ext[sc_uint<32>(2)]) {
-if ((yuv_to_rgb_inst0.B_ext.range(sc_uint<32>(10), sc_uint<32>(3)) == sc_uint<8>(255))) {
-yuv_to_rgb_inst0.B_out = sc_uint<8>(255);
+ {yuv_to_rgb_inst0.reg_Y2_next = yuv_to_rgb_inst0.reg_Y2;}
+if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)) {
+yuv_to_rgb_inst0.Y_ext = {8'b0,yuv_to_rgb_inst0.reg_Y1};
 } else
- {yuv_to_rgb_inst0.B_out = (yuv_to_rgb_inst0.B_ext.range(sc_uint<32>(10), sc_uint<32>(3)) + sc_uint<8>(1));}
+ {yuv_to_rgb_inst0.Y_ext = {8'b0,yuv_to_rgb_inst0.reg_Y2};}
+yuv_to_rgb_inst0.U_ext = {{8{yuv_to_rgb_inst0.reg_U[7]}},yuv_to_rgb_inst0.reg_U};
+yuv_to_rgb_inst0.V_ext = {{8{yuv_to_rgb_inst0.reg_V[7]}},yuv_to_rgb_inst0.reg_V};
+if (op_mode) {
+busy = 1'b1;
 } else
- {yuv_to_rgb_inst0.B_out = yuv_to_rgb_inst0.B_ext.range(sc_uint<32>(10), sc_uint<32>(3));}}}
-}
-
-void CTE::func_number_24() {
-    rgb_out = (yuv_to_rgb_inst0.R_out, yuv_to_rgb_inst0.G_out, yuv_to_rgb_inst0.B_out);
+ {busy = yuv_to_rgb_busy;}
+if (op_mode) {
+out_valid = 1'b0;
+} else
+ {out_valid = yuv_to_rgb_out_valid;}
+yuv_to_rgb_inst0.B_ext = ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b10000*yuv_to_rgb_inst0.U_ext));
+yuv_to_rgb_inst0.R_ext = ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b1101*yuv_to_rgb_inst0.V_ext));
+yuv_to_rgb_inst0.G_ext = (((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'hfffe*yuv_to_rgb_inst0.U_ext))+(16'hfffa*yuv_to_rgb_inst0.V_ext));
+if (yuv_to_rgb_inst0.B_ext[15]) {
+yuv_to_rgb_inst0.B_out = 8'b0;
+} else
+ {if ((yuv_to_rgb_inst0.B_ext[14:11]!=4'b0)) {
+yuv_to_rgb_inst0.B_out = 8'd255;
+} else
+ {if (yuv_to_rgb_inst0.B_ext[2]) {
+if ((yuv_to_rgb_inst0.B_ext[10:3]=8'd255)) {
+yuv_to_rgb_inst0.B_out = 8'd255;
+} else
+ {yuv_to_rgb_inst0.B_out = (yuv_to_rgb_inst0.B_ext[10:3]+8'd1);}
+} else
+ {yuv_to_rgb_inst0.B_out = yuv_to_rgb_inst0.B_ext[10:3];}}}
+if (yuv_to_rgb_inst0.R_ext[15]) {
+yuv_to_rgb_inst0.R_out = 8'b0;
+} else
+ {if ((yuv_to_rgb_inst0.R_ext[14:11]!=4'b0)) {
+yuv_to_rgb_inst0.R_out = 8'd255;
+} else
+ {if (yuv_to_rgb_inst0.R_ext[2]) {
+if ((yuv_to_rgb_inst0.R_ext[10:3]=8'd255)) {
+yuv_to_rgb_inst0.R_out = 8'd255;
+} else
+ {yuv_to_rgb_inst0.R_out = (yuv_to_rgb_inst0.R_ext[10:3]+8'd1);}
+} else
+ {yuv_to_rgb_inst0.R_out = yuv_to_rgb_inst0.R_ext[10:3];}}}
+if (yuv_to_rgb_inst0.G_ext[15]) {
+yuv_to_rgb_inst0.G_out = 8'b0;
+} else
+ {if ((yuv_to_rgb_inst0.G_ext[14:11]!=4'b0)) {
+yuv_to_rgb_inst0.G_out = 8'd255;
+} else
+ {if (yuv_to_rgb_inst0.G_ext[2]) {
+if ((yuv_to_rgb_inst0.G_ext[10:3]=8'd255)) {
+yuv_to_rgb_inst0.G_out = 8'd255;
+} else
+ {yuv_to_rgb_inst0.G_out = (yuv_to_rgb_inst0.G_ext[10:3]+8'd1);}
+} else
+ {yuv_to_rgb_inst0.G_out = yuv_to_rgb_inst0.G_ext[10:3];}}}
+rgb_out = {yuv_to_rgb_inst0.R_out,yuv_to_rgb_inst0.G_out,yuv_to_rgb_inst0.B_out};
+// Sequential part (posedge)
+if (in_en) {
+if (reset) {
+yuv_to_rgb_inst0.reg_U = 8'b0;
+} else
+ {yuv_to_rgb_inst0.reg_U = yuv_to_rgb_inst0.reg_U_next;}
+} else
+ {yuv_to_rgb_inst0.reg_U = 8'b0;}
+if (in_en) {
+if (reset) {
+yuv_to_rgb_inst0.reg_V = 8'b0;
+} else
+ {yuv_to_rgb_inst0.reg_V = yuv_to_rgb_inst0.reg_V_next;}
+} else
+ {yuv_to_rgb_inst0.reg_V = 8'b0;}
+if (in_en) {
+if (reset) {
+yuv_to_rgb_inst0.reg_Y1 = 8'b0;
+} else
+ {yuv_to_rgb_inst0.reg_Y1 = yuv_to_rgb_inst0.reg_Y1_next;}
+} else
+ {yuv_to_rgb_inst0.reg_Y1 = 8'b0;}
+if (in_en) {
+if (reset) {
+yuv_to_rgb_inst0.reg_Y2 = 8'b0;
+} else
+ {yuv_to_rgb_inst0.reg_Y2 = yuv_to_rgb_inst0.reg_Y2_next;}
+} else
+ {yuv_to_rgb_inst0.reg_Y2 = 8'b0;}
+if (in_en) {
+if (reset) {
+yuv_to_rgb_inst0.state = yuv_to_rgb_inst0.S_U;
+} else
+ {yuv_to_rgb_inst0.state = yuv_to_rgb_inst0.state_next;}
+} else
+ {yuv_to_rgb_inst0.state = yuv_to_rgb_inst0.S_U;}
 }
 
 

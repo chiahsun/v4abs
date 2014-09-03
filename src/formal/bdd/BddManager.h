@@ -62,6 +62,7 @@ public:
 
     BddNodeHandle getGeneralizedCofactor(BddNodeHandle pF, BddNodeHandle pC);
     BddNodeHandle exQuant(BddNodeHandle pNode, int decisionLevel);
+    BddNodeHandle restrict(BddNodeHandle pFst, BddNodeHandle pSnd);
 
     bool isNeg(BddNodeHandle pFst, BddNodeHandle pSnd);
 private:
@@ -71,7 +72,6 @@ private:
     BddNodeHandle find_or_insert(BddNodeHandle pBddNode);
     hash_type::iterator try_find(BddNodeHandle pBddNode);
 
-//    BddNodeHandle restrict(BddNodeHandle pFst, BddNodeHandle pSnd);
 
     // It should be communitive for OPs, so imply is invalid
     enum OpType {

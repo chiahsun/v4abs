@@ -68,7 +68,7 @@ public:
 
 class SimpifiedAssignmentInfo {
 public:
-    std::map<int, AssignmentInfo> _mapExpressionIdAndAssignmentInfo;
+    std::map<int, AssignmentInfo> _mapExpressionIdAndSimplifiedAssignmentInfo;
     SimpifiedAssignmentInfo() {}
     SimpifiedAssignmentInfo(const AssignmentInfo & assignmentInfo, const ProtocolGraphInfo & protocolGraphInfo);
 };

@@ -113,6 +113,7 @@ BddNodeHandle BddManager::makeAnd(BddNodeHandle pFst, BddNodeHandle pSnd) {
     return pR;
 }
     
+
 void BddManager::insertHandlePairInPairMap(BddNodeAndPairMap & m, BddNodeHandle pPos, BddNodeHandle pNeg, BddNodeHandle pBddNode) {
     m.insert(std::make_pair( std::make_pair(pPos, pNeg)
                            , pBddNode));
@@ -305,31 +306,22 @@ BddNodeHandle BddManager::exQuant(BddNodeHandle pNode, int decisionLevel) {
 bool BddManager::isNeg(BddNodeHandle pFst, BddNodeHandle pSnd) {
     return makeNeg(pFst) == pSnd;
 }
-   
-#if 0
+  
 BddNodeHandle BddManager::restrict(BddNodeHandle pFst, BddNodeHandle pSnd) {
-    BddNodeHandle one = BddNode::getConstOneHandle();
-    BddNodeHandle zero = BddNode::getConstZeroHandle();
-    if (pSnd->isStructureEqual(one)
-       || pFst->isTerminal())
+    if (pSnd == BDD_TRUE || pFst->isTerminal())
+        return pFst;
+    
+    if (pSnd == BDD_FALSE)
+        return BDD_FALSE;
+
+    if (pFst == pSnd)
         return pFst;
 
-    // TODO(chiahsun): may be complexity issue
-    if (pFst->isStructureEqual(pSnd)) {
-        return one;
-    }
+    if (pFst == makeNeg(pSnd))
+        return BDD_FALSE;
 
-    if (pFst->isTerminal() && pSnd->isTerminal()) {
-        if (pFst->getBool() != pSnd->getBool())
-            return zero;
-    }
-
-    if (pSnd->isTerminal()) {
-        if (!pSnd->getBool())
-            return zero;
-    }
-    
     int topVar = max(pFst->getCurDecisionLevel(), pSnd->getCurDecisionLevel());
+
 
     BddNodeHandle fp = pFst->getPosCofactor(pFst, topVar);
     BddNodeHandle fn = pFst->getNegCofactor(pFst, topVar);
@@ -337,36 +329,14 @@ BddNodeHandle BddManager::restrict(BddNodeHandle pFst, BddNodeHandle pSnd) {
     BddNodeHandle gp = pSnd->getPosCofactor(pSnd, topVar);
     BddNodeHandle gn = pSnd->getNegCofactor(pSnd, topVar);
 
-
-    if (gp->isStructureEqual(zero))
+    if (gp == BDD_FALSE)
         return restrict(fn, gn);
-
-    if (gn->isStructureEqual(zero))
+    if (gn == BDD_FALSE)
         return restrict(fp, gp);
-
-
-    return ite(BddNodeHandle(BddNode(topVar)), restrict(fp, gp), restrict(fn, gn));
-#if 0
-    BddNodeHandle pT = makeAnd(pFst->getPosCofactor(pFst, topVar)
-                              ,pSnd->getPosCofactor(pSnd, topVar));
-
-    BddNodeHandle pE = makeAnd(pFst->getNegCofactor(pFst, topVar)
-                              , pSnd->getNegCofactor(pSnd, topVar));
-
-    if (pT->equal(*this, pE)) {
-        return pT;
-    }
-    else {
-        BddNodeHandle pR = makeBddNode(topVar, pT, pE);
-        return pR;
-    }
-#endif
-
-
-
-    // TODO
+    if (topVar != pFst->getCurDecisionLevel())
+        return restrict(pFst, ite(gp, BDD_TRUE, gn));
+    return ite(makeBddNode(topVar), restrict(fp, gp), restrict(fn, gn));
 }
-#endif
     
 #if 0
 BddNodeHandle BddManager::apply(OpType op, BddNodeHandle pFst, BddNodeHandle pSnd) {

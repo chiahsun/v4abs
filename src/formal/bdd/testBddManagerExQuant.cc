@@ -5,15 +5,17 @@
 #include <ctime>
 
 const static bool isWriteFile = true;
+const static bool isNormal = true;
 const static bool isCheckTime = false;
-
 void test_random() {
     srand(0);
 //    int numVar = 10;
     int numVar = 25;
     int numOperation = numVar * 25;
-
-    if (isCheckTime) {
+    if (isNormal) {
+        numVar = 4;
+        numOperation = numVar * 10; 
+    } else if (isCheckTime) {
         numVar = 15;
         numOperation = numVar * 40;
     }

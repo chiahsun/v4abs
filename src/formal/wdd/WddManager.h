@@ -415,7 +415,7 @@ public:
     WddNodeHandle makeBasicBlockCofactor(WddNodeHandle pExpr, WddNodeHandle pCofactor) {
         BddNodeHandle pBddNodeExpr = pExpr->getBddNodeHandle();
         BddNodeHandle pBddNodeCofactor = pCofactor->getBddNodeHandle();
-        BddNodeHandle pBddNode = _bddManager.makeAnd(pBddNodeExpr, pBddNodeCofactor);
+        BddNodeHandle pBddNode = _bddManager.restrict(pBddNodeExpr, pBddNodeCofactor);
         return WddNode<term_handle_type>::makeWddNodeHandle(*this, pBddNode);
     }
 

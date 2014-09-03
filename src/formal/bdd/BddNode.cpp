@@ -95,6 +95,10 @@ bool BddNode::isTerminal() const {
     return _pBool.valid();
 }
     
+bool BddNode::isDecisionLevel() const {
+    return !isTerminal() && getPosHandle()->isTerminal() && getNegHandle()->isTerminal();
+}
+    
 std::string BddNode::toString() const {
     return toString(0, 0);
 }

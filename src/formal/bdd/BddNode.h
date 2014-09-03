@@ -47,6 +47,7 @@ public:
 
     bool getBool() const;
     bool isTerminal() const;
+    bool isDecisionLevel() const;
 
     static BddNodeHandle getPosCofactor(BddNodeHandle pBddNode, int curDecisionLevel);
     static BddNodeHandle getNegCofactor(BddNodeHandle pBddNode, int curDecisionLevel);

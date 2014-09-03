@@ -10,7 +10,8 @@
 static const std::string indent = "    ";
 static const bool verbose = false;
 static const bool verbose_assignment_graph = false;
-static const bool verbose_simplify_edge_expression = true;
+static const bool verbose_simplify_edge_expression = false;
+static const bool verbose_simplify_update_function = false;
 std::string getTypeFromSize(int sz);
     
 FunctionCall::FunctionCall(std::string functionName, std::string functionImpl)
@@ -79,8 +80,8 @@ SimpifiedAssignmentInfo::SimpifiedAssignmentInfo(const AssignmentInfo & assignme
     CONST_FOR_EACH(expressionIdAndSimplifiedExpressionPair, protocolGraphInfo._mapExpressionIdAndSimplifiedExpression) {
         int expressionId = expressionIdAndSimplifiedExpressionPair.first;
         VRExprExpression exprEnable = expressionIdAndSimplifiedExpressionPair.second;
-
-        LOG(INFO) << "enable: " << exprEnable.toString();
+        if (verbose_simplify_update_function)
+            LOG(INFO) << "enable: " << exprEnable.toString();
         std::vector<VRExprAssignment> vecNegedgeAssign;
         std::vector<VRExprAssignment> vecPosedgeAssign;
         std::vector<VRExprAssignment> vecCombAssign;
@@ -99,6 +100,10 @@ SimpifiedAssignmentInfo::SimpifiedAssignmentInfo(const AssignmentInfo & assignme
             VRExprTermManager::WddNodeHandle pNewRhsWddNode = posAssign.getTermManager().getWddManager().makeBasicBlockCofactor(pRhsWddNode, pEnableWddNode);
             VRExprExpression newExprRhs = posAssign.getTermManager().toVRExprExpression(pNewRhsWddNode) ;
             vecNegedgeAssign.push_back(VRExprAssignment(posAssign.getExprLhs(), newExprRhs));
+            if (verbose_simplify_update_function) {
+                LOG(INFO) << "pos_seq pre  : " << posAssign.getExprRhs().toString();
+                LOG(INFO) << "pos_seq post : " << newExprRhs.toString();
+            }
         }
         FOR_EACH(combAssign, vecOldCombAssign) {
             VRExprTermManager::WddNodeHandle pRhsWddNode = combAssign.getWddNodeHandle();
@@ -107,9 +112,15 @@ SimpifiedAssignmentInfo::SimpifiedAssignmentInfo(const AssignmentInfo & assignme
             VRExprExpression newExprRhs = combAssign.getTermManager().toVRExprExpression(pNewRhsWddNode) ;
             vecNegedgeAssign.push_back(VRExprAssignment(combAssign.getExprLhs(), newExprRhs));
 
-            LOG(INFO) << "comb pre : " << combAssign.getExprRhs().toString();
-            LOG(INFO) << "comb pos : " << newExprRhs.toString();
+            if (verbose_simplify_update_function) {
+                LOG(INFO) << "comb pre  : " << combAssign.getExprRhs().toString();
+                LOG(INFO) << "comb post : " << newExprRhs.toString();
+            }
         }
+       
+        AssignmentInfo simplifiedAssignmentInfo(vecNegedgeAssign, vecPosedgeAssign, vecCombAssign);
+
+        _mapExpressionIdAndSimplifiedAssignmentInfo.insert(std::make_pair(expressionId, simplifiedAssignmentInfo));
     }
 }
 

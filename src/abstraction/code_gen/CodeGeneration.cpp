@@ -13,6 +13,18 @@ static const bool verbose_assignment_graph = false;
 static const bool verbose_simplify_edge_expression = false;
 static const bool verbose_simplify_update_function = false;
 std::string getTypeFromSize(int sz);
+
+int getConstantExpressionNumber(VExprConstantExpressionHandle pConstantExpression) {
+    if (!pConstantExpression->getConstantPrimaryHandle().valid())
+        LOG(ERROR) << "Not primary in " << pConstantExpression->getString();
+    if (!pConstantExpression->getConstantPrimaryHandle()->getNumberHandle().valid())
+        LOG(ERROR) << "Not number in " << pConstantExpression->getString();
+    if (!pConstantExpression->getConstantPrimaryHandle()->getNumberHandle()->getUnsignedNumberHandle().valid())
+        LOG(ERROR) << "Not unsigned number in " << pConstantExpression->getString();
+
+    return pConstantExpression->getConstantPrimaryHandle()->getNumberHandle()->getUnsignedNumberHandle()->getValue(); 
+}
+
     
 FunctionCall::FunctionCall(std::string functionName, std::string functionImpl)
   : _functionName(functionName)
@@ -124,6 +136,33 @@ SimpifiedAssignmentInfo::SimpifiedAssignmentInfo(const AssignmentInfo & assignme
     }
 }
 
+InterfaceInfo CodeGeneration::processInterface(const std::string & topModuleName, const std::vector<VExprModuleHandle> & vecHierModule) const {
+    InterfaceInfo interfaceInfo;
+    for (int i = vecHierModule.size()-1; i >= 0; --i) {
+        VExprModuleHandle pHierModule = vecHierModule[i];
+        std::string hierModuleName = pHierModule->getModuleName()->getString();
+        if (hierModuleName == topModuleName) {
+#define ADD_INTERFACE_MAP(get_io_container_function, interface_map_name) CONST_FOR_EACH(pInputDeclaration, pHierModule->get_io_container_function()) {\
+                CONST_FOR_EACH(pInputDecl, pInputDeclaration->getContainer()) {\
+                    VExprIdentifierHandle pInputIdentifier = pInputDecl->getPortDeclarationHandle()->getIdentifierHandle();\
+                    VExprRangeHandle pInputRange = pInputDecl->getPortDeclarationHandle()->getRangeHandle();\
+                    int sz = 1;\
+                    if (pInputRange.valid()) {\
+                        sz = getConstantExpressionNumber(pInputRange->getFst()) - getConstantExpressionNumber(pInputRange->getSnd()) + 1;\
+                    }\
+                    interfaceInfo.interface_map_name.insert(std::make_pair(pInputIdentifier->getString(), sz));\
+                }\
+            }
+            
+            ADD_INTERFACE_MAP(getInputDeclarationContainer, _mapInputAndInputSize)
+            ADD_INTERFACE_MAP(getOutputDeclarationContainer, _mapOutputAndOutputSize)
+            ADD_INTERFACE_MAP(getInoutDeclarationContainer, _mapInoutAndInoutSize)
+        }
+    }
+
+    return interfaceInfo;
+}
+
 
 AssignmentInfo CodeGeneration::processAssignment(const std::vector<VRExprAssignment> & vecAssign) {
     Graph<VRExprExpression, int/*dummy*/> graphCombinational;
@@ -191,11 +230,13 @@ CodeGeneration::CodeGeneration
     EfsmExtract extractFactory(designName, protocolName);
     _efsm = extractFactory.extract(topModuleName);
     _assignmentInfo = processAssignment(extractFactory.getAssignmentContainer(topModuleName));
-    LOG(INFO) << _assignmentInfo.toString();
+    // LOG(INFO) << _assignmentInfo.toString();
     _protocolGraph = extractFactory.getProtocolGraph();
+    // LOG(INFO) << _protocolGraph.toString();
     _protocolGraphInfo = processProtocolGraphInfo(); 
     _simplifiedAssignmentInfo = SimpifiedAssignmentInfo(_assignmentInfo, _protocolGraphInfo);
     _vecHierModule = extractFactory.getHierModuleHandleContainer();
+    _interfaceInfo = processInterface(topModuleName, _vecHierModule);
     initAssignmentFunctionCallMgr();
 }
     
@@ -265,6 +306,41 @@ ProtocolGraphInfo CodeGeneration::processProtocolGraphInfo() {
             protocolGraphInfo._mapExpressionIdAndSimplifiedExpression.insert(std::make_pair(expressionId, simplifiedExpr));
         }
         protocolGraphInfo._mapEdgeIdToExpressionId.insert(std::make_pair(edgeId, itExressionIdPair->second));
+
+        // LOG(INFO) << pUpdateStatement->toString();
+        // bug for shared pointer and const_for_each
+        std::vector<PExprSpecificUpdateStatementHandle> vecSpecificUpdateStatement = pUpdateStatement->getSpecificContainer();
+        CONST_FOR_EACH(pSpecificUpdateStatement, vecSpecificUpdateStatement) {
+            if (pSpecificUpdateStatement->getRWC().valid()) {
+                PExprReadOrWriteOrCheckStatementHandle pRWC = pSpecificUpdateStatement->getRWC();
+                // LOG(INFO) << pRWC->toString();
+                std::map<int, std::vector<std::string> >::iterator it; 
+                if (pRWC->getRead().valid()) {
+                    if ((it = protocolGraphInfo._mapEdgeIdAndReadTransaction.find(edgeId)) == protocolGraphInfo._mapEdgeIdAndReadTransaction.end())
+                        it = protocolGraphInfo._mapEdgeIdAndReadTransaction.insert(std::make_pair(edgeId, std::vector<std::string>())).first;
+                    it->second.push_back(pRWC->getRead()->getName());
+                    protocolGraphInfo._hashReadSymbol.insert(pRWC->getRead()->getName());
+                } else if (pRWC->getWrite().valid()) {
+                    if ((it = protocolGraphInfo._mapEdgeIdAndWriteTransaction.find(edgeId)) == protocolGraphInfo._mapEdgeIdAndWriteTransaction.end())
+                        it = protocolGraphInfo._mapEdgeIdAndWriteTransaction.insert(std::make_pair(edgeId, std::vector<std::string>())).first;
+                    it->second.push_back(pRWC->getWrite()->getName());
+                    protocolGraphInfo._hashWriteSymbol.insert(pRWC->getWrite()->getName());
+                } else if (pRWC->getCheck().valid()) {
+#if 0 // TODO not deal yet
+                    if ((it = protocolGraphInfo._mapEdgeIdAndCheckTransaction.find(edgeId)) == protocolGraphInfo._mapEdgeIdAndCheckTransaction.end())
+                        it = protocolGraphInfo._mapEdgeIdAndCheckTransaction.insert(std::make_pair(edgeId, std::vector<std::string>()));
+                    it->second.push_back(pRWC->getCheck()->getName());
+#endif
+                } else {
+                    assert(0);
+                }
+            } else if (pSpecificUpdateStatement->getWithoutGoto().valid()) {
+                PExprIfStatementWithoutGotoHandle pWithoutGoto = pSpecificUpdateStatement->getWithoutGoto();
+                LOG(INFO) << pWithoutGoto->toString();
+                assert(0); // Not dealt yet
+            }
+        }
+
     }
 
     return protocolGraphInfo;
@@ -335,17 +411,6 @@ VRExprNumber expression2VRExprNumber(VExprExpressionHandle pExpression) {
     return number;
 }
 
-int getConstantExpressionNumber(VExprConstantExpressionHandle pConstantExpression) {
-    if (!pConstantExpression->getConstantPrimaryHandle().valid())
-        LOG(ERROR) << "Not primary in " << pConstantExpression->getString();
-    if (!pConstantExpression->getConstantPrimaryHandle()->getNumberHandle().valid())
-        LOG(ERROR) << "Not number in " << pConstantExpression->getString();
-    if (!pConstantExpression->getConstantPrimaryHandle()->getNumberHandle()->getUnsignedNumberHandle().valid())
-        LOG(ERROR) << "Not unsigned number in " << pConstantExpression->getString();
-
-    return pConstantExpression->getConstantPrimaryHandle()->getNumberHandle()->getUnsignedNumberHandle()->getValue(); 
-}
-
 #define WRITE_IO(io_type_comment, func_get_container_name) ss << "\n    // " #io_type_comment " \n";\
 CONST_FOR_EACH(pInputDeclaration, pHierModule->func_get_container_name()) {\
         CONST_FOR_EACH(pInputDecl, pInputDeclaration->getContainer()) {\
@@ -365,11 +430,31 @@ CONST_FOR_EACH(pInputDeclaration, pHierModule->func_get_container_name()) {\
 void CodeGeneration::generateModuleHeader(std::stringstream & ss, VExprModuleHandle pHierModule) const {
     std::string topModuleName = _efsm.getModule().getModuleName().toString();
     std::string hierModuleName = pHierModule->getModuleName()->getString();
-    ss << "struct " << hierModuleName << " {\n";
+    ss << "struct " << hierModuleName << " {\n\n";
+    
+    unsigned int interfaceId = 0;
+#define HEADER_REGISTER_FUNCTION_DECLARATION(hash_name, map_name) CONST_FOR_EACH(readSymbol, _protocolGraphInfo.hash_name) {\
+        std::map<std::string, int>::const_iterator it = _interfaceInfo.map_name.find(readSymbol);\
+        assert(it != _interfaceInfo.map_name.end());\
+        ss << indent;\
+        if (interfaceId != 0)\
+            ss << ", ";\
+        else\
+            ss << "  ";\
+        ss << getTypeFromSize(it->second) << "* " << "pData_" << it->first << "\n";\
+        ++interfaceId;\
+    }
+    if (hierModuleName == topModuleName) {
+        ss << indent << "void " << "register_data_pointer(\n";
+        HEADER_REGISTER_FUNCTION_DECLARATION(_hashReadSymbol, _mapInputAndInputSize);
+        HEADER_REGISTER_FUNCTION_DECLARATION(_hashWriteSymbol, _mapOutputAndOutputSize);
+        //    REGISTER_ARGUMENT_DECLARATION(_mapInoutAndInoutSize);
+        ss << indent << ");\n\n";
 
-    WRITE_IO(Inputs, getInputDeclarationContainer);
-    WRITE_IO(Outputs, getOutputDeclarationContainer);
-    WRITE_IO(Inouts, getInoutDeclarationContainer);
+        WRITE_IO(Inputs, getInputDeclarationContainer);
+        WRITE_IO(Outputs, getOutputDeclarationContainer);
+        WRITE_IO(Inouts, getInoutDeclarationContainer);
+    }
 #if 0
     CONST_FOR_EACH(pInputDeclaration, pHierModule->getInputDeclarationContainer()) {
         CONST_FOR_EACH(pInputDecl, pInputDeclaration->getContainer()) {
@@ -481,8 +566,27 @@ void CodeGeneration::generateModuleHeader(std::stringstream & ss, VExprModuleHan
         ss << ";\n"; 
     }
 #endif
-    ss << "\n" << indent << "// Function calls\n";
+    if (topModuleName == hierModuleName) { 
+        ss << "\nprivate:\n\n";
+    }
+
     if (topModuleName == hierModuleName) {
+        ss << "\n" << indent << "// Read transactions\n";
+       
+        CONST_FOR_EACH(readSymbol, _protocolGraphInfo._hashReadSymbol) {
+            ss << "    void read_" << readSymbol << "();\n";
+        }
+
+        ss << "\n" << indent << "// Write transactions\n";
+
+        CONST_FOR_EACH(writeSymbol, _protocolGraphInfo._hashWriteSymbol) {
+            ss << "    void write_" << writeSymbol << "();\n";
+        }
+
+    }
+
+    if (topModuleName == hierModuleName) {
+        ss << "\n" << indent << "// Function calls\n";
         for (unsigned int i = 0; i < _simplifiedAssignmentInfo._mapExpressionIdAndSimplifiedAssignmentInfo.size(); ++i) {
             std::map<int, AssignmentInfo>::const_iterator it = _simplifiedAssignmentInfo._mapExpressionIdAndSimplifiedAssignmentInfo.find(i);
             assert(it != _simplifiedAssignmentInfo._mapExpressionIdAndSimplifiedAssignmentInfo.end());
@@ -493,7 +597,24 @@ void CodeGeneration::generateModuleHeader(std::stringstream & ss, VExprModuleHan
             ss << functionNamePrefix << "(); " << functionNameComment << "\n";
         }
     }
-
+    
+    if (topModuleName == hierModuleName) {
+        ss << "\n" << indent << "// Data pointers\n";
+        std::map<std::string, int>::const_iterator it;
+        ss << indent << "//Input data pointers\n";
+        CONST_FOR_EACH(readSymbol, _protocolGraphInfo._hashReadSymbol) {
+            it = _interfaceInfo._mapInputAndInputSize.find(readSymbol);
+            assert(it != _interfaceInfo._mapInputAndInputSize.end());
+            ss << indent << getTypeFromSize(it->second) << " _pData_" << readSymbol << ";\n";
+        }
+        ss << indent << "//Output data pointers\n";
+        CONST_FOR_EACH(writeSymbol, _protocolGraphInfo._hashWriteSymbol) {
+            it = _interfaceInfo._mapOutputAndOutputSize.find(writeSymbol);
+            assert(it != _interfaceInfo._mapOutputAndOutputSize.end());
+            ss << indent << getTypeFromSize(it->second) << " _pData_" << writeSymbol << ";\n";
+        }
+    }
+    
 #if 0    
     ss << "\n" << indent << "// Function calls\n";
     if (topModuleName == hierModuleName) {
@@ -530,6 +651,36 @@ std::string CodeGeneration::generateImplementation() {
     
     ss << "#include \"" << topModuleName << ".h\"\n\n";
 
+    unsigned int interfaceId = 0;
+    ss << "void " << topModuleName << "::register_data_pointer(\n";
+    #define IMPLEMENTATION_REGISTER_FUNCTION_DECLARATION(hash_name, map_name) CONST_FOR_EACH(readSymbol, _protocolGraphInfo.hash_name) {\
+        std::map<std::string, int>::const_iterator it = _interfaceInfo.map_name.find(readSymbol);\
+        assert(it != _interfaceInfo.map_name.end());\
+        ss << indent;\
+        if (interfaceId != 0)\
+            ss << ", ";\
+        else\
+            ss << "  ";\
+        ss << getTypeFromSize(it->second) << "* " << "pData_" << it->first << "\n";\
+        ++interfaceId;\
+    }
+    IMPLEMENTATION_REGISTER_FUNCTION_DECLARATION(_hashReadSymbol, _mapInputAndInputSize);
+    IMPLEMENTATION_REGISTER_FUNCTION_DECLARATION(_hashWriteSymbol, _mapOutputAndOutputSize);
+    ss << indent << ") {\n";
+    
+#define IMPLEMENTATION_REGISTER_FUNCTION_ASSIGNMENT(hash_name, map_name) CONST_FOR_EACH(readSymbol, _protocolGraphInfo.hash_name) {\
+        std::map<std::string, int>::const_iterator it = _interfaceInfo.map_name.find(readSymbol);\
+        assert(it != _interfaceInfo.map_name.end());\
+        ss << indent << "_pData_" << it->first << " = " << "pData_" << it->first << ";\n";\
+    }
+
+    IMPLEMENTATION_REGISTER_FUNCTION_ASSIGNMENT(_hashReadSymbol, _mapInputAndInputSize);
+    IMPLEMENTATION_REGISTER_FUNCTION_ASSIGNMENT(_hashWriteSymbol, _mapOutputAndOutputSize);
+
+    ss << "}\n\n";
+
+
+
     ss << "void " << topModuleName << "::run(ProtocolEvent e) {\n\n";
     ss << "    switch(_protocolState) {\n";
     std::map<int, std::string> mapFromStateFunctionCall;
@@ -549,8 +700,16 @@ std::string CodeGeneration::generateImplementation() {
         std::string expression = _protocolGraphInfo._mapExpressionIdAndPureStatement[expressionId];
         ssEdge << "            if (e == " << "ProtocolEvent" << expressionId << "/*" << expression << "*/" << ") {\n";
         std::string toStateComment = _protocolGraphInfo._mapStateIdAndComment[toStateId];
-        ssEdge << "                " << "_protocolState = " << _protocolGraphInfo._mapStateIdAndName[toStateId] << "/*" << toStateComment << "*/" << ";\n";
+        std::map<int, std::vector<std::string> >::const_iterator it = _protocolGraphInfo._mapEdgeIdAndReadTransaction.find(edgeId);
+        if (it != _protocolGraphInfo._mapEdgeIdAndReadTransaction.end())
+            CONST_FOR_EACH(readSymbol, it->second)
+                ssEdge << "                " << "read_" << readSymbol << "();\n";
         ssEdge << "                function_number_" <<  expressionId << "();\n";
+        it = _protocolGraphInfo._mapEdgeIdAndWriteTransaction.find(edgeId);
+        if (it != _protocolGraphInfo._mapEdgeIdAndWriteTransaction.end())
+            CONST_FOR_EACH(writeSymbol, it->second)
+                ssEdge << "                " << "write_" << writeSymbol << "();\n";
+        ssEdge << "                " << "_protocolState = " << _protocolGraphInfo._mapStateIdAndName[toStateId] << "/*" << toStateComment << "*/" << ";\n";
         ssEdge << "                break;\n"
            << "            };\n";
 
@@ -586,6 +745,22 @@ std::string CodeGeneration::generateImplementation() {
         ss << "(" << pNumber->getUnsignedNumber() << ");\n";
     }
 #endif
+    ss << "\n" << "// Read transactions\n";
+
+    CONST_FOR_EACH(readSymbol, _protocolGraphInfo._hashReadSymbol) {
+        ss << "void " << topModuleName << "::read_" << readSymbol << "() {\n";
+        ss << "    " << readSymbol << " = *_pData_" << readSymbol << ";\n";
+        ss << "}\n\n";
+    }
+
+    ss << "\n" << "// Write transactions\n";
+
+    CONST_FOR_EACH(writeSymbol, _protocolGraphInfo._hashWriteSymbol) {
+        ss << "void " << topModuleName << "::write_" << writeSymbol << "() {\n";
+        ss << "    " << "*_pData_" << writeSymbol << " = " << writeSymbol << ";\n";
+        ss << "}\n\n";
+    }
+
     ss << "\n" << "// Simplified function calls\n\n";
     for (unsigned int i = 0; i < _simplifiedAssignmentInfo._mapExpressionIdAndSimplifiedAssignmentInfo.size(); ++i) {
         std::map<int, AssignmentInfo>::const_iterator it = _simplifiedAssignmentInfo._mapExpressionIdAndSimplifiedAssignmentInfo.find(i);
@@ -615,6 +790,7 @@ std::string CodeGeneration::generateImplementation() {
         }
         ss << "}\n\n";
     }
+    
 #if 0
     ss << "\n" << "// Function calls\n";
     CONST_FOR_EACH(functionCall, _assignFunctionCallMgr.getFunctionCallContainer()) {

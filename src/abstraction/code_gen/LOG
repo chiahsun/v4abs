@@ -3,157 +3,6 @@
 .:../../../src/protocol/antlr_psyntax/SourceTextInit:../../../ext_libs/antlr-4.0-complete.jar:
 ../../../src/protocol/past/parseSourceText/javaParseSourceText.sh CTE.c &> CTE.c.ast
 ./generateCode.out CTE.v.ast CTE.c.ast CTE
-LOG(INFO) : pos assignment: always @ (posedge clk) @ (in_en or 8'b0 or yuv_to_rgb_inst0.reg_U_next or reset)
-       + (lhs_terminals yuv_to_rgb_inst0.reg_U)
-       + (rhs_terminals 8'b0, yuv_to_rgb_inst0.reg_U_next)
-       + (mux_terminals (reset||!in_en))
-       + (rhs_wdd_format ite(in_en, ite(reset, 8'b0, yuv_to_rgb_inst0.reg_U_next), 8'b0))
-       - yuv_to_rgb_inst0.reg_U = ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_U_next)
-pos assignment: always @ (posedge clk) @ (in_en or yuv_to_rgb_inst0.reg_V_next or 8'b0 or reset)
-       + (lhs_terminals yuv_to_rgb_inst0.reg_V)
-       + (rhs_terminals yuv_to_rgb_inst0.reg_V_next, 8'b0)
-       + (mux_terminals (reset||!in_en))
-       + (rhs_wdd_format ite(in_en, ite(reset, 8'b0, yuv_to_rgb_inst0.reg_V_next), 8'b0))
-       - yuv_to_rgb_inst0.reg_V = ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_V_next)
-pos assignment: always @ (posedge clk) @ (in_en or yuv_to_rgb_inst0.reg_Y1_next or 8'b0 or reset)
-       + (lhs_terminals yuv_to_rgb_inst0.reg_Y1)
-       + (rhs_terminals yuv_to_rgb_inst0.reg_Y1_next, 8'b0)
-       + (mux_terminals (reset||!in_en))
-       + (rhs_wdd_format ite(in_en, ite(reset, 8'b0, yuv_to_rgb_inst0.reg_Y1_next), 8'b0))
-       - yuv_to_rgb_inst0.reg_Y1 = ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_Y1_next)
-pos assignment: always @ (posedge clk) @ (in_en or yuv_to_rgb_inst0.reg_Y2_next or 8'b0 or reset)
-       + (lhs_terminals yuv_to_rgb_inst0.reg_Y2)
-       + (rhs_terminals yuv_to_rgb_inst0.reg_Y2_next, 8'b0)
-       + (mux_terminals (reset||!in_en))
-       + (rhs_wdd_format ite(in_en, ite(reset, 8'b0, yuv_to_rgb_inst0.reg_Y2_next), 8'b0))
-       - yuv_to_rgb_inst0.reg_Y2 = ite((reset||!in_en), 8'b0, yuv_to_rgb_inst0.reg_Y2_next)
-pos assignment: always @ (posedge clk) @ (in_en or yuv_to_rgb_inst0.S_U or yuv_to_rgb_inst0.state_next or reset)
-       + (lhs_terminals yuv_to_rgb_inst0.state)
-       + (rhs_terminals yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.state_next)
-       + (mux_terminals (reset||!in_en))
-       + (rhs_wdd_format ite(in_en, ite(reset, yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.state_next), yuv_to_rgb_inst0.S_U))
-       - yuv_to_rgb_inst0.state = ite((reset||!in_en), yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.state_next)
-comb assignment: always @ (yuv_to_rgb_inst0.S_U or yuv_to_rgb_inst0.S_V or yuv_to_rgb_inst0.S_BUSY1 or yuv_to_rgb_inst0.S_BUSY2 or yuv_to_rgb_inst0.S_Y1 or yuv_to_rgb_inst0.S_Y2 or yuv_to_rgb_inst0.state)
-       + (lhs_terminals yuv_to_rgb_inst0.state_next)
-       + (rhs_terminals yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.S_V, yuv_to_rgb_inst0.S_BUSY1, yuv_to_rgb_inst0.S_BUSY2, yuv_to_rgb_inst0.S_Y1, yuv_to_rgb_inst0.S_Y2, yuv_to_rgb_inst0.state)
-       + (mux_terminals (yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), (yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), (yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), (yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), (yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), (yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2))
-       + (rhs_wdd_format ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_to_rgb_inst0.S_Y1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_to_rgb_inst0.S_V, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_to_rgb_inst0.S_BUSY1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), yuv_to_rgb_inst0.S_Y2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_to_rgb_inst0.S_BUSY2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2), yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.state)))))))
-       - yuv_to_rgb_inst0.state_next = ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_to_rgb_inst0.S_Y1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_to_rgb_inst0.S_V, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_to_rgb_inst0.S_BUSY1, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), yuv_to_rgb_inst0.S_Y2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_to_rgb_inst0.S_BUSY2, ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2), yuv_to_rgb_inst0.S_U, yuv_to_rgb_inst0.state))))))
-comb assignment: always @ (yuv_to_rgb_inst0.S_BUSY1 or yuv_to_rgb_inst0.S_BUSY2 or yuv_to_rgb_inst0.state)
-       + (lhs_terminals yuv_to_rgb_busy)
-       + (rhs_terminals ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2)))
-       + (mux_terminals )
-       + (rhs_wdd_format ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2)))
-       - yuv_to_rgb_busy = ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2))
-comb assignment: always @ (yuv_to_rgb_inst0.S_BUSY1 or yuv_to_rgb_inst0.S_BUSY2 or yuv_to_rgb_inst0.state)
-       + (lhs_terminals yuv_to_rgb_out_valid)
-       + (rhs_terminals ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2)))
-       + (mux_terminals )
-       + (rhs_wdd_format ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2)))
-       - yuv_to_rgb_out_valid = ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1)||(yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY2))
-comb assignment: always @ (8'b0)
-       + (lhs_terminals yuv_out)
-       + (rhs_terminals 8'b0)
-       + (mux_terminals )
-       + (rhs_wdd_format 8'b0)
-       - yuv_out = 8'b0
-comb assignment: always @ (yuv_to_rgb_inst0.S_U or yuv_to_rgb_inst0.reg_U or yuv_in or yuv_to_rgb_inst0.state)
-       + (lhs_terminals yuv_to_rgb_inst0.reg_U_next)
-       + (rhs_terminals yuv_to_rgb_inst0.reg_U, yuv_in)
-       + (mux_terminals (yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U))
-       + (rhs_wdd_format ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_in, yuv_to_rgb_inst0.reg_U))
-       - yuv_to_rgb_inst0.reg_U_next = ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U), yuv_in, yuv_to_rgb_inst0.reg_U)
-comb assignment: always @ (yuv_to_rgb_inst0.reg_Y1 or yuv_to_rgb_inst0.S_Y1 or yuv_in or yuv_to_rgb_inst0.state)
-       + (lhs_terminals yuv_to_rgb_inst0.reg_Y1_next)
-       + (rhs_terminals yuv_to_rgb_inst0.reg_Y1, yuv_in)
-       + (mux_terminals (yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1))
-       + (rhs_wdd_format ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_in, yuv_to_rgb_inst0.reg_Y1))
-       - yuv_to_rgb_inst0.reg_Y1_next = ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y1), yuv_in, yuv_to_rgb_inst0.reg_Y1)
-comb assignment: always @ (yuv_to_rgb_inst0.S_V or yuv_to_rgb_inst0.reg_V or yuv_in or yuv_to_rgb_inst0.state)
-       + (lhs_terminals yuv_to_rgb_inst0.reg_V_next)
-       + (rhs_terminals yuv_to_rgb_inst0.reg_V, yuv_in)
-       + (mux_terminals (yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V))
-       + (rhs_wdd_format ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_in, yuv_to_rgb_inst0.reg_V))
-       - yuv_to_rgb_inst0.reg_V_next = ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_V), yuv_in, yuv_to_rgb_inst0.reg_V)
-comb assignment: always @ (yuv_to_rgb_inst0.reg_Y2 or yuv_to_rgb_inst0.S_Y2 or yuv_in or yuv_to_rgb_inst0.state)
-       + (lhs_terminals yuv_to_rgb_inst0.reg_Y2_next)
-       + (rhs_terminals yuv_to_rgb_inst0.reg_Y2, yuv_in)
-       + (mux_terminals (yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2))
-       + (rhs_wdd_format ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_in, yuv_to_rgb_inst0.reg_Y2))
-       - yuv_to_rgb_inst0.reg_Y2_next = ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_Y2), yuv_in, yuv_to_rgb_inst0.reg_Y2)
-comb assignment: always @ (yuv_to_rgb_inst0.S_BUSY1 or yuv_to_rgb_inst0.reg_Y1 or yuv_to_rgb_inst0.reg_Y2 or yuv_to_rgb_inst0.state or 8'b0)
-       + (lhs_terminals yuv_to_rgb_inst0.Y_ext)
-       + (rhs_terminals {8'b0,yuv_to_rgb_inst0.reg_Y2}, {8'b0,yuv_to_rgb_inst0.reg_Y1})
-       + (mux_terminals (yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1))
-       + (rhs_wdd_format ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), {8'b0,yuv_to_rgb_inst0.reg_Y1}, {8'b0,yuv_to_rgb_inst0.reg_Y2}))
-       - yuv_to_rgb_inst0.Y_ext = ite((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_BUSY1), {8'b0,yuv_to_rgb_inst0.reg_Y1}, {8'b0,yuv_to_rgb_inst0.reg_Y2})
-comb assignment: always @ (yuv_to_rgb_inst0.reg_U or 7 or 8)
-       + (lhs_terminals yuv_to_rgb_inst0.U_ext)
-       + (rhs_terminals {{8{yuv_to_rgb_inst0.reg_U[7]}},yuv_to_rgb_inst0.reg_U})
-       + (mux_terminals )
-       + (rhs_wdd_format {{8{yuv_to_rgb_inst0.reg_U[7]}},yuv_to_rgb_inst0.reg_U})
-       - yuv_to_rgb_inst0.U_ext = {{8{yuv_to_rgb_inst0.reg_U[7]}},yuv_to_rgb_inst0.reg_U}
-comb assignment: always @ (yuv_to_rgb_inst0.reg_V or 7 or 8)
-       + (lhs_terminals yuv_to_rgb_inst0.V_ext)
-       + (rhs_terminals {{8{yuv_to_rgb_inst0.reg_V[7]}},yuv_to_rgb_inst0.reg_V})
-       + (mux_terminals )
-       + (rhs_wdd_format {{8{yuv_to_rgb_inst0.reg_V[7]}},yuv_to_rgb_inst0.reg_V})
-       - yuv_to_rgb_inst0.V_ext = {{8{yuv_to_rgb_inst0.reg_V[7]}},yuv_to_rgb_inst0.reg_V}
-comb assignment: always @ (op_mode or 1'b1 or yuv_to_rgb_busy)
-       + (lhs_terminals busy)
-       + (rhs_terminals 1'b1, yuv_to_rgb_busy)
-       + (mux_terminals !op_mode)
-       + (rhs_wdd_format ite(op_mode, 1'b1, yuv_to_rgb_busy))
-       - busy = ite(!op_mode, yuv_to_rgb_busy, 1'b1)
-comb assignment: always @ (op_mode or 1'b0 or yuv_to_rgb_out_valid)
-       + (lhs_terminals out_valid)
-       + (rhs_terminals 1'b0, yuv_to_rgb_out_valid)
-       + (mux_terminals !op_mode)
-       + (rhs_wdd_format ite(op_mode, 1'b0, yuv_to_rgb_out_valid))
-       - out_valid = ite(!op_mode, yuv_to_rgb_out_valid, 1'b0)
-comb assignment: always @ (16'b10000 or yuv_to_rgb_inst0.U_ext or yuv_to_rgb_inst0.Y_ext or 16'b1000)
-       + (lhs_terminals yuv_to_rgb_inst0.B_ext)
-       + (rhs_terminals ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b10000*yuv_to_rgb_inst0.U_ext)))
-       + (mux_terminals )
-       + (rhs_wdd_format ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b10000*yuv_to_rgb_inst0.U_ext)))
-       - yuv_to_rgb_inst0.B_ext = ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b10000*yuv_to_rgb_inst0.U_ext))
-comb assignment: always @ (16'b1101 or yuv_to_rgb_inst0.V_ext or yuv_to_rgb_inst0.Y_ext or 16'b1000)
-       + (lhs_terminals yuv_to_rgb_inst0.R_ext)
-       + (rhs_terminals ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b1101*yuv_to_rgb_inst0.V_ext)))
-       + (mux_terminals )
-       + (rhs_wdd_format ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b1101*yuv_to_rgb_inst0.V_ext)))
-       - yuv_to_rgb_inst0.R_ext = ((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'b1101*yuv_to_rgb_inst0.V_ext))
-comb assignment: always @ (16'hfffa or yuv_to_rgb_inst0.U_ext or yuv_to_rgb_inst0.V_ext or 16'hfffe or yuv_to_rgb_inst0.Y_ext or 16'b1000)
-       + (lhs_terminals yuv_to_rgb_inst0.G_ext)
-       + (rhs_terminals (((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'hfffe*yuv_to_rgb_inst0.U_ext))+(16'hfffa*yuv_to_rgb_inst0.V_ext)))
-       + (mux_terminals )
-       + (rhs_wdd_format (((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'hfffe*yuv_to_rgb_inst0.U_ext))+(16'hfffa*yuv_to_rgb_inst0.V_ext)))
-       - yuv_to_rgb_inst0.G_ext = (((16'b1000*yuv_to_rgb_inst0.Y_ext)+(16'hfffe*yuv_to_rgb_inst0.U_ext))+(16'hfffa*yuv_to_rgb_inst0.V_ext))
-comb assignment: always @ (11 or 4'b0 or 14 or 15 or yuv_to_rgb_inst0.B_ext or 2 or 3 or 8'd1 or 8'b0 or 8'd255 or 10)
-       + (lhs_terminals yuv_to_rgb_inst0.B_out)
-       + (rhs_terminals (yuv_to_rgb_inst0.B_ext[10:3]+8'd1), yuv_to_rgb_inst0.B_ext[10:3], 8'b0, 8'd255)
-       + (mux_terminals yuv_to_rgb_inst0.B_ext[15], (yuv_to_rgb_inst0.B_ext[14:11]!=4'b0), yuv_to_rgb_inst0.B_ext[2], (yuv_to_rgb_inst0.B_ext[10:3]=8'd255))
-       + (rhs_wdd_format ite(yuv_to_rgb_inst0.B_ext[15], 8'b0, ite((yuv_to_rgb_inst0.B_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.B_ext[2], ite((yuv_to_rgb_inst0.B_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.B_ext[10:3]+8'd1)), yuv_to_rgb_inst0.B_ext[10:3]))))
-       - yuv_to_rgb_inst0.B_out = ite(yuv_to_rgb_inst0.B_ext[15], 8'b0, ite((yuv_to_rgb_inst0.B_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.B_ext[2], ite((yuv_to_rgb_inst0.B_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.B_ext[10:3]+8'd1)), yuv_to_rgb_inst0.B_ext[10:3])))
-comb assignment: always @ (11 or 4'b0 or 10 or 14 or 15 or 2 or 3 or 8'd1 or 8'b0 or 8'd255 or yuv_to_rgb_inst0.R_ext)
-       + (lhs_terminals yuv_to_rgb_inst0.R_out)
-       + (rhs_terminals (yuv_to_rgb_inst0.R_ext[10:3]+8'd1), yuv_to_rgb_inst0.R_ext[10:3], 8'b0, 8'd255)
-       + (mux_terminals yuv_to_rgb_inst0.R_ext[15], (yuv_to_rgb_inst0.R_ext[14:11]!=4'b0), yuv_to_rgb_inst0.R_ext[2], (yuv_to_rgb_inst0.R_ext[10:3]=8'd255))
-       + (rhs_wdd_format ite(yuv_to_rgb_inst0.R_ext[15], 8'b0, ite((yuv_to_rgb_inst0.R_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.R_ext[2], ite((yuv_to_rgb_inst0.R_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.R_ext[10:3]+8'd1)), yuv_to_rgb_inst0.R_ext[10:3]))))
-       - yuv_to_rgb_inst0.R_out = ite(yuv_to_rgb_inst0.R_ext[15], 8'b0, ite((yuv_to_rgb_inst0.R_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.R_ext[2], ite((yuv_to_rgb_inst0.R_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.R_ext[10:3]+8'd1)), yuv_to_rgb_inst0.R_ext[10:3])))
-comb assignment: always @ (11 or 4'b0 or 14 or 15 or 2 or 3 or yuv_to_rgb_inst0.G_ext or 8'd1 or 8'b0 or 8'd255 or 10)
-       + (lhs_terminals yuv_to_rgb_inst0.G_out)
-       + (rhs_terminals (yuv_to_rgb_inst0.G_ext[10:3]+8'd1), 8'b0, 8'd255, yuv_to_rgb_inst0.G_ext[10:3])
-       + (mux_terminals yuv_to_rgb_inst0.G_ext[15], (yuv_to_rgb_inst0.G_ext[14:11]!=4'b0), yuv_to_rgb_inst0.G_ext[2], (yuv_to_rgb_inst0.G_ext[10:3]=8'd255))
-       + (rhs_wdd_format ite(yuv_to_rgb_inst0.G_ext[15], 8'b0, ite((yuv_to_rgb_inst0.G_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.G_ext[2], ite((yuv_to_rgb_inst0.G_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.G_ext[10:3]+8'd1)), yuv_to_rgb_inst0.G_ext[10:3]))))
-       - yuv_to_rgb_inst0.G_out = ite(yuv_to_rgb_inst0.G_ext[15], 8'b0, ite((yuv_to_rgb_inst0.G_ext[14:11]!=4'b0), 8'd255, ite(yuv_to_rgb_inst0.G_ext[2], ite((yuv_to_rgb_inst0.G_ext[10:3]=8'd255), 8'd255, (yuv_to_rgb_inst0.G_ext[10:3]+8'd1)), yuv_to_rgb_inst0.G_ext[10:3])))
-comb assignment: always @ (yuv_to_rgb_inst0.G_out or yuv_to_rgb_inst0.R_out or yuv_to_rgb_inst0.B_out)
-       + (lhs_terminals rgb_out)
-       + (rhs_terminals {yuv_to_rgb_inst0.R_out,yuv_to_rgb_inst0.G_out,yuv_to_rgb_inst0.B_out})
-       + (mux_terminals )
-       + (rhs_wdd_format {yuv_to_rgb_inst0.R_out,yuv_to_rgb_inst0.G_out,yuv_to_rgb_inst0.B_out})
-       - rgb_out = {yuv_to_rgb_inst0.R_out,yuv_to_rgb_inst0.G_out,yuv_to_rgb_inst0.B_out}
-      (CodeGeneration.cpp : 194)
 #ifndef CTE_H
 #define CTE_H
 
@@ -162,18 +11,6 @@ comb assignment: always @ (yuv_to_rgb_inst0.G_out or yuv_to_rgb_inst0.R_out or y
 
 struct YUV_TO_RGB {
 
-    // Inputs 
-    bool clk;
-    bool reset;
-    bool in_en;
-    sc_uint<8> yuv_in;
-
-    // Outputs 
-    bool busy;
-    bool out_valid;
-    sc_uint<24> rgb_out;
-
-    // Inouts 
 
     // Parameters
     const static sc_uint<4> S_U = 0;
@@ -207,11 +44,15 @@ struct YUV_TO_RGB {
     sc_uint<8> B_out;
 
     // Module instances
-
-    // Function calls
 };
 
 struct CTE {
+
+    void register_data_pointer(
+      sc_uint<8> * pData_yuv_in
+    , sc_uint<24> * pData_rgb_out
+    );
+
 
     // Inputs 
     bool clk;
@@ -241,6 +82,15 @@ struct CTE {
     // Module instances
     YUV_TO_RGB yuv_to_rgb_inst0;
 
+private:
+
+
+    // Read transactions
+    void read_yuv_in();
+
+    // Write transactions
+    void write_rgb_out();
+
     // Function calls
     void function_number_0(); // reset
     void function_number_1(); // !(reset)
@@ -250,6 +100,12 @@ struct CTE {
     void function_number_5(); // !(busy)
     void function_number_6(); // busy
     void function_number_7(); // false
+
+    // Data pointers
+    //Input data pointers
+    sc_uint<8>  _pData_yuv_in;
+    //Output data pointers
+    sc_uint<24>  _pData_rgb_out;
 };
 
 enum ProtocolState {
@@ -282,19 +138,27 @@ enum ProtocolEvent {
 
 #include "CTE.h"
 
+void CTE::register_data_pointer(
+      sc_uint<8> * pData_yuv_in
+    , sc_uint<24> * pData_rgb_out
+    ) {
+    _pData_yuv_in = pData_yuv_in;
+    _pData_rgb_out = pData_rgb_out;
+}
+
 void CTE::run(ProtocolEvent e) {
 
     switch(_protocolState) {
         case ProtocolState_s0/*s0*/:
 S0:
             if (e == ProtocolEvent0/*reset*/) {
-                _protocolState = ProtocolState_s1/*s1*/;
                 function_number_0();
+                _protocolState = ProtocolState_s1/*s1*/;
                 break;
             };
             if (e == ProtocolEvent1/*!(reset)*/) {
-                _protocolState = ProtocolState_s0/*s0*/;
                 function_number_1();
+                _protocolState = ProtocolState_s0/*s0*/;
                 break;
             };
             LOG_ERROR("No Such branch");
@@ -302,13 +166,13 @@ S0:
         case ProtocolState_s1/*s1*/:
 S1:
             if (e == ProtocolEvent0/*reset*/) {
-                _protocolState = ProtocolState_s1/*s1*/;
                 function_number_0();
+                _protocolState = ProtocolState_s1/*s1*/;
                 break;
             };
             if (e == ProtocolEvent1/*!(reset)*/) {
-                _protocolState = ProtocolState_s2/*s2*/;
                 function_number_1();
+                _protocolState = ProtocolState_s2/*s2*/;
                 break;
             };
             LOG_ERROR("No Such branch");
@@ -316,18 +180,19 @@ S1:
         case ProtocolState_s2/*s2*/:
 S2:
             if (e == ProtocolEvent2/*(in_en&&!(reset))*/) {
-                _protocolState = ProtocolState_s3/*s3*/;
+                read_yuv_in();
                 function_number_2();
+                _protocolState = ProtocolState_s3/*s3*/;
                 break;
             };
             if (e == ProtocolEvent3/*(!in_en&&!(reset))*/) {
-                _protocolState = ProtocolState_s2/*s2*/;
                 function_number_3();
+                _protocolState = ProtocolState_s2/*s2*/;
                 break;
             };
             if (e == ProtocolEvent0/*reset*/) {
-                _protocolState = ProtocolState_s4/*assert(0)*/;
                 function_number_0();
+                _protocolState = ProtocolState_s4/*assert(0)*/;
                 break;
             };
             LOG_ERROR("No Such branch");
@@ -335,13 +200,14 @@ S2:
         case ProtocolState_s3/*s3*/:
 S3:
             if (e == ProtocolEvent2/*(in_en&&!(reset))*/) {
-                _protocolState = ProtocolState_s5/*s4*/;
+                read_yuv_in();
                 function_number_2();
+                _protocolState = ProtocolState_s5/*s4*/;
                 break;
             };
             if (e == ProtocolEvent4/*(!in_en||reset)*/) {
-                _protocolState = ProtocolState_s4/*assert(0)*/;
                 function_number_4();
+                _protocolState = ProtocolState_s4/*assert(0)*/;
                 break;
             };
             LOG_ERROR("No Such branch");
@@ -353,13 +219,14 @@ S4:
         case ProtocolState_s5/*s4*/:
 S5:
             if (e == ProtocolEvent2/*(in_en&&!(reset))*/) {
-                _protocolState = ProtocolState_s6/*s5*/;
+                read_yuv_in();
                 function_number_2();
+                _protocolState = ProtocolState_s6/*s5*/;
                 break;
             };
             if (e == ProtocolEvent4/*(!in_en||reset)*/) {
-                _protocolState = ProtocolState_s4/*assert(0)*/;
                 function_number_4();
+                _protocolState = ProtocolState_s4/*assert(0)*/;
                 break;
             };
             LOG_ERROR("No Such branch");
@@ -367,13 +234,14 @@ S5:
         case ProtocolState_s6/*s5*/:
 S6:
             if (e == ProtocolEvent5/*!(busy)*/) {
-                _protocolState = ProtocolState_s7/*s7*/;
                 function_number_5();
+                write_rgb_out();
+                _protocolState = ProtocolState_s7/*s7*/;
                 break;
             };
             if (e == ProtocolEvent6/*busy*/) {
-                _protocolState = ProtocolState_s6/*s5*/;
                 function_number_6();
+                _protocolState = ProtocolState_s6/*s5*/;
                 break;
             };
             LOG_ERROR("No Such branch");
@@ -381,13 +249,14 @@ S6:
         case ProtocolState_s7/*s7*/:
 S7:
             if (e == ProtocolEvent2/*(in_en&&!(reset))*/) {
-                _protocolState = ProtocolState_s8/*s8*/;
+                read_yuv_in();
                 function_number_2();
+                _protocolState = ProtocolState_s8/*s8*/;
                 break;
             };
             if (e == ProtocolEvent4/*(!in_en||reset)*/) {
-                _protocolState = ProtocolState_s4/*assert(0)*/;
                 function_number_4();
+                _protocolState = ProtocolState_s4/*assert(0)*/;
                 break;
             };
             LOG_ERROR("No Such branch");
@@ -395,13 +264,14 @@ S7:
         case ProtocolState_s8/*s8*/:
 S8:
             if (e == ProtocolEvent5/*!(busy)*/) {
-                _protocolState = ProtocolState_s9/*s10*/;
                 function_number_5();
+                write_rgb_out();
+                _protocolState = ProtocolState_s9/*s10*/;
                 break;
             };
             if (e == ProtocolEvent6/*busy*/) {
-                _protocolState = ProtocolState_s8/*s8*/;
                 function_number_6();
+                _protocolState = ProtocolState_s8/*s8*/;
                 break;
             };
             LOG_ERROR("No Such branch");
@@ -409,28 +279,41 @@ S8:
         case ProtocolState_s9/*s10*/:
 S9:
             if (e == ProtocolEvent2/*(in_en&&!(reset))*/) {
-                _protocolState = ProtocolState_s3/*s3*/;
+                read_yuv_in();
                 function_number_2();
+                _protocolState = ProtocolState_s3/*s3*/;
                 break;
             };
             if (e == ProtocolEvent0/*reset*/) {
-                _protocolState = ProtocolState_s1/*s1*/;
                 function_number_0();
+                _protocolState = ProtocolState_s1/*s1*/;
                 break;
             };
             if (e == ProtocolEvent7/*false*/) {
-                _protocolState = ProtocolState_s2/*s2*/;
                 function_number_7();
+                _protocolState = ProtocolState_s2/*s2*/;
                 break;
             };
             if (e == ProtocolEvent3/*(!in_en&&!(reset))*/) {
-                _protocolState = ProtocolState_s4/*assert(0)*/;
                 function_number_3();
+                _protocolState = ProtocolState_s4/*assert(0)*/;
                 break;
             };
             LOG_ERROR("No Such branch");
             break;
 }
+
+// Read transactions
+void CTE::read_yuv_in() {
+    yuv_in = *_pData_yuv_in;
+}
+
+
+// Write transactions
+void CTE::write_rgb_out() {
+    *_pData_rgb_out = rgb_out;
+}
+
 
 // Simplified function calls
 

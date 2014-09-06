@@ -14,6 +14,13 @@ public:
     std::string getFunctionImpl() const;
 };
 
+class InterfaceInfo {
+public:
+    std::map<std::string, int> _mapInputAndInputSize;
+    std::map<std::string, int> _mapOutputAndOutputSize;
+    std::map<std::string, int> _mapInoutAndInoutSize;
+};
+
 class AssignmentFunctionCallMgr {
     typedef int function_call_id;
     HashMap<VRExprAssignment, function_call_id> _mapAssignmentFunctionId;
@@ -33,6 +40,13 @@ public:
     std::map<std::string,int> _mapPureStatementAndExpressionId;
     std::map<int, std::string> _mapExpressionIdAndPureStatement;
     std::map<int, VRExprExpression> _mapExpressionIdAndSimplifiedExpression;
+
+    std::map<int, std::vector<std::string> > _mapEdgeIdAndReadTransaction;
+    std::map<int, std::vector<std::string> > _mapEdgeIdAndWriteTransaction;
+    std::map<int, std::vector<std::string> > _mapEdgeIdAndCheckTransaction;
+
+    HashTable<std::string> _hashReadSymbol;
+    HashTable<std::string> _hashWriteSymbol;
 };
 
 class AssignmentInfo {
@@ -78,6 +92,7 @@ class CodeGeneration {
     AssignmentFunctionCallMgr _assignFunctionCallMgr;
     std::vector<VExprModuleHandle> _vecHierModule;
     ProtocolGraph _protocolGraph;
+    InterfaceInfo _interfaceInfo;
     ProtocolGraphInfo _protocolGraphInfo;
     AssignmentInfo _assignmentInfo;
     SimpifiedAssignmentInfo _simplifiedAssignmentInfo;
@@ -89,7 +104,9 @@ public:
     void writeFile(const std::string & filePrefixName);
     std::string generateHeader();
     std::string generateImplementation();
-    
+   
+     
+    InterfaceInfo processInterface(const std::string & topModuleName, const std::vector<VExprModuleHandle> & vecHierModule) const;
     AssignmentInfo processAssignment(const std::vector<VRExprAssignment> & vecAssign); 
     ProtocolGraphInfo processProtocolGraphInfo(); 
 

@@ -481,7 +481,20 @@ void CodeGeneration::generateModuleHeader(std::stringstream & ss, VExprModuleHan
         ss << ";\n"; 
     }
 #endif
-    
+    ss << "\n" << indent << "// Function calls\n";
+    if (topModuleName == hierModuleName) {
+        for (unsigned int i = 0; i < _simplifiedAssignmentInfo._mapExpressionIdAndSimplifiedAssignmentInfo.size(); ++i) {
+            std::map<int, AssignmentInfo>::const_iterator it = _simplifiedAssignmentInfo._mapExpressionIdAndSimplifiedAssignmentInfo.find(i);
+            assert(it != _simplifiedAssignmentInfo._mapExpressionIdAndSimplifiedAssignmentInfo.end());
+
+            assert(_protocolGraphInfo._mapExpressionIdAndPureStatement.find(i) != _protocolGraphInfo._mapExpressionIdAndPureStatement.end());
+            std::string functionNameComment = "// " + _protocolGraphInfo._mapExpressionIdAndPureStatement.find(i)->second;
+            std::string functionNamePrefix = "    void function_number_" + ConvertUtil::convert<int, std::string>(i);
+            ss << functionNamePrefix << "(); " << functionNameComment << "\n";
+        }
+    }
+
+#if 0    
     ss << "\n" << indent << "// Function calls\n";
     if (topModuleName == hierModuleName) {
         CONST_FOR_EACH(functionCall, _assignFunctionCallMgr.getFunctionCallContainer()) {
@@ -489,6 +502,7 @@ void CodeGeneration::generateModuleHeader(std::stringstream & ss, VExprModuleHan
             ss << "void " << functionCall.getFunctionName() << "();\n";
         }
     }
+#endif
     ss << "};\n\n";
 
 }
@@ -536,7 +550,7 @@ std::string CodeGeneration::generateImplementation() {
         ssEdge << "            if (e == " << "ProtocolEvent" << expressionId << "/*" << expression << "*/" << ") {\n";
         std::string toStateComment = _protocolGraphInfo._mapStateIdAndComment[toStateId];
         ssEdge << "                " << "_protocolState = " << _protocolGraphInfo._mapStateIdAndName[toStateId] << "/*" << toStateComment << "*/" << ";\n";
-        ssEdge << "                // TODO\n";
+        ssEdge << "                function_number_" <<  expressionId << "();\n";
         ssEdge << "                break;\n"
            << "            };\n";
 
@@ -554,7 +568,7 @@ std::string CodeGeneration::generateImplementation() {
            << "            break;\n";
         ++stateId;
     }
-    ss << "}";
+    ss << "}\n";
 #if 0 
     ss << "\n" << "// Parameters\n";
     CONST_FOR_EACH(parameter, pHierModule->getParameterContainer()) {
@@ -572,12 +586,14 @@ std::string CodeGeneration::generateImplementation() {
         ss << "(" << pNumber->getUnsignedNumber() << ");\n";
     }
 #endif
-    ss << "\n" << "// Simplified function calls\n";
+    ss << "\n" << "// Simplified function calls\n\n";
     for (unsigned int i = 0; i < _simplifiedAssignmentInfo._mapExpressionIdAndSimplifiedAssignmentInfo.size(); ++i) {
         std::map<int, AssignmentInfo>::const_iterator it = _simplifiedAssignmentInfo._mapExpressionIdAndSimplifiedAssignmentInfo.find(i);
         assert(it != _simplifiedAssignmentInfo._mapExpressionIdAndSimplifiedAssignmentInfo.end());
 
-        std::string functionNamePrefix = "void func_exp_" + ConvertUtil::convert<int, std::string>(i);
+        std::string functionNameComment = "// " + _protocolGraphInfo._mapExpressionIdAndPureStatement[i];
+        ss << functionNameComment << "\n";
+        std::string functionNamePrefix = "void function_number_" + ConvertUtil::convert<int, std::string>(i);
         ss << functionNamePrefix << "() {\n";    
         ss << "// Sequential part (negedge)\n";
         CONST_FOR_EACH(negAssign, it->second._vecNegedgeAssign) {

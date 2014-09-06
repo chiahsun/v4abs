@@ -242,31 +242,14 @@ struct CTE {
     YUV_TO_RGB yuv_to_rgb_inst0;
 
     // Function calls
-    void func_number_0();
-    void func_number_1();
-    void func_number_2();
-    void func_number_3();
-    void func_number_4();
-    void func_number_5();
-    void func_number_6();
-    void func_number_7();
-    void func_number_8();
-    void func_number_9();
-    void func_number_10();
-    void func_number_11();
-    void func_number_12();
-    void func_number_13();
-    void func_number_14();
-    void func_number_15();
-    void func_number_16();
-    void func_number_17();
-    void func_number_18();
-    void func_number_19();
-    void func_number_20();
-    void func_number_21();
-    void func_number_22();
-    void func_number_23();
-    void func_number_24();
+    void function_number_0(); // reset
+    void function_number_1(); // !(reset)
+    void function_number_2(); // (in_en&&!(reset))
+    void function_number_3(); // (!in_en&&!(reset))
+    void function_number_4(); // (!in_en||reset)
+    void function_number_5(); // !(busy)
+    void function_number_6(); // busy
+    void function_number_7(); // false
 };
 
 enum ProtocolState {
@@ -306,12 +289,12 @@ void CTE::run(ProtocolEvent e) {
 S0:
             if (e == ProtocolEvent0/*reset*/) {
                 _protocolState = ProtocolState_s1/*s1*/;
-                // TODO
+                function_number_0();
                 break;
             };
             if (e == ProtocolEvent1/*!(reset)*/) {
                 _protocolState = ProtocolState_s0/*s0*/;
-                // TODO
+                function_number_1();
                 break;
             };
             LOG_ERROR("No Such branch");
@@ -320,12 +303,12 @@ S0:
 S1:
             if (e == ProtocolEvent0/*reset*/) {
                 _protocolState = ProtocolState_s1/*s1*/;
-                // TODO
+                function_number_0();
                 break;
             };
             if (e == ProtocolEvent1/*!(reset)*/) {
                 _protocolState = ProtocolState_s2/*s2*/;
-                // TODO
+                function_number_1();
                 break;
             };
             LOG_ERROR("No Such branch");
@@ -334,17 +317,17 @@ S1:
 S2:
             if (e == ProtocolEvent2/*(in_en&&!(reset))*/) {
                 _protocolState = ProtocolState_s3/*s3*/;
-                // TODO
+                function_number_2();
                 break;
             };
             if (e == ProtocolEvent3/*(!in_en&&!(reset))*/) {
                 _protocolState = ProtocolState_s2/*s2*/;
-                // TODO
+                function_number_3();
                 break;
             };
             if (e == ProtocolEvent0/*reset*/) {
                 _protocolState = ProtocolState_s4/*assert(0)*/;
-                // TODO
+                function_number_0();
                 break;
             };
             LOG_ERROR("No Such branch");
@@ -353,12 +336,12 @@ S2:
 S3:
             if (e == ProtocolEvent2/*(in_en&&!(reset))*/) {
                 _protocolState = ProtocolState_s5/*s4*/;
-                // TODO
+                function_number_2();
                 break;
             };
             if (e == ProtocolEvent4/*(!in_en||reset)*/) {
                 _protocolState = ProtocolState_s4/*assert(0)*/;
-                // TODO
+                function_number_4();
                 break;
             };
             LOG_ERROR("No Such branch");
@@ -371,12 +354,12 @@ S4:
 S5:
             if (e == ProtocolEvent2/*(in_en&&!(reset))*/) {
                 _protocolState = ProtocolState_s6/*s5*/;
-                // TODO
+                function_number_2();
                 break;
             };
             if (e == ProtocolEvent4/*(!in_en||reset)*/) {
                 _protocolState = ProtocolState_s4/*assert(0)*/;
-                // TODO
+                function_number_4();
                 break;
             };
             LOG_ERROR("No Such branch");
@@ -385,12 +368,12 @@ S5:
 S6:
             if (e == ProtocolEvent5/*!(busy)*/) {
                 _protocolState = ProtocolState_s7/*s7*/;
-                // TODO
+                function_number_5();
                 break;
             };
             if (e == ProtocolEvent6/*busy*/) {
                 _protocolState = ProtocolState_s6/*s5*/;
-                // TODO
+                function_number_6();
                 break;
             };
             LOG_ERROR("No Such branch");
@@ -399,12 +382,12 @@ S6:
 S7:
             if (e == ProtocolEvent2/*(in_en&&!(reset))*/) {
                 _protocolState = ProtocolState_s8/*s8*/;
-                // TODO
+                function_number_2();
                 break;
             };
             if (e == ProtocolEvent4/*(!in_en||reset)*/) {
                 _protocolState = ProtocolState_s4/*assert(0)*/;
-                // TODO
+                function_number_4();
                 break;
             };
             LOG_ERROR("No Such branch");
@@ -413,12 +396,12 @@ S7:
 S8:
             if (e == ProtocolEvent5/*!(busy)*/) {
                 _protocolState = ProtocolState_s9/*s10*/;
-                // TODO
+                function_number_5();
                 break;
             };
             if (e == ProtocolEvent6/*busy*/) {
                 _protocolState = ProtocolState_s8/*s8*/;
-                // TODO
+                function_number_6();
                 break;
             };
             LOG_ERROR("No Such branch");
@@ -427,29 +410,32 @@ S8:
 S9:
             if (e == ProtocolEvent2/*(in_en&&!(reset))*/) {
                 _protocolState = ProtocolState_s3/*s3*/;
-                // TODO
+                function_number_2();
                 break;
             };
             if (e == ProtocolEvent0/*reset*/) {
                 _protocolState = ProtocolState_s1/*s1*/;
-                // TODO
+                function_number_0();
                 break;
             };
             if (e == ProtocolEvent7/*false*/) {
                 _protocolState = ProtocolState_s2/*s2*/;
-                // TODO
+                function_number_7();
                 break;
             };
             if (e == ProtocolEvent3/*(!in_en&&!(reset))*/) {
                 _protocolState = ProtocolState_s4/*assert(0)*/;
-                // TODO
+                function_number_3();
                 break;
             };
             LOG_ERROR("No Such branch");
             break;
 }
+
 // Simplified function calls
-void func_exp_0() {
+
+// reset
+void function_number_0() {
 // Sequential part (negedge)
 // Combinational part
 if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U)) {
@@ -555,7 +541,8 @@ yuv_to_rgb_inst0.reg_Y2 = 8'b0;
 yuv_to_rgb_inst0.state = yuv_to_rgb_inst0.S_U;
 }
 
-void func_exp_1() {
+// !(reset)
+void function_number_1() {
 // Sequential part (negedge)
 // Combinational part
 if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U)) {
@@ -676,7 +663,8 @@ yuv_to_rgb_inst0.state = yuv_to_rgb_inst0.state_next;
  {yuv_to_rgb_inst0.state = yuv_to_rgb_inst0.S_U;}
 }
 
-void func_exp_2() {
+// (in_en&&!(reset))
+void function_number_2() {
 // Sequential part (negedge)
 // Combinational part
 if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U)) {
@@ -782,7 +770,8 @@ yuv_to_rgb_inst0.reg_Y2 = yuv_to_rgb_inst0.reg_Y2_next;
 yuv_to_rgb_inst0.state = yuv_to_rgb_inst0.state_next;
 }
 
-void func_exp_3() {
+// (!in_en&&!(reset))
+void function_number_3() {
 // Sequential part (negedge)
 // Combinational part
 if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U)) {
@@ -888,7 +877,8 @@ yuv_to_rgb_inst0.reg_Y2 = 8'b0;
 yuv_to_rgb_inst0.state = yuv_to_rgb_inst0.S_U;
 }
 
-void func_exp_4() {
+// (!in_en||reset)
+void function_number_4() {
 // Sequential part (negedge)
 // Combinational part
 if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U)) {
@@ -994,7 +984,8 @@ yuv_to_rgb_inst0.reg_Y2 = 8'b0;
 yuv_to_rgb_inst0.state = yuv_to_rgb_inst0.S_U;
 }
 
-void func_exp_5() {
+// !(busy)
+void function_number_5() {
 // Sequential part (negedge)
 // Combinational part
 if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U)) {
@@ -1130,7 +1121,8 @@ yuv_to_rgb_inst0.state = yuv_to_rgb_inst0.S_U;
  {yuv_to_rgb_inst0.state = yuv_to_rgb_inst0.S_U;}
 }
 
-void func_exp_6() {
+// busy
+void function_number_6() {
 // Sequential part (negedge)
 // Combinational part
 if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U)) {
@@ -1266,7 +1258,8 @@ yuv_to_rgb_inst0.state = yuv_to_rgb_inst0.S_U;
  {yuv_to_rgb_inst0.state = yuv_to_rgb_inst0.S_U;}
 }
 
-void func_exp_7() {
+// false
+void function_number_7() {
 // Sequential part (negedge)
 // Combinational part
 if ((yuv_to_rgb_inst0.state=yuv_to_rgb_inst0.S_U)) {

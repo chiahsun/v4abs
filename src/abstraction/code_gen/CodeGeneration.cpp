@@ -237,6 +237,17 @@ CodeGeneration::CodeGeneration
     _simplifiedAssignmentInfo = SimpifiedAssignmentInfo(_assignmentInfo, _protocolGraphInfo);
     _vecHierModule = extractFactory.getHierModuleHandleContainer();
     _interfaceInfo = processInterface(topModuleName, _vecHierModule);
+
+    CONST_FOR_EACH(pHierModule, _vecHierModule) {
+        if (pHierModule->getModuleName()->getString() == topModuleName) {
+            _pHierModule = pHierModule;
+            break;
+        }
+    }
+
+    if (!_pHierModule.valid())
+        LOG(ERROR) << "Unable to find hier module entry for " << topModuleName;
+
     initAssignmentFunctionCallMgr();
 }
     
@@ -445,6 +456,7 @@ void CodeGeneration::generateModuleHeader(std::stringstream & ss, VExprModuleHan
         ++interfaceId;\
     }
     if (hierModuleName == topModuleName) {
+        ss << indent << topModuleName << "();\n\n";
         ss << indent << "void " << "register_data_pointer(\n";
         HEADER_REGISTER_FUNCTION_DECLARATION(_hashReadSymbol, _mapInputAndInputSize);
         HEADER_REGISTER_FUNCTION_DECLARATION(_hashWriteSymbol, _mapOutputAndOutputSize);
@@ -472,7 +484,6 @@ void CodeGeneration::generateModuleHeader(std::stringstream & ss, VExprModuleHan
         }
     }
 #endif
-
     ss << "\n" << indent << "// Parameters\n";
     CONST_FOR_EACH(pParameterDeclaration, pHierModule->getParameterDeclarationContainer()) {
         CONST_FOR_EACH(pParaAssignment, pParameterDeclaration->getParaAssignmentHandleContainer()) {
@@ -480,11 +491,8 @@ void CodeGeneration::generateModuleHeader(std::stringstream & ss, VExprModuleHan
             VExprExpressionHandle pExpression = pParaAssignment->getExpressionHandle();
             VRExprNumber number = expression2VRExprNumber(pExpression);
 
-            ss << indent;
-            ss << "const static ";
-            ss << getTypeFromSize(number.getSize());
-            ss << pIdentifier->getString() << " = "; 
-            ss << number.getUnsignedNumber() << ";\n"; 
+            ss << indent << getTypeFromSize(number.getSize());
+            ss << pIdentifier->getString() << ";\n"; 
         }
     }
 
@@ -553,6 +561,13 @@ void CodeGeneration::generateModuleHeader(std::stringstream & ss, VExprModuleHan
 
     if (pHierModule->getIntegerDeclarationContainer().size() != 0)
         LOG(ERROR) << "Integer not handled yet";
+
+    if (topModuleName == hierModuleName) {
+        ss << "\n" << indent << "// Initialization\n";
+        ss << indent << "void init();";
+    }
+
+
 #if 0
     ss << "\n" << indent << "// Integer \n";
     CONST_FOR_EACH(integer, pHierModule->getIntegerContainer()) {
@@ -566,9 +581,6 @@ void CodeGeneration::generateModuleHeader(std::stringstream & ss, VExprModuleHan
         ss << ";\n"; 
     }
 #endif
-    if (topModuleName == hierModuleName) { 
-        ss << "\nprivate:\n\n";
-    }
 
     if (topModuleName == hierModuleName) {
         ss << "\n" << indent << "// Read transactions\n";
@@ -583,6 +595,10 @@ void CodeGeneration::generateModuleHeader(std::stringstream & ss, VExprModuleHan
             ss << "    void write_" << writeSymbol << "();\n";
         }
 
+    }
+    
+    if (topModuleName == hierModuleName) { 
+        ss << "\nprivate:\n\n";
     }
 
     if (topModuleName == hierModuleName) {
@@ -628,6 +644,51 @@ void CodeGeneration::generateModuleHeader(std::stringstream & ss, VExprModuleHan
 
 }
 
+void CodeGeneration::generateParameterInitialization(std::stringstream & ss, std::string prefixModuleName, VExprModuleHandle pModule) const {
+    CONST_FOR_EACH(pParameterDeclaration, pModule->getParameterDeclarationContainer()) {
+        CONST_FOR_EACH(pParaAssignment, pParameterDeclaration->getParaAssignmentHandleContainer()) {
+            VExprIdentifierHandle pIdentifier = pParaAssignment->getIdentifierHandle();
+            VExprExpressionHandle pExpression = pParaAssignment->getExpressionHandle();
+            VRExprNumber number = expression2VRExprNumber(pExpression);
+
+            ss << indent;
+            if (prefixModuleName != "")
+                ss << prefixModuleName;
+            ss << pIdentifier->getString() << " = "; 
+            ss << number.getUnsignedNumber() << ";\n"; 
+        }
+    }
+
+    CONST_FOR_EACH(pSubModule, pModule->getModuleInstantiationContainer()) {
+        VExprIdentifierHandle pSubModuleName = pSubModule->getModuleName();
+        for (unsigned int i = 0; i < pSubModule->getModuleInstanceContainer().size(); ++i) {
+            VExprModuleInstanceHandle pModuleInstance = pSubModule->getModuleInstanceContainer()[i];
+            VExprNameOfInstanceHandle pNameOfInstance = pModuleInstance->getNameOfInstanceHandle();
+            VExprIdentifierHandle pIdentifier = pNameOfInstance->getIdentifierHandle();
+            VExprRangeHandle pRange = pNameOfInstance->getRangeHandle();
+            if (pRange.valid())
+                LOG(ERROR) << "Range in module instance not dealt with yet";
+            std::string nextPrefixModuleName = prefixModuleName + pIdentifier->getString() + ".";
+            
+            bool ok = true;
+            for (int k = 0; k < (int)_vecHierModule.size(); ++k) {
+                if (_vecHierModule[k]->getModuleName()->getString() == pSubModuleName->getString()) {
+                    ok = true;
+                    generateParameterInitialization(ss, nextPrefixModuleName, _vecHierModule[k]);
+                    break;
+                }
+            } 
+            if (!ok) {
+                LOG(ERROR) << "No module definition (" << pSubModuleName->getString() << ") for (" << nextPrefixModuleName << ")";
+            }
+
+        }
+
+    }
+
+} 
+
+
 std::string getTypeFromSize(int sz) {
     std::stringstream ss;
     if (sz == 1)
@@ -652,6 +713,9 @@ std::string CodeGeneration::generateImplementation() {
     ss << "#include \"" << topModuleName << ".h\"\n\n";
 
     unsigned int interfaceId = 0;
+    ss << topModuleName << "::" << topModuleName << "(){\n"
+       << indent << "init();\n"
+       << "}\n\n";
     ss << "void " << topModuleName << "::register_data_pointer(\n";
     #define IMPLEMENTATION_REGISTER_FUNCTION_DECLARATION(hash_name, map_name) CONST_FOR_EACH(readSymbol, _protocolGraphInfo.hash_name) {\
         std::map<std::string, int>::const_iterator it = _interfaceInfo.map_name.find(readSymbol);\
@@ -745,6 +809,13 @@ std::string CodeGeneration::generateImplementation() {
         ss << "(" << pNumber->getUnsignedNumber() << ");\n";
     }
 #endif
+    ss << "\n"  << "// Initialization\n"
+       << "void " << topModuleName << "::init() {\n";
+
+    ss << "\n" << indent << "// Module instances parameters initialization\n";
+    generateParameterInitialization(ss, "", _pHierModule);
+    ss << "}\n";
+
     ss << "\n" << "// Read transactions\n";
 
     CONST_FOR_EACH(readSymbol, _protocolGraphInfo._hashReadSymbol) {

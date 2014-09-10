@@ -96,6 +96,7 @@ class CodeGeneration {
     ProtocolGraphInfo _protocolGraphInfo;
     AssignmentInfo _assignmentInfo;
     SimpifiedAssignmentInfo _simplifiedAssignmentInfo;
+    VExprModuleHandle _pHierModule;
 public:
     CodeGeneration( const std::string & designName
                   , const std::string & protocolName
@@ -122,6 +123,8 @@ private:
 
     void generateProtocolState(std::stringstream & ss);
     void generateProtocolEvent(std::stringstream & ss);
+
+    void generateParameterInitialization(std::stringstream & ss, std::string prefixModuleName, VExprModuleHandle pModule) const; 
 };
 
 #endif // CODE_GENERATION_H

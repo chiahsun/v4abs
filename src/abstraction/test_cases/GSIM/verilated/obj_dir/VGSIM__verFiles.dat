@@ -1,0 +1,12 @@
+# DESCRIPTION: Verilator output: Timestamp data for --skip-identical.  Delete at will.
+C "-Wno-UNOPTFLAT --cc ../GSIM.v --exe main.cpp"
+S     11375 115353822  1406592473 "../GSIM.v"
+S   4965192 95037877  1406118538 "/home/chiahsun/source_code_browse/verilator/verilator-3.862/verilator_bin"
+T     79326 115353802  1406592478 "obj_dir/VGSIM.cpp"
+T      5851 115353801  1406592478 "obj_dir/VGSIM.h"
+T      2087 115353804  1406592478 "obj_dir/VGSIM.mk"
+T       569 115353800  1406592477 "obj_dir/VGSIM__Syms.cpp"
+T       949 115353798  1406592477 "obj_dir/VGSIM__Syms.h"
+T       307 115353808  1406592478 "obj_dir/VGSIM__ver.d"
+T         0        0  1406592478 "obj_dir/VGSIM__verFiles.dat"
+T      1082 115353803  1406592478 "obj_dir/VGSIM_classes.mk"

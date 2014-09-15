@@ -1,0 +1,12 @@
+# DESCRIPTION: Verilator output: Timestamp data for --skip-identical.  Delete at will.
+C "--cc ../CTE.v --exe main.cpp"
+S      3718 115218321  1406468980 "../CTE.v"
+S   4965192 95037877  1406118538 "/home/chiahsun/source_code_browse/verilator/verilator-3.862/verilator_bin"
+T     18652 115218303  1406468983 "obj_dir/VCTE.cpp"
+T      3810 115218302  1406468983 "obj_dir/VCTE.h"
+T      2081 115218305  1406468983 "obj_dir/VCTE.mk"
+T       564 115218301  1406468983 "obj_dir/VCTE__Syms.cpp"
+T       942 115218299  1406468983 "obj_dir/VCTE__Syms.h"
+T       299 115218306  1406468983 "obj_dir/VCTE__ver.d"
+T         0        0  1406468983 "obj_dir/VCTE__verFiles.dat"
+T      1079 115218304  1406468983 "obj_dir/VCTE_classes.mk"
